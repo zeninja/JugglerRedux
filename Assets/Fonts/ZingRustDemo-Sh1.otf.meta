@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 41be9f03fd32e6a4da3fe976689d9b55
+timeCreated: 1509488870
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 300
+  forceTextureCase: -1
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Zing Rust Demo
+  fontNames:
+  - Zing Rust Demo
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 25925d5f59c1bf94da85f2b7d025ba1f, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
