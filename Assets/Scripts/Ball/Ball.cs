@@ -67,13 +67,16 @@ public class Ball : MonoBehaviour {
 		if (other.gameObject.CompareTag("KillTrigger") && !launching) {
 			ballArtManager.SetGameOverColor();
 			GameManager.GetInstance().HandleGameOver();
+			ballManager.UpdateBallDepths (gameObject);
 		}
 	}
 
-	public void HandleDeath() {
+	public void FreezeBall() {
 		rb.velocity = GetComponent<BallInfo> ().deadInfo.velocity;
 		rb.gravityScale = GetComponent<BallInfo> ().deadInfo.gravityScale;
+	}
 
+	public void HandleDeath() {
 		StartCoroutine (Die());
 	}
 

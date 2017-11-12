@@ -28,7 +28,7 @@ public class SquashAndStretch : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		velocity = (Vector2)transform.position - lastPosition;
 		acceleration = velocity - lastVelocity;
 
@@ -44,15 +44,19 @@ public class SquashAndStretch : MonoBehaviour {
 
 		if (ball.isCaught) {
 			// Animate the ball wobbling while it's being caught using an animation curve
-			currentTime += Time.deltaTime;
+			currentTime += Time.fixedDeltaTime;
 			squashValue = catchVelocity * curve.Evaluate (currentTime / totalTime);
 
 			if (currentTime > totalTime) {
 				squashValue = -throwDirection.magnitude;
 				squashValue = -throwDirection.magnitude.Remap(0, 15, 0, .8f);
 			}
+
+			// Math Squash
+//			squashValue = (catchVelocity - currentTime/catchVelocity) * Mathf.Cos(currentTime);
+
 		} else {
-			squashValue = Mathf.Abs(velocity.y);
+			squashValue = velocity.magnitude;
 			SetCatchVelocity ();
 		}
 
@@ -62,8 +66,6 @@ public class SquashAndStretch : MonoBehaviour {
 //		} else {
 //
 //		}
-
-//		Debug.Log(velocity.magnitude/acceleration.y);
 
 		transform.localScale = new Vector2(1 - squashValue, 1 + squashValue);
 
@@ -88,6 +90,5 @@ public class SquashAndStretch : MonoBehaviour {
 
 		float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, rot_z - 90), Time.fixedDeltaTime * 1000);
-
 	}
 }

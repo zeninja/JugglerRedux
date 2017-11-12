@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BallManager : MonoBehaviour {
 
 	public GameObject ballPrefab;
 	public float launchForce = 8;
 
+	[SerializeField]
 	List<GameObject> balls = new List<GameObject>();
 	public static int numBalls;
 
@@ -113,6 +115,13 @@ public class BallManager : MonoBehaviour {
 	public static bool startNextExplosion = false;
 
 	public IEnumerator HandleGameOver() {
+		//SortBallsByDepth();
+		//yield return new WaitForEndOfFrame();
+
+		for (int i = 0; i < balls.Count; i++) {
+			balls[i].GetComponent<Ball>().FreezeBall();
+		}
+
 		for (int i = 0; i < balls.Count; i++) {
 			balls[i].GetComponent<Ball>().HandleDeath();
 
@@ -125,6 +134,20 @@ public class BallManager : MonoBehaviour {
 		balls.Clear();
 		firstBallSpawned = false;
 		yield return new WaitForEndOfFrame();
+	}
+
+	void SortBallsByDepth() {
+		Dictionary<int, GameObject> depths = new Dictionary<int, GameObject>();
+
+		for (int i = 0; i < balls.Count; i++) {
+			depths.Add(balls[i].GetComponent<Ball>().zDepth, balls[i]);
+		}
+
+		var items = from pair in depths
+                    orderby pair.Value ascending
+                    select pair;
+
+        balls = depths.Values.ToList();
 	}
 
 	/*public static int numBallsExploded = 0;
