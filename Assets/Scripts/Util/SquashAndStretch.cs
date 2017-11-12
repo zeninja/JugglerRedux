@@ -5,7 +5,8 @@ using UnityEngine;
 public class SquashAndStretch : MonoBehaviour {
 
 	Ball ball;
-	public float squashValue;
+	float targetSquashValue;
+	float currentSquashValue;
 
 	Vector2 velocity, acceleration;
 	Vector2 lastPosition, lastVelocity;
@@ -13,9 +14,9 @@ public class SquashAndStretch : MonoBehaviour {
 	[System.NonSerialized]
 	public Vector2 throwDirection;
 
-	float currentTime = 0;
+	public float currentTime = 0;
 	float totalTime = .3f;
-	float catchVelocity;
+	public float catchVelocity;
 
 	public List<Vector2> accelerationValues = new List<Vector2>();
 	public AnimationCurve curve;
@@ -39,9 +40,28 @@ public class SquashAndStretch : MonoBehaviour {
 	}
 
 	void Squash() {
-
 		RotateToFaceMovementDirection();
 
+		switch (ball.state) {
+			case Ball.BallState.BeingCaught:
+				currentTime += Time.fixedDeltaTime;
+				targetSquashValue = catchVelocity * curve.Evaluate (currentTime / totalTime);
+
+				if (currentTime > totalTime) {
+					ball.SetState (Ball.BallState.BeingHeld);
+				}
+				break;
+			case Ball.BallState.BeingHeld:
+				targetSquashValue = -throwDirection.magnitude;
+				targetSquashValue = -throwDirection.magnitude.Remap(0, 15, 0, .8f);
+				break;
+			case Ball.BallState.InAir:
+				targetSquashValue = Mathf.Abs(velocity.y);
+				SetCatchVelocity ();
+				break;
+		}
+			
+		/*#region previous implementation
 		if (ball.isCaught) {
 			// Animate the ball wobbling while it's being caught using an animation curve
 			currentTime += Time.fixedDeltaTime;
@@ -53,12 +73,24 @@ public class SquashAndStretch : MonoBehaviour {
 			}
 
 			// Math Squash
-//			squashValue = (catchVelocity - currentTime/catchVelocity) * Mathf.Cos(currentTime);
+			// a * sin (bx)
+			// a = amplitude (should decrease over time)
+			// b = period of the wave (doesn't necessarily need to change??)
 
+//			float progress;
+//	float amount = 0;
+//	float total = 1f;
+
+//			while (amount < total) {
+//				amount += Time.fixedDeltaTime;
+//				progress = amount / total;
+//				squashValue = (total - progress) * Mathf.Cos (progress);
+//			}
 		} else {
-			squashValue = velocity.magnitude;
+			squashValue = Mathf.Abs(velocity.y);
 			SetCatchVelocity ();
 		}
+
 
 //		if (velocity.magnitude > .0001f) {
 //			squashValue = velocity.magnitude;
@@ -66,8 +98,11 @@ public class SquashAndStretch : MonoBehaviour {
 //		} else {
 //
 //		}
+		#endregion*/
 
-		transform.localScale = new Vector2(1 - squashValue, 1 + squashValue);
+		currentSquashValue = Mathf.Lerp (currentSquashValue, targetSquashValue, Time.deltaTime * 10);
+
+		transform.localScale = new Vector2(1 - currentSquashValue, 1 + currentSquashValue);
 
 		lastPosition = transform.position;
 		lastVelocity = velocity;
@@ -76,7 +111,7 @@ public class SquashAndStretch : MonoBehaviour {
 	void SetCatchVelocity() {
 		// Used to handle the catch wobble animation
 		currentTime = 0;
-		catchVelocity = lastVelocity.magnitude;
+		catchVelocity = Mathf.Abs(lastVelocity.y);
 	}
 
 	void RotateToFaceMovementDirection() {
@@ -89,6 +124,7 @@ public class SquashAndStretch : MonoBehaviour {
 		}
 
 		float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, rot_z - 90), Time.fixedDeltaTime * 1000);
+		//transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, rot_z - 90), Time.fixedDeltaTime * 1000);
+		transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
 	}
 }

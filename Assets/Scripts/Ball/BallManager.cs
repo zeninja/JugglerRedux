@@ -51,8 +51,6 @@ public class BallManager : MonoBehaviour {
 	}
 
 	void SpawnFirstBall() {
-
-
 		if (GameManager.GetInstance ().state == GameManager.GameState.mainMenu) {
 			if (Input.GetMouseButtonDown (0)) {
 				startTime = Time.time;
@@ -96,27 +94,32 @@ public class BallManager : MonoBehaviour {
 		ball.GetComponent<Rigidbody2D> ().velocity = Vector2.up * launchForce;
 		ball.GetComponent<Ball> ().ballManager = this;
 
+
 		balls.Add (ball);
 		numBalls = balls.Count;
 	}
 
 	public void UpdateBallDepths(GameObject topBall) {
 		for (int i = 0; i < balls.Count; i++) {
-			balls[i].GetComponent<Ball>().zDepth++;
+			Ball currentBall = balls [i].GetComponent<Ball> ();
 
-			if (balls[i] == topBall) {
-				balls[i].GetComponent<Ball>().zDepth = 0;
+			if(!currentBall.launching) {
+				currentBall.zDepth++;
+
+				if (balls [i] == topBall) {
+					currentBall.zDepth = 0;
+				}
+
+				currentBall.SetDepth ();
 			}
-
-			balls[i].GetComponent<Ball>().SetDepth();
 		}
 	}
 
 	public static bool startNextExplosion = false;
 
 	public IEnumerator HandleGameOver() {
-		//SortBallsByDepth();
-		//yield return new WaitForEndOfFrame();
+		SortBallsByDepth();
+		yield return new WaitForEndOfFrame();
 
 		for (int i = 0; i < balls.Count; i++) {
 			balls[i].GetComponent<Ball>().FreezeBall();
@@ -149,56 +152,4 @@ public class BallManager : MonoBehaviour {
 
         balls = depths.Values.ToList();
 	}
-
-	/*public static int numBallsExploded = 0;
-
-//	public void HandleBallExplosion() {
-//		if (numBallsExploded < numBalls) {
-//			balls[numBallsExploded].GetComponent<Ball>().HandleDeath();
-//		}
-//	}
-
-	public IEnumerator HandleGameOver() {
-//		for (int i = 0; i < numBalls; i++) {
-//			balls [i].GetComponent<Ball> ().HandleDeath ();
-//		}
-
-//		balls[0].GetComponent<Ball>().HandleDeath();
-		yield return StartCoroutine(ExplodeBalls());
-
-		numBallsExploded = 0;
-		yield return 0;
-	}
-
-	IEnumerator ExplodeBalls() {
-		while (numBallsExploded < numBalls) {	
-			for (int i = 0; i < balls.Count; i++) {
-				balls[i].GetComponent<Ball>().HandleDeath();
-			}
-			yield return new WaitForEndOfFrame();
-		}
-	}
-
-	/*public static int numBallsImploded = 0;
-
-	public IEnumerator CleanUpBalls() {
-		for (int i = 0; i < numBalls; i++) {
-			balls [i].GetComponent<Ball> ().CleanUp ();
-			yield return new WaitForSeconds(.25f);
-		}
-
-		while (numBallsImploded < numBalls) {
-			yield return new WaitForEndOfFrame();
-		}
-
-		for (int i = 0; i < numBalls; i++) {
-			Destroy (balls [i]);
-		}
-
-		numBalls = 0;
-		balls.Clear ();
-		firstBallSpawned = false;
-		numBallsImploded = 0;
-		yield return 0;
-	}*/
 }

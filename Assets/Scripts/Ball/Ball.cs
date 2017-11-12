@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
+	public enum BallState { InAir, BeingCaught, BeingHeld };
+	public BallState state;
+
 	Rigidbody2D rb;
 	GameObject artManager;
 	BallArtManager ballArtManager;
@@ -16,7 +19,7 @@ public class Ball : MonoBehaviour {
 	public bool isCaught;
 
 	[System.NonSerialized] public BallManager ballManager;
-	[System.NonSerialized] public int zDepth = 0;
+	/*[System.NonSerialized]*/ public int zDepth = -100;
 
 	void Awake() {
 		rb = GetComponent<Rigidbody2D> ();
@@ -39,16 +42,20 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
+	public void SetState(BallState newState) {
+		state = newState;
+	}
+
 	public void HandleCatch() {
 		isCaught = true;
 		rb.velocity = ballInfo.caughtInfo.velocity;
 		rb.gravityScale = ballInfo.caughtInfo.gravityScale;
 		ScoreManager.GetInstance ().IncreaseScore ();
 
-		ballManager.UpdateBallDepths (gameObject);
 		ballArtManager.HandleCatch ();
-
 		ScoreAnimation.GetInstance ().HandleCatch ();
+
+		SetState (BallState.BeingCaught);
 	}
 
 	public void SetDepth() {
@@ -60,7 +67,10 @@ public class Ball : MonoBehaviour {
 		rb.velocity = throwForce;
 		rb.gravityScale = ballInfo.defaultInfo.gravityScale;
 
+		ballManager.UpdateBallDepths (gameObject);
 		ballArtManager.HandleThrow();
+
+		SetState (BallState.InAir);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
