@@ -94,7 +94,6 @@ public class BallManager : MonoBehaviour {
 		ball.GetComponent<Rigidbody2D> ().velocity = Vector2.up * launchForce;
 		ball.GetComponent<Ball> ().ballManager = this;
 
-
 		balls.Add (ball);
 		numBalls = balls.Count;
 	}
@@ -151,5 +150,10 @@ public class BallManager : MonoBehaviour {
                     select pair;
 
         balls = depths.Values.ToList();
+
+//		Debug.Break ();
+//		for (int i = 0; i < balls.Count; i++) {
+//			Debug.Log (balls [i].GetComponent<Ball> ().zDepth);
+//		}
 	}
 }

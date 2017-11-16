@@ -8,7 +8,7 @@ public class Ball : MonoBehaviour {
 	public BallState state;
 
 	Rigidbody2D rb;
-	GameObject artManager;
+	GameObject ballSprite;
 	BallArtManager ballArtManager;
 	DepthManager depthManager;
 	BallInfo ballInfo;
@@ -23,9 +23,9 @@ public class Ball : MonoBehaviour {
 
 	void Awake() {
 		rb = GetComponent<Rigidbody2D> ();
-		artManager = transform.GetChild (0).gameObject;
-		ballArtManager = artManager.GetComponent<BallArtManager> ();
-		depthManager = artManager.GetComponent<DepthManager> ();
+		ballSprite = transform.GetChild (0).gameObject;
+		ballArtManager = ballSprite.GetComponent<BallArtManager> ();
+		depthManager = ballSprite.GetComponent<DepthManager> ();
 		ballInfo = GetComponent<BallInfo> ();
 	}
 
