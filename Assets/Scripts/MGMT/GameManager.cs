@@ -66,9 +66,8 @@ public class GameManager : MonoBehaviour {
 		Hand.instance.HandleGameOver ();
 		yield return StartCoroutine (BallManager.GetInstance ().HandleGameOver ());
 		yield return new WaitForSeconds(.5f);
-		//yield return StartCoroutine (BallManager.GetInstance ().CleanUpBalls ());
 		yield return StartCoroutine (ScoreManager.GetInstance ().HandleGameOver ());
-
+//		yield return StartCoroutine (AdManager.GetInstance ().HandleGameOver ());
 		RestartGame ();
 	}
 }
