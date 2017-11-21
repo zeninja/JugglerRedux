@@ -154,7 +154,7 @@ PlayerSettings:
     iOS: com.Adnan.Juggler
     tvOS: com.Company.ProductName
   buildNumber:
-    iOS: 1
+    iOS: 2
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0

@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour {
 
 	void SetState(GameState newState) {
 		state = newState;
+
+		ButtonManager.GetInstance().UpdateButtons();
+
 		switch (state) {
 			case GameState.mainMenu:
 				break;

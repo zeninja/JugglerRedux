@@ -16,11 +16,16 @@ public class AudioManager : MonoBehaviour {
 	AudioSource source;
 	AudioSource timerSource;
 
+	public static bool muted;
+	string muteKey = "Muted";
+
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		source = GetComponent<AudioSource> ();
 		timerSource = transform.GetComponentInChildren<AudioSource> ();
+
+		CheckMute();
 	}
 	
 	// Update is called once per frame
@@ -51,6 +56,21 @@ public class AudioManager : MonoBehaviour {
 		} else {
 			timerSource.volume = 0;
 			timerSource.pitch = 1;
+		}
+	}
+
+	public void ToggleMute() {
+		muted = !muted;
+
+		int storedValue = muted ? 1 : 0;
+		PlayerPrefs.SetInt(muteKey, storedValue);
+	}
+
+	void CheckMute() {
+		if (!PlayerPrefs.HasKey(muteKey)) {
+			PlayerPrefs.SetInt(muteKey, 0);
+		} else {
+			muted = PlayerPrefs.GetInt(muteKey) == 1;
 		}
 	}
 }

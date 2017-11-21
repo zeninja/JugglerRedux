@@ -51,7 +51,9 @@ public class BallManager : MonoBehaviour {
 	}
 
 	void SpawnFirstBall() {
-		if (GameManager.GetInstance ().state == GameManager.GameState.mainMenu) {
+		if (GameManager.GetInstance ().state == GameManager.GameState.mainMenu &&
+			Hand.instance.FindHandPos().y < UIBoundary.position.y) {
+
 			if (Input.GetMouseButtonDown (0)) {
 				startTime = Time.time;
 			}
@@ -68,7 +70,7 @@ public class BallManager : MonoBehaviour {
 					if (elapsedTime >= holdDuration) {
 						//GameObject firstBall = ObjectPool.instance.GetObjectForType ("Ball", false);
 						GameObject firstBall = Instantiate(ballPrefab) as GameObject;
-						firstBall.transform.position = new Vector2 (0, 4);
+						firstBall.transform.position = new Vector2 (0, 3);
 						firstBall.GetComponent<Ball> ().ballManager = this;
 						balls.Add (firstBall);
 						numBalls = balls.Count;

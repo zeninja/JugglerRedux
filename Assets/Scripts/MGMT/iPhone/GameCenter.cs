@@ -7,11 +7,11 @@ using UnityEngine.SocialPlatforms.GameCenter;
 
 public class GameCenter : MonoBehaviour {
 
-	string leaderboardID = "Leaderboard_Test1";
+	string leaderboardID = "Test01";
 
-	public static string get10Pts	   = "Get10Pts";		// achievement ID in itunes Connect
-	public static string get100Pts	   = "Get100Pts";		// achievement ID in itunes Connect
-	public static string get50Pts1Hand = "LookMaOneHand";	// achievement ID in itunes Connect
+//	public static string get10Pts	   = "Get10Pts";		// achievement ID in itunes Connect
+//	public static string get100Pts	   = "Get100Pts";		// achievement ID in itunes Connect
+//	public static string get50Pts1Hand = "LookMaOneHand";	// achievement ID in itunes Connect
 
 	private static GameCenter instance;
 	private static bool instantiated = false;
@@ -76,13 +76,15 @@ public class GameCenter : MonoBehaviour {
 	public void ShowLeaderboard() {
 		Social.ShowLeaderboardUI();
 	}
-
-	[DllImport("__Internal")]
-	private static extern void _ReportAchievement( string achievementID, float progress );
-
-	public static void SetComplete(string achievementID) {
-		#if !UNITY_EDITOR
-		_ReportAchievement(achievementID, 100.0f);
-		#endif
-	}
+//
+//	[DllImport("__Internal")]
+//	private static extern void _ReportAchievement( string achievementID, float progress );
+//
+//	public static void SetComplete(string achievementID) {
+//		#if !UNITY_EDITOR
+//		_ReportAchievement(achievementID, 100.0f);
+//		#endif
+//	}
 }
+
+
