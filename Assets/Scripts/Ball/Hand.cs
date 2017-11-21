@@ -60,13 +60,15 @@ public class Hand : MonoBehaviour {
 	public Vector2 FindHandPos() {
 		Vector2 currentHandPos;
 
-		#if  UNITY_EDITOR || UNITY_STANDALONE_OSX
+//		#if  UNITY_EDITOR || UNITY_STANDALONE_OSX
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		#endif
+//		#endif
 
-		#if UNITY_IOS
-		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
-		#endif
+		Debug.Log(currentHandPos);
+
+//		#if UNITY_IOS
+//		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
+//		#endif
 
 		return currentHandPos;
 	}
