@@ -900,6 +900,11 @@ Prefab:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366,
+        type: 2}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5d668d99145bede43bfd8cd55b6ae366, type: 2}
   m_IsPrefabParent: 0
@@ -919,7 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab0da89f8f4d48b0a03d70b197c0662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLengthMultiplier: 1.5
+  lineLengthMultiplier: 1.25
   distanceFromAnchor: 0.65
 --- !u!1 &834179893
 GameObject:

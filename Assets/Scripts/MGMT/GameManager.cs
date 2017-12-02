@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
 
 	void Awake() {
 		// Not sure why, but this seems to be messing with the squash and stretching???
-//		Application.targetFrameRate = 60;
+		Application.targetFrameRate = 60;
 	}
 
 	// Use this for initialization
