@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour {
 
+	LineManager line;
+
 	Vector2 handPos;
 	Vector2 dragStart, dragEnd;
 
@@ -15,7 +17,7 @@ public class Hand : MonoBehaviour {
 	Touch myTouch;
 
 	bool holdingBall;
-	GameObject ball;
+	public GameObject ball;
 
 	public float throwForceModifier = 4;
 
@@ -26,6 +28,9 @@ public class Hand : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		instance = this;
+
+		line = GetComponent<LineManager>();
+		line.hand = this;
 	}
 
 	void Update() {
@@ -60,15 +65,13 @@ public class Hand : MonoBehaviour {
 	public Vector2 FindHandPos() {
 		Vector2 currentHandPos;
 
-//		#if  UNITY_EDITOR || UNITY_STANDALONE_OSX
+		#if UNITY_IOS
+		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
+		#endif
+
+		#if UNITY_EDITOR || UNITY_STANDALONE_OSX
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-//		#endif
-
-		Debug.Log(currentHandPos);
-
-//		#if UNITY_IOS
-//		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
-//		#endif
+		#endif
 
 		return currentHandPos;
 	}
@@ -144,6 +147,7 @@ public class Hand : MonoBehaviour {
 			ball = targetBall;
 			if (!ball.GetComponent<Ball> ().launching) {
 				ball.GetComponent<Ball> ().HandleCatch ();
+				line.anchor = ball.transform.GetChild(0);
 				holdingBall = true;
 			}
 		}
@@ -178,5 +182,9 @@ public class Hand : MonoBehaviour {
 		ball = null;
 		holdingBall = false;
 		transform.position = idlePos;
+	}
+
+	public bool HoldingBall() {
+		return holdingBall;
 	}
 }
