@@ -42,25 +42,6 @@ public class SquashAndStretch : MonoBehaviour {
 	void Squash() {
 		RotateToFaceMovementDirection();
 
-		switch (ball.state) {
-			case Ball.BallState.BeingCaught:
-				currentTime += Time.fixedDeltaTime;
-				targetSquashValue = catchVelocity * curve.Evaluate (currentTime / totalTime);
-
-				if (currentTime > totalTime) {
-					ball.SetState (Ball.BallState.BeingHeld);
-				}
-				break;
-			case Ball.BallState.BeingHeld:
-				targetSquashValue = -throwDirection.magnitude;
-				targetSquashValue = -throwDirection.magnitude.Remap(0, 15, 0, .8f);
-				break;
-			case Ball.BallState.InAir:
-				targetSquashValue = Mathf.Abs(velocity.y);
-				SetCatchVelocity ();
-				break;
-		}
-			
 		/*#region previous implementation
 		if (ball.isCaught) {
 			// Animate the ball wobbling while it's being caught using an animation curve
@@ -100,7 +81,30 @@ public class SquashAndStretch : MonoBehaviour {
 //		}
 		#endregion*/
 
-		currentSquashValue = Mathf.Lerp (currentSquashValue, targetSquashValue, Time.deltaTime * 10);
+		/*switch (ball.state) {
+			case Ball.BallState.BeingCaught:
+				currentTime += Time.fixedDeltaTime;
+				targetSquashValue = catchVelocity * curve.Evaluate (currentTime / totalTime);
+
+				if (currentTime > totalTime) {
+					ball.SetState (Ball.BallState.BeingHeld);
+				}
+				break;
+			case Ball.BallState.BeingHeld:
+				targetSquashValue = -throwDirection.magnitude;
+				targetSquashValue = -throwDirection.magnitude.Remap(0, 15, 0, .8f);
+				break;
+			case Ball.BallState.InAir:
+				targetSquashValue = Mathf.Sin(Mathf.Abs(velocity.y));
+				SetCatchVelocity ();
+				break;
+		}*/
+
+//		currentSquashValue = Mathf.Lerp (currentSquashValue, targetSquashValue, Time.deltaTime * 10);
+
+		// THIS ACTUALLY SEEMS PRETTY OKAY? BUT IT GETS OUT OF HAND DURING THE HIGHER SPEEDS
+		currentSquashValue = Mathf.Pow(Mathf.Sin(velocity.magnitude) * 10, 2)/10;
+//	amountToSquashBy = squashFactor * Mathf.Sin(smoothedVelocity.magnitude);
 
 		transform.localScale = new Vector2(1 - currentSquashValue, 1 + currentSquashValue);
 

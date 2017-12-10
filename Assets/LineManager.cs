@@ -8,7 +8,7 @@ public class LineManager : MonoBehaviour {
 	public Transform anchor;
 	[System.NonSerialized]
 	public Hand hand;
-	LineRenderer lineRenderer;
+	LineRenderer line = new LineRenderer();
 
 	[System.NonSerialized]
 	public float throwForce;
@@ -16,14 +16,14 @@ public class LineManager : MonoBehaviour {
 	public float lineLengthMultiplier = 1.5f;
 	public float distanceFromAnchor   =  .5f;
 
+	public Color lineColor = new Color(0, 255, 234, 1);
+
 	// Use this for initialization
 	void Start () {
-		lineRenderer = GetComponent<LineRenderer>();
+		line = GetComponent<LineRenderer>();
 
-		Color lineColor = new Color(0, 255, 234, 1);
-
-		lineRenderer.startColor = lineColor;
-		lineRenderer.endColor   = lineColor;
+		line.startColor = lineColor;
+		line.endColor   = lineColor;
 	}
 	
 	// Update is called once per frame
@@ -31,11 +31,11 @@ public class LineManager : MonoBehaviour {
 		if (hand.HoldingBall()) {
 			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor;
 
-			lineRenderer.SetPosition(0, startPoint);
-			lineRenderer.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier);
-			lineRenderer.enabled = true;
+			line.SetPosition(0, startPoint);
+			line.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier);
+			line.enabled = true;
 		} else {
-			lineRenderer.enabled = false;
+			line.enabled = false;
 		}
 	}
 }

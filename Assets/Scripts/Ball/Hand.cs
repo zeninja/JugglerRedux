@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour {
 
-	LineManager line;
+	LineManager[] lines;
 
 	Vector2 handPos;
 	Vector2 dragStart, dragEnd;
@@ -29,8 +29,10 @@ public class Hand : MonoBehaviour {
 	void Start () {
 		instance = this;
 
-		line = GetComponent<LineManager>();
-		line.hand = this;
+		lines = GetComponentsInChildren<LineManager>();
+		for (int i = 0; i < lines.Length; i++) {
+			lines[i].hand = this;
+		}
 	}
 
 	void Update() {
@@ -131,9 +133,13 @@ public class Hand : MonoBehaviour {
 		GameObject targetBall = null;
 
 		if (balls.Length > 1) {
+			// Grab the ball "closest" to the player (has the highest z depth) as long as we're not already holding a ball
 			int closestBall = -1000;
 			for (int i = 0; i < balls.Length; i++) {
-				if(balls[i].GetComponent<Ball>().zDepth > closestBall) { targetBall = balls [i].gameObject; }
+				if(balls[i].GetComponent<Ball>().zDepth > closestBall) { 
+					targetBall = balls [i].gameObject; 
+					closestBall = targetBall.GetComponent<Ball>().zDepth;
+				}
 			}
 			GrabBall (targetBall);
 		} else {
@@ -142,12 +148,14 @@ public class Hand : MonoBehaviour {
 	}
 
 	void GrabBall(GameObject targetBall) {
-		// Grab the ball "closest" to the player (has the highest z depth) as long as we're not already holding a ball
 		if(!holdingBall) {
 			ball = targetBall;
 			if (!ball.GetComponent<Ball> ().launching) {
 				ball.GetComponent<Ball> ().HandleCatch ();
-				line.anchor = ball.transform.GetChild(0);
+
+				for(int i = 0; i < lines.Length; i++) {
+					lines[i].anchor = ball.transform.GetChild(0);
+				}
 				holdingBall = true;
 			}
 		}

@@ -6,9 +6,10 @@ public class ScoreAnimation : MonoBehaviour {
 
 	[System.Serializable]
 	public class HighScoreAnimationInfo {
-		public float highScoreDuration = 0;
-		public float flashDuration = .15f;
-		public int timesToFlash = 5;
+		public float duration = 0;
+		public float onDuration = .15f;
+		public float offDuration = .05f;
+		public int numFlashes = 5;
 	}
 		
 	[System.Serializable]
@@ -30,7 +31,7 @@ public class ScoreAnimation : MonoBehaviour {
 	}
 
 	[SerializeField]
-	HighScoreAnimationInfo highScoreAnimationInfo = new HighScoreAnimationInfo();
+	HighScoreAnimationInfo highScoreInfo = new HighScoreAnimationInfo();
 	[SerializeField]
 	ScoreAnimInfo scoreAnimInfo = new ScoreAnimInfo();
 	[SerializeField]
@@ -69,7 +70,7 @@ public class ScoreAnimation : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		scoreAnimInfo.defaultScale = score.transform.localScale;
-		highScoreAnimationInfo.highScoreDuration = highScoreAnimationInfo.flashDuration * highScoreAnimationInfo.timesToFlash * 2;
+		highScoreInfo.duration = (highScoreInfo.offDuration + highScoreInfo.onDuration) * highScoreInfo.numFlashes;
 	}
 	
 	// Update is called once per frame
@@ -111,29 +112,49 @@ public class ScoreAnimation : MonoBehaviour {
 	public IEnumerator ShowNewHighScore() {
 		StartCoroutine(RainbowText());
 
-		int numFlashes = 0;
+		int flashCount = 0;
 
-		while (numFlashes < highScoreAnimationInfo.timesToFlash) {
-			highscoreText.SetActive (false);
-			score.SetActive (false);
-			yield return new WaitForSeconds (highScoreAnimationInfo.flashDuration);
-			highscoreText.SetActive (true);
-			score.SetActive (true);
-			yield return new WaitForSeconds(highScoreAnimationInfo.flashDuration);
-			numFlashes++;
+		while (flashCount < highScoreInfo.numFlashes) {
+			highscoreText.SetActive(false);	
+			score.SetActive(false);
+			yield return new WaitForSeconds(highScoreInfo.offDuration);
+			highscoreText.SetActive(true);	
+			score.SetActive(true);
+			yield return new WaitForSeconds(highScoreInfo.onDuration);
 
 			yield return new WaitForEndOfFrame();
+			flashCount++;
 		}
-//		highscoreText.SetActive (false);
+		score.SetActive(false);
+		highscoreText.SetActive(false);	
+		yield return new WaitForSeconds(highScoreInfo.offDuration);
+		score.SetActive(true);
+		yield return new WaitForSeconds(highScoreInfo.onDuration);
 		yield return 0;
+
+//		int numFlashes = 0;
+//
+//		while (numFlashes < highScoreInfo.numFlashes) {
+//			highscoreText.SetActive (false);
+//			score.SetActive (false);
+//			yield return new WaitForSeconds (highScoreInfo.flashDuration);
+//			highscoreText.SetActive (true);
+//			score.SetActive (true);
+//			yield return new WaitForSeconds(highScoreInfo.flashDuration);
+//			numFlashes++;
+//
+//			yield return new WaitForEndOfFrame();
+//		}
+////		highscoreText.SetActive (false);
+//		yield return 0;
 	}
 
 	IEnumerator RainbowText() {
 		// Could take this out since it also happens in ShowNewHighSCore
 		float startTime = Time.time;
 		float elapsedTime = Time.time - startTime;
-		while (elapsedTime < highScoreAnimationInfo.highScoreDuration) {
-			float t = elapsedTime / highScoreAnimationInfo.highScoreDuration;
+		while (elapsedTime < highScoreInfo.duration) {
+			float t = elapsedTime / highScoreInfo.duration;
 			elapsedTime = Time.time - startTime;
 			highscoreText.GetComponent<UnityEngine.UI.Text>().color = highScoreGradient.Evaluate(t);
 			score.GetComponent<UnityEngine.UI.Text>().color = highScoreGradient.Evaluate(t);
