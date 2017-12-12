@@ -1,31 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class VolumeSpriteManager : MonoBehaviour {
 
-	UnityEngine.UI.Image mySprite;
+	Button muteButton;
+	Image mySprite;
 
 	public Sprite muted;
 	public Sprite notMuted;
 
 	// Use this for initialization
 	void Start () {
-		mySprite = GetComponent<UnityEngine.UI.Image>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		muteButton = GetComponent<Button> ();
+		mySprite = GetComponent<Image>();
+		muteButton.onClick.AddListener (UpdateImage);
 	}
 
 	public void UpdateImage() {
 		Sprite targetSprite;
-		Debug.Log("updating sprite");
 
 		targetSprite = AudioManager.muted ? muted : notMuted;
 		mySprite.sprite = targetSprite;
-
 	}
 }

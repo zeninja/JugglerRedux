@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour {
 
@@ -21,11 +22,15 @@ public class AudioManager : MonoBehaviour {
 	public static bool muted;
 	string muteKey = "Muted";
 
+	public Button muteButton;
+
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		source = GetComponent<AudioSource> ();
 		timerSource = transform.GetComponentInChildren<AudioSource> ();
+
+		muteButton.onClick.AddListener (ToggleMute);
 
 		CheckMute();
 	}
@@ -67,6 +72,7 @@ public class AudioManager : MonoBehaviour {
 
 	public void ToggleMute() {
 		muted = !muted;
+		source.mute = muted;
 
 		int storedValue = muted ? 1 : 0;
 		PlayerPrefs.SetInt(muteKey, storedValue);
