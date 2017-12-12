@@ -13,6 +13,8 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip gameStart;
 	public AudioClip gameTimer;
 
+	public AudioClip[] scoreSounds;
+
 	AudioSource source;
 	AudioSource timerSource;
 
@@ -47,6 +49,10 @@ public class AudioManager : MonoBehaviour {
 
 	public static void PlayGameStart() {
 		instance.source.PlayOneShot (instance.gameStart);
+	}
+
+	public static void PlayScore() {
+		instance.source.PlayOneShot(instance.scoreSounds[Random.Range(0, instance.scoreSounds.Length)]);
 	}
 
 	public void PlayTimer() {

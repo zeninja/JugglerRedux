@@ -22,4 +22,10 @@ public class BallInfo : MonoBehaviour {
 	public DeadInfo deadInfo = new DeadInfo();
 	public DefaultInfo defaultInfo = new DefaultInfo();
 	public CaughtInfo caughtInfo = new CaughtInfo();
+
+	[System.NonSerialized]
+	public Vector2 position, velocity, acceleration;
+
+	[System.NonSerialized]
+	public Vector2 lastPosition, lastVelocity;
 }
