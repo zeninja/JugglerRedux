@@ -22,15 +22,13 @@ public class AudioManager : MonoBehaviour {
 	public static bool muted;
 	string muteKey = "Muted";
 
-	public Button muteButton;
-
 	// Use this for initialization
 	void Start () {
 		instance = this;
 		source = GetComponent<AudioSource> ();
 		timerSource = transform.GetComponentInChildren<AudioSource> ();
 
-		muteButton.onClick.AddListener (ToggleMute);
+		UIManager.instance.mute.onValueChanged.AddListener( delegate { UpdateMute(); } );
 
 		CheckMute();
 	}
@@ -70,8 +68,8 @@ public class AudioManager : MonoBehaviour {
 		}
 	}
 
-	public void ToggleMute() {
-		muted = !muted;
+	public void UpdateMute() {
+		muted = !UIManager.instance.mute.isOn;
 		source.mute = muted;
 
 		int storedValue = muted ? 1 : 0;
@@ -83,6 +81,7 @@ public class AudioManager : MonoBehaviour {
 			PlayerPrefs.SetInt(muteKey, 0);
 		} else {
 			muted = PlayerPrefs.GetInt(muteKey) == 1;
+			UIManager.instance.UpdateMute();
 		}
 	}
 }

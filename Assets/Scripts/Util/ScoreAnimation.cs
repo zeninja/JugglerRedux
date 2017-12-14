@@ -109,9 +109,13 @@ public class ScoreAnimation : MonoBehaviour {
 		yield return 0;
 	}
 
-	public IEnumerator ShowNewHighScore() {
-		StartCoroutine(RainbowText());
+	bool rainbowDone, flashingDone;
 
+	public IEnumerator ShowNewHighScore() {
+		StartCoroutine(EndHighScore());
+		StartCoroutine(RainbowScore());
+
+		flashingDone = false;
 		int flashCount = 0;
 
 		while (flashCount < highScoreInfo.numFlashes) {
@@ -121,48 +125,35 @@ public class ScoreAnimation : MonoBehaviour {
 			highscoreText.SetActive(true);	
 			score.SetActive(true);
 			yield return new WaitForSeconds(highScoreInfo.onDuration);
-
-			yield return new WaitForEndOfFrame();
 			flashCount++;
 		}
-		score.SetActive(false);
-		highscoreText.SetActive(false);	
-		yield return new WaitForSeconds(highScoreInfo.offDuration);
-		score.SetActive(true);
-		yield return new WaitForSeconds(highScoreInfo.onDuration);
-		yield return 0;
-
-//		int numFlashes = 0;
-//
-//		while (numFlashes < highScoreInfo.numFlashes) {
-//			highscoreText.SetActive (false);
-//			score.SetActive (false);
-//			yield return new WaitForSeconds (highScoreInfo.flashDuration);
-//			highscoreText.SetActive (true);
-//			score.SetActive (true);
-//			yield return new WaitForSeconds(highScoreInfo.flashDuration);
-//			numFlashes++;
-//
-//			yield return new WaitForEndOfFrame();
-//		}
-////		highscoreText.SetActive (false);
-//		yield return 0;
+		flashingDone = true;
 	}
 
-	IEnumerator RainbowText() {
-		// Could take this out since it also happens in ShowNewHighSCore
-		float startTime = Time.time;
-		float elapsedTime = Time.time - startTime;
+	public IEnumerator RainbowScore() {
+		rainbowDone = false;
+		float elapsedTime = 0;
 		while (elapsedTime < highScoreInfo.duration) {
-			float t = elapsedTime / highScoreInfo.duration;
-			elapsedTime = Time.time - startTime;
+			float t = elapsedTime/highScoreInfo.duration;
 			highscoreText.GetComponent<UnityEngine.UI.Text>().color = highScoreGradient.Evaluate(t);
 			score.GetComponent<UnityEngine.UI.Text>().color = highScoreGradient.Evaluate(t);
+
+			elapsedTime += Time.deltaTime;
+			yield return new WaitForFixedUpdate();
+		}
+		rainbowDone = true;
+	}
+
+	public IEnumerator EndHighScore() {
+		bool highScoreDone = rainbowDone && flashingDone;
+
+		while(!highScoreDone) {
+			highScoreDone = rainbowDone && flashingDone;
 			yield return new WaitForEndOfFrame();
 		}
+
 		highscoreText.SetActive(false);
 		score.GetComponent<UnityEngine.UI.Text>().color = Color.black;
-		yield return 0;
 	}
 
 	public IEnumerator CountdownScore() {
