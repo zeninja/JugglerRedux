@@ -91,7 +91,6 @@ public class BallManager : MonoBehaviour {
 
 	public void LaunchBall() {
 		GameObject ball = Instantiate(ballPrefab) as GameObject;
-		//GameObject ball = ObjectPool.instance.GetObjectForType ("Ball", false);
 		ball.transform.position = new Vector2 (Random.Range (-2f, 2f), -6f);
 		ball.GetComponent<Rigidbody2D> ().velocity = Vector2.up * launchForce;
 		ball.GetComponent<Ball> ().ballManager = this;
@@ -141,17 +140,17 @@ public class BallManager : MonoBehaviour {
 	}
 
 	void SortBallsByDepth() {
-		Dictionary<int, GameObject> depths = new Dictionary<int, GameObject>();
-
-		for (int i = 0; i < balls.Count; i++) {
-			depths.Add(balls[i].GetComponent<Ball>().zDepth, balls[i]);
-		}
-
-		var items = from pair in depths
-                    orderby pair.Value ascending
-                    select pair;
-
-        balls = depths.Values.ToList();
+//		Dictionary<int, GameObject> depths = new Dictionary<int, GameObject>();
+//
+//		for (int i = 0; i < balls.Count; i++) {
+//			depths.Add(balls[i].GetComponent<Ball>().zDepth, balls[i]);
+//		}
+//
+//		var items = from pair in depths
+//                    orderby pair.Value ascending
+//                    select pair;
+//
+//        balls = depths.Values.ToList();
 
 //		Debug.Break ();
 //		for (int i = 0; i < balls.Count; i++) {

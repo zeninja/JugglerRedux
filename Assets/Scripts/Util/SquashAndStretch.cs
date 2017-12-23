@@ -14,7 +14,8 @@ public class SquashAndStretch : MonoBehaviour {
 	Vector2 lastPosition, lastVelocity;
 	Vector2 smoothedVelocity, smoothedAcceleration;
 
-	public float squashFactor = 10f;
+	public float velSquashFactor = 10f;
+	public float accSquashFactor = 10f;
 
 	public float velocitySmoothing, accelerationSmoothing;
 
@@ -24,30 +25,37 @@ public class SquashAndStretch : MonoBehaviour {
 		position = transform.position;
 		lastPosition = position;
 		velocity = Vector2.zero;
-
 	}
-
-	private Vector2 yVelocity;
-	private Vector2 sVelocity;
 
 	void FixedUpdate() {
 		RotateToFaceMovementDirection ();
 
 		position = (Vector2)transform.position;
 		velocity = (Vector2)transform.position - lastPosition;
+		acceleration = velocity - lastVelocity;
 
-		smoothedVelocity = Vector2.SmoothDamp (smoothedVelocity, velocity, ref sVelocity, velocitySmoothing, Mathf.Infinity, Time.fixedDeltaTime);
+		ApplySmoothing();
+
+		Squash ();
 
 		lastPosition = position;
 		lastVelocity = velocity;
-
-		Squash ();
 	}
 
 	void Squash() {
 //		squashFactor = Mathf.Sin(Mathf.Abs(velocity.y));
-		float squashValue = squashFactor * Mathf.Abs(velocity.y);
+//		float squashValue = velSquashFactor * Mathf.Abs(velocity.y);
+
+		float squashValue = accSquashFactor * Mathf.Abs(acceleration.y);
+
 		transform.localScale = new Vector2(1 - squashValue, 1 + squashValue);
+	}
+
+	Vector2 sVel;
+	float maxSpeed = 10f;
+
+	void ApplySmoothing() {
+		smoothedAcceleration = Vector2.SmoothDamp(smoothedAcceleration, acceleration, ref sVel, Time.fixedDeltaTime * accelerationSmoothing, maxSpeed, Time.deltaTime);
 	}
 
 	void RotateToFaceMovementDirection() {

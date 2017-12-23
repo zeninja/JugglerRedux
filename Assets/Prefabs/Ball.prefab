@@ -234,6 +234,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   explosionScale: 5
   defaultColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
+  launchColor: {r: 0.7794118, g: 0.7794118, b: 0.7794118, a: 1}
   catchColor: {r: 0, g: 1, b: 0.9172416, a: 1}
   gameOverColor: {r: 0.2205882, g: 0.2205882, b: 0.2205882, a: 1}
 --- !u!114 &114941437880975662
@@ -258,6 +259,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -273,6 +275,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -300,6 +303,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -315,6 +319,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
