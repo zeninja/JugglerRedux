@@ -9,29 +9,28 @@ public class Ball : MonoBehaviour {
 
 	Rigidbody2D rb;
 	GameObject ballSprite;
-	BallArtManager ballArtManager;
-	DepthManager depthManager;
 	BallInfo ballInfo;
 
+	[System.NonSerialized]
+	public BallArtManager ballArtManager;
 	[System.NonSerialized]
 	public bool launching = false;
 	[System.NonSerialized]
 	public bool isCaught;
 
+	public int indexInManagerCollection;
+
 	[System.NonSerialized] public BallManager ballManager;
-	/*[System.NonSerialized]*/ public int zDepth = -100;
 
 	void Awake() {
 		rb = GetComponent<Rigidbody2D> ();
 		ballSprite = transform.GetChild (0).gameObject;
-		ballArtManager = ballSprite.GetComponent<BallArtManager> ();
-		depthManager = ballSprite.GetComponent<DepthManager> ();
+		ballArtManager = GetComponent<BallArtManager> ();
 		ballInfo = GetComponent<BallInfo> ();
 	}
 
 	// Use this for initialization
 	void Start () {
-		SetDepth ();
 		launching = true;
 	}
 	
@@ -43,6 +42,17 @@ public class Ball : MonoBehaviour {
 			if(rb.velocity.y <= .001f) {
 				launching = false;
 				ballArtManager.UseLaunchColor(false);
+			}
+		}
+
+		//Debug
+		CheckBallIndex();
+	}
+
+	void CheckBallIndex() {
+		for (int i = 0; i < ballManager.balls.Count; i++) {
+			if (ballManager.balls [i] == gameObject) {
+				indexInManagerCollection = ballManager.balls [i].GetComponent<BallArtManager> ().zDepth;
 			}
 		}
 	}
@@ -63,10 +73,6 @@ public class Ball : MonoBehaviour {
 		SetState (BallState.BeingCaught);
 	}
 
-	public void SetDepth() {
-		depthManager.UpdateDepth (zDepth);
-	}
-
 	public void HandleThrow(Vector2 throwForce) {
 		isCaught = false;
 		rb.velocity = throwForce;
@@ -79,7 +85,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.gameObject.CompareTag("KillTrigger") && !launching) {
+		if (other.gameObject.CompareTag("KillTrigger") && !launching && GameManager.GetInstance().state != GameManager.GameState.gameOver) {
 			ballArtManager.SetGameOverColor();
 			GameManager.GetInstance().HandleGameOver();
 			ballManager.UpdateBallDepths (gameObject);
@@ -98,5 +104,6 @@ public class Ball : MonoBehaviour {
 	IEnumerator Die() {
 		yield return StartCoroutine(ballArtManager.CompleteExplosion());
 		Destroy(gameObject);
+		Debug.Log ("Destroying a ball");
 	}
 }

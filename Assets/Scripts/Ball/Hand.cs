@@ -136,9 +136,9 @@ public class Hand : MonoBehaviour {
 			// Grab the ball "closest" to the player (has the highest z depth) as long as we're not already holding a ball
 			int closestBall = -1000;
 			for (int i = 0; i < balls.Length; i++) {
-				if(balls[i].GetComponent<Ball>().zDepth > closestBall) { 
+				if(balls[i].GetComponent<BallArtManager>().zDepth > closestBall) { 
 					targetBall = balls [i].gameObject; 
-					closestBall = targetBall.GetComponent<Ball>().zDepth;
+					closestBall = targetBall.GetComponent<BallArtManager>().zDepth;
 				}
 			}
 			GrabBall (targetBall);

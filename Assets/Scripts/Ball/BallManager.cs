@@ -9,7 +9,7 @@ public class BallManager : MonoBehaviour {
 	public float launchForce = 8;
 
 	[SerializeField]
-	List<GameObject> balls = new List<GameObject>();
+	public List<GameObject> balls = new List<GameObject>();
 	public static int numBalls;
 
 	float startTime;
@@ -66,7 +66,6 @@ public class BallManager : MonoBehaviour {
 					timerProgress = elapsedTime / holdDuration;
 					UIManager.instance.ballTimer.fillAmount = timerProgress;
 
-
 					if (elapsedTime >= holdDuration) {
 						//GameObject firstBall = ObjectPool.instance.GetObjectForType ("Ball", false);
 						GameObject firstBall = Instantiate(ballPrefab) as GameObject;
@@ -100,17 +99,21 @@ public class BallManager : MonoBehaviour {
 	}
 
 	public void UpdateBallDepths(GameObject topBall) {
-		for (int i = 0; i < balls.Count; i++) {
-			Ball currentBall = balls [i].GetComponent<Ball> ();
+		if (GameManager.GetInstance ().state != GameManager.GameState.gameOver) {
+			for (int i = 0; i < balls.Count; i++) {
+				Ball currentBall = balls [i].GetComponent<Ball> ();
 
-			if(!currentBall.launching) {
-				currentBall.zDepth++;
+				if (!currentBall.launching) {
+					// Increment the depths of all balls
+					currentBall.ballArtManager.zDepth--;
 
-				if (balls [i] == topBall) {
-					currentBall.zDepth = 0;
+					// Place the "top" ball at the front
+					if (balls [i] == topBall) {
+						currentBall.ballArtManager.zDepth = 0;
+					}
+
+					currentBall.ballArtManager.SetDepth ();
 				}
-
-				currentBall.SetDepth ();
 			}
 		}
 	}
@@ -140,21 +143,21 @@ public class BallManager : MonoBehaviour {
 	}
 
 	void SortBallsByDepth() {
-//		Dictionary<int, GameObject> depths = new Dictionary<int, GameObject>();
-//
-//		for (int i = 0; i < balls.Count; i++) {
-//			depths.Add(balls[i].GetComponent<Ball>().zDepth, balls[i]);
-//		}
-//
-//		var items = from pair in depths
-//                    orderby pair.Value ascending
-//                    select pair;
-//
-//        balls = depths.Values.ToList();
+		Dictionary<int, GameObject> depths = new Dictionary<int, GameObject>();
 
-//		Debug.Break ();
-//		for (int i = 0; i < balls.Count; i++) {
-//			Debug.Log (balls [i].GetComponent<Ball> ().zDepth);
-//		}
+		for (int i = 0; i < balls.Count; i++) {
+			depths.Add(balls[i].GetComponent<BallArtManager>().zDepth, balls[i]);
+		}
+
+		var items = from pair in depths
+                    orderby pair.Value ascending
+                    select pair;
+
+        balls = depths.Values.ToList();
+
+		Debug.Break ();
+		for (int i = 0; i < balls.Count; i++) {
+			Debug.Log (balls [i].GetComponent<BallArtManager> ().zDepth);
+		}
 	}
 }

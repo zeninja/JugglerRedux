@@ -65,6 +65,14 @@ public class GameManager : MonoBehaviour {
 		SetState (GameState.mainMenu);
 	}
 
+	public void HandleAdShown() {
+
+	}
+
+	public void ReturnToMainMenu() {
+		SetState(GameState.mainMenu);
+	}
+
 	IEnumerator GameOverProcedure() {
 		Hand.instance.HandleGameOver ();
 		yield return StartCoroutine (BallManager.GetInstance ().HandleGameOver ());
