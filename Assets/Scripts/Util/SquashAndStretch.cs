@@ -14,6 +14,10 @@ public class SquashAndStretch : MonoBehaviour {
 	Vector2 lastPosition, lastVelocity;
 	Vector2 smoothedVelocity, smoothedAcceleration;
 
+	public bool velocityBased;
+	public bool velocitySmoothed;
+	public bool accelerationSmoothed;
+
 	public float velSquashFactor = 10f;
 	public float accSquashFactor = 10f;
 
@@ -46,16 +50,49 @@ public class SquashAndStretch : MonoBehaviour {
 //		squashFactor = Mathf.Sin(Mathf.Abs(velocity.y));
 //		float squashValue = velSquashFactor * Mathf.Abs(velocity.y);
 
-		float squashValue = accSquashFactor * Mathf.Abs(acceleration.y);
+//		float squashValue = accSquashFactor * Mathf.Abs(acceleration.y);
+
+		float squashValue = 0;
+		float speed = 0;
+		float squashFactor = 1;
+
+//		if (velocityBased) {
+//			squashFactor = velSquashFactor;
+//			speed = Mathf.Abs(velocity.y);
+//
+//			if (velocitySmoothed) {
+//				smoothedVelocity = Vector2.Lerp (smoothedVelocity, velocity, Time.deltaTime * velocitySmoothing);
+//				speed = Mathf.Abs(smoothedVelocity.y);
+//			}
+//		} else {
+//			squashFactor = accSquashFactor;
+//			speed = Mathf.Abs (acceleration.y);
+//
+//			if (accelerationSmoothed) {
+//				smoothedAcceleration = Vector2.Lerp (smoothedAcceleration, acceleration, Time.deltaTime * accelerationSmoothing);
+//				speed = Mathf.Abs(smoothedAcceleration.y);
+//			}
+//
+//		}
+//		squashValue = squashFactor * speed;
+
+		// This is not too bad (but doesn't have the squashing on catch)
+//		squashValue = Mathf.Sin (Mathf.Abs(velocity.y));
+
+
+		ApplySmoothing ();
+		squashValue = accSquashFactor * Mathf.Abs(smoothedAcceleration.y);
 
 		transform.localScale = new Vector2(1 - squashValue, 1 + squashValue);
 	}
 
 	Vector2 sVel;
+	Vector2 sAcc;
 	float maxSpeed = 10f;
 
 	void ApplySmoothing() {
-		smoothedAcceleration = Vector2.SmoothDamp(smoothedAcceleration, acceleration, ref sVel, Time.fixedDeltaTime * accelerationSmoothing, maxSpeed, Time.deltaTime);
+		smoothedVelocity = Vector2.SmoothDamp(smoothedVelocity, velocity, ref sVel, Time.fixedDeltaTime * velocitySmoothing, maxSpeed, Time.deltaTime);
+		smoothedAcceleration = Vector2.SmoothDamp(smoothedAcceleration, acceleration, ref sAcc, Time.fixedDeltaTime * accelerationSmoothing, maxSpeed, Time.deltaTime);
 	}
 
 	void RotateToFaceMovementDirection() {

@@ -155,7 +155,6 @@ public class BallManager : MonoBehaviour {
 
         balls = depths.Values.ToList();
 
-		Debug.Break ();
 		for (int i = 0; i < balls.Count; i++) {
 			Debug.Log (balls [i].GetComponent<BallArtManager> ().zDepth);
 		}

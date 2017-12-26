@@ -28,7 +28,7 @@ public class LineManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (hand.HoldingBall()) {
+		if (hand.HoldingBall() && GameManager.GetInstance().state != GameManager.GameState.gameOver) {
 			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor;
 
 			line.SetPosition(0, startPoint);
