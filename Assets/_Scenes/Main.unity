@@ -1809,9 +1809,9 @@ MonoBehaviour:
   gameStart: {fileID: 0}
   gameTimer: {fileID: 0}
   scoreSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 968dca71d9b31e645a147504b084a546, type: 3}
+  - {fileID: 8300000, guid: b5d66a60da509f545b11bc3955e16315, type: 3}
+  - {fileID: 8300000, guid: d6026165ae1c47c459d18f08d907e923, type: 3}
 --- !u!82 &1846311157
 AudioSource:
   m_ObjectHideFlags: 0

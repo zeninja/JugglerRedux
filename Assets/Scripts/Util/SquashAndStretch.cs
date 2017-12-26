@@ -77,11 +77,11 @@ public class SquashAndStretch : MonoBehaviour {
 //		squashValue = squashFactor * speed;
 
 		// This is not too bad (but doesn't have the squashing on catch)
-//		squashValue = Mathf.Sin (Mathf.Abs(velocity.y));
+		squashValue = Mathf.Sin (Mathf.Abs(velocity.y));
 
 
 		ApplySmoothing ();
-		squashValue = accSquashFactor * Mathf.Abs(smoothedAcceleration.y);
+//		squashValue = accSquashFactor * Mathf.Abs(smoothedAcceleration.y);
 
 		transform.localScale = new Vector2(1 - squashValue, 1 + squashValue);
 	}
