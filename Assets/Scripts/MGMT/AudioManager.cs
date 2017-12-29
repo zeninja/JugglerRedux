@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour {
 	AudioSource source;
 	AudioSource timerSource;
 
-	public float pitchModifier = 2;
+	public AnimationCurve pitchModifier;
 
 	public static bool muted;
 	string muteKey = "Muted";
@@ -65,7 +65,7 @@ public class AudioManager : MonoBehaviour {
 		if(GameManager.GetInstance().state == GameManager.GameState.mainMenu) {
 			if (BallManager.GetInstance ().timerProgress > 0) {
 				timerSource.volume = 1.0f;
-				timerSource.pitch = 1 + BallManager.GetInstance().timerProgress * pitchModifier;
+				timerSource.pitch = 1 + pitchModifier.Evaluate (BallManager.GetInstance ().timerProgress);
 			} else {
 				timerSource.volume = 0;
 				timerSource.pitch = 1;
