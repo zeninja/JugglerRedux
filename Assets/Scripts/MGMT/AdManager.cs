@@ -72,28 +72,29 @@ public class AdManager : MonoBehaviour {
 //		Admob.Instance().loadRewardedVideo("ca-app-pub-2916476108966190/1617668865");
 	}
 
+
 	void TryToShowAd()
 	{
 		if(forceAdsOff) 
 		{ 
-			GameManager.GetInstance().ReturnToMainMenu();
+			ReturnToMainMenu();
 			return;
 		}
 
-		#if !UNITY_EDITOR
+//		#if !UNITY_EDITOR
 		if (Application.internetReachability == NetworkReachability.NotReachable) {
-			GameManager.GetInstance().ReturnToMainMenu();
+			ReturnToMainMenu();
 		} else {
-
 			if (Admob.Instance().isInterstitialReady()) {
 				Admob.Instance().showInterstitial();
 		    } else {
-		    	Admob.Instance().loadInterstitial();
+				Admob.Instance().loadInterstitial();
+				ReturnToMainMenu();
 		    }
 			currentPlays = 0;
 		}
 
-		#endif
+//		#endif
 	}
 
 	// not being used right now
@@ -118,19 +119,16 @@ public class AdManager : MonoBehaviour {
 				if (currentPlays >= adThreshold) {
 					TryToShowAd();
 				} else {
-					GameManager.GetInstance().ReturnToMainMenu();
-//					Debug.Log("NO AD THRESHOLD called Setting state at: " + Time.time);
+					ReturnToMainMenu();
 					PlayerPrefs.SetInt(NUM_PLAYS, currentPlays);
 				}
 			} else {
-				GameManager.GetInstance().ReturnToMainMenu();
-//				Debug.Log("NO INTERNET called Setting state at: " + Time.time);
+				ReturnToMainMenu();
 				PlayerPrefs.SetInt(NUM_PLAYS, currentPlays);
 			}
 
 		} else {
-			GameManager.GetInstance().ReturnToMainMenu();
-//			Debug.Log("SHOW ADS FALSE called Setting state at: " + Time.time);
+			ReturnToMainMenu();
 		}
 	}
 
@@ -139,20 +137,22 @@ public class AdManager : MonoBehaviour {
 			case "onAdOpened":
 				currentPlays = 0;
 				PlayerPrefs.SetInt(NUM_PLAYS, currentPlays);
-//				Debug.Log("OnAdOpened called Setting state at: " + Time.time);
 				break;
-
+				
 			case "onAdClosed":
-				GameManager.GetInstance().ReturnToMainMenu();
-//				Debug.Log("OnAdClosed called Setting state at: " + Time.time);
+				ReturnToMainMenu();
+				Admob.Instance().loadInterstitial();
 				break;
 
 			case "onAdFailedToLoad":
 				Admob.Instance().loadInterstitial();
-				GameManager.GetInstance().ReturnToMainMenu();
-//				Debug.Log("OnAdFailedToLoad called Setting state at: " + Time.time);
+				ReturnToMainMenu();
 				break;
 		}
+	}
+
+	void ReturnToMainMenu() {
+		GameManager.GetInstance().ReturnToMainMenu();
 	}
 
 	public static void HandlePurchaseMade() {

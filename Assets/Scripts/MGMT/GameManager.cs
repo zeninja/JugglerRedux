@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void ReturnToMainMenu() {
+		Debug.Log("Called Return to Main Menu");
 		SetState(GameState.mainMenu);
 	}
 
@@ -78,7 +79,8 @@ public class GameManager : MonoBehaviour {
 		yield return StartCoroutine (BallManager.GetInstance ().HandleGameOver ());
 		yield return new WaitForSeconds(.5f);
 		yield return StartCoroutine (ScoreManager.GetInstance ().HandleGameOver ());
-//		yield return StartCoroutine (AdManager.GetInstance ().HandleGameOver ());
-		RestartGame ();
+		AdManager.GetInstance().CheckAd();
+//		yield return StartCoroutine (AdManager.GetInstance ().CheckAd());
+//		RestartGame ();
 	}
 }

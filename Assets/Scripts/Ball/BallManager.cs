@@ -79,11 +79,13 @@ public class BallManager : MonoBehaviour {
 				}
 			} else {
 				startTime = Time.time;
+				timerProgress = 0;
 				UIManager.instance.ballTimer.fillAmount = 0;
 			}
 		} else {
 			UIManager.instance.ballTimer.fillAmount = 0;
 			elapsedTime = 0;
+			timerProgress = 0;
 			startTime = Time.time;
 		}
 	}
@@ -156,7 +158,7 @@ public class BallManager : MonoBehaviour {
         balls = depths.Values.ToList();
 
 		for (int i = 0; i < balls.Count; i++) {
-			Debug.Log (balls [i].GetComponent<BallArtManager> ().zDepth);
+//			Debug.Log (balls [i].GetComponent<BallArtManager> ().zDepth);
 		}
 	}
 }

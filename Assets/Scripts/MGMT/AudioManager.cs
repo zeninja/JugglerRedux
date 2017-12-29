@@ -19,6 +19,8 @@ public class AudioManager : MonoBehaviour {
 	AudioSource source;
 	AudioSource timerSource;
 
+	public float pitchModifier = 2;
+
 	public static bool muted;
 	string muteKey = "Muted";
 
@@ -26,7 +28,8 @@ public class AudioManager : MonoBehaviour {
 	void Start () {
 		instance = this;
 		source = GetComponent<AudioSource> ();
-		timerSource = transform.GetComponentInChildren<AudioSource> ();
+		timerSource = transform.Find("TimerAudio").GetComponent<AudioSource> ();
+		timerSource.Play();
 
 		UIManager.instance.mute.onValueChanged.AddListener( delegate { UpdateMute(); } );
 
@@ -59,9 +62,14 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void PlayTimer() {
-		if (BallManager.GetInstance ().timerProgress > 0) {
-			timerSource.volume = 1;
-			timerSource.pitch = 1 + BallManager.GetInstance ().timerProgress;
+		if(GameManager.GetInstance().state == GameManager.GameState.mainMenu) {
+			if (BallManager.GetInstance ().timerProgress > 0) {
+				timerSource.volume = 1.0f;
+				timerSource.pitch = 1 + BallManager.GetInstance().timerProgress * pitchModifier;
+			} else {
+				timerSource.volume = 0;
+				timerSource.pitch = 1;
+			}
 		} else {
 			timerSource.volume = 0;
 			timerSource.pitch = 1;

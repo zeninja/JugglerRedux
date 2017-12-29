@@ -112,10 +112,13 @@ public class ScoreAnimation : MonoBehaviour {
 	bool rainbowDone, flashingDone;
 
 	public IEnumerator ShowNewHighScore() {
-		StartCoroutine(EndHighScore());
-		StartCoroutine(RainbowScore());
+		StopAllCoroutines();
 
 		flashingDone = false;
+
+		StartCoroutine(RainbowScore());
+		StartCoroutine(EndHighScore());
+
 		int flashCount = 0;
 
 		while (flashCount < highScoreInfo.numFlashes) {
@@ -147,9 +150,11 @@ public class ScoreAnimation : MonoBehaviour {
 	public IEnumerator EndHighScore() {
 		bool highScoreDone = rainbowDone && flashingDone;
 
+
 		while(!highScoreDone) {
 			highScoreDone = rainbowDone && flashingDone;
 			yield return new WaitForEndOfFrame();
+
 		}
 
 		highscoreText.SetActive(false);

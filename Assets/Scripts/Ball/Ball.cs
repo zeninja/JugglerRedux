@@ -104,6 +104,5 @@ public class Ball : MonoBehaviour {
 	IEnumerator Die() {
 		yield return StartCoroutine(ballArtManager.CompleteExplosion());
 		Destroy(gameObject);
-		Debug.Log ("Destroying a ball");
 	}
 }
