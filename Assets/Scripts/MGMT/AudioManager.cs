@@ -24,6 +24,8 @@ public class AudioManager : MonoBehaviour {
 	public static bool muted;
 	string muteKey = "Muted";
 
+	public Slider volumeSlider;
+
 	// Use this for initialization
 	void Start () {
 		instance = this;
@@ -119,5 +121,10 @@ public class AudioManager : MonoBehaviour {
 			muted = PlayerPrefs.GetInt(muteKey) == 1;
 			UIManager.instance.UpdateMute();
 		}
+	}
+
+	public void UpdateVolume() {
+		source.volume = volumeSlider.value;
+		timerSource.volume = volumeSlider.value;
 	}
 }
