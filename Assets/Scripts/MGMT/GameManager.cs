@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	public enum GameState { mainMenu, gameOn, gameOver };
+	public enum GameState { mainMenu, gameOn, gameOver, settings };
 	public GameState state = GameState.mainMenu;
 
 	public BallManager ballManager;
@@ -61,8 +61,8 @@ public class GameManager : MonoBehaviour {
 		SetState (GameState.gameOver);
 	}
 
-	public void RestartGame() {
-		SetState (GameState.mainMenu);
+	public void GoToSettings() {
+		SetState (GameState.settings);
 	}
 
 	public void HandleAdShown() {
@@ -80,7 +80,5 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(.5f);
 		yield return StartCoroutine (ScoreManager.GetInstance ().HandleGameOver ());
 		AdManager.GetInstance().CheckAd();
-//		yield return StartCoroutine (AdManager.GetInstance ().CheckAd());
-//		RestartGame ();
 	}
 }

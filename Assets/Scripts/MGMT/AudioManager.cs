@@ -106,6 +106,7 @@ public class AudioManager : MonoBehaviour {
 	public void UpdateMute() {
 		muted = !UIManager.instance.mute.isOn;
 		source.mute = muted;
+		timerSource.mute = muted;
 
 		int storedValue = muted ? 1 : 0;
 		PlayerPrefs.SetInt(muteKey, storedValue);

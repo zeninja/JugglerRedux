@@ -13,11 +13,11 @@ public class UIBoundary : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	void OnDrawGizmos() {
-		GUI.color = Color.red;
-		Gizmos.DrawLine(transform.position + Vector3.left * 10,  transform.position + Vector3.right * 10);
+		GUI.color = Color.white;
+		Gizmos.DrawLine(transform.position + Vector3.left * 3,  transform.position + Vector3.right * 3);
 	}
 }

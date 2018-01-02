@@ -151,9 +151,9 @@ public class BallManager : MonoBehaviour {
 			depths.Add(balls[i].GetComponent<BallArtManager>().zDepth, balls[i]);
 		}
 
-		var items = from pair in depths
-                    orderby pair.Value ascending
-                    select pair;
+//		var items = from pair in depths
+//                    orderby pair.Value ascending
+//                    select pair;
 
         balls = depths.Values.ToList();
 

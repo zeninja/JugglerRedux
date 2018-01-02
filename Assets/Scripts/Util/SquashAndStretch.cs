@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SquashAndStretch : MonoBehaviour {
 	
-	Ball ball;
 	float currentSquashValue, targetSquashValue;
 
 	[System.NonSerialized]
@@ -25,7 +24,6 @@ public class SquashAndStretch : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ball = transform.GetComponentInParent<Ball> ();
 		position = transform.position;
 		lastPosition = position;
 		velocity = Vector2.zero;
@@ -53,8 +51,8 @@ public class SquashAndStretch : MonoBehaviour {
 //		float squashValue = accSquashFactor * Mathf.Abs(acceleration.y);
 
 		float squashValue = 0;
-		float speed = 0;
-		float squashFactor = 1;
+//		float speed = 0;
+//		float squashFactor = 1;
 
 //		if (velocityBased) {
 //			squashFactor = velSquashFactor;

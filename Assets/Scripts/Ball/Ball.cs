@@ -8,7 +8,6 @@ public class Ball : MonoBehaviour {
 	public BallState state;
 
 	Rigidbody2D rb;
-	GameObject ballSprite;
 	BallInfo ballInfo;
 
 	[System.NonSerialized]
@@ -24,7 +23,6 @@ public class Ball : MonoBehaviour {
 
 	void Awake() {
 		rb = GetComponent<Rigidbody2D> ();
-		ballSprite = transform.GetChild (0).gameObject;
 		ballArtManager = GetComponent<BallArtManager> ();
 		ballInfo = GetComponent<BallInfo> ();
 	}
