@@ -64,16 +64,43 @@ public class AudioManager : MonoBehaviour {
 	public void PlayTimer() {
 		if(GameManager.GetInstance().state == GameManager.GameState.mainMenu) {
 			if (BallManager.GetInstance ().timerProgress > 0) {
-				timerSource.volume = 1.0f;
+//				StartCoroutine(VolumeOn(timerSource));
+				timerSource.volume = 1;
 				timerSource.pitch = 1 + pitchModifier.Evaluate (BallManager.GetInstance ().timerProgress);
 			} else {
+//				StartCoroutine(VolumeOff(timerSource));
 				timerSource.volume = 0;
 				timerSource.pitch = 1;
 			}
 		} else {
 			timerSource.volume = 0;
+//			StartCoroutine(VolumeOff(timerSource));
 			timerSource.pitch = 1;
 		}
+	}
+
+	IEnumerator VolumeOn(AudioSource source) {
+		StopAllCoroutines();
+
+		int frameCount = 3;
+
+		for(int i = 0; i < frameCount; i++) {
+			source.volume = i/frameCount;
+			yield return new WaitForEndOfFrame();
+		}
+		yield return 0;
+	}
+
+	IEnumerator VolumeOff(AudioSource source) {
+		StopAllCoroutines();
+
+		int frameCount = 3;
+
+		for(int i = 0; i < frameCount; i++) {
+			source.volume = 1 - i/frameCount;
+			yield return new WaitForEndOfFrame();
+		}
+		yield return 0;
 	}
 
 	public void UpdateMute() {

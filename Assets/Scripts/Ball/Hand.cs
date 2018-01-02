@@ -12,8 +12,6 @@ public class Hand : MonoBehaviour {
 	[System.NonSerialized]
 	public Vector2 throwDirection;
 
-	[System.NonSerialized]
-	public int id;
 	Touch myTouch;
 
 	bool holdingBall;
@@ -38,7 +36,10 @@ public class Hand : MonoBehaviour {
 	void Update() {
 		if(GameManager.GetInstance().state == GameManager.GameState.gameOn) {
 			throwDirection = dragEnd - dragStart;
-			FindTouch();
+
+			if (Input.touchCount > 0) {
+				myTouch = Input.GetTouch(0);
+			}
 			handPos = FindHandPos();
 
 
@@ -54,25 +55,15 @@ public class Hand : MonoBehaviour {
 		}
 	}
 
-	void FindTouch() {
-		#if UNITY_IOS
-		for(int i = 0; i < Input.touchCount; i++) {
-			if (Input.touches[i].fingerId == id) {
-				myTouch = Input.GetTouch(i);
-			}
-		}
-		#endif
-	}
-
 	public Vector2 FindHandPos() {
 		Vector2 currentHandPos;
 
-		#if UNITY_IOS
-		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
-		#endif
-
 		#if UNITY_EDITOR || UNITY_STANDALONE_OSX
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		#endif
+
+		#if UNITY_IOS
+		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
 		#endif
 
 		return currentHandPos;
