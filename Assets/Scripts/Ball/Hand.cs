@@ -41,14 +41,14 @@ public class Hand : MonoBehaviour {
 			if (Input.touchCount > 0) {
 				myTouch = Input.GetTouch(0);
 			}
-			handPos = FindHandPos();
-
-
+				
 			#if !UNITY_IOS || UNITY_EDITOR || UNITY_STANDALONE_OSX
 			ManageInput();
 			#else 
 			ManageTouchInput();
 			#endif
+
+			handPos = FindHandPos();
 
 			if (holdingBall) {
 				ball.GetComponentInChildren<SquashAndStretch> ().throwDirection = throwDirection;
@@ -61,10 +61,10 @@ public class Hand : MonoBehaviour {
 
 		#if UNITY_EDITOR || UNITY_STANDALONE_OSX
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		#endif
-
-		#if UNITY_IOS
-//		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
+		#elif UNITY_IOS
+		if(myTouch != null ) {
+			currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
+		}
 		#endif
 
 		return currentHandPos;

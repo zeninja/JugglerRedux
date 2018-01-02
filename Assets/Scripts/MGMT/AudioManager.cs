@@ -30,7 +30,7 @@ public class AudioManager : MonoBehaviour {
 	void Start () {
 		instance = this;
 		source = GetComponent<AudioSource> ();
-		timerSource = GameObject.Find("TimerAudio").GetComponent<AudioSource> ();
+		timerSource = transform.Find("TimerAudio").GetComponent<AudioSource> ();
 		timerSource.Play();
 
 		UIManager.instance.mute.onValueChanged.AddListener( delegate { UpdateMute(); } );

@@ -70,7 +70,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void ReturnToMainMenu() {
-		Debug.Log("Called Return to Main Menu");
 		SetState(GameState.mainMenu);
 	}
 
