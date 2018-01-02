@@ -14,8 +14,9 @@ public class Hand : MonoBehaviour {
 
 	Touch myTouch;
 
-	bool holdingBall;
+	[System.NonSerialized]
 	public GameObject ball;
+	bool holdingBall;
 
 	public float throwForceModifier = 4;
 
@@ -63,7 +64,7 @@ public class Hand : MonoBehaviour {
 		#endif
 
 		#if UNITY_IOS
-		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
+//		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
 		#endif
 
 		return currentHandPos;

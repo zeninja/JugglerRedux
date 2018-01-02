@@ -30,7 +30,7 @@ public class AudioManager : MonoBehaviour {
 	void Start () {
 		instance = this;
 		source = GetComponent<AudioSource> ();
-		timerSource = transform.Find("TimerAudio").GetComponent<AudioSource> ();
+		timerSource = GameObject.Find("TimerAudio").GetComponent<AudioSource> ();
 		timerSource.Play();
 
 		UIManager.instance.mute.onValueChanged.AddListener( delegate { UpdateMute(); } );
@@ -67,7 +67,7 @@ public class AudioManager : MonoBehaviour {
 		if(GameManager.GetInstance().state == GameManager.GameState.mainMenu) {
 			if (BallManager.GetInstance ().timerProgress > 0) {
 //				StartCoroutine(VolumeOn(timerSource));
-				timerSource.volume = 1;
+				timerSource.volume = 1 * volumeSlider.value;
 				timerSource.pitch = 1 + pitchModifier.Evaluate (BallManager.GetInstance ().timerProgress);
 			} else {
 //				StartCoroutine(VolumeOff(timerSource));
@@ -125,6 +125,5 @@ public class AudioManager : MonoBehaviour {
 
 	public void UpdateVolume() {
 		source.volume = volumeSlider.value;
-		timerSource.volume = volumeSlider.value;
 	}
 }
