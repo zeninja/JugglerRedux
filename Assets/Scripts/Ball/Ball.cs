@@ -99,6 +99,10 @@ public class Ball : MonoBehaviour {
 		StartCoroutine (Die());
 	}
 
+	public bool CanBeCaught() {
+		return !launching && rb.velocity.y < 0;
+	}
+
 	IEnumerator Die() {
 		yield return StartCoroutine(ballArtManager.CompleteExplosion());
 		Destroy(gameObject);

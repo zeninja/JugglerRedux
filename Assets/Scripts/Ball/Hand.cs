@@ -68,6 +68,26 @@ public class Hand : MonoBehaviour {
 		return currentHandPos;
 	}
 
+	public void ReplayFingerDown(Vector2 replayPos) {
+		if (!holdingBall) {
+			dragStart = handPos;
+			dragEnd = dragStart;
+
+			transform.position = dragStart;
+		} else {
+			dragEnd = handPos;
+		}	
+	}
+
+	public void ReplayFingerUp(Vector2 replayDir) {
+		if (holdingBall) {
+			// Throw the ball (if we're holding one) when we let go of the screen
+			throwDirection = replayDir;
+			ThrowBall ();
+		}
+		HandleDeath();
+	}
+
 	void ManageInput() {
 		if (Input.GetMouseButton (0)) {
 			if (!holdingBall) {
@@ -75,6 +95,7 @@ public class Hand : MonoBehaviour {
 				dragEnd = dragStart;
 
 				transform.position = dragStart;
+//				ReplayManager.GetInstance().HandleFingerDown (dragStart);
 			} else {
 				dragEnd = handPos;
 			}
@@ -90,6 +111,8 @@ public class Hand : MonoBehaviour {
 				ThrowBall ();
 			}
 			HandleDeath();
+
+//			ReplayManager.GetInstance().HandleFingerUp (dragEnd);
 		}
 	}
 
@@ -140,7 +163,7 @@ public class Hand : MonoBehaviour {
 	void GrabBall(GameObject targetBall) {
 		if(!holdingBall) {
 			ball = targetBall;
-			if (!ball.GetComponent<Ball> ().launching) {
+			if (ball.GetComponent<Ball>().CanBeCaught()) {
 				ball.GetComponent<Ball> ().HandleCatch ();
 
 				for(int i = 0; i < lines.Length; i++) {

@@ -56,6 +56,7 @@ public class BallManager : MonoBehaviour {
 
 			if (Input.GetMouseButtonDown (0)) {
 				startTime = Time.time;
+//				ReplayManager.GetInstance().HandleFingerDown (Hand.instance.FindHandPos());
 			}
 
 			elapsedTime = Time.time - startTime;
@@ -75,6 +76,8 @@ public class BallManager : MonoBehaviour {
 						numBalls = balls.Count;
 						firstBallSpawned = true;
 						GameManager.GetInstance ().HandleGameStart ();
+//						ReplayManager.GetInstance().HandleBallLaunched (firstBall.transform.position, true);
+
 					}
 				}
 			} else {
@@ -96,6 +99,16 @@ public class BallManager : MonoBehaviour {
 		ball.GetComponent<Rigidbody2D> ().velocity = Vector2.up * launchForce;
 		ball.GetComponent<Ball> ().ballManager = this;
 
+		balls.Add (ball);
+		numBalls = balls.Count;
+
+//		ReplayManager.GetInstance().HandleBallLaunched (ball.transform.position);
+	}
+
+	public void LaunchBall(Vector2 launchPos, bool firstBall) {
+		GameObject ball = Instantiate(ballPrefab) as GameObject;
+		ball.transform.position = launchPos;
+		ball.GetComponent<Ball> ().ballManager = this;
 		balls.Add (ball);
 		numBalls = balls.Count;
 	}
