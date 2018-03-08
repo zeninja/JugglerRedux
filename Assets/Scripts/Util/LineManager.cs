@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LineManager : MonoBehaviour {
 
-	[System.NonSerialized]
+//	[System.NonSerialized]
 	public Transform anchor;
-	[System.NonSerialized]
+//	[System.NonSerialized]
 	public Hand hand;
 	LineRenderer line = new LineRenderer();
 
@@ -30,6 +30,8 @@ public class LineManager : MonoBehaviour {
 	void Update () {
 		if (hand.HoldingBall() && GameManager.GetInstance().state != GameManager.GameState.gameOver) {
 			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor;
+
+			lineLengthMultiplier = hand.timedThrowForce;
 
 			line.SetPosition(0, startPoint);
 			line.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier);

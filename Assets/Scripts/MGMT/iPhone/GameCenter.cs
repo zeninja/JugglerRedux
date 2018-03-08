@@ -7,7 +7,7 @@ using UnityEngine.SocialPlatforms.GameCenter;
 
 public class GameCenter : MonoBehaviour {
 
-	string leaderboardID = "Test01";
+	string highscoreLeaderboard = "highscore";
 
 //	public static string get10Pts	   = "Get10Pts";		// achievement ID in itunes Connect
 //	public static string get100Pts	   = "Get100Pts";		// achievement ID in itunes Connect
@@ -63,7 +63,7 @@ public class GameCenter : MonoBehaviour {
 	}
 
 	public void SetHighScore(int newScore) {
-		ReportScore((long)newScore, leaderboardID);
+		ReportScore((long)newScore, highscoreLeaderboard);
 	}
 
 	void ReportScore (long score, string leaderboardID) {

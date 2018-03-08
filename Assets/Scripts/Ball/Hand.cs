@@ -20,6 +20,12 @@ public class Hand : MonoBehaviour {
 
 	public float throwForceModifier = 4;
 
+
+	public float baseThrowModifier = 5;
+	public float timedThrowForce;
+	public float totalChargeTime = .6f;
+	public float maxThrowForce = 10;
+
 	Vector2 idlePos = new Vector2(0, 50);
 
 	public static Hand instance;
@@ -36,7 +42,11 @@ public class Hand : MonoBehaviour {
 
 	void Update() {
 		if(GameManager.GetInstance().state == GameManager.GameState.gameOn) {
-			throwDirection = dragEnd - dragStart;
+//			throwDirection = dragEnd - dragStart;
+			throwDirection = (dragEnd - dragStart).normalized;
+			timedThrowForce = (Time.time - dragStartTime) / totalChargeTime;
+			timedThrowForce = Mathf.Min(timedThrowForce, 1);
+			timedThrowForce *= maxThrowForce;
 
 			if (Input.touchCount > 0) {
 				myTouch = Input.GetTouch(0);
@@ -62,31 +72,34 @@ public class Hand : MonoBehaviour {
 		#if UNITY_EDITOR
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		#elif UNITY_IOS
-			currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
+		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
 		#endif
 
 		return currentHandPos;
 	}
 
-	public void ReplayFingerDown(Vector2 replayPos) {
-		if (!holdingBall) {
-			dragStart = handPos;
-			dragEnd = dragStart;
+//	public void ReplayFingerDown(Vector2 replayPos) {
+//		if (!holdingBall) {
+//			dragStart = handPos;
+//			dragEnd = dragStart;
+//
+//			transform.position = dragStart;
+//		} else {
+//			dragEnd = handPos;
+//		}	
+//	}
+//
+//	public void ReplayFingerUp(Vector2 replayDir) {
+//		if (holdingBall) {
+//			// Throw the ball (if we're holding one) when we let go of the screen
+//			throwDirection = replayDir;
+//			ThrowBall ();
+//		}
+//		HandleDeath();
+//	}
 
-			transform.position = dragStart;
-		} else {
-			dragEnd = handPos;
-		}	
-	}
 
-	public void ReplayFingerUp(Vector2 replayDir) {
-		if (holdingBall) {
-			// Throw the ball (if we're holding one) when we let go of the screen
-			throwDirection = replayDir;
-			ThrowBall ();
-		}
-		HandleDeath();
-	}
+	float dragStartTime, dragEndTime;
 
 	void ManageInput() {
 		if (Input.GetMouseButton (0)) {
@@ -170,6 +183,8 @@ public class Hand : MonoBehaviour {
 					lines[i].anchor = ball.transform.GetChild(0);
 				}
 				holdingBall = true;
+
+				dragStartTime = Time.time;
 			}
 		}
 	}
@@ -177,7 +192,8 @@ public class Hand : MonoBehaviour {
 	void ThrowBall() {
 		// Throw the ball
 		if (ball != null) {
-			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier);
+//			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier);
+			ball.GetComponent<Ball> ().HandleThrow (throwDirection * timedThrowForce * baseThrowModifier);
 			holdingBall = false;
 			ball = null;
 		}

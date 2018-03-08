@@ -113,18 +113,18 @@ public class BallManager : MonoBehaviour {
 		numBalls = balls.Count;
 	}
 
-	public void UpdateBallDepths(GameObject topBall) {
+	public void UpdateBallDepths(GameObject caughtBall) {
 		if (GameManager.GetInstance ().state != GameManager.GameState.gameOver) {
 			for (int i = 0; i < balls.Count; i++) {
 				Ball currentBall = balls [i].GetComponent<Ball> ();
 
 				if (!currentBall.launching) {
 					// Increment the depths of all balls
-					currentBall.ballArtManager.zDepth--;
+					currentBall.ballArtManager.zDepth++;
 
 					// Place the "top" ball at the front
-					if (balls [i] == topBall) {
-						currentBall.ballArtManager.zDepth = 0;
+					if (balls [i] == caughtBall) {
+						currentBall.ballArtManager.zDepth = -100;
 					}
 
 					currentBall.ballArtManager.SetDepth ();

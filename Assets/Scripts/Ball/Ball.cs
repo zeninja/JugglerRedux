@@ -34,14 +34,17 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (launching) {
-			ballArtManager.UseLaunchColor(true);
+//		if (launching) {
 
 			if(rb.velocity.y <= .001f) {
 				launching = false;
 				ballArtManager.UseLaunchColor(false);
+			} else {
+				
+				ballArtManager.UseLaunchColor(true);
+
 			}
-		}
+//		}
 
 		//Debug
 		CheckBallIndex();

@@ -1,5 +1,12 @@
+## [1.17.0] - 2018-02-21
+### Added
+- Unity IAP Promo - [Beta] Supports new Unity Ads feature to advertise IAPs inside advert placements.
+
+### Changed
+- Codeless IAP - Allow developers to use both IAPButton and IAPListener simultaneously. Broadcasts ProcessPurchase and OnPurchaseFailed to all productId-matching IAPButtons and to all IAPListeners. Allow multiple IAPListeners to be set using the AddListener method. Note: This change may increase the chance one rewards users multiple times for the same purchase.
+
 ## [1.16.0] - 2018-01-25
-## Changed
+### Changed
 - GooglePlay - Gradle builds will 'just work'. Internalized Proguard warning-suppression configurations. (Moved `proguard-user.txt.OPTIONAL.txt` into GooglePlay.aar, effectively.)
 - Replaced Apple Application Loader product catalog exporter with Apple XML Delivery product catalog exporter, because submitting IAP via Application Loader is now deprecated
 

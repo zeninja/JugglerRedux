@@ -106,14 +106,14 @@ public class ReplayManager : MonoBehaviour {
 		while (replayFrameCount < framesToPlay) {
 			if (InputStorage [replayIndex].frameCountDown == replayFrameCount) {
 				Vector2 pos = InputStorage [replayFrameCount].positionDown;
-				Hand.instance.ReplayFingerDown (pos);
+//				Hand.instance.ReplayFingerDown (pos);
 				replayIndex++;
 
 			}
 
 			if (InputStorage [replayIndex].frameCountUp == replayFrameCount) {
 				Vector2 dir = InputStorage [replayFrameCount].positionUp - InputStorage [replayFrameCount].positionDown;
-				Hand.instance.ReplayFingerUp (dir);
+//				Hand.instance.ReplayFingerUp (dir);
 				replayIndex++;
 
 			}
