@@ -31,7 +31,7 @@ public class LineManager : MonoBehaviour {
 		if (hand.HoldingBall() && GameManager.GetInstance().state != GameManager.GameState.gameOver) {
 			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor;
 
-			lineLengthMultiplier = hand.timedThrowForce;
+//			lineLengthMultiplier = hand.timedThrowForce;
 
 			line.SetPosition(0, startPoint);
 			line.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier);

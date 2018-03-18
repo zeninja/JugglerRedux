@@ -42,6 +42,9 @@ TagManager:
   - name: Background
     uniqueID: 4284581913
     locked: 0
+  - name: Pattern
+    uniqueID: 1087607561
+    locked: 0
   - name: Balls
     uniqueID: 4092015211
     locked: 0

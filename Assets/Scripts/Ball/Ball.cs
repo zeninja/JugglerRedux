@@ -4,50 +4,64 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour {
 
-	public enum BallState { InAir, BeingCaught, BeingHeld };
+	public enum BallState { Rising, Falling, Caught };
 	public BallState state;
 
 	Rigidbody2D rb;
 	BallInfo ballInfo;
 
 	[System.NonSerialized]
+	public Hand hand;
+
+	public bool firstBall;
+
+//	[System.NonSerialized]
 	public BallArtManager ballArtManager;
-	[System.NonSerialized]
+//	[System.NonSerialized]
 	public bool launching = false;
-	[System.NonSerialized]
+//	[System.NonSerialized]
 	public bool isCaught;
 
+	// Debug
 	public int indexInManagerCollection;
 
 	[System.NonSerialized] public BallManager ballManager;
 
 	void Awake() {
+		ballManager = BallManager.GetInstance ();
 		rb = GetComponent<Rigidbody2D> ();
 		ballArtManager = GetComponent<BallArtManager> ();
 		ballInfo = GetComponent<BallInfo> ();
+		rb.gravityScale = 0;
 	}
 
 	// Use this for initialization
 	void Start () {
-		launching = true;
+		if (!firstBall) {
+			launching = true;
+			rb.gravityScale = 1;
+		} else {
+			rb.gravityScale = 0;
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-//		if (launching) {
+		CheckBallState ();
+	}
 
-			if(rb.velocity.y <= .001f) {
-				launching = false;
-				ballArtManager.UseLaunchColor(false);
+	void CheckBallState() {
+
+		if (isCaught) {
+			state = BallState.Caught;
+		} else {
+			if (rb.velocity.y > 0) {
+				state = BallState.Rising;
 			} else {
-				
-				ballArtManager.UseLaunchColor(true);
-
+				state = BallState.Falling;
+				launching = false;
 			}
-//		}
-
-		//Debug
-		CheckBallIndex();
+		}
 	}
 
 	void CheckBallIndex() {
@@ -58,20 +72,23 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	public void SetState(BallState newState) {
-		state = newState;
-	}
+	bool startGame = false;
 
-	public void HandleCatch() {
+	public void HandleCatch(Hand hand) {
 		isCaught = true;
 		rb.velocity = ballInfo.caughtInfo.velocity;
 		rb.gravityScale = ballInfo.caughtInfo.gravityScale;
-		ScoreManager.GetInstance ().IncreaseScore ();
-
 		ballArtManager.HandleCatch ();
-		ScoreAnimation.GetInstance ().HandleCatch ();
 
-		SetState (BallState.BeingCaught);
+		if (GameManager.GetInstance ().state == GameManager.GameState.gameOn) {
+			ScoreManager.GetInstance ().IncreaseScore ();
+			ScoreAnimation.GetInstance ().HandleCatch ();
+		}
+
+		if (firstBall) {
+			firstBall = false;
+			startGame = true;
+		}
 	}
 
 	public void HandleThrow(Vector2 throwForce) {
@@ -82,12 +99,14 @@ public class Ball : MonoBehaviour {
 		ballManager.UpdateBallDepths (gameObject);
 		ballArtManager.HandleThrow();
 
-		SetState (BallState.InAir);
+		if (startGame) {
+			GameManager.GetInstance ().HandleGameStart ();
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject.CompareTag("KillTrigger") && !launching && GameManager.GetInstance().state != GameManager.GameState.gameOver) {
-			ballArtManager.SetGameOverColor();
+//			ballArtManager.SetGameOverColor();
 			GameManager.GetInstance().HandleGameOver();
 			ballManager.UpdateBallDepths (gameObject);
 		}
@@ -103,7 +122,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	public bool CanBeCaught() {
-		return !launching && rb.velocity.y < 0;
+		return !launching && rb.velocity.y <= 0;
 	}
 
 	IEnumerator Die() {

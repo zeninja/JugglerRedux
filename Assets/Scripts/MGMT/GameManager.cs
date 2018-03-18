@@ -40,12 +40,16 @@ public class GameManager : MonoBehaviour {
 	void SetState(GameState newState) {
 		state = newState;
 
-		ButtonManager.GetInstance().UpdateButtons();
+//		ButtonManager.GetInstance().UpdateButtons();
 
 		switch (state) {
-			case GameState.mainMenu:
+		case GameState.mainMenu:
+				UIManager.GetInstance ().ScoreActive (false);
+				BallManager.GetInstance ().SpawnFirstBall ();
 				break;
 			case GameState.gameOn:
+				UIManager.GetInstance ().ScoreActive (true);
+
 				break;
 			case GameState.gameOver:
 				StartCoroutine ("GameOverProcedure");	
@@ -81,5 +85,9 @@ public class GameManager : MonoBehaviour {
 //		AdManager.GetInstance().CheckAd();
 //		yield return StartCoroutine(ReplayManager.GetInstance().PlayReplay());
 		ReturnToMainMenu ();
+	}
+
+	public static bool GameOver() {
+		return GameManager.GetInstance ().state == GameState.gameOver;
 	}
 }

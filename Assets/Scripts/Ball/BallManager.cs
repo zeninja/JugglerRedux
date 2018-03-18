@@ -12,14 +12,16 @@ public class BallManager : MonoBehaviour {
 	public List<GameObject> balls = new List<GameObject>();
 	public static int numBalls;
 
-	float startTime;
-	float holdDuration = .5f;
-	float elapsedTime;
+	public Vector3 spawnPos = new Vector3(0, -1.75f, 0);
 
-	[System.NonSerialized]
-	public float timerProgress;
+//	float startTime;
+//	float holdDuration = .5f;
+//	float elapsedTime;
 
-	bool firstBallSpawned = false;
+//	[System.NonSerialized]
+//	public float timerProgress;
+
+//	bool firstBallSpawned = false;
 
 	private static BallManager instance;
 	private static bool instantiated;
@@ -36,7 +38,14 @@ public class BallManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		SpawnFirstBall ();
+	}
+
+	public void SpawnFirstBall() {
+		GameObject firstBall = Instantiate (ballPrefab) as GameObject;
+		firstBall.transform.position = spawnPos;
+		firstBall.GetComponent<Ball> ().firstBall = true;
+		balls.Add (firstBall);
 	}
 	
 	// Update is called once per frame
@@ -47,58 +56,59 @@ public class BallManager : MonoBehaviour {
 		}
 		#endregion
 
-		SpawnFirstBall();
+//		SpawnFirstBall();
 	}
 
-	void SpawnFirstBall() {
-		if (GameManager.GetInstance ().state == GameManager.GameState.mainMenu &&
-			Hand.instance.FindHandPos().y < UIBoundary.position.y) {
-
-			if (Input.GetMouseButtonDown (0)) {
-				startTime = Time.time;
-//				ReplayManager.GetInstance().HandleFingerDown (Hand.instance.FindHandPos());
-			}
-
-			elapsedTime = Time.time - startTime;
-
-			if (Input.GetMouseButton (0)) {
-
-				if (!firstBallSpawned) {
-					timerProgress = elapsedTime / holdDuration;
-					UIManager.instance.ballTimer.fillAmount = timerProgress;
-
-					if (elapsedTime >= holdDuration) {
-						//GameObject firstBall = ObjectPool.instance.GetObjectForType ("Ball", false);
-						GameObject firstBall = Instantiate(ballPrefab) as GameObject;
-						firstBall.transform.position = new Vector2 (0, 3);
-						firstBall.GetComponent<Ball> ().ballManager = this;
-						balls.Add (firstBall);
-						numBalls = balls.Count;
-						firstBallSpawned = true;
-						GameManager.GetInstance ().HandleGameStart ();
-//						ReplayManager.GetInstance().HandleBallLaunched (firstBall.transform.position, true);
-
-					}
-				}
-			} else {
-				startTime = Time.time;
-				timerProgress = 0;
-				UIManager.instance.ballTimer.fillAmount = 0;
-			}
-		} else {
-			UIManager.instance.ballTimer.fillAmount = 0;
-			elapsedTime = 0;
-			timerProgress = 0;
-			startTime = Time.time;
-		}
-	}
+//	void SpawnFirstBall() {
+//		if (GameManager.GetInstance ().state == GameManager.GameState.mainMenu /*&& Hand.instance.FindHandPos().y < UIBoundary.position.y*/) {
+//
+//
+//
+//			#region timer
+////			if (Input.GetMouseButtonDown (0)) {
+////				startTime = Time.time;
+////				ReplayManager.GetInstance().HandleFingerDown (Hand.instance.FindHandPos());
+////			}
+////			elapsedTime = Time.time - startTime;
+////			if (Input.GetMouseButton (0)) {
+////
+////				if (!firstBallSpawned) {
+////					timerProgress = elapsedTime / holdDuration;
+////					UIManager.instance.ballTimer.fillAmount = timerProgress;
+////
+////					if (elapsedTime >= holdDuration) {
+////						//GameObject firstBall = ObjectPool.instance.GetObjectForType ("Ball", false);
+////						GameObject firstBall = Instantiate(ballPrefab) as GameObject;
+////						firstBall.transform.position = new Vector2 (0, 3);
+////						firstBall.GetComponent<Ball> ().ballManager = this;
+////						balls.Add (firstBall);
+////						numBalls = balls.Count;
+////						firstBallSpawned = true;
+//////						GameManager.GetInstance ().HandleGameStart ();
+//////						ReplayManager.GetInstance().HandleBallLaunched (firstBall.transform.position, true);
+////
+////					}
+////				}
+////			} else {
+////				startTime = Time.time;
+////				timerProgress = 0;
+////				UIManager.instance.ballTimer.fillAmount = 0;
+////			}
+////		} else {
+////			UIManager.instance.ballTimer.fillAmount = 0;
+////			elapsedTime = 0;
+////			timerProgress = 0;
+////			startTime = Time.time;
+//			#endregion
+//		}
+//	}
 
 	public void LaunchBall() {
 		GameObject ball = Instantiate(ballPrefab) as GameObject;
 		ball.transform.position = new Vector2 (Random.Range (-2f, 2f), -6f);
 		ball.GetComponent<Rigidbody2D> ().velocity = Vector2.up * launchForce;
 		ball.GetComponent<Ball> ().ballManager = this;
-
+		ball.GetComponent<Ball> ().firstBall = false;
 		balls.Add (ball);
 		numBalls = balls.Count;
 
@@ -153,7 +163,7 @@ public class BallManager : MonoBehaviour {
 		}
 
 		balls.Clear();
-		firstBallSpawned = false;
+//		firstBallSpawned = false;
 		yield return new WaitForEndOfFrame();
 	}
 

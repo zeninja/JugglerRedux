@@ -1,52 +1,86 @@
-﻿Shader "Hidden/Bars"
-{
-	Properties
-	{
-		_MainTex ("Texture", 2D) = "white" {}
-	}
-	SubShader
-	{
-		// No culling or depth
-		Cull Off ZWrite Off ZTest Always
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-		Pass
-		{
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			
-			#include "UnityCG.cginc"
+Shader "Grid" {
+     
+    Properties {
+      _GridThickness ("Grid Thickness", Float) = 0.01
+      _GridSpacing ("Grid Spacing", Float) = 10.0
+      _GridColour ("Grid Colour", Color) = (0.5, 1.0, 1.0, 1.0)
+      _BaseColour ("Base Colour", Color) = (0.0, 0.0, 0.0, 0.0)
+      _SafeZone ("Safe Zone Pixels", Float) = .15
 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-			};
+    }
+     
+    SubShader {
+      Tags { "Queue" = "Background" }
+      Pass {
+        Stencil {
+         Ref 2
+         Comp Equal
+         Pass Keep
+      	}
 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
-				float4 vertex : SV_POSITION;
-			};
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
+     
+        CGPROGRAM
+     
+        // Define the vertex and fragment shader functions
+        #pragma vertex vert
+        #pragma fragment frag
+     
+        // Access Shaderlab properties
+        uniform float _GridThickness;
+        uniform float _GridSpacing;
+        uniform float4 _GridColour;
+        uniform float4 _BaseColour;
+                float _SafeZone;
 
-			v2f vert (appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv;
-				return o;
-			}
-			
-			sampler2D _MainTex;
+     
+        // Input into the vertex shader
+        struct vertexInput {
+            float4 vertex : POSITION;
+        };
+ 
+        // Output from vertex shader into fragment shader
+        struct vertexOutput {
+          float4 pos : SV_POSITION;
+          float4 worldPos : TEXCOORD0;
+        };
+     
+        // VERTEX SHADER
+        vertexOutput vert(vertexInput input) {
+          vertexOutput output;
+          output.pos = UnityObjectToClipPos(input.vertex);
+          // Calculate the world position coordinates to pass to the fragment shader
+          output.worldPos = mul(unity_ObjectToWorld, input.vertex);
+          return output;
+        }
+ 
+        // FRAGMENT SHADER
+        float4 frag(vertexOutput input) : COLOR {
+          if (//frac(input.worldPos.x/_GridSpacing) < _GridThickness || 
 
-			fixed4 frag (v2f i) : SV_Target
-			{
-				fixed4 col = tex2D(_MainTex, i.uv);
-				// just invert the colors
-				col = 1 - col;
-				return col;
-			}
-			ENDCG
-		}
-	}
+
+
+//          	 frac(input.worldPos.y/_GridSpacing) < _GridThickness
+
+          	 frac((input.worldPos.y + input.worldPos.x)/_GridSpacing - _Time[1]) < _GridThickness
+
+          && 
+          (
+          	(input.pos.x < _SafeZone || input.pos.x > _ScreenParams.x - _SafeZone) ||
+          	(input.pos.y < _SafeZone || input.pos.y > _ScreenParams.y - _SafeZone)
+          )
+          ) {
+            return _GridColour;
+          }
+          else {
+            return _BaseColour;
+          }
+        }
+    ENDCG
+    }
+  }
 }

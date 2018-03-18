@@ -11,6 +11,17 @@ public class UIManager : MonoBehaviour {
 	public Toggle settings;
 
 	public GameObject settingsPanel;
+	public GameObject scoreDisplay;
+
+	public static UIManager GetInstance ()
+	{
+		if (!instance) {
+			instance = FindObjectOfType(typeof(UIManager)) as UIManager;
+			if (!instance)
+				Debug.Log("No UIManager!!");
+		}
+		return instance;
+	}
 
 	void Awake() {
 		instance = this;
@@ -26,5 +37,9 @@ public class UIManager : MonoBehaviour {
 
 	public void ToggleSettings() {
 		settingsPanel.SetActive (settings.isOn);
+	}
+
+	public void ScoreActive(bool active) {
+		scoreDisplay.SetActive (active);
 	}
 }

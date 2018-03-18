@@ -21,10 +21,10 @@ public class Hand : MonoBehaviour {
 	public float throwForceModifier = 4;
 
 
-	public float baseThrowModifier = 5;
-	public float timedThrowForce;
-	public float totalChargeTime = .6f;
-	public float maxThrowForce = 10;
+//	public float baseThrowModifier = 5;
+//	public float timedThrowForce;
+//	public float totalChargeTime = .6f;
+//	public float maxThrowForce = 10;
 
 	Vector2 idlePos = new Vector2(0, 50);
 
@@ -41,12 +41,13 @@ public class Hand : MonoBehaviour {
 	}
 
 	void Update() {
-		if(GameManager.GetInstance().state == GameManager.GameState.gameOn) {
-//			throwDirection = dragEnd - dragStart;
-			throwDirection = (dragEnd - dragStart).normalized;
-			timedThrowForce = (Time.time - dragStartTime) / totalChargeTime;
-			timedThrowForce = Mathf.Min(timedThrowForce, 1);
-			timedThrowForce *= maxThrowForce;
+		if(GameManager.GetInstance().state == GameManager.GameState.gameOn || 
+		   GameManager.GetInstance().state == GameManager.GameState.mainMenu) {
+			throwDirection = (dragEnd - dragStart);
+//			throwDirection = (dragEnd - dragStart).normalized;
+//			timedThrowForce = (Time.time - dragStartTime) / totalChargeTime;
+//			timedThrowForce = Mathf.Min(timedThrowForce, 1);
+//			timedThrowForce *= maxThrowForce;
 
 			if (Input.touchCount > 0) {
 				myTouch = Input.GetTouch(0);
@@ -177,7 +178,7 @@ public class Hand : MonoBehaviour {
 		if(!holdingBall) {
 			ball = targetBall;
 			if (ball.GetComponent<Ball>().CanBeCaught()) {
-				ball.GetComponent<Ball> ().HandleCatch ();
+				ball.GetComponent<Ball> ().HandleCatch (this);
 
 				for(int i = 0; i < lines.Length; i++) {
 					lines[i].anchor = ball.transform.GetChild(0);
@@ -192,8 +193,8 @@ public class Hand : MonoBehaviour {
 	void ThrowBall() {
 		// Throw the ball
 		if (ball != null) {
-//			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier);
-			ball.GetComponent<Ball> ().HandleThrow (throwDirection * timedThrowForce * baseThrowModifier);
+			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier);
+//			ball.GetComponent<Ball> ().HandleThrow (throwDirection * timedThrowForce * baseThrowModifier);
 			holdingBall = false;
 			ball = null;
 		}

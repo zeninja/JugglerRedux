@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SquashAndStretch : MonoBehaviour {
-	
+
 	float currentSquashValue, targetSquashValue;
 
 	[System.NonSerialized]
