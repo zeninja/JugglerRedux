@@ -4,6 +4,7 @@
 Shader "Grid" {
      
     Properties {
+	  _MainTex ("Texture", 2D) = "white" {}
       _GridThickness ("Grid Thickness", Float) = 0.01
       _GridSpacing ("Grid Spacing", Float) = 10.0
       _GridColour ("Grid Colour", Color) = (0.5, 1.0, 1.0, 1.0)

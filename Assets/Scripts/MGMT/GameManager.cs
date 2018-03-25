@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 
 	public BallManager ballManager;
 
+	public static int throwDirection = 1;
+
 	private static GameManager instance;
 	private static bool instantiated;
 
@@ -49,10 +51,11 @@ public class GameManager : MonoBehaviour {
 				break;
 			case GameState.gameOn:
 				UIManager.GetInstance ().ScoreActive (true);
-
+				UIManager.GetInstance().EnableUI(false);
 				break;
 			case GameState.gameOver:
-				StartCoroutine ("GameOverProcedure");	
+				StartCoroutine ("GameOverProcedure");
+					
 				break;
 		}
 	}
@@ -69,12 +72,17 @@ public class GameManager : MonoBehaviour {
 		SetState (GameState.settings);
 	}
 
+	public void SwitchThrowDirection() {
+		throwDirection *= -1;
+	}
+
 	public void HandleAdShown() {
 
 	}
 
 	public void ReturnToMainMenu() {
 		SetState(GameState.mainMenu);
+		UIManager.GetInstance().EnableUI(true);
 	}
 
 	IEnumerator GameOverProcedure() {

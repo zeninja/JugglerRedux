@@ -19,6 +19,7 @@ public class Hand : MonoBehaviour {
 	bool holdingBall;
 
 	public float throwForceModifier = 4;
+	Vector2 throwVelocity, currentPos, lastPos;
 
 
 //	public float baseThrowModifier = 5;
@@ -43,6 +44,10 @@ public class Hand : MonoBehaviour {
 	void Update() {
 		if(GameManager.GetInstance().state == GameManager.GameState.gameOn || 
 		   GameManager.GetInstance().state == GameManager.GameState.mainMenu) {
+
+		   	currentPos = (Vector2)transform.position;
+
+
 			throwDirection = (dragEnd - dragStart);
 //			throwDirection = (dragEnd - dragStart).normalized;
 //			timedThrowForce = (Time.time - dragStartTime) / totalChargeTime;
@@ -64,6 +69,9 @@ public class Hand : MonoBehaviour {
 			if (holdingBall) {
 				ball.GetComponentInChildren<SquashAndStretch> ().throwDirection = throwDirection;
 			}
+
+			throwVelocity = currentPos - lastPos;
+			lastPos = currentPos;
 		}
 	}
 
@@ -169,8 +177,10 @@ public class Hand : MonoBehaviour {
 				}
 			}
 			GrabBall (targetBall);
+//			ThrowBall();
 		} else {
 			GrabBall (other.gameObject);
+//			ThrowBall();
 		}
 	}
 
@@ -193,7 +203,8 @@ public class Hand : MonoBehaviour {
 	void ThrowBall() {
 		// Throw the ball
 		if (ball != null) {
-			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier);
+//			ball.GetComponent<Ball> ().HandleThrow (throwVelocity * throwForceModifier);
+			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier * GameManager.throwDirection);
 //			ball.GetComponent<Ball> ().HandleThrow (throwDirection * timedThrowForce * baseThrowModifier);
 			holdingBall = false;
 			ball = null;

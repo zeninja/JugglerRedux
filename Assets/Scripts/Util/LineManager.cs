@@ -29,12 +29,12 @@ public class LineManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (hand.HoldingBall() && GameManager.GetInstance().state != GameManager.GameState.gameOver) {
-			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor;
+			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor * GameManager.throwDirection;
 
 //			lineLengthMultiplier = hand.timedThrowForce;
 
 			line.SetPosition(0, startPoint);
-			line.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier);
+			line.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier * GameManager.throwDirection);
 			line.enabled = true;
 		} else {
 			line.enabled = false;

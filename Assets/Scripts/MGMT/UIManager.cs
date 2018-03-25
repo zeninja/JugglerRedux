@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour {
 	public Image ballTimer;
 	public Toggle mute;
 	public Toggle settings;
+	public GameObject buttons;
 
 	public GameObject settingsPanel;
 	public GameObject scoreDisplay;
@@ -41,5 +42,9 @@ public class UIManager : MonoBehaviour {
 
 	public void ScoreActive(bool active) {
 		scoreDisplay.SetActive (active);
+	}
+
+	public void EnableUI(bool enabled) {
+		buttons.SetActive(enabled);
 	}
 }
