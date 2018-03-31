@@ -26,12 +26,12 @@ public class GameManager : MonoBehaviour {
 
 	void Awake() {
 		// Not sure why, but this seems to be messing with the squash and stretching???
-		Application.targetFrameRate = 60;
+		Application.targetFrameRate = 120;
 	}
 
 	// Use this for initialization
 	void Start () {
-		
+		SetState (GameState.mainMenu);
 	}
 	
 	// Update is called once per frame
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
 //		ButtonManager.GetInstance().UpdateButtons();
 
 		switch (state) {
-		case GameState.mainMenu:
+			case GameState.mainMenu:
 				UIManager.GetInstance ().ScoreActive (false);
 				BallManager.GetInstance ().SpawnFirstBall ();
 				break;

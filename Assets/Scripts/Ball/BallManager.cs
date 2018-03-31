@@ -38,7 +38,7 @@ public class BallManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		SpawnFirstBall ();
+//		SpawnFirstBall ();
 	}
 
 	public void SpawnFirstBall() {
@@ -46,6 +46,7 @@ public class BallManager : MonoBehaviour {
 		firstBall.transform.position = spawnPos;
 		firstBall.GetComponent<Ball> ().firstBall = true;
 		balls.Add (firstBall);
+		Debug.Log ("Added first ball");
 	}
 	
 	// Update is called once per frame
@@ -104,6 +105,7 @@ public class BallManager : MonoBehaviour {
 //	}
 
 	public void LaunchBall() {
+		Debug.Log ("Launching ball");
 		GameObject ball = Instantiate(ballPrefab) as GameObject;
 		ball.transform.position = new Vector2 (Random.Range (-2f, 2f), -6f);
 		ball.GetComponent<Rigidbody2D> ().velocity = Vector2.up * launchForce;
@@ -116,6 +118,8 @@ public class BallManager : MonoBehaviour {
 	}
 
 	public void LaunchBall(Vector2 launchPos, bool firstBall) {
+		Debug.Log ("Launching first ball");
+
 		GameObject ball = Instantiate(ballPrefab) as GameObject;
 		ball.transform.position = launchPos;
 		ball.GetComponent<Ball> ().ballManager = this;
@@ -143,15 +147,20 @@ public class BallManager : MonoBehaviour {
 		}
 	}
 
+	public void RemoveBall(GameObject ball) {
+		balls.Remove (ball);
+	}
+
 	public static bool startNextExplosion = false;
 
 	public IEnumerator HandleGameOver() {
-		SortBallsByDepth();
-		yield return new WaitForEndOfFrame();
+//		SortBallsByDepth();
+//		yield return new WaitForEndOfFrame();
 
 		for (int i = 0; i < balls.Count; i++) {
 			balls[i].GetComponent<Ball>().FreezeBall();
 		}
+		Debug.Log (balls.Count);
 
 		for (int i = 0; i < balls.Count; i++) {
 			balls[i].GetComponent<Ball>().HandleDeath();
@@ -183,5 +192,21 @@ public class BallManager : MonoBehaviour {
 		for (int i = 0; i < balls.Count; i++) {
 //			Debug.Log (balls [i].GetComponent<BallArtManager> ().zDepth);
 		}
+	}
+
+	void OnGUI() {
+		
+		for (int i = 0; i < balls.Count; i++) {
+			if (balls [i] != null) {
+				Vector3 ballPos = new Vector3 (balls [i].transform.position.x, -balls [i].transform.position.y, 0);
+				Vector3 camPos = Camera.main.WorldToScreenPoint (ballPos);
+				Vector3 offset = new Vector3 (camPos.x - 10, camPos.y - 10, camPos.z);
+				Vector3 size = Vector3.one * 20;
+				string depth = balls [i].GetComponent<BallArtManager> ().zDepth.ToString ();
+
+				GUI.Label (new Rect (offset, size), depth);
+			}
+		}
+			
 	}
 }

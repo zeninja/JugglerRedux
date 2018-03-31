@@ -66,7 +66,7 @@ public class Hand : MonoBehaviour {
 
 			handPos = FindHandPos();
 
-			if (holdingBall) {
+			if (holdingBall && ball != null) {
 				ball.GetComponentInChildren<SquashAndStretch> ().throwDirection = throwDirection;
 			}
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour {
+	
+	int numCatches = 4;
 
-	public enum BallState { Rising, Falling, Caught };
+	public enum BallState { Rising, Falling, Caught, GameOver };
 	public BallState state;
 
 	Rigidbody2D rb;
@@ -41,6 +43,7 @@ public class Ball : MonoBehaviour {
 			launching = true;
 			rb.gravityScale = 1;
 		} else {
+			BallManager.GetInstance ().balls.Add (gameObject);
 			rb.gravityScale = 0;
 		}
 	}
@@ -76,19 +79,32 @@ public class Ball : MonoBehaviour {
 
 	public void HandleCatch(Hand hand) {
 		isCaught = true;
+
 		rb.velocity = ballInfo.caughtInfo.velocity;
 		rb.gravityScale = ballInfo.caughtInfo.gravityScale;
+
 		ballArtManager.HandleCatch ();
+		GetComponent<CatchCountHandler> ().HandleCatch ();
+
 
 		if (GameManager.GetInstance ().state == GameManager.GameState.gameOn) {
 			ScoreManager.GetInstance ().IncreaseScore ();
 			ScoreAnimation.GetInstance ().HandleCatch ();
+			if (numCatches <= 0) {
+				Explode ();
+			}
 		}
 
 		if (firstBall) {
 			firstBall = false;
 			startGame = true;
 		}
+	}
+
+	void Explode() {
+		BallManager.GetInstance ().RemoveBall (gameObject);
+		// Do a cool explosion
+//		Destroy (gameObject);
 	}
 
 	public void HandleThrow(Vector2 throwForce) {
@@ -118,6 +134,7 @@ public class Ball : MonoBehaviour {
 	}
 
 	public void HandleDeath() {
+		Debug.Log ("Handling death");
 		StartCoroutine (Die());
 	}
 

@@ -987,61 +987,16 @@ Prefab:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366,
-        type: 2}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366,
-        type: 2}
-      propertyPath: m_SortingLayerID
-      value: 1058539291
-      objectReference: {fileID: 0}
-    - target: {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366,
-        type: 2}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1239795096218024, guid: 5d668d99145bede43bfd8cd55b6ae366, type: 2}
       propertyPath: m_Name
       value: Background
       objectReference: {fileID: 0}
-    - target: {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366,
-        type: 2}
-      propertyPath: m_SortingOrder
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366,
-        type: 2}
-      propertyPath: m_UseWorldSpace
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114078203079234382, guid: 5d668d99145bede43bfd8cd55b6ae366, type: 2}
     - {fileID: 58344944592517406, guid: 5d668d99145bede43bfd8cd55b6ae366, type: 2}
+    - {fileID: 120363080066226976, guid: 5d668d99145bede43bfd8cd55b6ae366, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 5d668d99145bede43bfd8cd55b6ae366, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &618181321 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1239795096218024, guid: 5d668d99145bede43bfd8cd55b6ae366,
-    type: 2}
-  m_PrefabInternal: {fileID: 618181320}
---- !u!114 &618181322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 618181321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ab0da89f8f4d48b0a03d70b197c0662, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anchor: {fileID: 0}
-  hand: {fileID: 0}
-  lineLengthMultiplier: 1.25
-  distanceFromAnchor: 1.1
-  lineColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &624278596
 GameObject:
   m_ObjectHideFlags: 0
@@ -3414,8 +3369,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anchor: {fileID: 0}
   hand: {fileID: 0}
-  lineLengthMultiplier: 1.25
-  distanceFromAnchor: 1.1
+  velocity: 10.14
+  angle: 54.84
+  resolution: 3251
+  distanceFromAnchor: 0
   lineColor: {r: 0, g: 255, b: 234, a: 1}
 --- !u!1 &1855615940
 GameObject:
