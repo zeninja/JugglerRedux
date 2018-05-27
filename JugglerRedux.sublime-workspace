@@ -3,10 +3,50 @@
 	{
 		"selected_items":
 		[
+			[
+				"tra",
+				"trails\tParticleSystem.*"
+			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "/C/Users/Adnan/Projects/Execute/Assets/CharacterManager.cs",
+			"settings":
+			{
+				"buffer_size": 1382,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Adnan/Projects/Execute/Assets/PlayerController.cs",
+			"settings":
+			{
+				"buffer_size": 2031,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "100 packs\n---------\n\nLegendary: 7\nEpic: 15\nRare: 43\nCommon: 56\n\nDuplicates: 344\nDust value: \n\n",
+			"settings":
+			{
+				"buffer_size": 94,
+				"line_ending": "Windows",
+				"name": "100 packs"
+			}
+		},
+		{
+			"file": "/C/Users/Adnan/AppData/Local/Temp/tmp8CB9.tmp.cs",
+			"settings":
+			{
+				"buffer_size": 2537,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -43,8 +83,14 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Adnan/Projects/JugglerRedux/Assets"
+	],
 	"file_history":
 	[
+		"/C/Users/Adnan/Projects/Potion/unity/HCH_CW/Assets/Scripts/Managers/EventManager.cs",
+		"/C/Users/Adnan/Projects/JugglerRedux/Assets/Scripts/Util/LineManager.cs",
 		"/C/Users/Adnan/AppData/Roaming/Sublime Text 3/Packages/User/OmniSharpSublime.sublime-settings",
 		"/C/Users/Adnan/Projects/JugglerRedux/myproj.sublime-project",
 		"/C/Users/Adnan/Projects/JugglerRedux/JugglerRedux.sln",
@@ -88,8 +134,122 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/Adnan/Projects/Execute/Assets/CharacterManager.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1382,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/Adnan/Projects/Execute/Assets/PlayerController.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2031,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 94,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								62,
+								62
+							]
+						],
+						"settings":
+						{
+							"auto_name": "100 packs",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/Adnan/AppData/Local/Temp/tmp8CB9.tmp.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2537,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Unity3D/UnityC#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -125,6 +285,10 @@
 	},
 	"menu_visible": true,
 	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.variable_get":
 	{
 		"height": 0.0
 	},

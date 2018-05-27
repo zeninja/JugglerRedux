@@ -19,4 +19,10 @@ public class Extensions : MonoBehaviour {
 		value = Mathf.Clamp(value, b1, b2);
 		return value;
 	}
+
+	public static Vector3 ScreenToWorld(Vector3 input) {
+		input = new Vector3(input.x, input.y, Camera.main.nearClipPlane);
+		Vector3 output = Camera.main.ScreenToWorldPoint(input);
+		return output;
+	}
 }

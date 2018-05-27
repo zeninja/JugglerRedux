@@ -16,7 +16,7 @@ public class LineManager : MonoBehaviour {
 
 	float g;
 	float radianAngle;
-
+ 
 	[System.NonSerialized]
 	public float throwForce;
 
@@ -33,35 +33,25 @@ public class LineManager : MonoBehaviour {
 		line.endColor   = lineColor;
 
 		g = Mathf.Abs (Physics2D.gravity.y);
-
-		RenderArc ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (hand.HoldingBall() && GameManager.GetInstance().state != GameManager.GameState.gameOver && hand.ball != null) {
-			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor * GameManager.throwDirection;
-
-//			lineLengthMultiplier = hand.timedThrowForce;
-
-//			line.SetPosition(0, startPoint);
-//			line.SetPosition(1, startPoint + (Vector3)hand.throwDirection * lineLengthMultiplier * GameManager.throwDirection);
-
-//			DrawLineArc ();
+		if(CheckEnabled()) {		
+			Vector3 startPoint = anchor.transform.position + anchor.transform.up * distanceFromAnchor * GameManager.dragDirectionModifier;
 
 			ConvertVectorToAngle ();
 			RenderArc ();
-//			line.enabled = true;
-		} else {
-//			line.enabled = false;
 		}
 	}
 
-	void DrawLineArc() {
-		for (int i = 0; i < 120; i++) {
-			Vector2 positionAlongArc =  new Vector2(i, .5f * Mathf.Asin( 9.81f * 120 / Mathf.Pow(hand.throwDirection.magnitude, 2)));
-			line.SetPosition (i, positionAlongArc);
-		}
+	bool CheckEnabled() {
+		bool active;
+		active = hand.HoldingBall();
+		active = active && GameManager.GetInstance().state != GameManager.GameState.gameOver;
+		active = active && hand.ball != null;
+		line.enabled  = active;
+		return active;
 	}
 
 	void RenderArc() {
@@ -70,8 +60,9 @@ public class LineManager : MonoBehaviour {
 	}
 
 	void ConvertVectorToAngle() {
-		velocity = hand.throwDirection.magnitude * hand.throwForceModifier;
-		angle = Vector2.Angle ((Vector2)hand.transform.position, (Vector2)hand.transform.position + (Vector2)hand.throwDirection * hand.throwForceModifier) - 90;
+		velocity = hand.throwDirection.magnitude * hand.throwForceModifier * GameManager.dragDirectionModifier;
+		angle = Vector2.Angle ((Vector2)hand.transform.position, (Vector2)hand.transform.position + (Vector2)hand.throwDirection * hand.throwForceModifier);
+		angle -= 90;
 	}
 		
 	Vector3[] CalculateArcArray(){
@@ -83,6 +74,7 @@ public class LineManager : MonoBehaviour {
 		for (int i = 0; i <= resolution; i++) {
 			float t = (float)i / (float)resolution;
 			arcArray [i] = CalculateArcPoint (t, maxDistance);
+			arcArray [i] += transform.position;
 		}
 
 		return arcArray;

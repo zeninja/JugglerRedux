@@ -13,7 +13,7 @@ public class CatchCountHandler : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		currentCatchCount = startCatchCount + BallManager.numBalls;
 		catchCounter = new List<GameObject> ();
 		SpawnCounter();

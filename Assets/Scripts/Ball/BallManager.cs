@@ -45,7 +45,6 @@ public class BallManager : MonoBehaviour {
 		GameObject firstBall = Instantiate (ballPrefab) as GameObject;
 		firstBall.transform.position = spawnPos;
 		firstBall.GetComponent<Ball> ().firstBall = true;
-		balls.Add (firstBall);
 		Debug.Log ("Added first ball");
 	}
 	
@@ -154,6 +153,7 @@ public class BallManager : MonoBehaviour {
 	public static bool startNextExplosion = false;
 
 	public IEnumerator HandleGameOver() {
+		Debug.Log("Calling handle game over");
 //		SortBallsByDepth();
 //		yield return new WaitForEndOfFrame();
 

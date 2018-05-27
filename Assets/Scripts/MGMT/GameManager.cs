@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
 
 	public BallManager ballManager;
 
-	public static int throwDirection = 1;
+	public static int dragDirectionModifier = 1;
 
 	private static GameManager instance;
 	private static bool instantiated;
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchThrowDirection() {
-		throwDirection *= -1;
+		dragDirectionModifier *= -1;
 	}
 
 	public void HandleAdShown() {

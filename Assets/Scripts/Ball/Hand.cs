@@ -204,7 +204,7 @@ public class Hand : MonoBehaviour {
 		// Throw the ball
 		if (ball != null) {
 //			ball.GetComponent<Ball> ().HandleThrow (throwVelocity * throwForceModifier);
-			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier * GameManager.throwDirection);
+			ball.GetComponent<Ball> ().HandleThrow (throwDirection * throwForceModifier * GameManager.dragDirectionModifier);
 //			ball.GetComponent<Ball> ().HandleThrow (throwDirection * timedThrowForce * baseThrowModifier);
 			holdingBall = false;
 			ball = null;
