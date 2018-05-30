@@ -19,7 +19,9 @@ public class NewHand : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		transform.position = Input.GetTouch(handIndex).position;
+		if(Input.touches.GetValue(handIndex) != null) {
+			transform.position = Input.GetTouch(handIndex).position;
+		}
 
 		// transform.position = GetMousePos();    //Vector3.Lerp(transform.position, GetMousePos(), Time.deltaTime * mouseSmoothing);
 		
