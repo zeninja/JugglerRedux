@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - KillTrigger
+  - Ball
   layers:
   - Default
   - TransparentFX

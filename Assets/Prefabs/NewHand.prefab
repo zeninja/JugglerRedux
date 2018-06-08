@@ -21,9 +21,6 @@ GameObject:
   - component: {fileID: 4492101542252266}
   - component: {fileID: 114063323048531496}
   - component: {fileID: 58407881993644934}
-  - component: {fileID: 114797368994774498}
-  - component: {fileID: 114995798184812304}
-  - component: {fileID: 114493284630113284}
   m_Layer: 0
   m_Name: NewHand
   m_TagString: Untagged
@@ -72,59 +69,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   throwForce: 4
   smoothingSpeed: 2
-  throwDirectionLerpSpeed: 2
-  handIndex: 0
---- !u!114 &114493284630113284
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486805989234084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a4762978c2447048aacc02a04592aaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FingerIndexFilter: -1
-  Raycaster: {fileID: 0}
-  UseSendMessage: 1
-  SendMessageToSelection: 1
-  MessageTarget: {fileID: 0}
-  MessageName: OnFingerUp
---- !u!114 &114797368994774498
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486805989234084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06c71470e58dece45a990c1eaafbd474, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FingerIndexFilter: -1
-  Raycaster: {fileID: 0}
-  UseSendMessage: 1
-  SendMessageToSelection: 1
-  MessageTarget: {fileID: 0}
-  MessageName: OnFingerDown
---- !u!114 &114995798184812304
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486805989234084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3aeaa6af5a2574dbc0c14ed591b5b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FingerIndexFilter: -1
-  Raycaster: {fileID: 0}
-  UseSendMessage: 1
-  SendMessageToSelection: 1
-  MessageTarget: {fileID: 0}
-  MoveMessageName: OnFingerMove
-  StationaryMessageName: OnFingerStationary
-  TrackMove: 1
-  TrackStationary: 1
+  lag: 3

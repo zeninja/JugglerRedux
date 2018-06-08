@@ -2,45 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewHandManager : MonoBehaviour {
+public class NewHandManager : MonoBehaviour
+{
+    #region instance
+    private static NewHandManager instance;
 
-	public GameObject handPrefab;
+    public static NewHandManager GetInstance()
+    {
+        return instance;
+    }
+    #endregion
 
-	// finger index : hand
-	Dictionary<int, GameObject> hands = new Dictionary<int,GameObject>();
-	static int _handCount;
+    public GameObject handPrefab;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    List<int> fingerIds = new List<int>();
 
-	void OnFingerDown(FingerEvent e) {
-		Debug.Log("Finger down");
-		SpawnHand(e.Finger.Index);
-	}
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (this != instance)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 
-	void OnFingerUp(FingerEvent e) {
-		GameObject targetHand = GetHandByIndex(e.Finger.Index);
-		hands.Remove(e.Finger.Index);
-		Destroy(targetHand);
-	}
+    private void Update()
+    {
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (Input.GetTouch(i).phase == TouchPhase.Began)
+            {
+                int fingerId = Input.GetTouch(i).fingerId;
+                if (!fingerIds.Contains(fingerId))
+                {
+                    fingerIds.Add(fingerId);
+                    SpawnHand(fingerId);
+                }
+            }
+        }
+    }
 
-	void SpawnHand(int fingerIndex) {
-		GameObject hand = Instantiate(handPrefab) as GameObject;
-		hand.transform.position = Extensions.ScreenToWorld(Input.mousePosition);
-		hands.Add(fingerIndex, hand);
-		hand.GetComponent<NewHand>().handIndex = fingerIndex;
-		_handCount++;
+    void SpawnHand(int fingerId)
+    {
+        GameObject hand = Instantiate(handPrefab) as GameObject;
+        hand.GetComponent<NewHand>().fingerId = fingerId;
 
-		if(NewGameManager._spawnBallsByTouchCount) {
-			if(NewBallManager._ballCount < Input.touchCount) {
-				EventManager.TriggerEvent("SpawnBall");
-			}
-		}
-	}
+        if (NewGameManager.GetInstance().spawnBallsByTouchCount) {
+            if(NewBallManager._ballCount < Input.touchCount) {
+    			EventManager.TriggerEvent("SpawnBall"); 
+            }
+        }
+    }
 
-	GameObject GetHandByIndex(int fingerIndex) {
-		return hands[fingerIndex];
-	}
+    public void RemoveId(int fingerId) {
+        fingerIds.Remove(fingerId);
+    }
 }

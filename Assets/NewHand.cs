@@ -2,40 +2,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewHand : MonoBehaviour {
+public class NewHand : MonoBehaviour
+{
+    Transform myTransform;
 
-	Vector3 throwDirection, throwPos, lastThrowPos;
+    public float throwForce = 4;
 
-	public float throwForce = 4;
+    // [System.NonSerialized]
+    public int fingerId;
 
-	public float smoothingSpeed = 2;
-	public float throwDirectionLerpSpeed = 2;
+    Vector2 moveDir;
+    Vector2 throwDir;
+    Vector2 currentPos, lastPos;
 
-	public int handIndex;
+    Touch myTouch;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    void Awake()
+    {
+        myTransform = transform;
+    }
 
-	void FixedUpdate() {
-		if(Input.touches.GetValue(handIndex) != null) {
-			transform.position = Input.GetTouch(handIndex).position;
-		}
+    void Update()
+    {
+        MoveHand();
+    }
 
-		// transform.position = GetMousePos();    //Vector3.Lerp(transform.position, GetMousePos(), Time.deltaTime * mouseSmoothing);
-		
-		throwPos = Vector3.Lerp(throwPos, transform.position, Time.deltaTime * throwDirectionLerpSpeed);
-		throwDirection = throwPos - lastThrowPos;
+    void MoveHand() {
+        if (Input.touchCount > 0)
+        {
+            for(int i = 0; i < Input.touchCount; i++) {
+                if (Input.touches[i].fingerId == fingerId) {
+                    myTouch = Input.touches[i];
+                    break;
+                }
+            }
 
-		lastThrowPos = throwPos;
-	}
+            myTransform.position = Extensions.ScreenToWorld(myTouch.position);
+            moveDir = (Vector2)myTransform.position - lastPos;
+            lastPos = myTransform.position;
+            
+            if (moveDir != Vector2.zero)
+            {
+                throwDir = moveDir.normalized;
+            }
 
-	void OnTriggerEnter2D(Collider2D other) {
-		other.GetComponent<NewBall>().HandleCatch(throwDirection.normalized * throwForce);
-	}
+            if(myTouch.phase == TouchPhase.Ended) {
+                HandleDeath();
+            }
+        }
+    }
 
-	Vector3 GetMousePos() {
-		return Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
-	}
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ball"))
+        {
+            other.GetComponent<NewBall>().HandleCatch(throwDir, throwForce, moveDir);
+            HandleDeath();
+        }
+    }
+
+    void HandleDeath() {
+        NewHandManager.GetInstance().RemoveId(fingerId);
+        Destroy(gameObject);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(myTransform.position, (Vector2)myTransform.position + throwDir);
+    }
 }

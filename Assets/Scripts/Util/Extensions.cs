@@ -25,4 +25,10 @@ public class Extensions : MonoBehaviour {
 		Vector3 output = Camera.main.ScreenToWorldPoint(input);
 		return output;
 	}
+
+	public static Vector3 MouseScreenToWorld() {
+		Vector3 input = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
+		Vector3 output = Camera.main.ScreenToWorldPoint(input);
+		return output;
+	}
 }

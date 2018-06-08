@@ -10,11 +10,13 @@ public class NewScoreManager : MonoBehaviour {
 
 	string scoreText;
 
-	TextMeshPro text;
+	public TextMeshPro text;
 
 	// Use this for initialization
 	void Start () {
+		EventManager.StartListening("BallSpawned", OnBallSpawned);
 		EventManager.StartListening("BallCaught", OnBallCaught);
+		EventManager.StartListening("BallDeath", OnBallDied);
 	}
 	
 	// Update is called once per frame
@@ -22,7 +24,17 @@ public class NewScoreManager : MonoBehaviour {
 		scoreText = _numBalls.ToString() + "." + _catchCount.ToString();
 	}
 
+	void OnBallSpawned() {
+		_numBalls++;	
+	}
+
 	void OnBallCaught() {
 		text.text = scoreText;
+		_catchCount++;
+	}
+
+	void OnBallDied() {
+		_catchCount = 0;
+		_numBalls = 0;
 	}
 }
