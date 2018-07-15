@@ -84,7 +84,7 @@ public class Ball : MonoBehaviour {
 		rb.gravityScale = ballInfo.caughtInfo.gravityScale;
 
 		ballArtManager.HandleCatch ();
-		GetComponent<CatchCountHandler> ().HandleCatch ();
+		// GetComponent<CatchCountHandler> ().HandleCatch ();
 
 
 		if (GameManager.GetInstance ().state == GameManager.GameState.gameOn) {

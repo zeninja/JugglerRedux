@@ -68,8 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef7bc620711d05428dbb1ef38c92362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 0}
-  throwForceModifier: 5
+  throwForceModifier: 50
 --- !u!120 &120363080066226976
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -79,7 +78,7 @@ LineRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -153,7 +152,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 20
-    alignment: 0
+    alignment: 1
     textureMode: 0
     generateLightingData: 0
   m_UseWorldSpace: 1

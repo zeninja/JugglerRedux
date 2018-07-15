@@ -12,7 +12,7 @@ public class NewBallManager : MonoBehaviour {
 	void Start () {
 		EventManager.StartListening("SpawnBall", SpawnBall);
 		EventManager.StartListening("BallCaught", OnBallCaught);
-		EventManager.StartListening("BallDeath", OnBallDied);
+		EventManager.StartListening("BallDied", OnBallDied);
 	}
 	
 	// Update is called once per frame
@@ -35,9 +35,17 @@ public class NewBallManager : MonoBehaviour {
 	}
 
 	void OnBallDied() {
-		for(int i = 0; i < balls.Count; i++) {
-			balls[i].GetComponent<NewBall>().HandleDeath();
-		}
+		StartCoroutine("KillBalls");
 		balls.Clear();
+		_ballCount = 0;
+
+		NewGameManager.GetInstance().SetState(GameState.GameOver);
+	}
+
+	IEnumerator KillBalls() {
+		for(int i = 0; i < balls.Count; i++) {
+			balls[i].GetComponent<NewBall>().Die();
+			yield return new WaitForSeconds(.2f);
+		}
 	}
 }
