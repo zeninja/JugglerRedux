@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class NewBall : MonoBehaviour
 {
-    public float scale = .25f;
     Rigidbody2D rb;
+
+    public float scale = .25f;
+    public float defaultGravity = 20;
+    public float drag = -0.1f;
+
+    [HideInInspector]
+    public bool canBeCaught = false;
+    [HideInInspector]
+    public bool launching;
 
     // Use this for initialization
     void Start()
@@ -21,50 +29,46 @@ public class NewBall : MonoBehaviour
 			// HandleCatch(Vector2.up, forceModifier, Vector2.one);
 		}
 
-        CheckBounds();
+        if(rb.velocity.y < 0) {
+            launching = false;
+        }
+        
+        if (!launching) {
+            CheckBounds();
+        }
     }
 
-    private void FixedUpdate() {
-
-    }
-
-    public void HandleCatch(Vector3 normalizedDirection, float forceModifier, Vector2 rawMoveVector)
-    {
-        // rb.AddForce(normalizedDirection * forceModifier, ForceMode2D.Impulse);
-		rb.velocity = Vector2.zero;
-        rb.velocity = normalizedDirection * forceModifier * rawMoveVector.magnitude;
-        EventManager.TriggerEvent("BallCaught");
-    }
-
-    public void GrabBall() {
-        rb.velocity = Vector2.zero;
-        rb.gravityScale = 0;
-        Debug.Log("BALL GRABBED!!!!");
-    }
-
-    public void GetThrown(Vector2 throwForce) {
-        rb.velocity = throwForce;
-        rb.gravityScale = 1;
-
-        Debug.Log("BALL THROOOOWWWWNNNN");
-
-        // rb.velocity = normalizedDirection * forceModifier * rawMoveVector.magnitude;
+    void FixedUpdate() {
+        // QUADRATIC DRAG
+        Vector2 force = drag * rb.velocity.normalized * rb.velocity.sqrMagnitude;
+        rb.AddForce(force);
     }
 
     public void GetCaughtAndThrown(Vector2 throwVector) {
-        Debug.Log("Getting caught and thrown");
+        if(launching) { return; }
+
+        // Debug.Log("Getting caught and thrown");
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
+
+        // Method 1: Add force
+        // rb.AddForce(throwVector, ForceMode2D.Impulse);
+        
+        // Method 2: Set velocity directly
         rb.velocity = throwVector;
-        rb.gravityScale = 1;
-        Debug.Log(throwVector);
+        rb.gravityScale = defaultGravity;
+
+        EventManager.TriggerEvent("BallCaught");
+
     }
 
     void CheckBounds() {
         Vector3 converted = Camera.main.WorldToScreenPoint(transform.position);
 
         if(converted.y < 0 || converted.y > Screen.height || converted.x < 0 || converted.x > Screen.width) {
-            HandleDeath();
+            if(!NewGameManager.GameOver()) {
+                HandleDeath();
+            }
         }
     }
 
@@ -79,7 +83,6 @@ public class NewBall : MonoBehaviour
     public void Die() {
         StartCoroutine(Explode());
     }
-
 
     public AnimationCurve explosionCurve;
     public AnimationCurve implosionCurve;

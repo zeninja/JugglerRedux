@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { preGame, inGame, GameOver };
+public enum GameState { preGame, inGame, gameOver };
 
 public class NewGameManager : MonoBehaviour {
 
-	public GameState GameState = GameState.preGame;
+	public GameState gameState = GameState.preGame;
 
 	#region instance
 	private static NewGameManager instance;
@@ -48,20 +48,24 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	public void SetState(GameState newState) {
-		GameState = newState;
+		gameState = newState;
 
 		// trigger one-time effects
 
-		switch(GameState) {
-			case GameState.GameOver:
-				StartCoroutine("GameOver");
+		switch(gameState) {
+			case GameState.gameOver:
+				StartCoroutine("GameOverProcedure");
 				break;
 		}
 
 	}
 
-	IEnumerator GameOver() {
-		yield return null;
-		// NewScoreManager.
+	IEnumerator GameOverProcedure() {
+		yield return NewBallManager.GetInstance().StartCoroutine("KillBalls");
+		SetState(GameState.preGame);
+	}
+
+	public static bool GameOver() {
+		return NewGameManager.GetInstance().gameState == GameState.gameOver;
 	}
 }

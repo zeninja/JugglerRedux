@@ -13,7 +13,7 @@ public class NewHand : MonoBehaviour
     }
     #endregion
 
-    public HandType handType;
+    // public HandType handType;
 
     Transform myTransform;
 
@@ -26,12 +26,9 @@ public class NewHand : MonoBehaviour
 
     // Movement
     Vector2 moveDir;
-    // Vector2[] collectionOfPrevPositions = new Vector2[3];
     Vector2 catchPosition;
     Vector2 lastFramePos;
     Vector2 throwVector;
-
-    NewBall caughtBall;    
 
     public bool useMouse = false;
 
@@ -46,204 +43,61 @@ public class NewHand : MonoBehaviour
         }
 
         myTransform = transform;
-        line = GetComponent<LineRenderer>();
 
-        handType = NewHandManager._globalHandType;
-        heldThrowForce = NewHandManager.GetInstance().heldThrowForce;
+        // handType = NewHandManager._globalHandType;
+        // heldThrowForce = NewHandManager.GetInstance().heldThrowForce;
         immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
     }
 
     void Update()
     {
+        immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
         MoveHand();
     }
 
     void MoveHand()
     {
-        if (useMouse)
-        {
+        if (useMouse) {
             HandleMouseInput();
-        }
-        else
-        {
+        } else {
             HandleTouchInput();
         }
-
-        DrawLine();
     }
-
-    void HandleTouchInput()
-    {
-        if(Input.touchCount != 0) {
-            moveDir = Input.GetTouch(0).deltaPosition;
-            transform.position = Extensions.ScreenToWorld(Input.GetTouch(0).position);
-            throwVector = moveDir * immediateThrowForce;
-        }
-
-        if(Input.GetTouch(0).phase == TouchPhase.Ended) {
-            HandleDeath();
-        }
-
-        #region old
-    //     if (Input.touchCount > 0)
-    //     {
-    //         for (int i = 0; i < Input.touchCount; i++)
-    //         {
-    //             if (Input.touches[i].fingerId == fingerId)
-    //             {
-    //                 myTouch = Input.touches[i];
-    //                 break;
-    //             }
-    //         }
-
-    //         myTransform.position = Extensions.ScreenToWorld(myTouch.position);
-    //         moveDir = (Vector2)myTransform.position - lastPos;
-    //         lastPos = myTransform.position;
-
-    //         if (moveDir != Vector2.zero)
-    //         {
-    //            // normalizedMoveDirection = moveDir.normalized;
-    //         }
-
-    //         if (myTouch.phase == TouchPhase.Ended)
-    //         {
-    //             HandleDeath();
-    //         }
-    //     }
-        #endregion
-    }
-
-    public int pastMouseIndex = 10;
 
     void HandleMouseInput()
     {
-        #region Calculate movement
+        // Step 1: Set the position to be equal to the current mouse position
         transform.position = Extensions.MouseScreenToWorld();
+        
+        // Step 2: Find the move direction since last frame
+        moveDir = (Vector2)transform.position - lastFramePos;
+        Debug.DrawLine(transform.position, (Vector2)transform.position + moveDir.normalized * 2, Color.red);
+        lastFramePos = transform.position;
 
-
-        Vector2 screenMousePos = (Vector2)Input.mousePosition;
-        Vector2 pastMousePos   = (Vector2) mousePositions[pastMouseIndex];
-
-        moveDir = pastMousePos - screenMousePos;
-        lastFramePos = Input.mousePosition;
-
-        line.SetPosition(0, pastMousePos);
-        line.SetPosition(1, screenMousePos);
-
-
-        // Debug.Log(moveDir);
-
-        CalculateAveragedMoveDir();
-    
-
-        #endregion
-
-        #region Find throw direction
-        // if(caughtBall) {
-            switch(handType) {
-                case HandType.holdAndThrow:
-                    throwVector = ((Vector2)transform.position - catchPosition) * heldThrowForce;
-                    break;
-                case HandType.throwImmediately:
-                    throwVector = moveDir * immediateThrowForce;
-                    Debug.Log(throwVector);
-
-                    break;
-            }
-        // }
-        #endregion
-
-        #region Handle throws
-        if (Input.GetMouseButtonUp(0))
-        {
-            if(caughtBall) {
-                caughtBall.GetThrown(throwVector);
-                caughtBall = null;
-            }
-            HandleDeath();
-        }
-        #endregion
+        // Step 3: Find the throw vector
+        throwVector = moveDir * immediateThrowForce;
     }
 
-    Vector3[] mousePositions = new Vector3[10];
-    Vector3[] linePositions = new Vector3[10];
-
-    int numPositionsToAverage = 10;
-
-    void CalculateAveragedMoveDir() {
-        for(int i = numPositionsToAverage - 1; i > 0; i--) {
-            mousePositions[i] = mousePositions[i - 1];
-            linePositions[i]  = linePositions [i - 1];
-        }
-        mousePositions[0] = moveDir;
-        linePositions[0]  = transform.position;
-
-
-
-    }
-
-    LineRenderer line;
-    void DrawLine() {
-        // line.SetPosition(0, transform.position);
-        // line.SetPosition(1, (Vector2)transform.position + throwVector);
-
-        // Vector3[] linePositions = new Vector3[10];
-        // for(int i = 0; i < mousePositions.Length; i++) {
-        //     linePositions[i] = transform.position + mousePositions[i];
-        // }
-
-        // line.SetPositions(linePositions);
+    void HandleTouchInput() 
+    {
+        
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Ball"))
         {
-            Debug.Log("hit a thing");
-
-            caughtBall = other.GetComponent<NewBall>();
-            // HandleBallCaught();
-
-            if(handType == HandType.throwImmediately) {
-                Debug.Log("immed");
-                Debug.Log(caughtBall);
-                // caughtBall.GrabBall();
-                // caughtBall.GetThrown(throwVector);
-                caughtBall.GetCaughtAndThrown(throwVector);
-                caughtBall = null;
+            if(!other.GetComponent<NewBall>().launching) {
+                // Debug.Log("hit a thing");
+                other.GetComponent<NewBall>().GetCaughtAndThrown(throwVector);
+                Debug.Log("Throw vector: " + throwVector);
+                HandleDeath();
             }
         }
     }
 
-    // void HandleBallCaught() {
-    //     Debug.Log("Handling ball cauht");
-    //     caughtBall.GrabBall();
-    //     catchPosition = transform.position;
-    //     // Invoke("HandleBallThrown", Time.deltaTime);
-    //     HandleBallThrown();
-    // }
-
-    // void HandleBallThrown() {
-    //     if(handType == HandType.throwImmediately) {
-    //         caughtBall.GetThrown(throwVector);
-    //         Debug.Log(throwVector);
-    //         caughtBall = null;
-    //     }
-    // }
-
     void HandleDeath()
     {
-        // NewHandManager.GetInstance().RemoveId(fingerId);
         Destroy(gameObject);
-    }
-
-    public float GetThrowForce() {
-        return immediateThrowForce;
-    }
-
-    void OnDrawGizmos()
-    {
-        // Gizmos.color = Color.black;
-        // Gizmos.DrawLine(myTransform.position, (Vector2)myTransform.position + moveDir.normalized * heldThrowForce * moveDir.magnitude);
     }
 }

@@ -3,10 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NewBallManager : MonoBehaviour {
+	
+	#region instance
+	private static NewBallManager instance;
+	public static NewBallManager GetInstance() {
+		return instance;
+	}
+	#endregion
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+		} else {
+			if(this != instance) {
+				Destroy(gameObject);
+			}
+		}
+	}
 
 	public GameObject ballPrefab;
 	public static int _ballCount;
+	
 	List<GameObject> balls = new List<GameObject>();
+
+	Vector2 ballSpawnPos;
+	public float ballLaunchForce = 10;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +45,15 @@ public class NewBallManager : MonoBehaviour {
 
 	void SpawnBall() {
 		GameObject ball = Instantiate(ballPrefab) as GameObject;
+
+		ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+		ball.transform.position = ballSpawnPos;
+		ball.GetComponent<NewBall>().launching = true;
+		ball.GetComponent<NewBall>().canBeCaught = false;
+		// ball.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ballLaunchForce);
+		ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
+		Debug.Log("Launching");
+
 		balls.Add(ball);
 		_ballCount++;
 	}
@@ -35,11 +65,7 @@ public class NewBallManager : MonoBehaviour {
 	}
 
 	void OnBallDied() {
-		StartCoroutine("KillBalls");
-		balls.Clear();
-		_ballCount = 0;
-
-		NewGameManager.GetInstance().SetState(GameState.GameOver);
+		NewGameManager.GetInstance().SetState(GameState.gameOver);
 	}
 
 	IEnumerator KillBalls() {
@@ -47,5 +73,8 @@ public class NewBallManager : MonoBehaviour {
 			balls[i].GetComponent<NewBall>().Die();
 			yield return new WaitForSeconds(.2f);
 		}
+
+		balls.Clear();
+		_ballCount = 0;
 	}
 }

@@ -89,8 +89,7 @@ MonoBehaviour:
   sendMessageEvents: 60
   sendMessageTarget: {fileID: 0}
   useUnityEvents: 0
-  layers:
-  - {fileID: 0}
+  layers: []
 --- !u!114 &11478012
 MonoBehaviour:
   m_ObjectHideFlags: 1
