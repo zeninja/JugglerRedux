@@ -47,6 +47,9 @@ public class NewHand : MonoBehaviour
         // handType = NewHandManager._globalHandType;
         // heldThrowForce = NewHandManager.GetInstance().heldThrowForce;
         immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
+
+        positions = new List<Vector2>();
+        moveDirections = new List<Vector2>();
     }
 
     void Update()
@@ -64,18 +67,26 @@ public class NewHand : MonoBehaviour
         }
     }
 
+    List<Vector2> positions;
+    List<Vector2> moveDirections;
+
     void HandleMouseInput()
     {
         // Step 1: Set the position to be equal to the current mouse position
         transform.position = Extensions.MouseScreenToWorld();
         
         // Step 2: Find the move direction since last frame
-        moveDir = (Vector2)transform.position - lastFramePos;
+        if(positions.Count > 1) {
+            moveDir = (Vector2)transform.position - lastFramePos;
+        }
         Debug.DrawLine(transform.position, (Vector2)transform.position + moveDir.normalized * 2, Color.red);
         lastFramePos = transform.position;
 
         // Step 3: Find the throw vector
         throwVector = moveDir * immediateThrowForce;
+
+        positions.Add(transform.position);
+        moveDirections.Add(moveDir);
     }
 
     void HandleTouchInput() 
@@ -90,14 +101,23 @@ public class NewHand : MonoBehaviour
             if(!other.GetComponent<NewBall>().launching) {
                 // Debug.Log("hit a thing");
                 other.GetComponent<NewBall>().GetCaughtAndThrown(throwVector);
-                Debug.Log("Throw vector: " + throwVector);
+                
+                // Debug.Log("Move dir: " + moveDir + "; lastframePos" +  lastFramePos);
+                // Debug.Log("Throw vector: " + throwVector);
                 HandleDeath();
             }
         }
     }
 
-    void HandleDeath()
-    {
+    void HandleDeath() {
         Destroy(gameObject);
+    }
+
+    void OnDrawGizmos() {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, .1f);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(lastFramePos, .1f);    
     }
 }

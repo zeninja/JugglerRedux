@@ -50,7 +50,6 @@ public class NewBallManager : MonoBehaviour {
 		ball.transform.position = ballSpawnPos;
 		ball.GetComponent<NewBall>().launching = true;
 		ball.GetComponent<NewBall>().canBeCaught = false;
-		// ball.GetComponent<Rigidbody2D>().AddForce(Vector2.up * ballLaunchForce);
 		ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
 		Debug.Log("Launching");
 
