@@ -55,15 +55,15 @@ public class NewHandManager : MonoBehaviour
     {
         for (int i = 0; i < Input.touchCount; i++)
         {
-    //         if (Input.GetTouch(i).phase == TouchPhase.Began)
-    //         {
-    //             int fingerId = Input.GetTouch(i).fingerId;
-    //             if (!fingerIds.Contains(fingerId))
-    //             {
-    //                 fingerIds.Add(fingerId);
-    //                 SpawnHand(fingerId);
-    //             }
-    //         }
+            if (Input.GetTouch(i).phase == TouchPhase.Began)
+            {
+                int fingerId = Input.GetTouch(i).fingerId;
+                if (!fingerIds.Contains(fingerId))
+                {
+                    fingerIds.Add(fingerId);
+                    SpawnHand(fingerId);
+                }
+            }
         }
     }
 
@@ -77,14 +77,14 @@ public class NewHandManager : MonoBehaviour
     void SpawnHand(int fingerId)
     {
         GameObject hand = Instantiate(handPrefab) as GameObject;
-
-        if (NewGameManager.GetInstance().spawnBallsByTouchCount)
-        {
-            if (NewBallManager._ballCount < Input.touchCount)
-            {
-                EventManager.TriggerEvent("SpawnBall");
-            }
-        }
+        hand.GetComponent<NewHand>().fingerId = fingerId;
+        // if (NewGameManager.GetInstance().spawnBallsByTouchCount)
+        // {
+        //     if (NewBallManager._ballCount < Input.touchCount)
+        //     {
+        //         EventManager.TriggerEvent("SpawnBall");
+        //     }
+        // }
     }
 
     void SpawnHand() {

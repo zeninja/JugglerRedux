@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NewHand : MonoBehaviour
 {
-    #region 
+    #region Instance 
     private static NewHand instance;
 
     public static NewHand GetInstance()
@@ -15,24 +15,23 @@ public class NewHand : MonoBehaviour
 
     Transform myTransform;
 
-    Touch myTouch;
-
     Vector2 lastFramePos;
     Vector2 instantMoveDir;
-    Vector2 immediateThrowVector;
-    Vector2 heldMoveDir;
-    Vector2 heldThrowVector;
+    Vector2 slapThrowVector;
+    Vector2 grabMoveDir;
+    Vector2 grabThrowVector;
     Vector2 catchPosition;
 
     NewBall ball;
 
-    public bool useMouse = false;
+    public bool useMouse = false; 
+    public int fingerId;
 
     List<Vector2> positions;
     List<Vector2> moveDirections;
 
-    [System.NonSerialized] public float heldThrowForce = 4;
-    [System.NonSerialized] public float immediateThrowForce = 10;
+    [System.NonSerialized] public float grabThrowForce = 4;
+    [System.NonSerialized] public float slapThrowForce = 10;
 
     void Awake()
     {
@@ -45,13 +44,14 @@ public class NewHand : MonoBehaviour
         }
 
         InitHand();
+
     }
 
     void InitHand() {
         myTransform = transform;
 
-        heldThrowForce = NewHandManager.GetInstance().heldThrowForce;
-        immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
+        grabThrowForce = NewHandManager.GetInstance().heldThrowForce;
+        slapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
 
         positions = new List<Vector2>();
         moveDirections = new List<Vector2>();
@@ -60,11 +60,11 @@ public class NewHand : MonoBehaviour
     void Update()
     {
         // dEBUG
-        immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
+        slapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
         MoveHand();
 
         if (ball != null) {
-            ball.currentThrowVector = heldThrowVector;
+            ball.currentThrowVector = grabThrowVector;
         }
     }
 
@@ -92,23 +92,23 @@ public class NewHand : MonoBehaviour
         lastFramePos = transform.position;
 
         // Step 4: Find the throw vector
-        immediateThrowVector = instantMoveDir * immediateThrowForce;
+        slapThrowVector = instantMoveDir * slapThrowForce;
 
         positions.Add(transform.position);
         moveDirections.Add(instantMoveDir);
 
         if(Input.GetMouseButton(0)) {
             if(ball != null) {
-                heldMoveDir = (Vector2)transform.position - catchPosition;
-                heldThrowVector = heldMoveDir * heldThrowForce;
+                grabMoveDir = (Vector2)transform.position - catchPosition;
+                grabThrowVector = grabMoveDir * grabThrowForce;
             }
         }
 
         if (Input.GetMouseButtonUp(0)) {
             if (ball != null) {
-                Debug.Log("tryna throw");
+                // Debug.Log("tryna throw");
                 // heldThrowVector = heldMoveDir * heldThrowForce;
-                ball.GetThrown(heldThrowVector);
+                ball.GetThrown(grabThrowVector);
                 ball = null;
                 HandleDeath();
             }
@@ -117,41 +117,102 @@ public class NewHand : MonoBehaviour
 
     void HandleTouchInput() 
     {
-        
-    }
+        foreach(Touch t in Input.touches) {
+            if (t.fingerId == fingerId) {
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // Only allow one ball to be affected at a time
-        if(ball == null) {
-
-            if (other.CompareTag("Ball")) {
-
-                // Only catch balls that are not launching
-                if(!other.GetComponent<NewBall>().launching) {
-
-                    // Handle different input methods
-                    if(positions.Count > 1) {
-
-                        // The finger has been held down, the ball can be thrown immediately
-                        other.GetComponent<NewBall>().GetCaughtAndThrown(immediateThrowVector);
-                        HandleDeath();
-                    } else {
-
-                        // The finger tapped directly on the ball, catch it and drag to throw it
-                        other.GetComponent<NewBall>().GetCaught();
-                        catchPosition = transform.position;
-                        ball = other.GetComponent<NewBall>();
-                    }
+                switch(t.phase) {
+                    case TouchPhase.Began:
+                        CheckForGrab();
+                        break;
+                    case TouchPhase.Moved:
+                        instantMoveDir = t.deltaPosition;
+                        CheckForGrab();
+                        break;
+                    case TouchPhase.Stationary:
+                        CheckForGrab();
+                        break;
+                    case TouchPhase.Ended:
+                        TryThrowBall();
+                        break;
+                    case TouchPhase.Canceled:
+                        break;
                 }
             }
         }
     }
 
+    void CheckForGrab() {
+        float radius = 0.5f;
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, radius, Vector2.zero);
+
+        // Only catch one ball at a time
+        if (hit && ball == null) {
+            if(hit.collider.gameObject.CompareTag("Ball")) {
+                NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
+
+                // only catch balls that are not launching
+                if(!ballToJuggle.launching) {
+                    
+                    // Handle different input methods
+                    if(positions.Count > 1) {
+                        
+                        // The finger has been held down, the ball can be thrown immediately
+                        ballToJuggle.GetComponent<NewBall>().GetCaughtAndThrown(slapThrowVector);
+                        HandleDeath();
+                    } else {
+                        // The finger tapped directly on the ball, catch it and drag to throw it
+                        ballToJuggle.GetComponent<NewBall>().GetCaught();
+                        catchPosition = transform.position;
+                        ball = ballToJuggle;
+                    }
+                }
+            }
+        }
+
+        if(ball != null) {
+            grabThrowVector = grabMoveDir * grabThrowForce;
+        }
+    }
+
+    void TryThrowBall() {
+        if (ball != null) {
+            ball.GetThrown(grabThrowVector);
+            ball = null;
+            HandleDeath();
+        }
+    }
+
+    // void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     // Only allow one ball to be affected at a time
+    //     if(ball == null) {
+
+    //         if (other.CompareTag("Ball")) {
+
+    //             // Only catch balls that are not launching
+    //             if(!other.GetComponent<NewBall>().launching) {
+
+    //                 // Handle different input methods
+    //                 if(positions.Count > 1) {
+
+    //                     // The finger has been held down, the ball can be thrown immediately
+    //                     other.GetComponent<NewBall>().GetCaughtAndThrown(slapThrowVector);
+    //                     HandleDeath();
+    //                 } else {
+
+    //                     // The finger tapped directly on the ball, catch it and drag to throw it
+    //                     other.GetComponent<NewBall>().GetCaught();
+    //                     catchPosition = transform.position;
+    //                     ball = other.GetComponent<NewBall>();
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
     void HandleDeath() {
         Destroy(gameObject);
     }
-
 
     void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -162,6 +223,6 @@ public class NewHand : MonoBehaviour
     }
 
     void OnGUI() {
-        
+
     }
 }
