@@ -13,24 +13,26 @@ public class NewHand : MonoBehaviour
     }
     #endregion
 
-    // public HandType handType;
-
     Transform myTransform;
-
-    [System.NonSerialized]
-    public float heldThrowForce = 4;
-    [System.NonSerialized]
-    public float immediateThrowForce = 10;
 
     Touch myTouch;
 
-    // Movement
-    Vector2 moveDir;
-    Vector2 catchPosition;
     Vector2 lastFramePos;
-    Vector2 throwVector;
+    Vector2 instantMoveDir;
+    Vector2 immediateThrowVector;
+    Vector2 heldMoveDir;
+    Vector2 heldThrowVector;
+    Vector2 catchPosition;
+
+    NewBall ball;
 
     public bool useMouse = false;
+
+    List<Vector2> positions;
+    List<Vector2> moveDirections;
+
+    [System.NonSerialized] public float heldThrowForce = 4;
+    [System.NonSerialized] public float immediateThrowForce = 10;
 
     void Awake()
     {
@@ -42,10 +44,13 @@ public class NewHand : MonoBehaviour
             }
         }
 
+        InitHand();
+    }
+
+    void InitHand() {
         myTransform = transform;
 
-        // handType = NewHandManager._globalHandType;
-        // heldThrowForce = NewHandManager.GetInstance().heldThrowForce;
+        heldThrowForce = NewHandManager.GetInstance().heldThrowForce;
         immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
 
         positions = new List<Vector2>();
@@ -54,8 +59,13 @@ public class NewHand : MonoBehaviour
 
     void Update()
     {
+        // dEBUG
         immediateThrowForce = NewHandManager.GetInstance().immediateThrowForce;
         MoveHand();
+
+        if (ball != null) {
+            ball.currentThrowVector = heldThrowVector;
+        }
     }
 
     void MoveHand()
@@ -67,9 +77,6 @@ public class NewHand : MonoBehaviour
         }
     }
 
-    List<Vector2> positions;
-    List<Vector2> moveDirections;
-
     void HandleMouseInput()
     {
         // Step 1: Set the position to be equal to the current mouse position
@@ -77,16 +84,35 @@ public class NewHand : MonoBehaviour
         
         // Step 2: Find the move direction since last frame
         if(positions.Count > 1) {
-            moveDir = (Vector2)transform.position - lastFramePos;
+            // Check num positions so that first frame catches do not throw the ball immediately
+            instantMoveDir = (Vector2)transform.position - lastFramePos;
         }
-        Debug.DrawLine(transform.position, (Vector2)transform.position + moveDir.normalized * 2, Color.red);
+
+        // Step 3: Set the last frame position (for next frame)
         lastFramePos = transform.position;
 
-        // Step 3: Find the throw vector
-        throwVector = moveDir * immediateThrowForce;
+        // Step 4: Find the throw vector
+        immediateThrowVector = instantMoveDir * immediateThrowForce;
 
         positions.Add(transform.position);
-        moveDirections.Add(moveDir);
+        moveDirections.Add(instantMoveDir);
+
+        if(Input.GetMouseButton(0)) {
+            if(ball != null) {
+                heldMoveDir = (Vector2)transform.position - catchPosition;
+                heldThrowVector = heldMoveDir * heldThrowForce;
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0)) {
+            if (ball != null) {
+                Debug.Log("tryna throw");
+                // heldThrowVector = heldMoveDir * heldThrowForce;
+                ball.GetThrown(heldThrowVector);
+                ball = null;
+                HandleDeath();
+            }
+        }
     }
 
     void HandleTouchInput() 
@@ -96,15 +122,28 @@ public class NewHand : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Ball"))
-        {
-            if(!other.GetComponent<NewBall>().launching) {
-                // Debug.Log("hit a thing");
-                other.GetComponent<NewBall>().GetCaughtAndThrown(throwVector);
-                
-                // Debug.Log("Move dir: " + moveDir + "; lastframePos" +  lastFramePos);
-                // Debug.Log("Throw vector: " + throwVector);
-                HandleDeath();
+        // Only allow one ball to be affected at a time
+        if(ball == null) {
+
+            if (other.CompareTag("Ball")) {
+
+                // Only catch balls that are not launching
+                if(!other.GetComponent<NewBall>().launching) {
+
+                    // Handle different input methods
+                    if(positions.Count > 1) {
+
+                        // The finger has been held down, the ball can be thrown immediately
+                        other.GetComponent<NewBall>().GetCaughtAndThrown(immediateThrowVector);
+                        HandleDeath();
+                    } else {
+
+                        // The finger tapped directly on the ball, catch it and drag to throw it
+                        other.GetComponent<NewBall>().GetCaught();
+                        catchPosition = transform.position;
+                        ball = other.GetComponent<NewBall>();
+                    }
+                }
             }
         }
     }
@@ -113,11 +152,16 @@ public class NewHand : MonoBehaviour
         Destroy(gameObject);
     }
 
+
     void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, .1f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(lastFramePos, .1f);    
+    }
+
+    void OnGUI() {
+        
     }
 }

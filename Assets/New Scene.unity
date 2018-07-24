@@ -128,7 +128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &743367967
 RectTransform:
   m_ObjectHideFlags: 0
@@ -501,7 +501,7 @@ RectTransform:
   m_GameObject: {fileID: 1042009660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.007027778, y: 0.007027778, z: 0.007027778}
+  m_LocalScale: {x: 0.007022472, y: 0.007022472, z: 0.007022472}
   m_Children:
   - {fileID: 1279571078}
   - {fileID: 813235556}
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8a02c01c12f54fb4d0e3f6b2cd318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameState: 0
+  gameState: 0
   spawnBallsByTouchCount: 0
 --- !u!4 &1341528086
 Transform:
@@ -935,7 +935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 1854823922445930, guid: 175e08579e49f474f9609da6243a6afd, type: 2}
-  ballLaunchForce: 14
+  ballLaunchForce: 40
 --- !u!114 &1341528088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,8 +949,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handTypeToggle: {fileID: 743367969}
   handPrefab: {fileID: 1486805989234084, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
-  heldThrowForce: 4
-  immediateThrowForce: 40
+  heldThrowForce: 15
+  immediateThrowForce: 100
 --- !u!114 &1341528089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1030,7 +1030,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 120
+  m_Text: 100
 --- !u!222 &1495194605
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -62,7 +62,6 @@ GameObject:
   - component: {fileID: 114941437880975662}
   - component: {fileID: 114796362029418764}
   - component: {fileID: 114755818951543184}
-  - component: {fileID: 114909446832349520}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -270,22 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605fe7dfdf0f5e84dae5877c78a2e750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114909446832349520
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1688226810440158}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1081f20d9b3c72d4fa41d8160621967c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  counterPrefab: {fileID: 1014985569050034, guid: f0f8328d1a4ea344eb2cdc356252171f,
-    type: 2}
-  startCatchCount: 5
-  currentCatchCount: 0
-  distanceFromCenter: 0.6
 --- !u!114 &114941437880975662
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -14,21 +14,22 @@ public class NewBall : MonoBehaviour
     public bool canBeCaught = false;
     [HideInInspector]
     public bool launching;
+    // [HideInInspector]
+    public Vector2 currentThrowVector;
+
+    public bool isHeld;
 
     // Use this for initialization
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = defaultGravity;
         transform.localScale = Vector2.one * scale;
     }
 
     // Update is called once per frame
     void Update()
     {
-		if(Input.GetKeyDown(KeyCode.C)) {
-			// HandleCatch(Vector2.up, forceModifier, Vector2.one);
-		}
-
         if(rb.velocity.y < 0) {
             launching = false;
         }
@@ -59,7 +60,26 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = defaultGravity;
 
         EventManager.TriggerEvent("BallCaught");
+    }
 
+    public void GetCaught() {
+        if(launching) { return; }
+
+        isHeld = true;
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
+        
+        EventManager.TriggerEvent("BallCaught");
+    }
+
+    public void GetThrown(Vector2 throwVector) {
+        if(launching) { return; }
+
+        isHeld = false;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
+        rb.gravityScale = defaultGravity;
+        GetComponent<LineDrawer>().HandleThrow();
     }
 
     void CheckBounds() {
