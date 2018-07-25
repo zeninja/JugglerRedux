@@ -30,6 +30,11 @@ public class NewBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.B)) {
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 0;
+        }
+
         if(rb.velocity.y < 0) {
             launching = false;
         }
