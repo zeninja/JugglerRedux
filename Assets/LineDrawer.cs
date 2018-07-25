@@ -6,24 +6,25 @@ using UnityEngine;
 public class LineDrawer : MonoBehaviour
 {
 
-	LineRenderer m_PreviewLineRenderer;
-	public int m_PreviewLineSegments = 120;
+    LineRenderer m_PreviewLineRenderer;
+    public int m_PreviewLineSegments = 120;
 
-	Vector3 m_ShotPower;
-	float m_ShotPowerMultiplier;
+    Vector3 m_ShotPower;
+    float m_ShotPowerMultiplier;
 
-	NewBall ball;
+    NewBall m_Ball;
+    NewHand m_Hand;
 
-	Vector3 lineStartPosition;
+    Vector3 lineStartPosition;
 
-	bool m_gotThrown = false;
+    bool m_gotThrown = false;
 
     // Use this for initialization
     void Start()
     {
-		
-		m_PreviewLineRenderer = GetComponent<LineRenderer>();
-		ball = GetComponent<NewBall>();
+
+        m_PreviewLineRenderer = GetComponent<LineRenderer>();
+        m_Ball = GetComponent<NewBall>();
     }
 
     // Update is called once per frame
@@ -33,19 +34,20 @@ public class LineDrawer : MonoBehaviour
         //         m_ShotPower.y = m_Player.GetAxis("Vertical") + m_InitialShotPower.y;
         // m_PreviewLineRenderer.transform.position = m_Basketball.transform.position;
 
-        m_PreviewLineRenderer.enabled = EnableLine();
+        // Vector2 currentVelocity = m_ShotPower * m_ShotPowerMultiplier;
+
+        Vector3 currentVelocity = GetCurrentShotVelocity();
+
+        m_PreviewLineRenderer.enabled = EnableLine() && currentVelocity != Vector3.zero;
 
         List<Vector3> linePositions = new List<Vector3>(m_PreviewLineSegments);
         Vector3 currentLinePoint = Vector2.zero;
-    
-	    // Vector2 currentVelocity = m_ShotPower * m_ShotPowerMultiplier;
-        Vector3 currentVelocity = GetCurrentShotVelocity();
 
         const float dragPerFrame = -0.1f;
         Vector3 gravity = (Physics2D.gravity * Time.fixedDeltaTime);
         for (int i = 0; i < m_PreviewLineSegments; ++i)
         {
-			if(ball.isHeld) { lineStartPosition = transform.position; }
+            if (m_Ball.isHeld) { lineStartPosition = transform.position; }
             linePositions.Add(lineStartPosition + currentLinePoint);
 
             //Add Drag
@@ -65,18 +67,31 @@ public class LineDrawer : MonoBehaviour
 
         m_PreviewLineRenderer.positionCount = m_PreviewLineSegments;
         m_PreviewLineRenderer.SetPositions(linePositions.ToArray());
+
     }
 
-	bool EnableLine() {
-		return ball.isHeld || m_gotThrown;
-	}
+    bool EnableLine()
+    {
+        return m_Ball.isHeld || m_gotThrown;
+    }
 
-	Vector2 GetCurrentShotVelocity() {
-		return ball.currentThrowVector;
-	}
+    public void SetHand(NewHand hand)
+    {
+        m_Hand = hand;
+    }
 
-	public void HandleThrow() {
-		lineStartPosition = transform.position;
-		m_gotThrown = true;
-	}
+    Vector2 GetCurrentShotVelocity()
+    {
+        if(m_Hand != null) {
+            return m_Hand.GetThrowVector();
+        } else {
+            return Vector3.zero;
+        }
+    }
+
+    public void HandleThrow()
+    {
+        lineStartPosition = transform.position;
+        m_gotThrown = true;
+    }
 }

@@ -24,7 +24,7 @@ public class NewHandManager : MonoBehaviour
     public float heldThrowForce = 4;
     public float immediateThrowForce = 10;
 
-    // List<int> fingerIds = new List<int>();
+    List<int> fingerIds = new List<int>();
 
     void Awake()
     {
@@ -67,6 +67,10 @@ public class NewHandManager : MonoBehaviour
         }
     }
 
+    public void RemoveID(int fingerId) {
+        fingerIds.Remove(fingerId);
+    }
+
     void HandleMouseInput() 
     {
         if(Input.GetMouseButtonDown(0)) {
@@ -78,6 +82,7 @@ public class NewHandManager : MonoBehaviour
     {
         GameObject hand = Instantiate(handPrefab) as GameObject;
         hand.GetComponent<NewHand>().fingerId = fingerId;
+
         // if (NewGameManager.GetInstance().spawnBallsByTouchCount)
         // {
         //     if (NewBallManager._ballCount < Input.touchCount)
