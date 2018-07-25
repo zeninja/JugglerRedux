@@ -32,7 +32,7 @@ public class NewHand : MonoBehaviour
     List<Vector2> m_PositionHistory;
 
     [System.NonSerialized] public float grabThrowForce = 4;
-    [System.NonSerialized] public float m_SlapThrowForce = 10;
+    [System.NonSerialized] public float slapThrowForce = 10;
 
     void Awake()
     {
@@ -57,7 +57,7 @@ public class NewHand : MonoBehaviour
         m_Transform = transform;
 
         grabThrowForce = NewHandManager.GetInstance().heldThrowForce;
-        m_SlapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
+        slapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
 
         m_PositionHistory = new List<Vector2>();
     }
@@ -67,14 +67,10 @@ public class NewHand : MonoBehaviour
         CheckForBall();
     }
 
-    bool d_BallSeenThisFrame;
-
     void Update()
     {
-        d_BallSeenThisFrame = m_Ball != null;
-
         // dEBUG
-        m_SlapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
+        slapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
 
         HandleInput();
     }
@@ -96,6 +92,7 @@ public class NewHand : MonoBehaviour
         // Set the position to be equal to the current mouse position
         m_Transform.position = Extensions.MouseScreenToWorld();
 
+        // Check num positions so that first frame catches do not throw the ball immediately
         if (m_LastFramePos != null)
             m_MostRecentMoveDir = (Vector2)m_Transform.position - m_LastFramePos;
 
@@ -107,12 +104,12 @@ public class NewHand : MonoBehaviour
             if (FirstFrame())
             {
                 Debug.Log("First frame");
-
+                // Debug.Log("Finger tapped directly");
                 // The finger tapped directly on the ball, catch it and drag to throw it
                 m_Ball.GetComponent<NewBall>().GetCaught();
-
                 m_CatchPosition = m_Transform.position;
                 m_BallGrabbedFirstFrame = true;
+
             }
             else
             {
@@ -120,6 +117,7 @@ public class NewHand : MonoBehaviour
 
                 if (m_BallGrabbedFirstFrame)
                 {
+
                     // Find Grab/Drag throw vector
                     FindMouseGrabThrowVector();
 
@@ -131,7 +129,7 @@ public class NewHand : MonoBehaviour
                 else
                 {
                     Debug.Log(m_PositionHistory.Count);
-                    m_SlapThrowVector = m_MostRecentMoveDir * m_SlapThrowForce;
+                    m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
                     SlapBall();
                 }
             }
@@ -146,40 +144,24 @@ public class NewHand : MonoBehaviour
         {
             if (t.fingerId == fingerId)
             {
+
                 m_Transform.position = Camera.main.ScreenToWorldPoint(t.position);
+
+                // Find slap throw vector
                 m_MostRecentMoveDir = t.deltaPosition;
 
                 if (m_Ball != null)
                 {
                     if (FirstFrame())
                     {
-                        Debug.Log("First frame");
 
-                        // The finger tapped directly on the ball, catch it and drag to throw it
-                        m_Ball.GetComponent<NewBall>().GetCaught();
-                        m_CatchPosition = m_Transform.position;
-                        m_BallGrabbedFirstFrame = true;
-                    }
-                    else
-                    {
-                        Debug.Log("Not first frame");
-
-                        if (m_BallGrabbedFirstFrame)
+                        if (t.phase != TouchPhase.Ended)
                         {
-                            // Find Grab/Drag throw vector
-                            FindTouchGrabThrowVector();
-
-                            if(t.phase == TouchPhase.Ended) {
-                                ThrowBall();
-                            }
+                            SlapBall();
                         }
                         else
                         {
-                            if(t.phase != TouchPhase.Ended) {
-                                Debug.Log(m_PositionHistory.Count);
-                                m_SlapThrowVector = m_MostRecentMoveDir * m_SlapThrowForce;
-                                SlapBall();
-                            }
+                            ThrowBall();
                         }
                     }
                 }
@@ -187,44 +169,39 @@ public class NewHand : MonoBehaviour
         }
     }
 
-    int physicsFramesBallWasSeen = 0;
-
     void CheckForBall()
     {
-        float radius = 1f;
-        LayerMask mask = 1 << LayerMask.NameToLayer("Ball");
-        // RaycastHit2D hit = Physics2D.CircleCast(m_Transform.position, radius, Vector2.zero);
-        RaycastHit2D hit = Physics2D.Raycast(m_Transform.position, Vector2.zero, 0, mask);
-
-
-        Debug.Log(hit.collider);
+        float radius = 0.5f;
+        RaycastHit2D hit = Physics2D.CircleCast(m_Transform.position, radius, Vector2.zero);
 
         // Only catch one ball at a time
         if (hit && m_Ball == null)
         {
-            physicsFramesBallWasSeen++;
-            Debug.Log("Hit a ball");
-            NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
-
-            // only catch balls that are not launching
-            if (!ballToJuggle.launching)
+            if (hit.collider.gameObject.CompareTag("Ball"))
             {
-                // Debug.Log("Setting ball");
-                SetBall(ballToJuggle);
+                // Debug.Log("Hit a ball");
+                NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
+
+                // only catch balls that are not launching
+                if (!ballToJuggle.launching)
+                {
+                    // Debug.Log("Setting ball");
+                    SetBall(ballToJuggle);
+                }
             }
         }
 
         // Holding a ball, update the grab throw direction
-        if (m_Ball != null)
-        {
-            m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
-        }
+        // if (m_Ball != null)
+        // {
+        //     m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
+        // }
     }
 
     void SetBall(NewBall caughtBall)
     {
         m_Ball = caughtBall;
-        m_Ball.GetComponent<LineDrawer>().SetHand(this);
+        // Debug.Break();
     }
 
     void FindMouseGrabThrowVector()
@@ -236,13 +213,10 @@ public class NewHand : MonoBehaviour
         }
     }
 
-    void FindTouchGrabThrowVector() {
-        m_GrabMoveDir = (Vector2)m_Transform.position - m_CatchPosition;
-        m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
-    }
-
     void SlapBall()
     {
+
+        
         m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
         HandleDeath();
     }
@@ -254,14 +228,13 @@ public class NewHand : MonoBehaviour
         HandleDeath();
     }
 
-    public Vector2 GetThrowVector()
-    {
+    public Vector2 GetThrowVector() {
         return m_GrabThrowVector;
     }
 
     bool FirstFrame()
     {
-        return m_PositionHistory.Count <= 1;
+        return m_PositionHistory.Count < 2;
     }
 
     void HandleDeath()
