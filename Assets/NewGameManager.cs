@@ -15,7 +15,7 @@ public class NewGameManager : MonoBehaviour {
 	}
 	#endregion
 
-	public bool spawnBallsByTouchCount;
+	// public bool spawnBallsByTouchCount;
 
 	void Awake() {
 		if(instance == null) {

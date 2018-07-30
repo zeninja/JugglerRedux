@@ -31,4 +31,10 @@ public class Extensions : MonoBehaviour {
 		Vector3 output = Camera.main.ScreenToWorldPoint(input);
 		return output;
 	}
+
+	public static Vector3 TouchScreenToWorld(Touch t) {
+		Vector3 input  = Camera.main.ScreenToWorldPoint(t.position);
+		Vector3 output = new Vector3(input.x, input.y, 0);
+		return output;
+	}
 }

@@ -22,7 +22,6 @@ public class LineDrawer : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         m_PreviewLineRenderer = GetComponent<LineRenderer>();
         m_Ball = GetComponent<NewBall>();
     }

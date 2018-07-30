@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class NewUIManager : MonoBehaviour {
 
-	public Text throwSens;
+	public Text slapForceText;
+	public Text grabForceText;
+
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +16,7 @@ public class NewUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		throwSens.text = NewHandManager.GetInstance().immediateThrowForce.ToString();
+		slapForceText.text = NewHandManager.GetInstance().touchSlapThrowForce.ToString("F2");
+		grabForceText.text = NewHandManager.GetInstance().touchGrabThrowForce.ToString("F2");
 	}
 }

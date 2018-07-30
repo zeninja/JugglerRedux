@@ -24,8 +24,8 @@ public class NewHand : MonoBehaviour
 
     NewBall m_Ball;
 
-    public bool useMouse = false;
-    public int fingerId;
+    [System.NonSerialized] public bool useMouse = false;
+    public int m_FingerID;
 
     private bool m_BallGrabbedFirstFrame;
 
@@ -56,8 +56,16 @@ public class NewHand : MonoBehaviour
     {
         m_Transform = transform;
 
-        grabThrowForce = NewHandManager.GetInstance().heldThrowForce;
-        slapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
+        if (useMouse)
+        {
+            grabThrowForce = NewHandManager.GetInstance().mouseGrabThrowForce;
+            slapThrowForce = NewHandManager.GetInstance().mouseSlapThrowForce;
+        }
+        else
+        {
+            grabThrowForce = NewHandManager.GetInstance().touchGrabThrowForce;
+            slapThrowForce = NewHandManager.GetInstance().touchSlapThrowForce;
+        }
 
         m_PositionHistory = new List<Vector2>();
     }
@@ -69,14 +77,13 @@ public class NewHand : MonoBehaviour
 
     void Update()
     {
-        // dEBUG
-        slapThrowForce = NewHandManager.GetInstance().immediateThrowForce;
-
         HandleInput();
     }
 
     void HandleInput()
     {
+        // if(NewGameManager.GetInstance().gameState == GameState.gameOver) { return; }
+
         if (useMouse)
         {
             HandleMouseInput();
@@ -106,10 +113,7 @@ public class NewHand : MonoBehaviour
                 Debug.Log("First frame");
                 // Debug.Log("Finger tapped directly");
                 // The finger tapped directly on the ball, catch it and drag to throw it
-                m_Ball.GetComponent<NewBall>().GetCaught();
-                m_CatchPosition = m_Transform.position;
-                m_BallGrabbedFirstFrame = true;
-
+                GrabBall();
             }
             else
             {
@@ -119,7 +123,7 @@ public class NewHand : MonoBehaviour
                 {
 
                     // Find Grab/Drag throw vector
-                    FindMouseGrabThrowVector();
+                    FindGrabThrowVector();
 
                     if (Input.GetMouseButtonUp(0))
                     {
@@ -128,8 +132,6 @@ public class NewHand : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(m_PositionHistory.Count);
-                    m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
                     SlapBall();
                 }
             }
@@ -142,29 +144,50 @@ public class NewHand : MonoBehaviour
     {
         foreach (Touch t in Input.touches)
         {
-            if (t.fingerId == fingerId)
+            Debug.Log(Input.touchCount);
+            if (t.fingerId == m_FingerID)
             {
+                Debug.Log("Checking " + t.fingerId);
 
-                m_Transform.position = Camera.main.ScreenToWorldPoint(t.position);
+                m_Transform.position = Extensions.TouchScreenToWorld(t);
 
                 // Find slap throw vector
                 m_MostRecentMoveDir = t.deltaPosition;
 
                 if (m_Ball != null)
                 {
-                    if (FirstFrame())
+                    if (FirstFrame() && !m_BallGrabbedFirstFrame)
                     {
+                        GrabBall();
+                    }
+                    else
+                    {
+                        if (m_BallGrabbedFirstFrame)
+                        {
+                            FindGrabThrowVector();
 
-                        if (t.phase != TouchPhase.Ended)
+                            if (t.phase == TouchPhase.Ended)
+                            {
+                                // Debug.Log("Throwing. Throw vector: " + m_GrabThrowVector);
+                                ThrowBall();
+                            }
+                        }
+                        else if (t.phase != TouchPhase.Ended)
                         {
                             SlapBall();
                         }
-                        else
-                        {
-                            ThrowBall();
-                        }
                     }
                 }
+                else
+                {
+                    if (t.phase == TouchPhase.Ended)
+                    {
+                        Debug.Log("Finger: " + t.fingerId + " Touch Phase Ended");
+                        HandleDeath();
+                    }
+                }
+
+                m_PositionHistory.Add(m_Transform.position);
             }
         }
     }
@@ -204,19 +227,25 @@ public class NewHand : MonoBehaviour
         // Debug.Break();
     }
 
-    void FindMouseGrabThrowVector()
+    void FindGrabThrowVector()
     {
-        if (Input.GetMouseButton(0))
-        {
-            m_GrabMoveDir = (Vector2)m_Transform.position - m_CatchPosition;
-            m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
-        }
+        m_GrabMoveDir = (Vector2)m_Transform.position - m_CatchPosition;
+        m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
+    }
+
+    void GrabBall()
+    {
+        Debug.Log("Ball grabbed");
+        m_Ball.GetComponent<NewBall>().GetCaught();
+        m_Ball.GetComponent<LineDrawer>().SetHand(this);
+        m_CatchPosition = m_Transform.position;
+        m_BallGrabbedFirstFrame = true;
     }
 
     void SlapBall()
     {
-
-        
+        m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
+        // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
         m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
         HandleDeath();
     }
@@ -228,7 +257,8 @@ public class NewHand : MonoBehaviour
         HandleDeath();
     }
 
-    public Vector2 GetThrowVector() {
+    public Vector2 GetThrowVector()
+    {
         return m_GrabThrowVector;
     }
 
@@ -239,19 +269,25 @@ public class NewHand : MonoBehaviour
 
     void HandleDeath()
     {
-        NewHandManager.GetInstance().RemoveID(fingerId);
-        Destroy(gameObject);
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(m_Transform.position, .5f);
+        // Debug.Log("Hand dying " + m_FingerID);
+        // NewHandManager.GetInstance().RemoveID(m_FingerID);
+        // Destroy(gameObject);
     }
 
     void OnGUI()
     {
-        GUI.color = Color.black;
-        GUI.Label(new Rect(0, 0, Screen.width, Screen.height), ((Vector2)m_Transform.position).ToString());
+        // GUI.color = Color.black;
+        // GUI.Label(new Rect(0, 100 * m_FingerID, Screen.width, Screen.height), ((Vector3)m_Transform.position).ToString());
+
+        // Vector2 startPos = Camera.main.WorldToScreenPoint(transform.position);
+        // startPos.x += 100;
+        // startPos.y += 50;
+        // startPos.y = Screen.height - startPos.y;
+
+        // string handInfo = "FingerID: " + m_FingerID + "\n" +
+        //                   "Num fingers: " + NewHandManager.GetCurrentFingerIDCount().ToString() + "\n" + 
+        //                   "touchCount: " + Input.touchCount;
+
+        // GUI.Label(new Rect(startPos.x, startPos.y, 100, 500), handInfo);
     }
 }

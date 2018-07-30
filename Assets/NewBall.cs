@@ -53,22 +53,29 @@ public class NewBall : MonoBehaviour
     public void GetCaughtAndThrown(Vector2 throwVector) {
         if(launching) { return; }
 
-        // Debug.Log("Getting caught and thrown");
-        rb.gravityScale = 0;
+        Debug.Log("Getting caught and thrown");
         rb.velocity = Vector2.zero;
+        rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
+        rb.gravityScale = defaultGravity;
+        GetComponent<LineDrawer>().HandleThrow();
+
+
+        // rb.gravityScale = 0;
+        // rb.velocity = Vector2.zero;
 
         // Method 1: Add force
         // rb.AddForce(throwVector, ForceMode2D.Impulse);
         
         // Method 2: Set velocity directly
-        rb.velocity = throwVector;
-        rb.gravityScale = defaultGravity;
+        // rb.velocity = throwVector;
+        // rb.gravityScale = defaultGravity;
 
-        EventManager.TriggerEvent("BallCaught");
+        // EventManager.TriggerEvent("BallCaught");
     }
 
     public void GetCaught() {
         if(launching) { return; }
+        Debug.Log("Got caught");
 
         isHeld = true;
         rb.gravityScale = 0;

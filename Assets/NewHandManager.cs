@@ -19,12 +19,15 @@ public class NewHandManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject handPrefab;
+    public GameObject m_HandPrefab;
 
-    public float heldThrowForce = 4;
-    public float immediateThrowForce = 10;
+    public float mouseGrabThrowForce = 4;
+    public float mouseSlapThrowForce = 10;
 
-    List<int> fingerIds = new List<int>();
+    public float touchGrabThrowForce = 4;
+    public float touchSlapThrowForce = 10;
+
+    List<int> m_FingerIdList = new List<int>();
 
     void Awake()
     {
@@ -41,47 +44,93 @@ public class NewHandManager : MonoBehaviour
         }
     }
 
-    void Start() {
+    void Start()
+    {
         _globalHandType = handTypeToggle.isOn ? HandType.throwImmediately : HandType.holdAndThrow;
+        InitSavedInfo();
+    }
+
+    void InitSavedInfo()
+    {
+#if UNITY_EDITOR
+        PlayerPrefs.SetFloat("touchSlapForce", touchSlapThrowForce);
+        PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
+#endif
+
+        if (PlayerPrefs.HasKey("touchSlapForce"))
+        {
+            touchSlapThrowForce = PlayerPrefs.GetFloat("touchSlapForce");
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("touchSlapForce", touchSlapThrowForce);
+        }
+
+        if (PlayerPrefs.HasKey("touchGrabForce"))
+        {
+            touchGrabThrowForce = PlayerPrefs.GetFloat("touchGrabForce");
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
+        }
     }
 
     void Update()
     {
-        HandleTouchInput();
+#if UNITY_EDITOR
         HandleMouseInput();
+#else
+        HandleTouchInput();
+#endif
     }
 
     void HandleTouchInput()
     {
-        for (int i = 0; i < Input.touchCount; i++)
+        foreach (Touch t in Input.touches)
         {
-            if (Input.GetTouch(i).phase == TouchPhase.Began)
+            if (t.phase == TouchPhase.Began)
             {
-                int fingerId = Input.GetTouch(i).fingerId;
-                if (!fingerIds.Contains(fingerId))
-                {
-                    fingerIds.Add(fingerId);
-                    SpawnHand(fingerId);
-                }
+                SpawnTouchHand(t);
             }
         }
     }
 
-    public void RemoveID(int fingerId) {
-        fingerIds.Remove(fingerId);
+    public void RemoveID(int fingerId)
+    {
+        m_FingerIdList.Remove(fingerId);
     }
 
-    void HandleMouseInput() 
+    void HandleMouseInput()
     {
-        if(Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Debug.Log("Mouse spawning hand");
             SpawnHand();
         }
     }
 
-    void SpawnHand(int fingerId)
+    // void SpawnHand(int fingerId)
+    // {
+    //     GameObject hand = Instantiate(handPrefab) as GameObject;
+    //     hand.GetComponent<NewHand>().fingerId = fingerId;
+    //     // Debug.Log("Spawning hand. Num hands: " + fingerIds.Count);
+    // }
+
+    void SpawnTouchHand(Touch t)
     {
-        GameObject hand = Instantiate(handPrefab) as GameObject;
-        hand.GetComponent<NewHand>().fingerId = fingerId;
+        GameObject hand = Instantiate(m_HandPrefab) as GameObject;
+        hand.GetComponent<NewHand>().m_FingerID = t.fingerId;
+        Debug.Log("Spawning hand. FINGER ID: " + t.fingerId);
+    }
+
+    void SpawnHand()
+    {
+        GameObject hand = Instantiate(m_HandPrefab) as GameObject;
+
+#if UNITY_EDITOR
+        hand.GetComponent<NewHand>().useMouse = true;
+#endif
 
         // if (NewGameManager.GetInstance().spawnBallsByTouchCount)
         // {
@@ -92,28 +141,51 @@ public class NewHandManager : MonoBehaviour
         // }
     }
 
-    void SpawnHand() {
-        GameObject hand = Instantiate(handPrefab) as GameObject;
+    public void AdjustSlapThrowForce(float amt)
+    {
+        touchSlapThrowForce += amt;
+        PlayerPrefs.SetFloat("touchSlapforce", touchSlapThrowForce);
+    }
 
-        #if UNITY_EDITOR
-        hand.GetComponent<NewHand>().useMouse = true;
-        #endif
+    public void AdjustGrabThrowForce(float amt)
+    {
+        touchGrabThrowForce += amt;
+        PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
+    }
 
-        if (NewGameManager.GetInstance().spawnBallsByTouchCount)
+    public static int GetCurrentFingerIDCount()
+    {
+        return NewHandManager.GetInstance().m_FingerIdList.Count;
+    }
+
+    private void OnDrawGizmos()
+    {
+
+        foreach (Touch t in Input.touches)
         {
-            if (NewBallManager._ballCount < Input.touchCount)
-            {
-                EventManager.TriggerEvent("SpawnBall");
-            }
+            Gizmos.DrawWireSphere(t.position, .5f);
         }
     }
 
-    public void AdjustThrowForce(float amt) {
-        immediateThrowForce += amt;
-    }
+    void OnGUI()
+    {
+        GUI.color = Color.black;
 
-    // public void RemoveId(int fingerId)
-    // {
-    //     fingerIds.Remove(fingerId);
-    // }
+        foreach (Touch t in Input.touches)
+        {
+            GUI.Label(new Rect(0, 100 * t.fingerId, Screen.width, Screen.height), ((Vector3)t.position).ToString());
+
+            Vector2 startPos = Camera.main.WorldToScreenPoint(t.position);
+            startPos.x += 100;
+            startPos.y += 50;
+            startPos.y = Screen.height - startPos.y;
+
+            string touchInfo = "FingerID: " + t.fingerId + "\n" +
+                              "Num fingers: " + NewHandManager.GetCurrentFingerIDCount().ToString() + "\n" +
+                              "touchCount: " + Input.touchCount;
+
+            GUI.Label(new Rect(startPos.x, startPos.y, 100, 500), touchInfo);
+        }
+
+    }
 }

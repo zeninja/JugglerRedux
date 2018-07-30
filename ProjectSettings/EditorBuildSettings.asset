@@ -38,3 +38,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/New Scene.unity
     guid: fbb7d09aa5149d549ba20681762c6306
+  - enabled: 0
+    path: Assets/TouchTest.unity
+    guid: ac347632f736f414d98b3dd882b88bcc
