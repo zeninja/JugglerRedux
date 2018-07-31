@@ -36,6 +36,7 @@ public class NewBall : MonoBehaviour
         }
 
         if(rb.velocity.y < 0) {
+            EventManager.TriggerEvent("BallPeaked");
             m_Launching = false;
             m_BeingThrown = false;
         }
@@ -71,7 +72,7 @@ public class NewBall : MonoBehaviour
         // rb.velocity = throwVector;
         // rb.gravityScale = defaultGravity;
 
-        // EventManager.TriggerEvent("BallCaught");
+        EventManager.TriggerEvent("BallCaught");
     }
 
     public void GetCaught() {
@@ -95,6 +96,7 @@ public class NewBall : MonoBehaviour
         GetComponent<LineDrawer>().HandleThrow();
 
         m_BeingThrown = true;
+        EventManager.TriggerEvent("BallThrown");
     }
 
     public bool m_BeingThrown = false;

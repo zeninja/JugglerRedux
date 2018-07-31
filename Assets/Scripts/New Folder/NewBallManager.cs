@@ -42,14 +42,6 @@ public class NewBallManager : MonoBehaviour
         EventManager.StartListening("BallDied", OnBallDied);
     }
 
-    public bool anyBallThrowing = false;
-    public float targetTimeScale = 1;
-    public float currentTimeScale;
-    public float m_SlowTimeScale = .25f;
-    float m_NormalTimeScale = 1.0f;
-
-    public float m_TimeSmoothing = 10f;
-
     // Update is called once per frame
     void Update()
     {
@@ -57,13 +49,10 @@ public class NewBallManager : MonoBehaviour
         {
             EventManager.TriggerEvent("SpawnBall");
         }
-
-        SlowTimeBasedOnThrows();
     }
-
-    void SlowTimeBasedOnThrows()
-    {
-        anyBallThrowing = false;
+    
+    public bool AnyBallBeingThrown() {
+        bool anyBallThrowing = false;
 
         foreach (NewBall n in balls)
         {
@@ -73,18 +62,7 @@ public class NewBallManager : MonoBehaviour
                 break;
             }
         }
-
-        if (anyBallThrowing)
-        {
-            targetTimeScale = m_SlowTimeScale;
-        }
-        else
-        {
-            targetTimeScale = m_NormalTimeScale;
-        }
-
-        Time.timeScale = Mathf.Lerp(Time.timeScale, targetTimeScale, Time.deltaTime * m_TimeSmoothing);
-        currentTimeScale = Time.timeScale;
+        return anyBallThrowing;
     }
 
     void SpawnBall()
