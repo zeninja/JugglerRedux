@@ -46,7 +46,7 @@ public class LineDrawer : MonoBehaviour
         Vector3 gravity = (Physics2D.gravity * Time.fixedDeltaTime);
         for (int i = 0; i < m_PreviewLineSegments; ++i)
         {
-            if (m_Ball.isHeld) { lineStartPosition = transform.position; }
+            if (m_Ball.m_IsHeld) { lineStartPosition = transform.position; }
             linePositions.Add(lineStartPosition + currentLinePoint);
 
             //Add Drag
@@ -71,7 +71,7 @@ public class LineDrawer : MonoBehaviour
 
     bool EnableLine()
     {
-        return m_Ball.isHeld || m_gotThrown;
+        return m_Ball.m_IsHeld || m_gotThrown;
     }
 
     public void SetHand(NewHand hand)

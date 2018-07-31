@@ -14,9 +14,10 @@ public class TimeManager : MonoBehaviour
 
     public float m_TimeSmoothing = 10f;
 
-	public float m_CurrentTimeJuice;
+    public float m_CurrentTimeJuice;
     public float m_TimeJuiceBuildRate = .2f;
-	public float m_MaxTimeJuice = 1.0f;
+    public float m_MaxTimeJuice = 1.0f;
+    public float m_TimeJuiceDrainRate = .05f;
 
     public Image meter;
 
@@ -24,6 +25,7 @@ public class TimeManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        EventManager.StartListening("BallDied", OnBallDied);
         EventManager.StartListening("BallSlapped", OnBallSlapped);
     }
 
@@ -32,14 +34,15 @@ public class TimeManager : MonoBehaviour
     {
         SlowTimeBasedOnThrows();
 
-        meter.fillAmount = m_CurrentTimeJuice/ m_MaxTimeJuice;
+        meter.fillAmount = m_CurrentTimeJuice / m_MaxTimeJuice;
     }
 
     void SlowTimeBasedOnThrows()
     {
-        if (NewBallManager.GetInstance().AnyBallBeingThrown())
+        if (m_CurrentTimeJuice > 0 && NewBallManager.GetInstance().AnyBallBeingThrown())
         {
             m_TargetTimeScale = m_SlowTimeScale;
+            m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
         }
         else
         {
@@ -50,7 +53,12 @@ public class TimeManager : MonoBehaviour
         m_CurrentTimeScale = Time.timeScale;
     }
 
-    void OnBallSlapped() {
+    void OnBallSlapped()
+    {
         m_CurrentTimeJuice = Mathf.Min(m_CurrentTimeJuice + m_TimeJuiceBuildRate, m_MaxTimeJuice);
+    }
+
+    void OnBallDied() {
+        m_CurrentTimeJuice = 0;
     }
 }

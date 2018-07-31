@@ -17,7 +17,9 @@ public class NewBall : MonoBehaviour
     // [HideInInspector]
     public Vector2 currentThrowVector;
 
-    public bool isHeld;
+    public bool m_IsHeld;
+    public bool m_BeingThrown = false;
+
 
     // Use this for initialization
     void Start()
@@ -55,7 +57,7 @@ public class NewBall : MonoBehaviour
     public void GetCaughtAndThrown(Vector2 throwVector) {
         if(m_Launching) { return; }
 
-        Debug.Log("Getting caught and thrown");
+        // Debug.Log("Getting caught and thrown");
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
@@ -72,14 +74,15 @@ public class NewBall : MonoBehaviour
         // rb.velocity = throwVector;
         // rb.gravityScale = defaultGravity;
 
-        EventManager.TriggerEvent("BallCaught");
+        // EventManager.TriggerEvent("BallCaught");
+        EventManager.TriggerEvent("BallSlapped");
     }
 
     public void GetCaught() {
         if(m_Launching) { return; }
-        Debug.Log("Got caught");
+        // Debug.Log("Got caught");
 
-        isHeld = true;
+        m_IsHeld = true;
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         
@@ -89,7 +92,7 @@ public class NewBall : MonoBehaviour
     public void GetThrown(Vector2 throwVector) {
         if(m_Launching) { return; }
 
-        isHeld = false;
+        m_IsHeld = false;
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
@@ -98,8 +101,6 @@ public class NewBall : MonoBehaviour
         m_BeingThrown = true;
         EventManager.TriggerEvent("BallThrown");
     }
-
-    public bool m_BeingThrown = false;
 
     void CheckBounds() {
         Vector3 converted = Camera.main.WorldToScreenPoint(transform.position);

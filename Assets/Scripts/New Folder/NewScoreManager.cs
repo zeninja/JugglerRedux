@@ -17,13 +17,14 @@ public class NewScoreManager : MonoBehaviour {
 	void Start () {
 		EventManager.StartListening("SpawnBall", OnBallSpawned);
 		EventManager.StartListening("BallCaught", OnBallCaught);
-		EventManager.StartListening("BallPeaked", OnBallCaught);
+		EventManager.StartListening("BallPeaked", OnBallPeaked);
+		EventManager.StartListening("BallSlapped", OnBallSlapped);
 		EventManager.StartListening("BallDied", OnBallDied);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		scoreText = _numBalls.ToString() + "." + _peakCount.ToString();
+		scoreText = _numBalls.ToString() + "." + _catchCount.ToString();
 		text.text = scoreText;
 	}
 
@@ -32,6 +33,11 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	void OnBallCaught() {
+		text.text = scoreText;
+		_catchCount++;
+	}
+
+	void OnBallSlapped() {
 		text.text = scoreText;
 		_catchCount++;
 	}

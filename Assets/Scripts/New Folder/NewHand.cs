@@ -50,7 +50,7 @@ public class NewHand : MonoBehaviour
 
     void FixedUpdate()
     {
-        CheckForBall();
+        // CheckForBall();
     }
 
     void Update()
@@ -105,8 +105,8 @@ public class NewHand : MonoBehaviour
                 }
                 else
                 {
-                    // SlapBall();
-                    GrabBall();
+                    SlapBall();
+                    // GrabBall();
                 }
             }
         }
@@ -166,24 +166,39 @@ public class NewHand : MonoBehaviour
         }
     }
 
-    void CheckForBall()
+    // void CheckForBall()
+    // {
+    //     float radius = GetComponent<CircleCollider2D>().radius;
+
+    //     RaycastHit2D hit = Physics2D.CircleCast(m_Transform.position, radius, Vector2.zero);
+
+    //     // Only catch one ball at a time
+    //     if (hit && m_Ball == null)
+    //     {
+    //         if (hit.collider.gameObject.CompareTag("Ball"))
+    //         {
+    //             // Debug.Log("Hit a ball");
+    //             NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
+
+    //             // only catch balls that are not launching
+    //             if (!ballToJuggle.m_Launching)
+    //             {
+    //                 // Debug.Log("Setting ball");
+    //                 SetBall(ballToJuggle);
+    //             }
+    //         }
+    //     }
+    // }
+
+    void OnTriggerEnter2D(Collider2D other)
     {
-        float radius = GetComponent<CircleCollider2D>().radius;
-
-        RaycastHit2D hit = Physics2D.CircleCast(m_Transform.position, radius, Vector2.zero);
-
-        // Only catch one ball at a time
-        if (hit && m_Ball == null)
+        if (m_Ball == null)
         {
-            if (hit.collider.gameObject.CompareTag("Ball"))
+            if (other.CompareTag("Ball"))
             {
-                // Debug.Log("Hit a ball");
-                NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
-
-                // only catch balls that are not launching
-                if (!ballToJuggle.m_Launching)
-                {
-                    // Debug.Log("Setting ball");
+                NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
+                if (!ballToJuggle.m_Launching) { 
+                    Debug.Log("Set a new ball");
                     SetBall(ballToJuggle);
                 }
             }
@@ -213,6 +228,7 @@ public class NewHand : MonoBehaviour
 
     void SlapBall()
     {
+        Debug.Log("Ball slapped");
         m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
         // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
         m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
