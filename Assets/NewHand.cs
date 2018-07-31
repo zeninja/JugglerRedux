@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class NewHand : MonoBehaviour
 {
-    #region Instance 
-    private static NewHand instance;
-
-    public static NewHand GetInstance()
-    {
-        return instance;
-    }
-    #endregion
-
     Transform m_Transform;
 
     Vector2 m_LastFramePos;
@@ -36,20 +27,7 @@ public class NewHand : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            if (this != instance)
-            {
-                Destroy(gameObject);
-            }
-        }
-
         InitHand();
-
     }
 
     void InitHand()
@@ -110,29 +88,25 @@ public class NewHand : MonoBehaviour
         {
             if (FirstFrame())
             {
-                Debug.Log("First frame");
-                // Debug.Log("Finger tapped directly");
                 // The finger tapped directly on the ball, catch it and drag to throw it
                 GrabBall();
             }
             else
             {
-                Debug.Log("Not first frame");
-
                 if (m_BallGrabbedFirstFrame)
                 {
-
                     // Find Grab/Drag throw vector
                     FindGrabThrowVector();
 
-                    if (Input.GetMouseButtonUp(0))
+                    if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonDown(0))
                     {
                         ThrowBall();
                     }
                 }
                 else
                 {
-                    SlapBall();
+                    // SlapBall();
+                    GrabBall();
                 }
             }
         }
@@ -144,10 +118,8 @@ public class NewHand : MonoBehaviour
     {
         foreach (Touch t in Input.touches)
         {
-            Debug.Log(Input.touchCount);
             if (t.fingerId == m_FingerID)
             {
-                Debug.Log("Checking " + t.fingerId);
 
                 m_Transform.position = Extensions.TouchScreenToWorld(t);
 
@@ -156,8 +128,10 @@ public class NewHand : MonoBehaviour
 
                 if (m_Ball != null)
                 {
+                    // Circlecast found a ball under the finger
                     if (FirstFrame() && !m_BallGrabbedFirstFrame)
                     {
+                        // Grab the ball
                         GrabBall();
                     }
                     else
@@ -194,7 +168,8 @@ public class NewHand : MonoBehaviour
 
     void CheckForBall()
     {
-        float radius = 0.5f;
+        float radius = GetComponent<CircleCollider2D>().radius;
+
         RaycastHit2D hit = Physics2D.CircleCast(m_Transform.position, radius, Vector2.zero);
 
         // Only catch one ball at a time
@@ -206,19 +181,13 @@ public class NewHand : MonoBehaviour
                 NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
 
                 // only catch balls that are not launching
-                if (!ballToJuggle.launching)
+                if (!ballToJuggle.m_Launching)
                 {
                     // Debug.Log("Setting ball");
                     SetBall(ballToJuggle);
                 }
             }
         }
-
-        // Holding a ball, update the grab throw direction
-        // if (m_Ball != null)
-        // {
-        //     m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
-        // }
     }
 
     void SetBall(NewBall caughtBall)
@@ -264,14 +233,13 @@ public class NewHand : MonoBehaviour
 
     bool FirstFrame()
     {
-        return m_PositionHistory.Count < 2;
+        return m_PositionHistory.Count <= 2;
     }
 
     void HandleDeath()
     {
-        // Debug.Log("Hand dying " + m_FingerID);
-        // NewHandManager.GetInstance().RemoveID(m_FingerID);
-        // Destroy(gameObject);
+        NewHandManager.GetInstance().RemoveID(m_FingerID);
+        Destroy(gameObject);
     }
 
     void OnGUI()

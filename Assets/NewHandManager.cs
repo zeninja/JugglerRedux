@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum HandType { holdAndThrow, throwImmediately };
 
 public class NewHandManager : MonoBehaviour
@@ -19,7 +18,7 @@ public class NewHandManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject m_HandPrefab;
+    public NewHand m_HandPrefab;
 
     public float mouseGrabThrowForce = 4;
     public float mouseSlapThrowForce = 10;
@@ -78,11 +77,11 @@ public class NewHandManager : MonoBehaviour
 
     void Update()
     {
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         HandleMouseInput();
-#else
+        #else
         HandleTouchInput();
-#endif
+        #endif
     }
 
     void HandleTouchInput()
@@ -98,6 +97,7 @@ public class NewHandManager : MonoBehaviour
 
     public void RemoveID(int fingerId)
     {
+        Debug.Log("Removing finger IDs");
         m_FingerIdList.Remove(fingerId);
     }
 
@@ -105,32 +105,25 @@ public class NewHandManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // Debug.Log("Mouse spawning hand");
+            Debug.Log("Mouse spawning hand");
             SpawnHand();
         }
     }
 
-    // void SpawnHand(int fingerId)
-    // {
-    //     GameObject hand = Instantiate(handPrefab) as GameObject;
-    //     hand.GetComponent<NewHand>().fingerId = fingerId;
-    //     // Debug.Log("Spawning hand. Num hands: " + fingerIds.Count);
-    // }
-
     void SpawnTouchHand(Touch t)
     {
-        GameObject hand = Instantiate(m_HandPrefab) as GameObject;
-        hand.GetComponent<NewHand>().m_FingerID = t.fingerId;
+        NewHand hand = Instantiate(m_HandPrefab);
+        hand.m_FingerID = t.fingerId;
         Debug.Log("Spawning hand. FINGER ID: " + t.fingerId);
     }
 
     void SpawnHand()
     {
-        GameObject hand = Instantiate(m_HandPrefab) as GameObject;
+        NewHand hand = Instantiate(m_HandPrefab);
 
-#if UNITY_EDITOR
-        hand.GetComponent<NewHand>().useMouse = true;
-#endif
+        #if UNITY_EDITOR
+        hand.useMouse = true;
+        #endif
 
         // if (NewGameManager.GetInstance().spawnBallsByTouchCount)
         // {
@@ -186,6 +179,5 @@ public class NewHandManager : MonoBehaviour
 
             GUI.Label(new Rect(startPos.x, startPos.y, 100, 500), touchInfo);
         }
-
     }
 }

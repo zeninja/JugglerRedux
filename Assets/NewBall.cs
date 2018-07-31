@@ -13,7 +13,7 @@ public class NewBall : MonoBehaviour
     [HideInInspector]
     public bool canBeCaught = false;
     [HideInInspector]
-    public bool launching;
+    public bool m_Launching;
     // [HideInInspector]
     public Vector2 currentThrowVector;
 
@@ -36,10 +36,11 @@ public class NewBall : MonoBehaviour
         }
 
         if(rb.velocity.y < 0) {
-            launching = false;
+            m_Launching = false;
+            m_BeingThrown = false;
         }
         
-        if (!launching) {
+        if (!m_Launching) {
             CheckBounds();
         }
     }
@@ -51,7 +52,7 @@ public class NewBall : MonoBehaviour
     }
 
     public void GetCaughtAndThrown(Vector2 throwVector) {
-        if(launching) { return; }
+        if(m_Launching) { return; }
 
         Debug.Log("Getting caught and thrown");
         rb.velocity = Vector2.zero;
@@ -74,7 +75,7 @@ public class NewBall : MonoBehaviour
     }
 
     public void GetCaught() {
-        if(launching) { return; }
+        if(m_Launching) { return; }
         Debug.Log("Got caught");
 
         isHeld = true;
@@ -85,14 +86,18 @@ public class NewBall : MonoBehaviour
     }
 
     public void GetThrown(Vector2 throwVector) {
-        if(launching) { return; }
+        if(m_Launching) { return; }
 
         isHeld = false;
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
         GetComponent<LineDrawer>().HandleThrow();
+
+        m_BeingThrown = true;
     }
+
+    public bool m_BeingThrown = false;
 
     void CheckBounds() {
         Vector3 converted = Camera.main.WorldToScreenPoint(transform.position);

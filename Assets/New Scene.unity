@@ -699,7 +699,7 @@ RectTransform:
   m_GameObject: {fileID: 1042009660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.0070369253, y: 0.0070369253, z: 0.0070369253}
+  m_LocalScale: {x: 0.007043147, y: 0.007043147, z: 0.007043147}
   m_Children:
   - {fileID: 1279571078}
   - {fileID: 813235556}
@@ -1130,8 +1130,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474a39529298ff84095fdb887fb4de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 1854823922445930, guid: 175e08579e49f474f9609da6243a6afd, type: 2}
+  m_BallPrefab: {fileID: 114841198693116978, guid: 175e08579e49f474f9609da6243a6afd,
+    type: 2}
   ballLaunchForce: 40
+  anyBallThrowing: 0
+  targetTimeScale: 1
+  currentTimeScale: 0
+  m_SlowTimeScale: 0.25
+  m_TimeSmoothing: 10
 --- !u!114 &1341528088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1144,7 +1150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTypeToggle: {fileID: 743367969}
-  m_HandPrefab: {fileID: 1486805989234084, guid: 896a1471b660ea04cbefb799d5a61336,
+  m_HandPrefab: {fileID: 114063323048531496, guid: 896a1471b660ea04cbefb799d5a61336,
     type: 2}
   mouseGrabThrowForce: 15
   mouseSlapThrowForce: 100
