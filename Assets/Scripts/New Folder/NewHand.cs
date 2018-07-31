@@ -156,7 +156,7 @@ public class NewHand : MonoBehaviour
                 {
                     if (t.phase == TouchPhase.Ended)
                     {
-                        Debug.Log("Finger: " + t.fingerId + " Touch Phase Ended");
+                        // Debug.Log("Finger: " + t.fingerId + " Touch Phase Ended");
                         HandleDeath();
                     }
                 }
@@ -198,7 +198,7 @@ public class NewHand : MonoBehaviour
             {
                 NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
                 if (!ballToJuggle.m_Launching) { 
-                    Debug.Log("Set a new ball");
+                    // Debug.Log("Set a new ball");
                     SetBall(ballToJuggle);
                 }
             }

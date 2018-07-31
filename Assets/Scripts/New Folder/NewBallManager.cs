@@ -38,7 +38,8 @@ public class NewBallManager : MonoBehaviour
     void Start()
     {
         EventManager.StartListening("SpawnBall", SpawnBall);
-        EventManager.StartListening("BallCaught", OnBallCaught);
+        EventManager.StartListening("BallCaught", CheckBallLaunch);
+        EventManager.StartListening("BallSlapped", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
     }
 
@@ -79,10 +80,11 @@ public class NewBallManager : MonoBehaviour
         _ballCount++;
     }
 
-    void OnBallCaught()
+    void CheckBallLaunch()
     {
         if (NewScoreManager._catchCount % 5 == 0)
         {
+            Debug.Log("- - - BALL LAUNCHING - - -");
             EventManager.TriggerEvent("SpawnBall");
         }
     }
