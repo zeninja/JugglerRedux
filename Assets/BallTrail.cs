@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class BallTrail : MonoBehaviour {
 
-	public GameObject m_BallTrailPrefab;
+	public BallTrailer m_BallTrailPrefab;
 	public ParticleSystem particleSystem;
+
+	List<GameObject> trailParts = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -27,21 +29,24 @@ public class BallTrail : MonoBehaviour {
 		}
 	}
 
-	public int numFramesToWait = 10;
+	public int frameInterval = 5;
 	
+
 	IEnumerator ShowBallTrail() {
-		// if(numFramesToWait > 0) {
-			GameObject ballTrailer = Instantiate(m_BallTrailPrefab) as GameObject;
+		int iterations = 0;
+
+		if(GetComponent<Rigidbody2D>().velocity.y > 0) {
+			BallTrailer ballTrailer = Instantiate(m_BallTrailPrefab);
 			ballTrailer.transform.position = transform.position;
 
 			int elapsedFrames = 0;
-			while(elapsedFrames < numFramesToWait) {
+			while(elapsedFrames < frameInterval) {
 				yield return new WaitForEndOfFrame();
 				elapsedFrames++;
 			}
 
-			// numFramesToWait--;
 			StartCoroutine("ShowBallTrail");
-		// }
+			iterations++;
+		}
 	}
 }

@@ -104,10 +104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098dd87e50de36d4db2868e0382e7456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BallTrailPrefab: {fileID: 1225594161719678, guid: 63b44396c1d631745be6d3ea9f2b40b1,
+  m_BallTrailPrefab: {fileID: 114848197960256030, guid: 63b44396c1d631745be6d3ea9f2b40b1,
     type: 2}
   particleSystem: {fileID: 0}
-  numFramesToWait: 5
+  frameInterval: 5
 --- !u!114 &114841198693116978
 MonoBehaviour:
   m_ObjectHideFlags: 1
