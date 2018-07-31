@@ -156,7 +156,7 @@ public class NewHand : MonoBehaviour
                 {
                     if (t.phase == TouchPhase.Ended)
                     {
-                        Debug.Log("Finger: " + t.fingerId + " Touch Phase Ended");
+                        // Debug.Log("Finger: " + t.fingerId + " Touch Phase Ended");
                         HandleDeath();
                     }
                 }
@@ -198,7 +198,7 @@ public class NewHand : MonoBehaviour
             {
                 NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
                 if (!ballToJuggle.m_Launching) { 
-                    Debug.Log("Set a new ball");
+                    // Debug.Log("Set a new ball");
                     SetBall(ballToJuggle);
                 }
             }
@@ -219,7 +219,7 @@ public class NewHand : MonoBehaviour
 
     void GrabBall()
     {
-        Debug.Log("Ball grabbed");
+        // Debug.Log("Ball grabbed");
         m_Ball.GetComponent<NewBall>().GetCaught();
         m_Ball.GetComponent<LineDrawer>().SetHand(this);
         m_CatchPosition = m_Transform.position;
@@ -228,7 +228,7 @@ public class NewHand : MonoBehaviour
 
     void SlapBall()
     {
-        Debug.Log("Ball slapped");
+        // Debug.Log("Ball slapped");
         m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
         // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
         m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
