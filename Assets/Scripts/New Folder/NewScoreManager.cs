@@ -33,11 +33,13 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	void OnBallCaught() {
+		Debug.Log("caught");
 		text.text = scoreText;
 		_catchCount++;
 	}
 
 	void OnBallSlapped() {
+		Debug.Log("slapped");
 		text.text = scoreText;
 		_catchCount++;
 	}

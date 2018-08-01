@@ -2,51 +2,94 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallTrail : MonoBehaviour {
+public class BallTrail : MonoBehaviour
+{
 
-	public BallTrailer m_BallTrailPrefab;
-	public ParticleSystem particleSystem;
+    LineRenderer m_TrailLineRenderer;
+    public GameObject m_Dot;
+    List<Vector3> m_LinePointList;
+    int m_LineLength = 5;
 
-	List<GameObject> trailParts = new List<GameObject>();
+    GameObject m_EndDot;
+    NewBall m_Ball;
+    Rigidbody2D m_Rigidbody;
 
-	// Use this for initialization
-	void Start () {
-		// EventManager.StartListening("BallThrown", ShowTrail);
-	}
+	Color myColor;
 
+    // Use this for initialization
+    void Start()
+    {
+        // EventManager.StartListening("BallThrown", StartTrail);
+        m_TrailLineRenderer = GetComponent<LineRenderer>();
+        m_LinePointList = new List<Vector3>();
 
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        m_Ball = GetComponent<NewBall>();
+        m_Rigidbody = GetComponent<Rigidbody2D>();
 
-	void ShowTrail() {
-		Debug.Log("Checking ball thrown");
-		if (GetComponent<NewBall>().m_BeingThrown) {
-			Debug.Log("ball was thrown");
-			StartCoroutine("ShowBallTrail");
-		}
-	}
+        m_EndDot = Instantiate(m_Dot) as GameObject;
+        m_EndDot.transform.position = transform.position;
 
-	public int frameInterval = 5;
-	
+		myColor = m_Ball.GetComponent<SpriteRenderer>().color;
+		m_TrailLineRenderer.material.color = myColor;
+		m_EndDot.GetComponent<SpriteRenderer>().color = myColor;
+    }
 
-	IEnumerator ShowBallTrail() {
-		int iterations = 0;
+    // Update is called once per frame
+    void Update()
+    {
+        // if (EnableTrail())
+        // {
+        DrawTrail();
+        // }
+    }
 
-		if(GetComponent<Rigidbody2D>().velocity.y > 0) {
-			BallTrailer ballTrailer = Instantiate(m_BallTrailPrefab);
-			ballTrailer.transform.position = transform.position;
+    void StartTrail()
+    {
+        m_EndDot = Instantiate(m_Dot) as GameObject;
+        m_EndDot.transform.position = transform.position;
+    }
 
-			int elapsedFrames = 0;
-			while(elapsedFrames < frameInterval) {
-				yield return new WaitForEndOfFrame();
-				elapsedFrames++;
-			}
+    void DrawTrail()
+    {
+        // Debug.Log(m_Rigidbody.velocity.y);
 
-			StartCoroutine("ShowBallTrail");
-			iterations++;
-		}
-	}
+        if (VelocityPositive())
+        {
+            m_TrailLineRenderer.enabled = true;
+
+            m_LinePointList.Add(transform.position);
+
+            if (m_LinePointList.Count > m_LineLength)
+            {
+                m_LinePointList.RemoveAt(0);
+            }
+
+            m_EndDot.transform.position = m_LinePointList[0];
+            m_EndDot.SetActive(true);
+        }
+        else
+        {
+            m_TrailLineRenderer.enabled = false;
+
+            if (m_LinePointList.Count > 0)
+            {
+                m_LinePointList.RemoveAt(m_LinePointList.Count - 1);
+                // m_EndDot.transform.position = transform.position;
+                m_EndDot.SetActive(false);
+            }
+        }
+
+        m_TrailLineRenderer.positionCount = Mathf.Min(m_LinePointList.Count, m_LineLength);
+        m_TrailLineRenderer.SetPositions(m_LinePointList.ToArray());
+    }
+
+    bool VelocityPositive()
+    {
+        return m_Rigidbody.velocity.y > 0;
+    }
+
+    bool EnableTrail()
+    {
+        return m_Ball.m_BallThrown;
+    }
 }

@@ -1055,7 +1055,7 @@ RectTransform:
   m_GameObject: {fileID: 1042009660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.0070294123, y: 0.0070294123, z: 0.0070294123}
+  m_LocalScale: {x: 0.007045991, y: 0.007045991, z: 0.007045991}
   m_Children:
   - {fileID: 1279571078}
   - {fileID: 813235556}
@@ -1633,6 +1633,16 @@ MonoBehaviour:
   m_BallPrefab: {fileID: 114841198693116978, guid: 175e08579e49f474f9609da6243a6afd,
     type: 2}
   ballLaunchForce: 40
+  m_BallColors:
+  - {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
+  - {r: 0.9058824, g: 0.6596079, b: 0.29019612, a: 1}
+  - {r: 0.922, g: 0.953, b: 0.559, a: 1}
+  - {r: 0.4642867, g: 0.791, b: 0.29019612, a: 1}
+  - {r: 0.29019612, g: 0.4982557, b: 0.9058824, a: 1}
+  - {r: 0.7954838, g: 0.497, b: 0.9058824, a: 1}
+  - {r: 0.9058824, g: 0.678, b: 0.83794457, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1341528088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1677,13 +1687,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TargetTimeScale: 0
   m_CurrentTimeScale: 0
-  m_SlowTimeScale: 0.5
+  m_SlowTimeScale: 0.66
   m_TimeSmoothing: 10
-  m_CurrentTimeJuice: 0
+  m_StartingTimeJuice: 1
   m_TimeJuiceBuildRate: 0.2
   m_MaxTimeJuice: 1
-  m_TimeJuiceDrainRate: 1
+  m_TimeJuiceDrainRate: 0.65
   meter: {fileID: 2138750733}
+  m_UseTimeMeter: 0
 --- !u!1 &1428970665
 GameObject:
   m_ObjectHideFlags: 0

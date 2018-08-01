@@ -98,7 +98,7 @@ public class NewHand : MonoBehaviour
                     // Find Grab/Drag throw vector
                     FindGrabThrowVector();
 
-                    if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonUp(0))
                     {
                         ThrowBall();
                     }
@@ -219,11 +219,13 @@ public class NewHand : MonoBehaviour
 
     void GrabBall()
     {
-        // Debug.Log("Ball grabbed");
-        m_Ball.GetComponent<NewBall>().GetCaught();
-        m_Ball.GetComponent<LineDrawer>().SetHand(this);
-        m_CatchPosition = m_Transform.position;
-        m_BallGrabbedFirstFrame = true;
+        if(!m_BallGrabbedFirstFrame) {
+            Debug.Log("Ball grabbed");
+            m_Ball.GetComponent<NewBall>().GetCaught();
+            m_Ball.GetComponent<LinePredictor>().SetHand(this);
+            m_CatchPosition = m_Transform.position;
+            m_BallGrabbedFirstFrame = true;
+        }
     }
 
     void SlapBall()

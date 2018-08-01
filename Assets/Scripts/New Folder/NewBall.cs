@@ -18,7 +18,7 @@ public class NewBall : MonoBehaviour
     public Vector2 currentThrowVector;
 
     public bool m_IsHeld;
-    public bool m_BeingThrown = false;
+    public bool m_BallThrown = false;
 
 
     // Use this for initialization
@@ -40,7 +40,7 @@ public class NewBall : MonoBehaviour
         if(rb.velocity.y < 0) {
             EventManager.TriggerEvent("BallPeaked");
             m_Launching = false;
-            m_BeingThrown = false;
+            m_BallThrown = false;
         }
         
         if (!m_Launching) {
@@ -61,7 +61,7 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
-        GetComponent<LineDrawer>().HandleThrow();
+        GetComponent<LinePredictor>().HandleThrow();
 
 
         // rb.gravityScale = 0;
@@ -80,7 +80,7 @@ public class NewBall : MonoBehaviour
 
     public void GetCaught() {
         if(m_Launching) { return; }
-        // Debug.Log("Got caught");
+        Debug.Log("Got caught");
 
         m_IsHeld = true;
         rb.gravityScale = 0;
@@ -96,9 +96,9 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
-        GetComponent<LineDrawer>().HandleThrow();
+        GetComponent<LinePredictor>().HandleThrow();
 
-        m_BeingThrown = true;
+        m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
     }
 
@@ -153,5 +153,9 @@ public class NewBall : MonoBehaviour
         yield return null;
         
         Destroy(gameObject);
+    }
+
+    public void SetColor(Color newColor) {
+        GetComponent<SpriteRenderer>().color = newColor;
     }
 }

@@ -14,13 +14,14 @@ public class TimeManager : MonoBehaviour
 
     public float m_TimeSmoothing = 10f;
 
-    public float m_CurrentTimeJuice;
+    public float m_StartingTimeJuice = 1.0f;
+    float m_CurrentTimeJuice;
     public float m_TimeJuiceBuildRate = .2f;
     public float m_MaxTimeJuice = 1.0f;
     public float m_TimeJuiceDrainRate = .05f;
 
     public Image meter;
-
+    public bool m_UseTimeMeter;
 
     // Use this for initialization
     void Start()
@@ -39,10 +40,18 @@ public class TimeManager : MonoBehaviour
 
     void SlowTimeBasedOnThrows()
     {
-        if (m_CurrentTimeJuice > 0 && NewBallManager.GetInstance().AnyBallBeingThrown())
+        if (NewBallManager.GetInstance().AnyBallBeingThrown())
         {
-            m_TargetTimeScale = m_SlowTimeScale;
-            m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
+            if (m_UseTimeMeter) {
+                if( m_CurrentTimeJuice > 0) {
+                    m_TargetTimeScale = m_SlowTimeScale;
+                    m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
+                }
+            } else {
+                m_TargetTimeScale = m_SlowTimeScale;
+                m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
+            }
+
         }
         else
         {

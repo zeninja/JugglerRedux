@@ -54,7 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shrink: 0
   shrinkRate: 0.1
-  colorshift: 1
+  colorshift: 0
   colorGradient:
     serializedVersion: 2
     key0: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}

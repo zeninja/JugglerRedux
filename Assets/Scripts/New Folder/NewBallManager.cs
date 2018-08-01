@@ -34,6 +34,8 @@ public class NewBallManager : MonoBehaviour
     List<NewBall> balls = new List<NewBall>();
     public float ballLaunchForce = 10;
 
+    public Color[] m_BallColors;
+
     // Use this for initialization
     void Start()
     {
@@ -57,7 +59,7 @@ public class NewBallManager : MonoBehaviour
 
         foreach (NewBall n in balls)
         {
-            if (n.m_BeingThrown)
+            if (n.m_BallThrown)
             {
                 anyBallThrowing = true;
                 break;
@@ -75,18 +77,30 @@ public class NewBallManager : MonoBehaviour
         ball.m_Launching = true;
         ball.canBeCaught = false;
         ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
+        ball.GetComponent<NewBall>().SetColor(m_BallColors[_ballCount]);
 
         balls.Add(ball);
         _ballCount++;
     }
 
+    int scoreIndex;
+    int[] ballSpawnScores = new int[] { 5, 10, 15, 20, 25, 30, 35 };
+
     void CheckBallLaunch()
     {
-        if (NewScoreManager._catchCount % 5 == 0)
-        {
-            Debug.Log("- - - BALL LAUNCHING - - -");
-            EventManager.TriggerEvent("SpawnBall");
-        }
+        if(scoreIndex < ballSpawnScores.Length) {
+            if (NewScoreManager._catchCount == ballSpawnScores[scoreIndex])
+            {
+                scoreIndex++;
+                EventManager.TriggerEvent("SpawnBall");
+            }
+        } 
+        // else {
+        //     foreach(NewBall b in balls) {
+                
+        //     }
+        // }
+
     }
 
     void OnBallDied()

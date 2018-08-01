@@ -97,7 +97,7 @@ public class NewHandManager : MonoBehaviour
 
     public void RemoveID(int fingerId)
     {
-        Debug.Log("Removing finger IDs");
+        // Debug.Log("Removing finger IDs");
         m_FingerIdList.Remove(fingerId);
     }
 
@@ -105,7 +105,7 @@ public class NewHandManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Mouse spawning hand");
+            // Debug.Log("Mouse spawning hand");
             SpawnHand();
         }
     }
@@ -114,7 +114,7 @@ public class NewHandManager : MonoBehaviour
     {
         NewHand hand = Instantiate(m_HandPrefab);
         hand.m_FingerID = t.fingerId;
-        Debug.Log("Spawning hand. FINGER ID: " + t.fingerId);
+        // Debug.Log("Spawning hand. FINGER ID: " + t.fingerId);
     }
 
     void SpawnHand()

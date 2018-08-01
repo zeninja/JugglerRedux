@@ -107,7 +107,7 @@ MonoBehaviour:
   m_BallTrailPrefab: {fileID: 114848197960256030, guid: 63b44396c1d631745be6d3ea9f2b40b1,
     type: 2}
   particleSystem: {fileID: 0}
-  frameInterval: 5
+  m_Dot: {fileID: 1225594161719678, guid: 63b44396c1d631745be6d3ea9f2b40b1, type: 2}
 --- !u!114 &114841198693116978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Launching: 0
   currentThrowVector: {x: 0, y: 0}
   m_IsHeld: 0
-  m_BeingThrown: 0
+  m_BallThrown: 0
   explosionCurve:
     serializedVersion: 2
     m_Curve:
@@ -178,7 +178,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 33002cc94f79e044eafe22f246d854f0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,7 +203,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.05
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
