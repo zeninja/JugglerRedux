@@ -121,6 +121,9 @@ public class NewBall : MonoBehaviour
     }
 
     public void Die() {
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = 0;
+        
         StartCoroutine(Explode());
     }
 

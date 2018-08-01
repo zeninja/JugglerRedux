@@ -37,10 +37,7 @@ public class BallTrail : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (EnableTrail())
-        // {
         DrawTrail();
-        // }
     }
 
     void StartTrail()
@@ -92,4 +89,8 @@ public class BallTrail : MonoBehaviour
     {
         return m_Ball.m_BallThrown;
     }
+
+	void OnDestroy() {
+		Destroy(m_EndDot);
+	}
 }
