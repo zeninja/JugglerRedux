@@ -39,12 +39,13 @@ public class NewBallManager : MonoBehaviour
 
     int scoreIndex;
     int[] ballSpawnScores;
-    int[] slowBallSpawnScores = new int[] { 5, 10, 25, 50, 75, 100, 125 };
-    int[] fastBallSpawnScores = new int[] { 5, 10, 15, 20, 25, 30, 35 };
+    int[] slowBallSpawnScores   = new int[] { 5, 10, 25, 50, 75, 100, 125 };
+    int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70, 99 };
+    int[] fastBallSpawnScores   = new int[] { 5, 10, 15, 20, 25, 30, 35 };
     public Toggle ballSpeedToggle;
     public Text ballSpeedDisplay;
 
-    public enum BallSpawnSpeed { slow, fast };
+    public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed;
 
     // Use this for initialization
@@ -83,8 +84,6 @@ public class NewBallManager : MonoBehaviour
 
     void SpawnBall()
     {
-        SetBallLaunchScores();
-
         Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
         NewBall ball = Instantiate(m_BallPrefab);
 
@@ -107,6 +106,11 @@ public class NewBallManager : MonoBehaviour
                 ballSpawnScores = slowBallSpawnScores;
                 break;
 
+            case BallSpawnSpeed.med:
+                ballSpeedText = "Ball Spawn Speed:\nMed";
+                ballSpawnScores = normalBallSpawnScores;
+                break;
+
             case BallSpawnSpeed.fast:
                 ballSpawnScores = fastBallSpawnScores;
                 ballSpeedText = "Ball Spawn Speed:\nFast";
@@ -115,12 +119,13 @@ public class NewBallManager : MonoBehaviour
         ballSpeedDisplay.text = ballSpeedText;
     }
 
-    void SwitchBallLaunchSpeed() {
-        if(ballSpeedToggle.isOn) {
-            ballSpawnSpeed = BallSpawnSpeed.fast;
-        } else {
-            ballSpawnSpeed = BallSpawnSpeed.slow;
-        }
+    public void SwitchBallLaunchSpeed() {
+        if(NewBallManager._ballCount > 0) { return; }
+
+        int ballSpeedIndex = (int)ballSpawnSpeed;
+        ballSpeedIndex = (ballSpeedIndex + 1) % 3;
+        ballSpawnSpeed = (BallSpawnSpeed)ballSpeedIndex;
+        SetBallLaunchScores();
     }
 
     void CheckBallLaunch()

@@ -14,7 +14,7 @@ public class BallTrail : MonoBehaviour
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
 
-	Color myColor;
+    Color myColor;
 
     // Use this for initialization
     void Start()
@@ -29,9 +29,9 @@ public class BallTrail : MonoBehaviour
         m_EndDot = Instantiate(m_Dot) as GameObject;
         m_EndDot.transform.position = transform.position;
 
-		myColor = m_Ball.GetComponent<SpriteRenderer>().color;
-		m_TrailLineRenderer.material.color = myColor;
-		m_EndDot.GetComponent<SpriteRenderer>().color = myColor;
+        myColor = m_Ball.GetComponent<SpriteRenderer>().color;
+        m_TrailLineRenderer.material.color = myColor;
+        m_EndDot.GetComponent<SpriteRenderer>().color = myColor;
     }
 
     // Update is called once per frame
@@ -52,17 +52,20 @@ public class BallTrail : MonoBehaviour
 
         if (VelocityPositive())
         {
-            m_TrailLineRenderer.enabled = true;
-
-            m_LinePointList.Add(transform.position);
-
-            if (m_LinePointList.Count > m_LineLength)
+            if (m_Ball.m_BallThrown)
             {
-                m_LinePointList.RemoveAt(0);
-            }
+                m_TrailLineRenderer.enabled = true;
 
-            m_EndDot.transform.position = m_LinePointList[0];
-            m_EndDot.SetActive(true);
+                m_LinePointList.Add(transform.position);
+
+                if (m_LinePointList.Count > m_LineLength)
+                {
+                    m_LinePointList.RemoveAt(0);
+                }
+
+                m_EndDot.transform.position = m_LinePointList[0];
+                m_EndDot.SetActive(true);
+            }
         }
         else
         {
@@ -90,7 +93,8 @@ public class BallTrail : MonoBehaviour
         return m_Ball.m_BallThrown;
     }
 
-	void OnDestroy() {
-		Destroy(m_EndDot);
-	}
+    void OnDestroy()
+    {
+        Destroy(m_EndDot);
+    }
 }
