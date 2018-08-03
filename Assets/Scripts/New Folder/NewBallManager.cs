@@ -31,6 +31,7 @@ public class NewBallManager : MonoBehaviour
 
     public NewBall m_BallPrefab;
     public static int _ballCount;
+    public float ballScale = .4f;
 
     List<NewBall> balls = new List<NewBall>();
     List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
@@ -51,6 +52,9 @@ public class NewBallManager : MonoBehaviour
 
     public static bool allowSlaps;
     public Toggle slapToggle;
+
+    public int juggleThreshold = 1;
+    public Text ui_numBallsToTriggerSlow;
 
     // Use this for initialization
     void Start()
@@ -94,7 +98,7 @@ public class NewBallManager : MonoBehaviour
             if (n.m_BallThrown)
             {
                 numBallsThrowing++;
-                if(numBallsThrowing >= 2) {
+                if(numBallsThrowing >= juggleThreshold) {
                     return true;
                 }
             }
@@ -111,8 +115,11 @@ public class NewBallManager : MonoBehaviour
         ball.m_Launching = true;
         ball.canBeCaught = false;
         ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
-        ball.GetComponent<NewBall>().SetColor(m_BallColors[_ballCount]);
-        ball.GetComponent<NewBallArtManager>().spriteSortIndex = (_ballCount);
+        ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
+        // ball.GetComponent<NewBallArtManager>().SetColor(_ballCount);
+        
+        // ball.GetComponent<NewBall>().SetColor(m_BallColors[_ballCount]);
+        // ball.GetComponentInChildren<NewBallArtManager>().spriteSortIndex = (_ballCount);
 
         balls.Add(ball);
         _ballCount++;
@@ -120,14 +127,14 @@ public class NewBallManager : MonoBehaviour
         ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }
 
-    public void MoveBallToFront(NewBallArtManager b) {
-        ballsSortedByDepth.Remove(b);
-        ballsSortedByDepth.Insert(0, b);
+    // public void MoveBallToFront(NewBallArtManager b) {
+    //     ballsSortedByDepth.Remove(b);
+    //     ballsSortedByDepth.Insert(0, b);
         
-        for(int i  = 0; i < ballsSortedByDepth.Count; i++) {
-            ballsSortedByDepth[i].SetDepth(i);
-        }     
-    }
+    //     for(int i  = 0; i < ballsSortedByDepth.Count; i++) {
+    //         ballsSortedByDepth[i].SetDepth(i);
+    //     }
+    // }
 
     // Util
     void SetBallLaunchScores() {
@@ -185,7 +192,7 @@ public class NewBallManager : MonoBehaviour
             if ( !AllBallsUnitedAtIndex(endgameIndex)) {
                 if (nb.ballColorIndex < endgameIndex) {
                     nb.ballColorIndex++;
-                    nb.SetColor();
+                    nb.UpdateColor();
                 }
             }
         }
@@ -225,5 +232,10 @@ public class NewBallManager : MonoBehaviour
         }        
 
         return true;
+    }
+
+    public void AdjustJuggleThreshold(int adj) {
+        juggleThreshold += adj;
+        juggleThreshold = Mathf.Max(1, juggleThreshold);
     }
 }

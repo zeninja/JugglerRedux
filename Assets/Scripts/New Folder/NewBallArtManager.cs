@@ -5,12 +5,10 @@ using UnityEngine;
 public class NewBallArtManager : MonoBehaviour
 {
 
-    LineRenderer m_TrailLineRenderer;
-    public GameObject m_Dot;
     List<Vector3> m_LinePointList;
     int m_LineLength = 5;
 
-    GameObject m_EndDot;
+    // GameObject m_EndDot;
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
 
@@ -19,26 +17,28 @@ public class NewBallArtManager : MonoBehaviour
     [System.NonSerialized]
     public int spriteSortIndex;
 
+
+    public SpriteRenderer ball;
+    public LineRenderer line;
+    public SpriteRenderer cap;
+
+
     // Use this for initialization
     void Start()
     {
-        m_TrailLineRenderer = GetComponent<LineRenderer>();
-        m_TrailLineRenderer.sortingLayerName = "Default";
-        m_TrailLineRenderer.startWidth = transform.localScale.x;
-        m_TrailLineRenderer.endWidth   = transform.localScale.y;
+        m_Ball = GetComponentInParent<NewBall>();
+        m_Rigidbody = GetComponentInParent<Rigidbody2D>();
 
         m_LinePointList = new List<Vector3>();
 
-        m_Ball = GetComponent<NewBall>();
-        m_Rigidbody = GetComponent<Rigidbody2D>();
+        line.sortingLayerName = "Default";
+        line.startWidth = transform.root.localScale.x;
+        line.endWidth   = transform.root.localScale.y;
 
-        m_EndDot = Instantiate(m_Dot) as GameObject;
-        m_EndDot.transform.position = transform.position;
-        m_EndDot.transform.localScale = Vector3.one * transform.localScale.x;
-        m_EndDot.SetActive(false);
 
-        SetColor();
-        SetDepth(spriteSortIndex);
+        cap.transform.position = transform.position;
+        cap.transform.localScale = Vector3.one * transform.localScale.x;
+        cap.enabled = false;
     }
 
     // Update is called once per frame
@@ -47,34 +47,45 @@ public class NewBallArtManager : MonoBehaviour
         DrawTrail();
     }
 
-    public void SetDepth(int newIndex) {
-        int numLayersPerBall = 3;
+    public void SetInfo(int newIndex) {
         spriteSortIndex = newIndex;
 
-        SpriteRenderer ball = GetComponent<SpriteRenderer>();
-        LineRenderer line = m_TrailLineRenderer;
-        SpriteRenderer endDot = m_EndDot.GetComponent<SpriteRenderer>();
-
-        ball.sortingOrder   = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
-        line.sortingOrder   = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
-        endDot.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
+        SetColor();
+        SetDepth();
     }
 
-    void StartTrail()
-    {
-        m_EndDot = Instantiate(m_Dot) as GameObject;
-        m_EndDot.transform.position = transform.position;
+    public void SetColor() {
+        myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
+        ball.color          = myColor;
+        line.material.color = myColor;
+        line.material.color = myColor;
+        cap.color           = myColor;
+    }
+
+    public void SetDepth() {
+        int numLayersPerBall = 3;
+        
+        ball.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        line.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
+        cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
+    }
+
+    public void SetDepth(int newIndex) {
+        spriteSortIndex = newIndex;
+        int numLayersPerBall = 3;
+        
+        ball.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        line.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
+        cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
     }
 
     void DrawTrail()
     {
-        // Debug.Log(m_Rigidbody.velocity.y);
-
         if (VelocityPositive())
         {
             if (m_Ball.m_BallThrown || m_Ball.m_Launching)
             {
-                m_TrailLineRenderer.enabled = true;
+                line.enabled = true;
 
                 m_LinePointList.Add(transform.position);
 
@@ -83,24 +94,24 @@ public class NewBallArtManager : MonoBehaviour
                     m_LinePointList.RemoveAt(0);
                 }
 
-                m_EndDot.transform.position = m_LinePointList[0];
-                m_EndDot.SetActive(true);
+                cap.transform.position = m_LinePointList[0];
+                cap.enabled = true;
             }
         }
         else
         {
-            m_TrailLineRenderer.enabled = false;
+            line.enabled = false;
 
             if (m_LinePointList.Count > 0)
             {
                 m_LinePointList.RemoveAt(m_LinePointList.Count - 1);
                 // m_EndDot.transform.position = transform.position;
-                m_EndDot.SetActive(false);
+                cap.enabled = false;
             }
         }
 
-        m_TrailLineRenderer.positionCount = Mathf.Min(m_LinePointList.Count, m_LineLength);
-        m_TrailLineRenderer.SetPositions(m_LinePointList.ToArray());
+        line.positionCount = Mathf.Min(m_LinePointList.Count, m_LineLength);
+        line.SetPositions(m_LinePointList.ToArray());
     }
 
     bool VelocityPositive()
@@ -113,14 +124,14 @@ public class NewBallArtManager : MonoBehaviour
         return m_Ball.m_BallThrown;
     }
 
-    public void SetColor() {
-        myColor = m_Ball.GetComponent<SpriteRenderer>().color;
-        m_TrailLineRenderer.material.color = myColor;
-        m_EndDot.GetComponent<SpriteRenderer>().color = myColor;
+    public void SetColor(Color myColor) {
+        ball.color = myColor;
+        line.material.color = myColor;
+        cap.GetComponent<SpriteRenderer>().color = myColor;
     }
 
     void OnDestroy()
     {
-        Destroy(m_EndDot);
+        Destroy(cap);
     }
 }

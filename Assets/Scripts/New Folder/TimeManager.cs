@@ -23,6 +23,8 @@ public class TimeManager : MonoBehaviour
     public Image meter;
     public bool m_UseTimeMeter;
 
+    public Text ui_timeSlowFactor;
+
     // Use this for initialization
     void Start()
     {
@@ -36,6 +38,7 @@ public class TimeManager : MonoBehaviour
         SlowTimeBasedOnThrows();
 
         meter.fillAmount = m_CurrentTimeJuice / m_MaxTimeJuice;
+        ui_timeSlowFactor.text = m_SlowTimeScale.ToString();
     }
 
     void SlowTimeBasedOnThrows()
@@ -51,7 +54,6 @@ public class TimeManager : MonoBehaviour
                 m_TargetTimeScale = m_SlowTimeScale;
                 m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
             }
-
         }
         else
         {
@@ -69,5 +71,10 @@ public class TimeManager : MonoBehaviour
 
     void OnBallDied() {
         m_CurrentTimeJuice = 0;
+    }
+
+    public void AdjustTimeScale(float adj) {
+        m_SlowTimeScale += adj;
+        m_SlowTimeScale = Mathf.Min(1, m_SlowTimeScale);
     }
 }

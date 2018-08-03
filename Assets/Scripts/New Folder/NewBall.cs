@@ -6,7 +6,7 @@ public class NewBall : MonoBehaviour
 {
     Rigidbody2D rb;
 
-    public float scale = .25f;
+    // public float scale = .25f;
     public float defaultGravity = 20;
     public float drag = -0.1f;
 
@@ -24,12 +24,16 @@ public class NewBall : MonoBehaviour
     int ballCatchCount;
     public int ballColorIndex;
 
+    NewBallArtManager ballArtManager;
+
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = defaultGravity;
-        transform.localScale = Vector2.one * scale;
+        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
+
+        ballArtManager = GetComponent<NewBallArtManager>();
     }
 
     // Update is called once per frame
@@ -70,19 +74,6 @@ public class NewBall : MonoBehaviour
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
         GetComponent<LinePredictor>().HandleThrow();
-
-
-        // rb.gravityScale = 0;
-        // rb.velocity = Vector2.zero;
-
-        // Method 1: Add force
-        // rb.AddForce(throwVector, ForceMode2D.Impulse);
-
-        // Method 2: Set velocity directly
-        // rb.velocity = throwVector;
-        // rb.gravityScale = defaultGravity;
-
-        // EventManager.TriggerEvent("BallCaught");
         EventManager.TriggerEvent("BallSlapped");
     }
 
@@ -96,6 +87,8 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
 
         EventManager.TriggerEvent("BallCaught");
+
+        // NewBallManager.GetInstance().MoveBallToFront(ballArtManager);
     }
 
     public void GetThrown(Vector2 throwVector)
@@ -115,31 +108,6 @@ public class NewBall : MonoBehaviour
 
         NewBallManager.GetInstance().UpdateEndgame(this);
     }
-
-    // void IncrementEndgame()
-    // {
-    //     // THIS IS ALL.... SO HORRIBLE. PLEASE REWRITE IT
-    //     if (NewBallManager._ballCount == NewBallManager.numBallsBeforeEndgame)
-    //     {
-    //         if (!NewBallManager.GetInstance().AllBallsUnitedAtIndex(NewBallManager.numBallsBeforeEndgame))
-    //         {
-    //             if (ballColorIndex <  NewBallManager.numBallsBeforeEndgame)
-    //             {
-    //                 ballColorIndex = NewBallManager.GetInstance().m_BallColors.Length - 2;
-    //             }
-    //         }
-    //         else
-    //         {                   
-    //             if (ballColorIndex == NewBallManager.numBallsBeforeEndgame + 1)
-    //             {
-    //                 ballColorIndex = NewBallManager.GetInstance().m_BallColors.Length - 1;
-
-    //             }
-    //         }
-
-    //         SetColor(ballColorIndex);
-    //     }
-    // }
 
     void CheckBounds()
     {
@@ -206,16 +174,20 @@ public class NewBall : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetColor(Color newColor)
-    {
-        GetComponent<SpriteRenderer>().color = newColor;
-
-        // ballColorIndex = NewBallManager._ballCount - 1;
+    public void UpdateColor() {
+        GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
     }
 
-    public void SetColor()
-    {
-        GetComponent<SpriteRenderer>().color = NewBallManager.GetInstance().m_BallColors[ballColorIndex];
-        GetComponent<NewBallArtManager>().SetColor();
-    }
+    // public void SetColor(Color newColor)
+    // {
+    //     m_BallSprite.GetComponent<SpriteRenderer>().color = newColor;
+
+    //     ballColorIndex = NewBallManager._ballCount - 1;
+    // }
+
+    // public void SetColor()
+    // {
+    //     // GetComponent<SpriteRenderer>().color = NewBallManager.GetInstance().m_BallColors[ballColorIndex];
+    //     GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
+    // }
 }
