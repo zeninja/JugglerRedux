@@ -133,14 +133,14 @@ public class BallManager : MonoBehaviour {
 
 				if (!currentBall.launching) {
 					// Increment the depths of all balls
-					currentBall.ballArtManager.zDepth++;
+					// currentBall.ballArtManager.zDepth++;
 
 					// Place the "top" ball at the front
 					if (balls [i] == caughtBall) {
-						currentBall.ballArtManager.zDepth = -100;
+						// currentBall.ballArtManager.zDepth = -100;
 					}
 
-					currentBall.ballArtManager.SetDepth ();
+					// currentBall.ballArtManager.SetDepth ();
 				}
 			}
 		}
@@ -180,7 +180,7 @@ public class BallManager : MonoBehaviour {
 		Dictionary<int, GameObject> depths = new Dictionary<int, GameObject>();
 
 		for (int i = 0; i < balls.Count; i++) {
-			depths.Add(balls[i].GetComponent<BallArtManager>().zDepth, balls[i]);
+			// depths.Add(balls[i].GetComponent<BallArtManager>().zDepth, balls[i]);
 		}
 
 //		var items = from pair in depths
@@ -202,9 +202,9 @@ public class BallManager : MonoBehaviour {
 				Vector3 camPos = Camera.main.WorldToScreenPoint (ballPos);
 				Vector3 offset = new Vector3 (camPos.x - 10, camPos.y - 10, camPos.z);
 				Vector3 size = Vector3.one * 20;
-				string depth = balls [i].GetComponent<BallArtManager> ().zDepth.ToString ();
+				// string depth = balls [i].GetComponent<BallArtManager> ().zDepth.ToString ();
 
-				GUI.Label (new Rect (offset, size), depth);
+				// GUI.Label (new Rect (offset, size), depth);
 			}
 		}
 			

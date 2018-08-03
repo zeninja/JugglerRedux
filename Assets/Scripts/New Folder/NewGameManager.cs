@@ -25,20 +25,6 @@ public class NewGameManager : MonoBehaviour {
 				Destroy(gameObject);
 			}
 		}
-
-		InitValues();
-	}
-
-	void InitValues() {
-		// Read previously saved values and load them in
-		// * throw vs grab
-		// * high scores
-		// * idk, whatever other preference type stuff comes up
-	}
-
-	// Use this for initialization
-	void Start () {
-		
 	}
 
 	void Update() {
@@ -62,10 +48,16 @@ public class NewGameManager : MonoBehaviour {
 
 	IEnumerator GameOverProcedure() {
 		yield return NewBallManager.GetInstance().StartCoroutine("KillBalls");
+		yield return NewScoreManager.GetInstance().StartCoroutine("HandleGameOver");
 		SetState(GameState.preGame);
 	}
 
 	public static bool GameOver() {
 		return NewGameManager.GetInstance().gameState == GameState.gameOver;
+	}
+
+	public void OnGUI() {
+		GUI.color = Color.black;
+		GUI.Label(new Rect(0, 0, 150, 150), gameState.ToString());
 	}
 }

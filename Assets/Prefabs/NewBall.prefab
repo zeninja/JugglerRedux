@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 120519262666529410}
   - component: {fileID: 114806875930989822}
   m_Layer: 0
-  m_Name: Ball 1
+  m_Name: NewBall
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,9 +104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098dd87e50de36d4db2868e0382e7456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BallTrailPrefab: {fileID: 114848197960256030, guid: 63b44396c1d631745be6d3ea9f2b40b1,
-    type: 2}
-  particleSystem: {fileID: 0}
   m_Dot: {fileID: 1225594161719678, guid: 63b44396c1d631745be6d3ea9f2b40b1, type: 2}
 --- !u!114 &114841198693116978
 MonoBehaviour:
@@ -127,6 +124,7 @@ MonoBehaviour:
   currentThrowVector: {x: 0, y: 0}
   m_IsHeld: 0
   m_BallThrown: 0
+  ballColorIndex: 0
   explosionCurve:
     serializedVersion: 2
     m_Curve:

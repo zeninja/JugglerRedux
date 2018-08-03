@@ -5,6 +5,23 @@ using TMPro;
 
 public class NewScoreManager : MonoBehaviour {
 
+	#region instance
+	private static NewScoreManager instance;
+	public static NewScoreManager GetInstance() {
+		return instance;
+	}
+	#endregion
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+		} else {
+			if(this != instance) {
+				Destroy(gameObject);
+			}
+		}
+	}
+
 	public static int _numBalls;
 	public static int _catchCount;
 	public static int _peakCount;
@@ -33,13 +50,13 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	void OnBallCaught() {
-		Debug.Log("caught");
+		// Debug.Log("caught");
 		text.text = scoreText;
 		_catchCount++;
 	}
 
 	void OnBallSlapped() {
-		Debug.Log("slapped");
+		// Debug.Log("slapped");
 		text.text = scoreText;
 		_catchCount++;
 	}
@@ -49,9 +66,15 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	void OnBallDied() {
+		// _catchCount = 0;
+		// _numBalls = 0;
+
+		// scoreText = _numBalls.ToString() + "." + _catchCount.ToString();
+	}
+
+	public IEnumerator HandleGameOver() {
 		_catchCount = 0;
 		_numBalls = 0;
-
-		scoreText = _numBalls.ToString() + "." + _catchCount.ToString();
+		yield return 0;
 	}
 }

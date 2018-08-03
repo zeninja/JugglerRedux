@@ -33,6 +33,7 @@ public class NewBallManager : MonoBehaviour
     public static int _ballCount;
 
     List<NewBall> balls = new List<NewBall>();
+    List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
     public float ballLaunchForce = 10;
 
     public Color[] m_BallColors;
@@ -47,6 +48,9 @@ public class NewBallManager : MonoBehaviour
 
     public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed;
+
+    public static bool allowSlaps;
+    public Toggle slapToggle;
 
     // Use this for initialization
     void Start()
@@ -82,6 +86,22 @@ public class NewBallManager : MonoBehaviour
         return anyBallThrowing;
     }
 
+    public bool JuggleThresholdReached() {
+        int numBallsThrowing = 0;
+
+        foreach (NewBall n in balls)
+        {
+            if (n.m_BallThrown)
+            {
+                numBallsThrowing++;
+                if(numBallsThrowing >= 2) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     void SpawnBall()
     {
         Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
@@ -92,11 +112,24 @@ public class NewBallManager : MonoBehaviour
         ball.canBeCaught = false;
         ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
         ball.GetComponent<NewBall>().SetColor(m_BallColors[_ballCount]);
+        ball.GetComponent<NewBallArtManager>().spriteSortIndex = (_ballCount);
 
         balls.Add(ball);
         _ballCount++;
+
+        ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }
 
+    public void MoveBallToFront(NewBallArtManager b) {
+        ballsSortedByDepth.Remove(b);
+        ballsSortedByDepth.Insert(0, b);
+        
+        for(int i  = 0; i < ballsSortedByDepth.Count; i++) {
+            ballsSortedByDepth[i].SetDepth(i);
+        }     
+    }
+
+    // Util
     void SetBallLaunchScores() {
         string ballSpeedText = "UNSET";
 
@@ -128,6 +161,12 @@ public class NewBallManager : MonoBehaviour
         SetBallLaunchScores();
     }
 
+    public void SwitchSlapsAllowed() {
+        if(NewBallManager._ballCount > 0) { return; }
+
+        allowSlaps = slapToggle.isOn;
+    }
+
     void CheckBallLaunch()
     {
         if(scoreIndex < ballSpawnScores.Length) {
@@ -136,22 +175,38 @@ public class NewBallManager : MonoBehaviour
                 scoreIndex++;
                 EventManager.TriggerEvent("SpawnBall");
             }
-        } 
-        // else {
-        //     foreach(NewBall b in balls) {
-                
-        //     }
-        // }
+        }
+    }
 
+    public void UpdateEndgame(NewBall nb) {
+        int endgameIndex = 8;
+
+        if(_ballCount == endgameIndex) {
+            if ( !AllBallsUnitedAtIndex(endgameIndex)) {
+                if (nb.ballColorIndex < endgameIndex) {
+                    nb.ballColorIndex++;
+                    nb.SetColor();
+                }
+            }
+        }
     }
 
     void OnBallDied()
     {
         NewGameManager.GetInstance().SetState(GameState.gameOver);
+        scoreIndex = 0;
+    }
+
+    public void HandleGameOver() {
+        scoreIndex = 0;
     }
 
     IEnumerator KillBalls()
     {
+        foreach(NewBall b in balls) {
+            b.FreezeBall();
+        }
+
         for (int i = 0; i < balls.Count; i++)
         {
             balls[i].GetComponent<NewBall>().Die();
@@ -160,5 +215,15 @@ public class NewBallManager : MonoBehaviour
 
         balls.Clear();
         _ballCount = 0;
+    }
+
+    public bool AllBallsUnitedAtIndex(int index) {
+        foreach(NewBall b in balls) {
+            if(b.ballColorIndex != index) {
+                return false;
+            }
+        }        
+
+        return true;
     }
 }

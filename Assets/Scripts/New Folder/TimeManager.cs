@@ -40,7 +40,7 @@ public class TimeManager : MonoBehaviour
 
     void SlowTimeBasedOnThrows()
     {
-        if (NewBallManager.GetInstance().AnyBallBeingThrown())
+        if (NewBallManager.GetInstance().JuggleThresholdReached())
         {
             if (m_UseTimeMeter) {
                 if( m_CurrentTimeJuice > 0) {

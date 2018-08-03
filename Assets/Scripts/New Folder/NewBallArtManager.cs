@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallTrail : MonoBehaviour
+public class NewBallArtManager : MonoBehaviour
 {
 
     LineRenderer m_TrailLineRenderer;
@@ -16,11 +16,17 @@ public class BallTrail : MonoBehaviour
 
     Color myColor;
 
+    [System.NonSerialized]
+    public int spriteSortIndex;
+
     // Use this for initialization
     void Start()
     {
-        // EventManager.StartListening("BallThrown", StartTrail);
         m_TrailLineRenderer = GetComponent<LineRenderer>();
+        m_TrailLineRenderer.sortingLayerName = "Default";
+        m_TrailLineRenderer.startWidth = transform.localScale.x;
+        m_TrailLineRenderer.endWidth   = transform.localScale.y;
+
         m_LinePointList = new List<Vector3>();
 
         m_Ball = GetComponent<NewBall>();
@@ -28,16 +34,30 @@ public class BallTrail : MonoBehaviour
 
         m_EndDot = Instantiate(m_Dot) as GameObject;
         m_EndDot.transform.position = transform.position;
+        m_EndDot.transform.localScale = Vector3.one * transform.localScale.x;
+        m_EndDot.SetActive(false);
 
-        myColor = m_Ball.GetComponent<SpriteRenderer>().color;
-        m_TrailLineRenderer.material.color = myColor;
-        m_EndDot.GetComponent<SpriteRenderer>().color = myColor;
+        SetColor();
+        SetDepth(spriteSortIndex);
     }
 
     // Update is called once per frame
     void Update()
     {
         DrawTrail();
+    }
+
+    public void SetDepth(int newIndex) {
+        int numLayersPerBall = 3;
+        spriteSortIndex = newIndex;
+
+        SpriteRenderer ball = GetComponent<SpriteRenderer>();
+        LineRenderer line = m_TrailLineRenderer;
+        SpriteRenderer endDot = m_EndDot.GetComponent<SpriteRenderer>();
+
+        ball.sortingOrder   = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        line.sortingOrder   = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
+        endDot.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
     }
 
     void StartTrail()
@@ -52,7 +72,7 @@ public class BallTrail : MonoBehaviour
 
         if (VelocityPositive())
         {
-            if (m_Ball.m_BallThrown)
+            if (m_Ball.m_BallThrown || m_Ball.m_Launching)
             {
                 m_TrailLineRenderer.enabled = true;
 
@@ -91,6 +111,12 @@ public class BallTrail : MonoBehaviour
     bool EnableTrail()
     {
         return m_Ball.m_BallThrown;
+    }
+
+    public void SetColor() {
+        myColor = m_Ball.GetComponent<SpriteRenderer>().color;
+        m_TrailLineRenderer.material.color = myColor;
+        m_EndDot.GetComponent<SpriteRenderer>().color = myColor;
     }
 
     void OnDestroy()
