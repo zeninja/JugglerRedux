@@ -56,6 +56,8 @@ public class NewBallManager : MonoBehaviour
     public int juggleThreshold = 1;
     public Text ui_numBallsToTriggerSlow;
 
+    public Text ui_BallScale;
+
     // Use this for initialization
     void Start()
     {
@@ -237,5 +239,11 @@ public class NewBallManager : MonoBehaviour
     public void AdjustJuggleThreshold(int adj) {
         juggleThreshold += adj;
         juggleThreshold = Mathf.Max(1, juggleThreshold);
+    }
+
+    public void AdjustBallScale(float adj) {
+        ballScale += adj;
+        ballScale = Mathf.Clamp(ballScale, .1f, 3f);
+        ui_BallScale.text = ballScale.ToString("F2");
     }
 }
