@@ -134,18 +134,6 @@ public class NewHandManager : MonoBehaviour
         // }
     }
 
-    public void AdjustSlapThrowForce(float amt)
-    {
-        touchSlapThrowForce += amt;
-        PlayerPrefs.SetFloat("touchSlapforce", touchSlapThrowForce);
-    }
-
-    public void AdjustGrabThrowForce(float amt)
-    {
-        touchGrabThrowForce += amt;
-        PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
-    }
-
     public static int GetCurrentFingerIDCount()
     {
         return NewHandManager.GetInstance().m_FingerIdList.Count;

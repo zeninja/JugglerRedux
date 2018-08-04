@@ -53,10 +53,7 @@ public class NewBallManager : MonoBehaviour
     public static bool allowSlaps;
     public Toggle slapToggle;
 
-    public int juggleThreshold = 1;
-    public Text ui_numBallsToTriggerSlow;
-
-    public Text ui_BallScale;
+    public int juggleThreshold = 3;
 
     // Use this for initialization
     void Start()
@@ -129,51 +126,20 @@ public class NewBallManager : MonoBehaviour
         ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }
 
-    // public void MoveBallToFront(NewBallArtManager b) {
-    //     ballsSortedByDepth.Remove(b);
-    //     ballsSortedByDepth.Insert(0, b);
-        
-    //     for(int i  = 0; i < ballsSortedByDepth.Count; i++) {
-    //         ballsSortedByDepth[i].SetDepth(i);
-    //     }
-    // }
-
-    // Util
-    void SetBallLaunchScores() {
-        string ballSpeedText = "UNSET";
-
+    public void SetBallLaunchScores() {
         switch(ballSpawnSpeed) {
             case BallSpawnSpeed.slow:
-                ballSpeedText = "Ball Spawn Speed:\nSlow";
                 ballSpawnScores = slowBallSpawnScores;
                 break;
 
             case BallSpawnSpeed.med:
-                ballSpeedText = "Ball Spawn Speed:\nMed";
                 ballSpawnScores = normalBallSpawnScores;
                 break;
 
             case BallSpawnSpeed.fast:
                 ballSpawnScores = fastBallSpawnScores;
-                ballSpeedText = "Ball Spawn Speed:\nFast";
                 break;
         }
-        ballSpeedDisplay.text = ballSpeedText;
-    }
-
-    public void SwitchBallLaunchSpeed() {
-        if(NewBallManager._ballCount > 0) { return; }
-
-        int ballSpeedIndex = (int)ballSpawnSpeed;
-        ballSpeedIndex = (ballSpeedIndex + 1) % 3;
-        ballSpawnSpeed = (BallSpawnSpeed)ballSpeedIndex;
-        SetBallLaunchScores();
-    }
-
-    public void SwitchSlapsAllowed() {
-        if(NewBallManager._ballCount > 0) { return; }
-
-        allowSlaps = slapToggle.isOn;
     }
 
     void CheckBallLaunch()
@@ -234,16 +200,5 @@ public class NewBallManager : MonoBehaviour
         }        
 
         return true;
-    }
-
-    public void AdjustJuggleThreshold(int adj) {
-        juggleThreshold += adj;
-        juggleThreshold = Mathf.Max(1, juggleThreshold);
-    }
-
-    public void AdjustBallScale(float adj) {
-        ballScale += adj;
-        ballScale = Mathf.Clamp(ballScale, .1f, 3f);
-        ui_BallScale.text = ballScale.ToString("F2");
     }
 }

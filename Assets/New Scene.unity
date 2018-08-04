@@ -142,7 +142,7 @@ RectTransform:
   - {fileID: 221386370}
   - {fileID: 695347826}
   m_Father: {fileID: 646436041}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341528090}
+      - m_Target: {fileID: 1341528089}
         m_MethodName: AdjustTimeScale
         m_Mode: 4
         m_Arguments:
@@ -648,8 +648,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 221386369}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -254, y: 0, z: 0}
-  m_LocalScale: {x: 5.3858023, y: 5.3858004, z: 5.3858004}
+  m_LocalPosition: {x: -363.6, y: 0, z: 0}
+  m_LocalScale: {x: 7.5344133, y: 7.534413, z: 7.534413}
   m_Children:
   - {fileID: 993940873}
   m_Father: {fileID: 35867955}
@@ -657,7 +657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -174, y: -10}
+  m_AnchoredPosition: {x: -283.6, y: -10}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &221386371
@@ -799,7 +799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5.749993, y: 5.0249987}
+  m_AnchoredPosition: {x: 5.7499924, y: 5.0249987}
   m_SizeDelta: {x: -11.5, y: 10.050003}
   m_Pivot: {x: 0.49999994, y: 0.49999997}
 --- !u!114 &367590815
@@ -834,7 +834,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Ball Spawn Speed:
+  m_Text: 'Ball Spawn Rate:
 
     Fast'
 --- !u!222 &367590816
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 616520731}
   - component: {fileID: 616520732}
   m_Layer: 5
-  m_Name: BallSpawnSpeed
+  m_Name: BallSpawnRate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -935,17 +935,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 616520729}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -171, y: -617, z: 0}
-  m_LocalScale: {x: 0.4576641, y: 0.4576641, z: 0.4576641}
+  m_LocalPosition: {x: -171, y: -617.0001, z: 0}
+  m_LocalScale: {x: 0.45766428, y: 0.45766428, z: 0.45766425}
   m_Children:
   - {fileID: 457715017}
   - {fileID: 367590814}
   m_Father: {fileID: 646436041}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -171, y: -617}
+  m_AnchoredPosition: {x: -171.00003, y: -617.0001}
   m_SizeDelta: {x: 876, y: 296.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &616520731
@@ -1042,11 +1042,11 @@ Transform:
   m_Children:
   - {fileID: 739233328}
   - {fileID: 1822597760}
-  - {fileID: 616520730}
-  - {fileID: 35867955}
   - {fileID: 1310322834}
   - {fileID: 1176613940}
+  - {fileID: 35867955}
   - {fileID: 1997102965}
+  - {fileID: 616520730}
   m_Father: {fileID: 1042009664}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1074,7 +1074,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 695347825}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -75.100006, y: -0.5, z: 0}
+  m_LocalPosition: {x: -181.1, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 35867955}
@@ -1082,7 +1082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -75.1, y: -0.5}
+  m_AnchoredPosition: {x: -181.1, y: -3.5}
   m_SizeDelta: {x: -28, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &695347827
@@ -1117,9 +1117,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Allow
-
-    Slaps'
+  m_Text: Allow Slaps
 --- !u!222 &695347828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1150,7 +1148,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 739233327}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -192, y: 672, z: 0}
+  m_LocalPosition: {x: -200, y: 672, z: 0}
   m_LocalScale: {x: 0.24000001, y: 0.24000001, z: 1.000437}
   m_Children:
   - {fileID: 1306399796}
@@ -1161,7 +1159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -192, y: 672}
+  m_AnchoredPosition: {x: -200, y: 672}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &739233329
@@ -1795,8 +1793,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341528088}
-        m_MethodName: AdjustSlapThrowForce
+      - m_Target: {fileID: 1341528089}
+        m_MethodName: AdjustBallScale
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1935,7 +1933,7 @@ RectTransform:
   m_GameObject: {fileID: 1042009660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.0070369253, y: 0.0070369253, z: 0.0070369253}
+  m_LocalScale: {x: 0.0070294123, y: 0.0070294123, z: 0.0070294123}
   m_Children:
   - {fileID: 646436041}
   - {fileID: 1279571078}
@@ -2054,18 +2052,18 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1176613939}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 165, y: 492, z: 0}
+  m_LocalPosition: {x: 200, y: 540, z: 0}
   m_LocalScale: {x: 0.24041842, y: 0.24041842, z: 1.0000838}
   m_Children:
   - {fileID: 183335912}
   - {fileID: 1407683389}
   - {fileID: 88046764}
   m_Father: {fileID: 646436041}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 165, y: 492}
+  m_AnchoredPosition: {x: 200, y: 540}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1176613941
@@ -2326,18 +2324,18 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1310322833}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -192.00006, y: 492, z: 0}
+  m_LocalPosition: {x: -200, y: 540, z: 0}
   m_LocalScale: {x: 0.24041842, y: 0.24041842, z: 1.0000838}
   m_Children:
   - {fileID: 1912431223}
   - {fileID: 1785317622}
   - {fileID: 1554611562}
   m_Father: {fileID: 646436041}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -192.00005, y: 492}
+  m_AnchoredPosition: {x: -200, y: 540}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1310322835
@@ -2465,8 +2463,8 @@ GameObject:
   - component: {fileID: 1341528083}
   - component: {fileID: 1341528087}
   - component: {fileID: 1341528088}
-  - component: {fileID: 1341528089}
   - component: {fileID: 1341528090}
+  - component: {fileID: 1341528089}
   m_Layer: 0
   m_Name: MGMT
   m_TagString: Untagged
@@ -2535,8 +2533,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BallPrefab: {fileID: 114494636056159008, guid: 1d83a403870090f45af18050bcf66df6,
     type: 2}
-  ballScale: 0.4
-  ballLaunchForce: 40
+  ballScale: 0.75
+  ballLaunchForce: 39
   m_BallColors:
   - {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
   - {r: 0.9058824, g: 0.6596079, b: 0.29019612, a: 1}
@@ -2552,8 +2550,6 @@ MonoBehaviour:
   ballSpawnSpeed: 1
   slapToggle: {fileID: 35867956}
   juggleThreshold: 3
-  ui_numBallsToTriggerSlow: {fileID: 1554611563}
-  ui_BallScale: {fileID: 1997102966}
 --- !u!114 &1341528088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2583,9 +2579,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210e99d1445dc464ea3fd30ce1796ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slapForceText: {fileID: 1495194604}
-  grabForceText: {fileID: 1823607700}
-  showDebugMenu: 0
+  ui_SlapForce: {fileID: 1495194604}
+  ui_GrabForce: {fileID: 1823607700}
+  ui_JuggleThreshold: {fileID: 1554611563}
+  ui_TimeSlowFactor: {fileID: 88046765}
+  ui_BallScale: {fileID: 933721196}
+  ui_BallSpawnRate: {fileID: 0}
+  ui_AllowSlaps: {fileID: 0}
   debugMenu: {fileID: 646436040}
 --- !u!114 &1341528090
 MonoBehaviour:
@@ -2598,17 +2598,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3bf01dc76ae304c9e5c1aa7b286b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TargetTimeScale: 0
-  m_CurrentTimeScale: 0
-  m_SlowTimeScale: 0.66
+  m_SlowTimeScale: 0.65
   m_TimeSmoothing: 10
-  m_StartingTimeJuice: 1
-  m_TimeJuiceBuildRate: 0.2
-  m_MaxTimeJuice: 1
-  m_TimeJuiceDrainRate: 0.65
   meter: {fileID: 2138750733}
   m_UseTimeMeter: 0
-  ui_timeSlowFactor: {fileID: 88046765}
 --- !u!1 &1407683388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,7 +2689,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341528090}
+      - m_Target: {fileID: 1341528089}
         m_MethodName: AdjustTimeScale
         m_Mode: 4
         m_Arguments:
@@ -3103,7 +3096,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 3
 --- !u!222 &1554611564
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3186,8 +3179,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341528088}
-        m_MethodName: AdjustSlapThrowForce
+      - m_Target: {fileID: 1341528089}
+        m_MethodName: AdjustBallScale
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3387,9 +3380,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341528088}
-        m_MethodName: AdjustSlapThrowForce
-        m_Mode: 4
+      - m_Target: {fileID: 1341528089}
+        m_MethodName: AdjustJuggleThreshold
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3468,7 +3461,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1822597759}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 178, y: 672, z: 0}
+  m_LocalPosition: {x: 200, y: 672, z: 0}
   m_LocalScale: {x: 0.24016173, y: 0.24016173, z: 1.0004369}
   m_Children:
   - {fileID: 1439283654}
@@ -3479,7 +3472,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 178, y: 672}
+  m_AnchoredPosition: {x: 200, y: 672}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1822597761
@@ -3671,13 +3664,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341528088}
-        m_MethodName: AdjustSlapThrowForce
-        m_Mode: 4
+      - m_Target: {fileID: 1341528089}
+        m_MethodName: AdjustJuggleThreshold
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: -1
           m_FloatArgument: -0.05
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3852,18 +3845,18 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1997102964}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -192, y: -426, z: 0}
-  m_LocalScale: {x: 0.24016172, y: 0.24016172, z: 1.0004369}
+  m_LocalPosition: {x: -192, y: -425.99982, z: 0}
+  m_LocalScale: {x: 0.2401618, y: 0.2401618, z: 1.0004373}
   m_Children:
   - {fileID: 1585859032}
   - {fileID: 1025980782}
   - {fileID: 933721195}
   m_Father: {fileID: 646436041}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -191.99998, y: -426}
+  m_AnchoredPosition: {x: -192, y: -425.99982}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1997102966

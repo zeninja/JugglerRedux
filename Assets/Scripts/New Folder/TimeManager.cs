@@ -5,31 +5,51 @@ using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
-
-
-    public float m_TargetTimeScale;
-    public float m_CurrentTimeScale;
+    float m_TargetTimeScale;
+    float m_CurrentTimeScale;
     public float m_SlowTimeScale = .5f;
     float m_NormalTimeScale = 1.0f;
 
     public float m_TimeSmoothing = 10f;
 
-    public float m_StartingTimeJuice = 1.0f;
-    float m_CurrentTimeJuice;
-    public float m_TimeJuiceBuildRate = .2f;
-    public float m_MaxTimeJuice = 1.0f;
-    public float m_TimeJuiceDrainRate = .05f;
+    // public float m_StartingTimeJuice = 1.0f;
+    // float m_CurrentTimeJuice;
+    // public float m_TimeJuiceBuildRate = .2f;
+    // public float m_MaxTimeJuice = 1.0f;
+    // public float m_TimeJuiceDrainRate = .05f;
 
     public Image meter;
     public bool m_UseTimeMeter;
 
-    public Text ui_timeSlowFactor;
+    #region instance
+    private static TimeManager instance;
+
+    public static TimeManager GetInstance()
+    {
+        return instance;
+    }
+    #endregion
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (this != instance)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 
     // Use this for initialization
     void Start()
     {
-        EventManager.StartListening("BallDied", OnBallDied);
-        EventManager.StartListening("BallSlapped", OnBallSlapped);
+        // EventManager.StartListening("BallDied", OnBallDied);
+        // EventManager.StartListening("BallSlapped", OnBallSlapped);
     }
 
     // Update is called once per frame
@@ -37,23 +57,22 @@ public class TimeManager : MonoBehaviour
     {
         SlowTimeBasedOnThrows();
 
-        meter.fillAmount = m_CurrentTimeJuice / m_MaxTimeJuice;
-        ui_timeSlowFactor.text = m_SlowTimeScale.ToString();
+        // meter.fillAmount = m_CurrentTimeJuice / m_MaxTimeJuice;
     }
 
     void SlowTimeBasedOnThrows()
     {
         if (NewBallManager.GetInstance().JuggleThresholdReached())
         {
-            if (m_UseTimeMeter) {
-                if( m_CurrentTimeJuice > 0) {
-                    m_TargetTimeScale = m_SlowTimeScale;
-                    m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
-                }
-            } else {
+            // if (m_UseTimeMeter) {
+            //     if( m_CurrentTimeJuice > 0) {
+            //         m_TargetTimeScale = m_SlowTimeScale;
+            //         m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
+            //     }
+            // } else {
                 m_TargetTimeScale = m_SlowTimeScale;
-                m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
-            }
+                // m_CurrentTimeJuice -= m_TimeJuiceDrainRate * Time.deltaTime;
+            // }
         }
         else
         {
@@ -64,17 +83,12 @@ public class TimeManager : MonoBehaviour
         m_CurrentTimeScale = Time.timeScale;
     }
 
-    void OnBallSlapped()
-    {
-        m_CurrentTimeJuice = Mathf.Min(m_CurrentTimeJuice + m_TimeJuiceBuildRate, m_MaxTimeJuice);
-    }
+    // void OnBallSlapped()
+    // {
+    //      m_CurrentTimeJuice = Mathf.Min(m_CurrentTimeJuice + m_TimeJuiceBuildRate, m_MaxTimeJuice);
+    // }
 
-    void OnBallDied() {
-        m_CurrentTimeJuice = 0;
-    }
-
-    public void AdjustTimeScale(float adj) {
-        m_SlowTimeScale += adj;
-        m_SlowTimeScale = Mathf.Min(1, m_SlowTimeScale);
-    }
+    // void OnBallDied() {
+    //      m_CurrentTimeJuice = 0;
+    // }
 }
