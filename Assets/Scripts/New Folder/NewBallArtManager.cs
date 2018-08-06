@@ -5,7 +5,7 @@ using UnityEngine;
 public class NewBallArtManager : MonoBehaviour
 {
 
-    // LinePredictor m_LinePredictor;
+    LinePredictor m_LinePredictor;
     List<Vector3> m_LinePointList;
     List<Vector3> m_LineSegment;
     int m_LineLength = 5;
@@ -24,13 +24,16 @@ public class NewBallArtManager : MonoBehaviour
     public LineRenderer line;
     public SpriteRenderer cap;
 
+    int lineIndex = 0;
+
+    public AnimationCurve m_TrailCurve;
 
     // Use this for initialization
     void Start()
     {
         m_Ball = GetComponentInParent<NewBall>();
         m_Rigidbody = GetComponentInParent<Rigidbody2D>();
-        // m_LinePredictor = GetComponentInParent<LinePredictor>();
+        m_LinePredictor = GetComponentInParent<LinePredictor>();
 
         m_LinePointList = new List<Vector3>();
 
@@ -40,6 +43,7 @@ public class NewBallArtManager : MonoBehaviour
 
         cap.transform.position = transform.position;
         cap.transform.localScale = Vector3.one * transform.localScale.x;
+
         // cap.enabled = false;
         // cap.GetComponent<BallCap>().bam = this;
         // cap.GetComponent<BallCap>().target = ball.transform;
@@ -91,27 +95,45 @@ public class NewBallArtManager : MonoBehaviour
             {
                 line.enabled = true;
 
-                m_LinePointList.Add(transform.position);
-
-                // GET THE SUB-SEGMENT OF THE COMPLETE LINE AND ASSIGN IT TO M_LINESEGMENT
-                // m_LineSegment = GetLineSegment();
-
-                // THEN. UHH... CHECK HOW FAR ALONG THE LINE WE ARE WHEN SETTING THE CAP'S POSITION
-                // AND SET IT ACCORDING TO HOW LONG THE LINE SHOULD BE
                 
-                // AND THIS IS THE MOST IMPORTANT PART!!!! 
-                // WHEN THE BALL IS PEAKING, SET THE CAP POSITION SO THAT IT CATCHES UP *AS* THE BALL PEAKS!!!
-                // SetCapPosition();
 
 
+                // m_LinePointList = m_LinePredictor.GetPointList();
 
-                // if (m_LinePointList.Count > m_LineLength)
-                // {
-                //     m_LinePointList.RemoveAt(0);
+                // for(int i = 0; i < m_LinePointList.Count; i++) {
+                //     if(m_Ball.transform.position == m_LinePointList[i]) {
+                //         lineIndex = i;
+                //         break;
+                //     }
                 // }
 
-                cap.transform.position = m_LinePointList[0];
-                cap.enabled = true;
+                // 
+
+
+
+
+
+                // // GET THE SUB-SEGMENT OF THE COMPLETE LINE AND ASSIGN IT TO M_LINESEGMENT
+                // if(m_LinePointList.Count < m_LineLength) {
+                //     m_LineSegment = GetLineSegment(0);
+                // } else {
+                //     lineIndex++;
+
+                //     if(lineIndex + m_LineLength * 2 > m_LinePointList.Count) {
+                //         lineIndex++;
+
+                //         m_LineSegment = GetLineSegment(lineIndex);
+                //     } else {
+                //         m_LineSegment = GetLineSegment(lineIndex);
+                //     }
+                // }
+
+                // // THEN. UHH... CHECK HOW FAR ALONG THE LINE WE ARE WHEN SETTING THE CAP'S POSITION
+                // // AND SET IT ACCORDING TO HOW LONG THE LINE SHOULD BE
+                
+                // // AND THIS IS THE MOST IMPORTANT PART!!!! 
+                // // WHEN THE BALL IS PEAKING, SET THE CAP POSITION SO THAT IT CATCHES UP *AS* THE BALL PEAKS!!!
+                // SetCapPosition();
 
             }
         }
@@ -119,16 +141,16 @@ public class NewBallArtManager : MonoBehaviour
         {
             line.enabled = false;
 
-            if (m_LinePointList.Count > 0)
-            {
-                m_LinePointList.RemoveAt(m_LinePointList.Count - 1);
-                // m_EndDot.transform.position = transform.position;
-                cap.enabled = false;
-            }
+            // if (m_LinePointList.Count > 0)
+            // {
+            //     m_LinePointList.RemoveAt(m_LinePointList.Count - 1);
+            //     // m_EndDot.transform.position = transform.position;
+            //     cap.enabled = false;
+            // }
         }
 
-        line.positionCount = Mathf.Min(m_LinePointList.Count, m_LineLength);
-        line.SetPositions(m_LinePointList.ToArray());
+        // line.positionCount = Mathf.Min(m_LinePointList.Count, m_LineLength);
+        // line.SetPositions(m_LinePointList.ToArray());
     }
 
     public bool VelocityPositive()
@@ -136,26 +158,16 @@ public class NewBallArtManager : MonoBehaviour
         return m_Rigidbody.velocity.y > 0;
     }
 
-    int startingIndexAlongLine = 0;
-
-    List<Vector3> GetLineSegment() {
+    List<Vector3> GetLineSegment(int startingIndex) {
         int lineLength = m_LineLength;
 
         List<Vector3> lineSeg = new List<Vector3>();
         
         for(int i = 0; i < lineLength; i++) {
-            lineSeg.Add(m_LinePointList[i + startingIndexAlongLine]);
-            if (i >= m_LinePointList.Count) {
-                break;
-            }
-        }
-
-        if(lineSeg.Count == lineLength) {
-            startingIndexAlongLine++;
+            lineSeg.Add(m_LinePointList[i + startingIndex]);
         }
 
         return lineSeg;
-
     }
 
     void SetCapPosition() {
