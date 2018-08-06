@@ -68,8 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc010b11126c9714ba7ea76eaba17da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useMouse: 0
-  fingerId: 0
+  m_FingerID: 0
 --- !u!212 &212720833258028590
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -109,7 +108,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.0019531, y: 1.0019531}
+  m_Size: {x: 0.50097656, y: 1.0019531}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

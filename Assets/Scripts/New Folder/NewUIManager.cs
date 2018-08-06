@@ -45,6 +45,7 @@ public class NewUIManager : MonoBehaviour {
         juggleThreshold += adj;
         juggleThreshold = Mathf.Max(1, juggleThreshold);
 		NewBallManager.GetInstance().juggleThreshold = juggleThreshold;
+		PlayerPrefs.SetInt(SavedInfoManager.key_juggleThreshold, juggleThreshold);
     }
 
     public void AdjustBallScale(float adj) {
@@ -52,6 +53,7 @@ public class NewUIManager : MonoBehaviour {
         ballScale += adj;
         ballScale = Mathf.Clamp(ballScale, .1f, 3f);
         NewBallManager.GetInstance().ballScale = ballScale;
+		PlayerPrefs.SetFloat(SavedInfoManager.key_BallScale, ballScale);
     }
 
 	public void AdjustSlapThrowForce(float amt)
@@ -60,6 +62,7 @@ public class NewUIManager : MonoBehaviour {
         touchSlapThrowForce += amt;
         PlayerPrefs.SetFloat("touchSlapforce", touchSlapThrowForce);
 		NewHandManager.GetInstance().touchSlapThrowForce = touchSlapThrowForce;
+		PlayerPrefs.SetFloat(SavedInfoManager.key_slapForce, touchSlapThrowForce);
     }
 
     public void AdjustGrabThrowForce(float amt)
@@ -68,6 +71,7 @@ public class NewUIManager : MonoBehaviour {
         touchGrabThrowForce += amt;
         PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
 		NewHandManager.GetInstance().touchGrabThrowForce = touchGrabThrowForce;
+		PlayerPrefs.SetFloat(SavedInfoManager.key_grabForce, touchGrabThrowForce);
     }
 
 	public void AdjustTimeScale(float adj) {
@@ -75,11 +79,15 @@ public class NewUIManager : MonoBehaviour {
         timeScale += adj;
         timeScale = Mathf.Min(1, timeScale);
         TimeManager.GetInstance().m_SlowTimeScale = timeScale;
+		PlayerPrefs.SetFloat(SavedInfoManager.key_TimeScale, timeScale);
     }
 
 	public void SwitchSlapsAllowed() {
 		bool slapsAllowed = ui_AllowSlaps.isOn;
 		NewBallManager.allowSlaps = slapsAllowed;
+
+		int slapInt = slapsAllowed ? 1: 0;
+		PlayerPrefs.SetInt(SavedInfoManager.key_allowSlaps, slapInt);
 	}
 	
 	public void SwitchBallLaunchSpeed() {		
@@ -105,5 +113,7 @@ public class NewUIManager : MonoBehaviour {
                 break;
         }
         ui_BallSpawnRate.text = ballSpeedText;
+
+		PlayerPrefs.SetInt(SavedInfoManager.key_BallSpawnSpeed, (int)ballSpawnSpeed);
     }
 }

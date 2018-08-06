@@ -5,7 +5,9 @@ using UnityEngine;
 public class NewBallArtManager : MonoBehaviour
 {
 
+    // LinePredictor m_LinePredictor;
     List<Vector3> m_LinePointList;
+    List<Vector3> m_LineSegment;
     int m_LineLength = 5;
 
     // GameObject m_EndDot;
@@ -28,6 +30,7 @@ public class NewBallArtManager : MonoBehaviour
     {
         m_Ball = GetComponentInParent<NewBall>();
         m_Rigidbody = GetComponentInParent<Rigidbody2D>();
+        // m_LinePredictor = GetComponentInParent<LinePredictor>();
 
         m_LinePointList = new List<Vector3>();
 
@@ -35,10 +38,11 @@ public class NewBallArtManager : MonoBehaviour
         line.startWidth = transform.root.localScale.x;
         line.endWidth   = transform.root.localScale.y;
 
-
         cap.transform.position = transform.position;
         cap.transform.localScale = Vector3.one * transform.localScale.x;
-        cap.enabled = false;
+        // cap.enabled = false;
+        // cap.GetComponent<BallCap>().bam = this;
+        // cap.GetComponent<BallCap>().target = ball.transform;
     }
 
     // Update is called once per frame
@@ -47,7 +51,7 @@ public class NewBallArtManager : MonoBehaviour
         DrawTrail();
     }
 
-    public void SetInfo(int newIndex) {
+    public void SetInfo(int newIndex) { 
         spriteSortIndex = newIndex;
 
         SetColor();
@@ -89,13 +93,26 @@ public class NewBallArtManager : MonoBehaviour
 
                 m_LinePointList.Add(transform.position);
 
-                if (m_LinePointList.Count > m_LineLength)
-                {
-                    m_LinePointList.RemoveAt(0);
-                }
+                // GET THE SUB-SEGMENT OF THE COMPLETE LINE AND ASSIGN IT TO M_LINESEGMENT
+                // m_LineSegment = GetLineSegment();
+
+                // THEN. UHH... CHECK HOW FAR ALONG THE LINE WE ARE WHEN SETTING THE CAP'S POSITION
+                // AND SET IT ACCORDING TO HOW LONG THE LINE SHOULD BE
+                
+                // AND THIS IS THE MOST IMPORTANT PART!!!! 
+                // WHEN THE BALL IS PEAKING, SET THE CAP POSITION SO THAT IT CATCHES UP *AS* THE BALL PEAKS!!!
+                // SetCapPosition();
+
+
+
+                // if (m_LinePointList.Count > m_LineLength)
+                // {
+                //     m_LinePointList.RemoveAt(0);
+                // }
 
                 cap.transform.position = m_LinePointList[0];
                 cap.enabled = true;
+
             }
         }
         else
@@ -114,9 +131,35 @@ public class NewBallArtManager : MonoBehaviour
         line.SetPositions(m_LinePointList.ToArray());
     }
 
-    bool VelocityPositive()
+    public bool VelocityPositive()
     {
         return m_Rigidbody.velocity.y > 0;
+    }
+
+    int startingIndexAlongLine = 0;
+
+    List<Vector3> GetLineSegment() {
+        int lineLength = m_LineLength;
+
+        List<Vector3> lineSeg = new List<Vector3>();
+        
+        for(int i = 0; i < lineLength; i++) {
+            lineSeg.Add(m_LinePointList[i + startingIndexAlongLine]);
+            if (i >= m_LinePointList.Count) {
+                break;
+            }
+        }
+
+        if(lineSeg.Count == lineLength) {
+            startingIndexAlongLine++;
+        }
+
+        return lineSeg;
+
+    }
+
+    void SetCapPosition() {
+        cap.transform.position = m_LineSegment[0];
     }
 
     bool EnableTrail()

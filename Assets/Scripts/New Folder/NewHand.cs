@@ -230,6 +230,8 @@ public class NewHand : MonoBehaviour
 
     void SlapBall()
     {
+        if(!NewBallManager.allowSlaps) { return; }
+
         // Debug.Log("Ball slapped");
         m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
         // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
