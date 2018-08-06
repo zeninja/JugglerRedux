@@ -45,7 +45,9 @@ public class NewUIManager : MonoBehaviour {
         juggleThreshold += adj;
         juggleThreshold = Mathf.Max(1, juggleThreshold);
 		NewBallManager.GetInstance().juggleThreshold = juggleThreshold;
-		PlayerPrefs.SetInt(SavedInfoManager.key_juggleThreshold, juggleThreshold);
+
+		SavedInfoManager.mySettings.juggleThreshold = juggleThreshold;
+		SavedInfoManager.UpdateSavedValues();
     }
 
     public void AdjustBallScale(float adj) {
@@ -53,7 +55,9 @@ public class NewUIManager : MonoBehaviour {
         ballScale += adj;
         ballScale = Mathf.Clamp(ballScale, .1f, 3f);
         NewBallManager.GetInstance().ballScale = ballScale;
-		PlayerPrefs.SetFloat(SavedInfoManager.key_BallScale, ballScale);
+
+		SavedInfoManager.mySettings.ballScale = ballScale;
+		SavedInfoManager.UpdateSavedValues();
     }
 
 	public void AdjustSlapThrowForce(float amt)
@@ -62,7 +66,9 @@ public class NewUIManager : MonoBehaviour {
         touchSlapThrowForce += amt;
         PlayerPrefs.SetFloat("touchSlapforce", touchSlapThrowForce);
 		NewHandManager.GetInstance().touchSlapThrowForce = touchSlapThrowForce;
-		PlayerPrefs.SetFloat(SavedInfoManager.key_slapForce, touchSlapThrowForce);
+
+		SavedInfoManager.mySettings.slapForce = touchSlapThrowForce;
+		SavedInfoManager.UpdateSavedValues();
     }
 
     public void AdjustGrabThrowForce(float amt)
@@ -71,7 +77,9 @@ public class NewUIManager : MonoBehaviour {
         touchGrabThrowForce += amt;
         PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
 		NewHandManager.GetInstance().touchGrabThrowForce = touchGrabThrowForce;
-		PlayerPrefs.SetFloat(SavedInfoManager.key_grabForce, touchGrabThrowForce);
+
+		SavedInfoManager.mySettings.grabForce = touchGrabThrowForce;
+		SavedInfoManager.UpdateSavedValues();
     }
 
 	public void AdjustTimeScale(float adj) {
@@ -79,15 +87,19 @@ public class NewUIManager : MonoBehaviour {
         timeScale += adj;
         timeScale = Mathf.Min(1, timeScale);
         TimeManager.GetInstance().m_SlowTimeScale = timeScale;
-		PlayerPrefs.SetFloat(SavedInfoManager.key_TimeScale, timeScale);
-    }
+
+		SavedInfoManager.mySettings.timeScale = timeScale;
+		SavedInfoManager.UpdateSavedValues();
+   }
 
 	public void SwitchSlapsAllowed() {
 		bool slapsAllowed = ui_AllowSlaps.isOn;
 		NewBallManager.allowSlaps = slapsAllowed;
 
-		int slapInt = slapsAllowed ? 1: 0;
-		PlayerPrefs.SetInt(SavedInfoManager.key_allowSlaps, slapInt);
+		int slapInt = slapsAllowed ? 1: 0; // converted to an int just in case???
+
+		SavedInfoManager.mySettings.allowSlaps = slapsAllowed;
+		SavedInfoManager.UpdateSavedValues();
 	}
 	
 	public void SwitchBallLaunchSpeed() {		
@@ -114,6 +126,7 @@ public class NewUIManager : MonoBehaviour {
         }
         ui_BallSpawnRate.text = ballSpeedText;
 
-		PlayerPrefs.SetInt(SavedInfoManager.key_BallSpawnSpeed, (int)ballSpawnSpeed);
-    }
+		SavedInfoManager.mySettings.ballSpeedIndex = ballSpeedIndex;
+		SavedInfoManager.UpdateSavedValues();
+	}
 }

@@ -39,7 +39,8 @@ public class NewBallManager : MonoBehaviour
 
     public Color[] m_BallColors;
 
-    int scoreIndex;
+    public int ballSpeedIndex;  // used to choose a SET, ie: slow, normal, fast
+    int scoreIndex;             // used to trigger the ball spawn, the index of the score WITHIN one set
     int[] ballSpawnScores;
     int[] slowBallSpawnScores   = new int[] { 5, 10, 25, 50, 75, 100, 125 };
     int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70, 99 };
@@ -59,6 +60,8 @@ public class NewBallManager : MonoBehaviour
         EventManager.StartListening("BallCaught", CheckBallLaunch);
         EventManager.StartListening("BallSlapped", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
+
+        ballSpawnScores = normalBallSpawnScores;
     }
 
     // Update is called once per frame

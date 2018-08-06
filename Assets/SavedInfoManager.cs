@@ -2,49 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SavedInfoManager : MonoBehaviour {
+public class SavedInfoManager : MonoBehaviour
+{
+	[System.Serializable]
+    public struct Settings
+    {
+        public float slapForce;
+        public float grabForce;
+        public int   juggleThreshold;
+        public float ballScale;
+        public float timeScale;
+        public int   ballSpeedIndex;
+        public bool  allowSlaps;
+    }
 
-	public static string key_slapForce = "touchSlapForce";
-	public static string key_grabForce = "touchGrabForce";
-	public static string key_juggleThreshold = "juggleThreshold";
-	public static string key_BallScale = "ballScale";
-	public static string key_TimeScale = "timeScale";
-	public static string key_BallSpawnSpeed = "ballSpawnSpeed";
-	public static string key_allowSlaps = "allowSlaps";
+    public static Settings mySettings;
+    static string jsonString;
 
+    void Awake()
+    {
+        if (PlayerPrefs.HasKey("SAVED"))
+        {
+            jsonString = PlayerPrefs.GetString("JSON");
+            UpdateDeviceValues();
+        }
+        else
+        {
+            InitValues();
+        }
+    }
 
-	void Awake() {
-		InitValues();
+    void InitValues()
+    {
+        mySettings.slapForce = .5f;
+        mySettings.grabForce = 13.0f;
+        mySettings.juggleThreshold = 1;
+        mySettings.ballScale = .65f;
+        mySettings.timeScale = .7f;
+        mySettings.ballSpeedIndex = 2;
+        mySettings.allowSlaps = false;
+		
+		PlayerPrefs.SetInt("SAVED", 1);
+		PlayerPrefs.Save();
+    }
+
+    void UpdateDeviceValues()
+    {
+        mySettings = JsonUtility.FromJson<Settings>(jsonString);
+
+		NewHandManager.GetInstance().touchSlapThrowForce = mySettings.slapForce;
+        NewHandManager.GetInstance().touchGrabThrowForce = mySettings.grabForce;
+        NewBallManager.GetInstance().juggleThreshold 	 = mySettings.juggleThreshold;
+        NewBallManager.GetInstance().ballScale 			 = mySettings.ballScale;
+        TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
+        NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
+        NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
+    }
+
+	public static void UpdateSavedValues() {
+		jsonString = JsonUtility.ToJson(mySettings);
 	}
-
-	void InitValues() {
-		NewHandManager.GetInstance().touchSlapThrowForce = PlayerPrefs.GetFloat(key_slapForce);
-		NewHandManager.GetInstance().touchGrabThrowForce = PlayerPrefs.GetFloat(key_grabForce);
-	
-		NewBallManager.GetInstance().juggleThreshold     = PlayerPrefs.GetInt(key_juggleThreshold);
-		NewBallManager.GetInstance().ballScale           = PlayerPrefs.GetFloat(key_BallScale);
-		NewBallManager.GetInstance().ballSpawnSpeed      = (NewBallManager.BallSpawnSpeed) PlayerPrefs.GetInt(key_BallSpawnSpeed);
-		NewBallManager.allowSlaps 					     = PlayerPrefs.GetInt(key_allowSlaps) == 1;
-
-		TimeManager.GetInstance().m_SlowTimeScale        = PlayerPrefs.GetFloat(key_TimeScale);
-	}
-
-	// void SetValue(string key) {
-	// 	// switch(key) {
-	// 	// 	case key_slapForce:
-	// 	// 		break;
-	// 	// 	case key_grabForce:
-	// 	// 		break;
-	// 	// 	case key_juggleThreshold:
-	// 	// 		break;
-	// 	// 	case key_BallScale:
-	// 	// 		break;
-	// 	// 	case key_TimeScale:
-	// 	// 		break;
-	// 	// 	case key_BallSpawnSpeed:
-	// 	// 		break;
-	// 	// 	case key_allowSlaps:
-	// 	// 		break;
-	// 	// }
-	// }
 }
