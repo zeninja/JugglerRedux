@@ -88,7 +88,7 @@ public class NewBall : MonoBehaviour
     public void GetCaught()
     {
         if (m_Launching || NewGameManager.GameOver()) { return; }
-        Debug.Log("Got caught");
+        // Debug.Log("Got caught");
 
         m_IsHeld = true;
         framesSinceCatch = 0;
@@ -113,7 +113,7 @@ public class NewBall : MonoBehaviour
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
 
-        Debug.Log("Ball Thrown");
+        // Debug.Log("Ball Thrown");
 
         // IncrementEndgame();
 

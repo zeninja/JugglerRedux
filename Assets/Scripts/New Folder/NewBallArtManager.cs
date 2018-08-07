@@ -143,16 +143,18 @@ public class NewBallArtManager : MonoBehaviour
 
     public IEnumerator Explode()
     {
+        Debug.Log("Exploding");
         float elapsedTime = 0;
 
         while (elapsedTime < explosionDuration)
         {
+            
             elapsedTime += Time.deltaTime;
-            Vector2 explosionScale = Vector2.one * explosionCurve.Evaluate(elapsedTime / explosionDuration);
-            explosionScale *= maxExplosionScale;
-            transform.localScale = explosionScale;
-                        Debug.Break();
-
+            Vector2 explosionScale = Vector2.one * explosionCurve.Evaluate(elapsedTime / explosionDuration) * maxExplosionScale;
+            Debug.Log(explosionCurve.Evaluate(elapsedTime / explosionDuration));
+            Debug.Log(explosionScale);
+            ball.transform.localScale = explosionScale;
+            
             yield return new WaitForEndOfFrame();
         }
 
@@ -163,7 +165,7 @@ public class NewBallArtManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             Vector2 implosionScale = Vector2.one * implosionCurve.Evaluate(elapsedTime / implosionDuration);
             implosionScale *= maxExplosionScale;
-            transform.localScale = implosionScale;
+            ball.transform.localScale = implosionScale;
             yield return new WaitForEndOfFrame();
         }
 

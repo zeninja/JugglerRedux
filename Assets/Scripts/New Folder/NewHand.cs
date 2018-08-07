@@ -100,7 +100,7 @@ public class NewHand : MonoBehaviour
 
                     if (Input.GetMouseButtonUp(0))
                     {
-                        Debug.Log("Mouse up");
+                        // Debug.Log("Mouse up");
                         ThrowBall();
                     }
                 }

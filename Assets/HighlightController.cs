@@ -27,6 +27,7 @@ public class HighlightController : MonoBehaviour {
 		m_Sprite.enabled = false;
 		EventManager.StartListening("BallCaught", DoCatch);
 		EventManager.StartListening("BallThrown", DoThrow);
+		EventManager.StartListening("BallDied", OnGameOver);
 
 		target = transform.parent;
 	}
@@ -54,7 +55,7 @@ public class HighlightController : MonoBehaviour {
 	bool growing;
 
 	IEnumerator CatchEffect() {
-		Debug.Log("Catch effect");
+		// Debug.Log("Catch effect");
 		m_Sprite.enabled = true;
 
 		float elapsed = 0;
@@ -87,5 +88,9 @@ public class HighlightController : MonoBehaviour {
 			// transform.localScale = Mathf.Max(0, transform.localScale.x) * Vector3.one;
 			yield return new WaitForEndOfFrame();
 		}
+	}
+
+	void OnGameOver() {
+		Destroy(gameObject);
 	}
 }
