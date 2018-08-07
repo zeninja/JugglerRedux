@@ -100,6 +100,7 @@ public class NewHand : MonoBehaviour
 
                     if (Input.GetMouseButtonUp(0))
                     {
+                        Debug.Log("Mouse up");
                         ThrowBall();
                     }
                 }
@@ -220,7 +221,7 @@ public class NewHand : MonoBehaviour
     void GrabBall()
     {
         if(!m_BallGrabbedFirstFrame) {
-            Debug.Log("Ball grabbed");
+            // Debug.Log("Ball grabbed");
             m_Ball.GetComponent<NewBall>().GetCaught();
             m_Ball.GetComponent<LinePredictor>().SetHand(this);
             m_CatchPosition = m_Transform.position;

@@ -34,6 +34,7 @@ public class SavedInfoManager : MonoBehaviour
 
     void InitValues()
     {
+        mySettings = new Settings();
         mySettings.slapForce = .5f;
         mySettings.grabForce = 13.0f;
         mySettings.juggleThreshold = 1;
@@ -42,8 +43,7 @@ public class SavedInfoManager : MonoBehaviour
         mySettings.ballSpeedIndex = 2;
         mySettings.allowSlaps = false;
 		
-		PlayerPrefs.SetInt("SAVED", 1);
-		PlayerPrefs.Save();
+        UpdateSavedValues();
     }
 
     void UpdateDeviceValues()
@@ -57,9 +57,14 @@ public class SavedInfoManager : MonoBehaviour
         TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
         NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
+
+        UpdateSavedValues();
     }
 
 	public static void UpdateSavedValues() {
 		jsonString = JsonUtility.ToJson(mySettings);
+        PlayerPrefs.SetString("JSON", jsonString);
+        PlayerPrefs.SetInt("SAVED", 1);
+		PlayerPrefs.Save();
 	}
 }

@@ -18,6 +18,8 @@ public class NewGameManager : MonoBehaviour {
 	// public bool spawnBallsByTouchCount;
 
 	void Awake() {
+		Application.targetFrameRate = 120;
+
 		if(instance == null) {
 			instance = this;
 		} else {

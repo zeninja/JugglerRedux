@@ -10,7 +10,6 @@ public class NewBallArtManager : MonoBehaviour
     List<Vector3> m_LineSegment;
     int m_LineLength = 5;
 
-    // GameObject m_EndDot;
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
 
@@ -36,6 +35,7 @@ public class NewBallArtManager : MonoBehaviour
         m_LinePredictor = GetComponentInParent<LinePredictor>();
 
         m_LinePointList = new List<Vector3>();
+        m_LineSegment = new List<Vector3>();
 
         line.sortingLayerName = "Default";
         line.startWidth = transform.root.localScale.x;
@@ -70,6 +70,14 @@ public class NewBallArtManager : MonoBehaviour
         cap.color           = myColor;
     }
 
+    public void SetColor(Color newColor) {
+        // overload method for setting the color directly
+        myColor             = newColor;
+        ball.color          = myColor;
+        line.material.color = myColor;
+        cap.color           = myColor;
+    }
+
     public void SetDepth() {
         int numLayersPerBall = 3;
         
@@ -95,62 +103,73 @@ public class NewBallArtManager : MonoBehaviour
             {
                 line.enabled = true;
 
-                
+                // 1. Add the most recent position;
+                m_LinePointList.Add(transform.position);
 
+                // 2. Set the line length;
+                // m_LineLength = Mathf.CeilToInt()
 
-                // m_LinePointList = m_LinePredictor.GetPointList();
+                // 3. Trim the line
+                if(m_LinePointList.Count > m_LineLength) {
+                    m_LinePointList.RemoveAt(0);
+                }
 
-                // for(int i = 0; i < m_LinePointList.Count; i++) {
-                //     if(m_Ball.transform.position == m_LinePointList[i]) {
-                //         lineIndex = i;
-                //         break;
-                //     }
+                // 4. Set the line
+                line.positionCount = m_LinePointList.Count;
+                line.SetPositions(m_LinePointList.ToArray());
+
+                // 5. Set the cap
+                // if(m_LinePointList.Count >= 1) {
+                    cap.transform.position = m_LinePointList[0];
+                    cap.enabled = true;
                 // }
-
-                // 
-
-
-
-
-
-                // // GET THE SUB-SEGMENT OF THE COMPLETE LINE AND ASSIGN IT TO M_LINESEGMENT
-                // if(m_LinePointList.Count < m_LineLength) {
-                //     m_LineSegment = GetLineSegment(0);
-                // } else {
-                //     lineIndex++;
-
-                //     if(lineIndex + m_LineLength * 2 > m_LinePointList.Count) {
-                //         lineIndex++;
-
-                //         m_LineSegment = GetLineSegment(lineIndex);
-                //     } else {
-                //         m_LineSegment = GetLineSegment(lineIndex);
-                //     }
-                // }
-
-                // // THEN. UHH... CHECK HOW FAR ALONG THE LINE WE ARE WHEN SETTING THE CAP'S POSITION
-                // // AND SET IT ACCORDING TO HOW LONG THE LINE SHOULD BE
-                
-                // // AND THIS IS THE MOST IMPORTANT PART!!!! 
-                // // WHEN THE BALL IS PEAKING, SET THE CAP POSITION SO THAT IT CATCHES UP *AS* THE BALL PEAKS!!!
-                // SetCapPosition();
 
             }
         }
         else
         {
+            cap.enabled = false;
+            m_LinePointList.Clear();
+            line.positionCount = 0;
             line.enabled = false;
+        }
+    }
 
-            // if (m_LinePointList.Count > 0)
-            // {
-            //     m_LinePointList.RemoveAt(m_LinePointList.Count - 1);
-            //     // m_EndDot.transform.position = transform.position;
-            //     cap.enabled = false;
-            // }
+    public float explosionDuration = .25f;
+    public float implosionDuration = .25f;
+    public AnimationCurve explosionCurve;
+    public AnimationCurve implosionCurve;
+    public float maxExplosionScale = 10;
+
+    public IEnumerator Explode()
+    {
+        float elapsedTime = 0;
+
+        while (elapsedTime < explosionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            Vector2 explosionScale = Vector2.one * explosionCurve.Evaluate(elapsedTime / explosionDuration);
+            explosionScale *= maxExplosionScale;
+            transform.localScale = explosionScale;
+                        Debug.Break();
+
+            yield return new WaitForEndOfFrame();
         }
 
-        // line.positionCount = Mathf.Min(m_LinePointList.Count, m_LineLength);
-        // line.SetPositions(m_LinePointList.ToArray());
+        elapsedTime = 0;
+
+        while (elapsedTime < implosionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            Vector2 implosionScale = Vector2.one * implosionCurve.Evaluate(elapsedTime / implosionDuration);
+            implosionScale *= maxExplosionScale;
+            transform.localScale = implosionScale;
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return null;
+
+        Destroy(gameObject);
     }
 
     public bool VelocityPositive()
@@ -177,12 +196,6 @@ public class NewBallArtManager : MonoBehaviour
     bool EnableTrail()
     {
         return m_Ball.m_BallThrown;
-    }
-
-    public void SetColor(Color myColor) {
-        ball.color = myColor;
-        line.material.color = myColor;
-        cap.GetComponent<SpriteRenderer>().color = myColor;
     }
 
     void OnDestroy()

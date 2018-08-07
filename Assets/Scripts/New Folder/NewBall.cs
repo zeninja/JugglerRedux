@@ -18,6 +18,8 @@ public class NewBall : MonoBehaviour
     public Vector2 currentThrowVector;
 
     public bool m_IsHeld;
+
+    [HideInInspector]
     public bool m_BallThrown = false;
 
     // Endgame
@@ -26,6 +28,8 @@ public class NewBall : MonoBehaviour
 
     NewBallArtManager ballArtManager;
 
+    int framesSinceCatch = 0;
+
     // Use this for initialization
     void Awake()
     {
@@ -33,7 +37,7 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = defaultGravity;
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
 
-        ballArtManager = GetComponent<NewBallArtManager>();
+        ballArtManager = GetComponentInChildren<NewBallArtManager>();
     }
 
     // Update is called once per frame
@@ -56,6 +60,8 @@ public class NewBall : MonoBehaviour
         {
             CheckBounds();
         }
+
+        framesSinceCatch++;
     }
 
     void FixedUpdate()
@@ -77,15 +83,18 @@ public class NewBall : MonoBehaviour
         EventManager.TriggerEvent("BallSlapped");
     }
 
+    int catchFrame;
+
     public void GetCaught()
     {
         if (m_Launching || NewGameManager.GameOver()) { return; }
         Debug.Log("Got caught");
 
         m_IsHeld = true;
+        framesSinceCatch = 0;
+        
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
-
         EventManager.TriggerEvent("BallCaught");
 
         // NewBallManager.GetInstance().MoveBallToFront(ballArtManager);
@@ -103,6 +112,8 @@ public class NewBall : MonoBehaviour
 
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
+
+        Debug.Log("Ball Thrown");
 
         // IncrementEndgame();
 
@@ -122,6 +133,10 @@ public class NewBall : MonoBehaviour
         }
     }
 
+    public bool CaughtJustNow() {
+        return framesSinceCatch < 1;
+    }
+
     public void HandleDeath()
     {
         rb.velocity = Vector2.zero;
@@ -137,40 +152,11 @@ public class NewBall : MonoBehaviour
 
     public void Die()
     {
-        StartCoroutine(Explode());
+        StartCoroutine(DeathProcess());
     }
 
-    public AnimationCurve explosionCurve;
-    public AnimationCurve implosionCurve;
-    public float maxExplosionScale = 10;
-
-    IEnumerator Explode()
-    {
-        float duration = .125f;
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            Vector2 explosionScale = Vector2.one * explosionCurve.Evaluate(elapsedTime / duration);
-            explosionScale *= maxExplosionScale;
-            transform.localScale = explosionScale;
-            yield return new WaitForEndOfFrame();
-        }
-
-        elapsedTime = 0;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            Vector2 implosionScale = Vector2.one * implosionCurve.Evaluate(elapsedTime / duration);
-            implosionScale *= maxExplosionScale;
-            transform.localScale = implosionScale;
-            yield return new WaitForEndOfFrame();
-        }
-
-        yield return null;
-
+    IEnumerator DeathProcess() {
+        yield return StartCoroutine(ballArtManager.Explode());
         Destroy(gameObject);
     }
 
