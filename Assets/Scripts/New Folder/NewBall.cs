@@ -97,6 +97,10 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
 
+        GetComponent<EffectController>().SpawnGrowingRing(transform.position);
+
+        // ballArtManager.HandleCatch();
+
         // NewBallManager.GetInstance().MoveBallToFront(ballArtManager);
     }
 
@@ -143,6 +147,8 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         EventManager.TriggerEvent("BallDied");
         // EventManager.TriggerEvent("GameOver");
+        Debug.Log("--- GAME OVER ---");
+        Debug.Break();
     }
 
     public void FreezeBall() {
@@ -152,13 +158,16 @@ public class NewBall : MonoBehaviour
 
     public void Die()
     {
-        StartCoroutine(DeathProcess());
-    }
-
-    IEnumerator DeathProcess() {
-        yield return StartCoroutine(ballArtManager.Explode());
+        // StartCoroutine(DeathProcess());
+        ballArtManager.HandleDeath();
         Destroy(gameObject);
     }
+
+    // IEnumerator DeathProcess() {
+    //     // yield return null;
+    //     // yield return StartCoroutine(ballArtManager.Explode());
+    //     // Destroy(gameObject);
+    // }
 
     public void UpdateColor() {
         GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);

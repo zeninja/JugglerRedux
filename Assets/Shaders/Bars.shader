@@ -61,25 +61,25 @@ Shader "Grid" {
  
         // FRAGMENT SHADER
         float4 frag(vertexOutput input) : COLOR {
-          if (//frac(input.worldPos.x/_GridSpacing) < _GridThickness || 
+        //   if (frac(input.worldPos.x/_GridSpacing) < _GridThickness //|| 
 
 
 
-//          	 frac(input.worldPos.y/_GridSpacing) < _GridThickness
+        //  	//  frac(input.worldPos.y/_GridSpacing) < _GridThickness
 
-          	 frac((input.worldPos.y + input.worldPos.x)/_GridSpacing - _Time[1]) < _GridThickness
+        //   	//  frac((input.worldPos.y + input.worldPos.x)/_GridSpacing - _Time[1]) < _GridThickness
 
-          && 
-          (
-          	(input.pos.x < _SafeZone || input.pos.x > _ScreenParams.x - _SafeZone) ||
-          	(input.pos.y < _SafeZone || input.pos.y > _ScreenParams.y - _SafeZone)
-          )
-          ) {
-            return _GridColour;
-          }
-          else {
+        // //   && 
+        // //   (
+        // //   	(input.pos.x < _SafeZone || input.pos.x > _ScreenParams.x - _SafeZone) ||
+        // //   	(input.pos.y < _SafeZone || input.pos.y > _ScreenParams.y - _SafeZone)
+        // //   )
+        //   ) {
+        //     return _GridColour;
+        //   }
+        //   else {
             return _BaseColour;
-          }
+        //   }
         }
     ENDCG
     }

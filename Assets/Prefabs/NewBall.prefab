@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 58582016006042200}
   - component: {fileID: 50890798826892330}
   - component: {fileID: 120182281547954048}
+  - component: {fileID: 114765757643201288}
   m_Layer: 0
   m_Name: NewBall
   m_TagString: Ball
@@ -294,7 +295,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1424821910799642}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.37, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4520353208788130}
@@ -389,9 +390,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098dd87e50de36d4db2868e0382e7456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myColor: {r: 0, g: 0, b: 0, a: 0}
   ball: {fileID: 212715896425039678}
   line: {fileID: 120012429241582940}
-  cap: {fileID: 212805104800904082}
   m_TrailCurve:
     serializedVersion: 2
     m_Curve:
@@ -425,57 +426,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  explosionDuration: 0.125
-  implosionDuration: 0.25
-  explosionCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.45007932
-      value: 1
-      inSlope: 6.2956676
-      outSlope: 6.2956676
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.036972005
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  implosionCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.0019035339
-      inSlope: -2.2651567
-      outSlope: -2.2651567
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.041204453
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  maxExplosionScale: 10
 --- !u!114 &114381143750694754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -605,7 +555,26 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
-  scalar: 4.5
+  scalar: 3
+  scaleSmoothing: 100
+  squashAmount: 0.6
+--- !u!114 &114765757643201288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1424821910799642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66ca7b9f9b4c08242ab6cb18a0810713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circleEffect: {fileID: 114447860911331734, guid: 54dcff5de4fa41645bb12c37c55027e1,
+    type: 2}
+  lineEffect: {fileID: 114701098450276892, guid: 8a4ceead6c523a84ba3ac30e829e0e55,
+    type: 2}
+  ringColor: {r: 1, g: 1, b: 1, a: 1}
+  circleGrowSpeed: 22.73
 --- !u!120 &120012429241582940
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -665,7 +634,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -691,8 +660,8 @@ LineRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
+    numCornerVertices: 90
+    numCapVertices: 90
     alignment: 0
     textureMode: 0
     generateLightingData: 0
@@ -897,7 +866,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 42da49cd53ce5f1429663b1f67eb8cba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -917,15 +886,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 4fdba057158a34846a5e2e4c62b0d9a1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.45490196}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.0019531, y: 1.0019531}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212228000895723106
@@ -1072,7 +1041,7 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1730219821223510}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

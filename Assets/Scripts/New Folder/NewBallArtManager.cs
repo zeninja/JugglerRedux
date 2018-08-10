@@ -13,15 +13,15 @@ public class NewBallArtManager : MonoBehaviour
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
 
-    Color myColor;
+    [System.NonSerialized]
+    public Color myColor;
 
     [System.NonSerialized]
     public int spriteSortIndex;
 
-
     public SpriteRenderer ball;
     public LineRenderer line;
-    public SpriteRenderer cap;
+    // public SpriteRenderer cap;
 
     int lineIndex = 0;
 
@@ -40,13 +40,6 @@ public class NewBallArtManager : MonoBehaviour
         line.sortingLayerName = "Default";
         line.startWidth = transform.root.localScale.x;
         line.endWidth   = transform.root.localScale.y;
-
-        cap.transform.position = transform.position;
-        cap.transform.localScale = Vector3.one * transform.localScale.x;
-
-        // cap.enabled = false;
-        // cap.GetComponent<BallCap>().bam = this;
-        // cap.GetComponent<BallCap>().target = ball.transform;
     }
 
     // Update is called once per frame
@@ -67,7 +60,7 @@ public class NewBallArtManager : MonoBehaviour
         ball.color          = myColor;
         line.material.color = myColor;
         line.material.color = myColor;
-        cap.color           = myColor;
+        // cap.color           = myColor;
     }
 
     public void SetColor(Color newColor) {
@@ -75,7 +68,7 @@ public class NewBallArtManager : MonoBehaviour
         myColor             = newColor;
         ball.color          = myColor;
         line.material.color = myColor;
-        cap.color           = myColor;
+        // cap.color           = myColor;
     }
 
     public void SetDepth() {
@@ -83,7 +76,7 @@ public class NewBallArtManager : MonoBehaviour
         
         ball.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
         line.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
-        cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
+        // cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
     }
 
     public void SetDepth(int newIndex) {
@@ -92,7 +85,7 @@ public class NewBallArtManager : MonoBehaviour
         
         ball.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
         line.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
-        cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
+        // cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
     }
 
     void DrawTrail()
@@ -120,58 +113,26 @@ public class NewBallArtManager : MonoBehaviour
 
                 // 5. Set the cap
                 // if(m_LinePointList.Count >= 1) {
-                    cap.transform.position = m_LinePointList[0];
-                    cap.enabled = true;
+                    // cap.transform.position = m_LinePointList[0];
+                    // cap.enabled = true;
                 // }
 
             }
         }
         else
         {
-            cap.enabled = false;
+            // Debug.Log("False");
+            // cap.enabled = false;
             m_LinePointList.Clear();
-            line.positionCount = 0;
+            line.positionCount = 1;        
+            // line.SetPosition(0, transform.position);
             line.enabled = false;
+            // Debug.Break();
         }
     }
 
-    public float explosionDuration = .25f;
-    public float implosionDuration = .25f;
-    public AnimationCurve explosionCurve;
-    public AnimationCurve implosionCurve;
-    public float maxExplosionScale = 10;
+    public void HandleDeath() {
 
-    public IEnumerator Explode()
-    {
-        Debug.Log("Exploding");
-        float elapsedTime = 0;
-
-        while (elapsedTime < explosionDuration)
-        {
-            
-            elapsedTime += Time.deltaTime;
-            Vector2 explosionScale = Vector2.one * explosionCurve.Evaluate(elapsedTime / explosionDuration) * maxExplosionScale;
-            Debug.Log(explosionCurve.Evaluate(elapsedTime / explosionDuration));
-            Debug.Log(explosionScale);
-            ball.transform.localScale = explosionScale;
-            
-            yield return new WaitForEndOfFrame();
-        }
-
-        elapsedTime = 0;
-
-        while (elapsedTime < implosionDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            Vector2 implosionScale = Vector2.one * implosionCurve.Evaluate(elapsedTime / implosionDuration);
-            implosionScale *= maxExplosionScale;
-            ball.transform.localScale = implosionScale;
-            yield return new WaitForEndOfFrame();
-        }
-
-        yield return null;
-
-        Destroy(gameObject);
     }
 
     public bool VelocityPositive()
@@ -192,7 +153,7 @@ public class NewBallArtManager : MonoBehaviour
     }
 
     void SetCapPosition() {
-        cap.transform.position = m_LineSegment[0];
+        // cap.transform.position = m_LineSegment[0];
     }
 
     bool EnableTrail()
@@ -202,6 +163,6 @@ public class NewBallArtManager : MonoBehaviour
 
     void OnDestroy()
     {
-        Destroy(cap);
+        // Destroy(cap);
     }
 }
