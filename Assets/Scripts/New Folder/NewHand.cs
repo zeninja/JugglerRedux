@@ -224,7 +224,7 @@ public class NewHand : MonoBehaviour
         if(!m_BallGrabbedFirstFrame) {
             // Debug.Log("Ball grabbed");
             m_Ball.GetComponent<NewBall>().GetCaught();
-            m_Ball.GetComponent<LinePredictor>().SetHand(this);
+            // m_Ball.GetComponent<LinePredictor>().SetHand(this);
             m_CatchPosition = m_Transform.position;
             m_BallGrabbedFirstFrame = true;
         }

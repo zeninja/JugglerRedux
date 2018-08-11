@@ -16,6 +16,6 @@ public class MenuButton : MonoBehaviour {
 	void Update () {
 
 		// Can change this to just "New game manager in menu state"
-		item.interactable = NewGameManager.GetInstance().gameState == GameState.preGame;
+		item.interactable = NewGameManager.gameState == GameState.preGame;
 	}
 }

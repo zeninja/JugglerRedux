@@ -20,6 +20,10 @@ public class EZEasings : MonoBehaviour {
 	public static float SmoothStart4(float t) {
 		return t*t*t*t;
 	}
+	
+	public static float SmoothStart5(float t) {
+		return t*t*t*t*t;
+	}
 
 	// Smooth Stop
 	public static float SmoothStop2(float t) {
@@ -32,6 +36,10 @@ public class EZEasings : MonoBehaviour {
 
 	public static float SmoothStop4(float t) {
 		return 1 - ((1 - t) * (1 - t) * (1 - t) * (1 - t));
+	}
+
+	public static float SmoothStop5(float t) {
+		return 1 - ((1 - t) * (1 - t) * (1 - t) * (1 - t) * (1 - t));
 	}
 
 

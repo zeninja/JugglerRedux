@@ -5,8 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class LinePredictor : MonoBehaviour
 {
-
-    // LineRenderer m_PreviewLineRenderer;
     public int m_PreviewLineSegments = 120;
 
     Vector3 m_ShotPower;
@@ -23,20 +21,12 @@ public class LinePredictor : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        // m_PreviewLineRenderer = GetComponent<LineRenderer>();
-        m_Ball = GetComponent<NewBall>();
+        m_Ball = GetComponentInParent<NewBall>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        // m_PreviewLineRenderer.enabled = EnableLine() && currentVelocity != Vector3.zero;
-        // if (m_Ball.m_IsHeld)
-        // {
-        //     m_LineStartPosition = transform.position;
-        // }
-
         bool updateLine = !m_Ball.m_BallThrown;
 
         if (updateLine) 

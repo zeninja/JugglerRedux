@@ -29,6 +29,8 @@ public class NewBall : MonoBehaviour
     NewBallArtManager ballArtManager;
 
     int framesSinceCatch = 0;
+    [System.NonSerialized]
+    public bool dead;
 
     // Use this for initialization
     void Awake()
@@ -75,11 +77,9 @@ public class NewBall : MonoBehaviour
     {
         if (m_Launching || NewGameManager.GameOver()) { return; }
 
-        // Debug.Log("Getting caught and thrown");
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
-        GetComponent<LinePredictor>().HandleThrow();
         EventManager.TriggerEvent("BallSlapped");
     }
 
@@ -88,7 +88,6 @@ public class NewBall : MonoBehaviour
     public void GetCaught()
     {
         if (m_Launching || NewGameManager.GameOver()) { return; }
-        // Debug.Log("Got caught");
 
         m_IsHeld = true;
         framesSinceCatch = 0;
@@ -98,10 +97,6 @@ public class NewBall : MonoBehaviour
         EventManager.TriggerEvent("BallCaught");
 
         GetComponent<EffectController>().SpawnGrowingRing(transform.position);
-
-        // ballArtManager.HandleCatch();
-
-        // NewBallManager.GetInstance().MoveBallToFront(ballArtManager);
     }
 
     public void GetThrown(Vector2 throwVector)
@@ -112,14 +107,9 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
         rb.gravityScale = defaultGravity;
-        GetComponent<LinePredictor>().HandleThrow();
 
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
-
-        // Debug.Log("Ball Thrown");
-
-        // IncrementEndgame();
 
         NewBallManager.GetInstance().UpdateEndgame(this);
     }
@@ -130,9 +120,10 @@ public class NewBall : MonoBehaviour
 
         if (converted.y < 0 || converted.y > Screen.height || converted.x < 0 || converted.x > Screen.width)
         {
-            if (!NewGameManager.GameOver())
+            if (!NewGameManager.GameOver() && !dead)
             {
-                HandleDeath();
+                KillThisBall();
+                dead = true;
             }
         }
     }
@@ -141,14 +132,17 @@ public class NewBall : MonoBehaviour
         return framesSinceCatch < 1;
     }
 
+    void KillThisBall() {
+        FreezeBall();
+        EventManager.TriggerEvent("BallDied");
+        ballArtManager.HandleDeath();
+    }
+
     public void HandleDeath()
     {
-        rb.velocity = Vector2.zero;
-        rb.gravityScale = 0;
-        EventManager.TriggerEvent("BallDied");
-        // EventManager.TriggerEvent("GameOver");
-        Debug.Log("--- GAME OVER ---");
-        Debug.Break();
+        // Called externally, by the Ball Manager
+        FreezeBall();
+        // DestroyMe(); 
     }
 
     public void FreezeBall() {
@@ -156,33 +150,16 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
     }
 
-    public void Die()
-    {
-        // StartCoroutine(DeathProcess());
-        ballArtManager.HandleDeath();
-        Destroy(gameObject);
+    public void TimeToDie() {
+        DestroyMe();
     }
 
-    // IEnumerator DeathProcess() {
-    //     // yield return null;
-    //     // yield return StartCoroutine(ballArtManager.Explode());
-    //     // Destroy(gameObject);
-    // }
+    public void DestroyMe()
+    {
+        Destroy(gameObject);
+    }
 
     public void UpdateColor() {
         GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
     }
-
-    // public void SetColor(Color newColor)
-    // {
-    //     m_BallSprite.GetComponent<SpriteRenderer>().color = newColor;
-
-    //     ballColorIndex = NewBallManager._ballCount - 1;
-    // }
-
-    // public void SetColor()
-    // {
-    //     // GetComponent<SpriteRenderer>().color = NewBallManager.GetInstance().m_BallColors[ballColorIndex];
-    //     GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
-    // }
 }

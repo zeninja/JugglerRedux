@@ -5,7 +5,6 @@ using UnityEngine;
 public class NewBallArtManager : MonoBehaviour
 {
 
-    LinePredictor m_LinePredictor;
     List<Vector3> m_LinePointList;
     List<Vector3> m_LineSegment;
     int m_LineLength = 5;
@@ -21,72 +20,79 @@ public class NewBallArtManager : MonoBehaviour
 
     public SpriteRenderer ball;
     public LineRenderer line;
-    // public SpriteRenderer cap;
 
-    int lineIndex = 0;
-
-    public AnimationCurve m_TrailCurve;
 
     // Use this for initialization
     void Start()
     {
         m_Ball = GetComponentInParent<NewBall>();
         m_Rigidbody = GetComponentInParent<Rigidbody2D>();
-        m_LinePredictor = GetComponentInParent<LinePredictor>();
 
         m_LinePointList = new List<Vector3>();
         m_LineSegment = new List<Vector3>();
 
         line.sortingLayerName = "Default";
+        line.useWorldSpace = true;
         line.startWidth = transform.root.localScale.x;
-        line.endWidth   = transform.root.localScale.y;
+        line.endWidth = transform.root.localScale.y;
     }
+
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            HandleDeath();
+        }
+
         DrawTrail();
+
+        // GameOver();
     }
 
-    public void SetInfo(int newIndex) { 
+    #region util
+    public void SetInfo(int newIndex)
+    {
         spriteSortIndex = newIndex;
 
         SetColor();
         SetDepth();
     }
 
-    public void SetColor() {
+    public void SetColor()
+    {
         myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
-        ball.color          = myColor;
+        ball.color = myColor;
         line.material.color = myColor;
         line.material.color = myColor;
-        // cap.color           = myColor;
     }
 
-    public void SetColor(Color newColor) {
+    public void SetColor(Color newColor)
+    {
         // overload method for setting the color directly
-        myColor             = newColor;
-        ball.color          = myColor;
+        myColor = newColor;
+        ball.color = myColor;
         line.material.color = myColor;
-        // cap.color           = myColor;
     }
 
-    public void SetDepth() {
+    public void SetDepth()
+    {
         int numLayersPerBall = 3;
-        
+
         ball.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
         line.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
-        // cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
     }
 
-    public void SetDepth(int newIndex) {
+    public void SetDepth(int newIndex)
+    {
         spriteSortIndex = newIndex;
         int numLayersPerBall = 3;
-        
+
         ball.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
         line.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
-        // cap.sortingOrder  = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 1); // Furthest back
     }
+    #endregion
 
     void DrawTrail()
     {
@@ -103,66 +109,96 @@ public class NewBallArtManager : MonoBehaviour
                 // m_LineLength = Mathf.CeilToInt()
 
                 // 3. Trim the line
-                if(m_LinePointList.Count > m_LineLength) {
+                if (m_LinePointList.Count > m_LineLength)
+                {
                     m_LinePointList.RemoveAt(0);
                 }
 
                 // 4. Set the line
                 line.positionCount = m_LinePointList.Count;
                 line.SetPositions(m_LinePointList.ToArray());
-
-                // 5. Set the cap
-                // if(m_LinePointList.Count >= 1) {
-                    // cap.transform.position = m_LinePointList[0];
-                    // cap.enabled = true;
-                // }
-
             }
         }
         else
         {
-            // Debug.Log("False");
-            // cap.enabled = false;
             m_LinePointList.Clear();
-            line.positionCount = 1;        
-            // line.SetPosition(0, transform.position);
+            line.positionCount = 1;
             line.enabled = false;
-            // Debug.Break();
         }
     }
 
-    public void HandleDeath() {
+    // GAME OVER!!
+    public void HandleDeath()
+    {
+        Debug.Log("Handlin death");
 
+        iDied = true;
+        deathTime = Time.time;
+        exploding = true;
+        transform.localScale = Vector3.one;
+
+        myColor = NewBallManager.GetInstance().deadBallColor;
+        SetColor(myColor);
+
+        GetComponentInChildren<GameOverEffect>().HandleDeath();
+        // StartCoroutine(GameOver());
     }
+
+    bool iDied;
+    bool exploding, imploding;
+
+    public float targetScale = 40;
+    public float spreadRate;
+    public float recedeRate;
+    float deathTime;
+
+    // IEnumerator GameOver() {
+    //     float deathTime = Time.time;
+        
+    //     float t = Time.time - deathTime;
+    //     while(t < 1) {
+    //         yield return new WaitForEndOfFrame();
+    //     }
+    // }
+
+    // void GameOver()
+    // {
+
+    //     if (iDied)
+    //     {
+    //         float t = Time.time - deathTime;
+
+    //         if (exploding)
+    //         {
+    //             if (transform.lossyScale.x < targetScale)
+    //             {
+    //                 // we're increaseing in size
+    //                 transform.localScale += Vector3.one * spreadRate * EZEasings.SmoothStart5(t);
+    //             }
+    //             else
+    //             {
+    //                 // We've reached target scale
+    //                 NewBallManager.GetInstance().KillAllBalls();
+    //                 exploding = false;
+    //                 imploding = true;
+    //             }
+    //         }
+    //         else if (imploding)
+    //         {
+    //             if (transform.lossyScale.x > .01f)
+    //             {
+    //                 transform.localScale -= Vector3.one * recedeRate * EZEasings.SmoothStop5(t);
+    //             } else {
+    //                 m_Ball.TimeToDie();
+    //                 // Destroy(gameObject);
+    //             }
+    //         }
+    //     }
+    // }
+
 
     public bool VelocityPositive()
     {
         return m_Rigidbody.velocity.y > 0;
-    }
-
-    List<Vector3> GetLineSegment(int startingIndex) {
-        int lineLength = m_LineLength;
-
-        List<Vector3> lineSeg = new List<Vector3>();
-        
-        for(int i = 0; i < lineLength; i++) {
-            lineSeg.Add(m_LinePointList[i + startingIndex]);
-        }
-
-        return lineSeg;
-    }
-
-    void SetCapPosition() {
-        // cap.transform.position = m_LineSegment[0];
-    }
-
-    bool EnableTrail()
-    {
-        return m_Ball.m_BallThrown;
-    }
-
-    void OnDestroy()
-    {
-        // Destroy(cap);
     }
 }

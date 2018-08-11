@@ -6,7 +6,7 @@ public enum GameState { preGame, inGame, gameOver };
 
 public class NewGameManager : MonoBehaviour {
 
-	public GameState gameState = GameState.preGame;
+	public static GameState gameState = GameState.preGame;
 
 	#region instance
 	private static NewGameManager instance;
@@ -14,8 +14,6 @@ public class NewGameManager : MonoBehaviour {
 		return instance;
 	}
 	#endregion
-
-	// public bool spawnBallsByTouchCount;
 
 	void Awake() {
 		Application.targetFrameRate = 120;
@@ -49,13 +47,17 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	IEnumerator GameOverProcedure() {
-		yield return NewBallManager.GetInstance().StartCoroutine("KillBalls");
+		yield return NewBallManager.GetInstance().StartCoroutine("FreezeBalls");
 		yield return NewScoreManager.GetInstance().StartCoroutine("HandleGameOver");
-		SetState(GameState.preGame);
+		// SetState(GameState.preGame);
 	}
 
 	public static bool GameOver() {
-		return NewGameManager.GetInstance().gameState == GameState.gameOver;
+		return NewGameManager.gameState == GameState.gameOver;
+	}
+
+	public void ResetGame() {
+		SetState(GameState.preGame);
 	}
 
 	public void OnGUI() {
