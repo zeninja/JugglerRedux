@@ -32,3 +32,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Standard Assets/Microsoft.meta
+Assets/Standard Assets/Microsoft/Kinect.meta
+Assets/Standard Assets/Microsoft/Kinect/Face.meta
+Assets/Standard Assets/Microsoft/Kinect/VisualGestureBuilder.meta
