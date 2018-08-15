@@ -263,21 +263,4 @@ public class NewHand : MonoBehaviour
         NewHandManager.GetInstance().RemoveID(m_FingerID);
         Destroy(gameObject);
     }
-
-    void OnGUI()
-    {
-        // GUI.color = Color.black;
-        // GUI.Label(new Rect(0, 100 * m_FingerID, Screen.width, Screen.height), ((Vector3)m_Transform.position).ToString());
-
-        // Vector2 startPos = Camera.main.WorldToScreenPoint(transform.position);
-        // startPos.x += 100;
-        // startPos.y += 50;
-        // startPos.y = Screen.height - startPos.y;
-
-        // string handInfo = "FingerID: " + m_FingerID + "\n" +
-        //                   "Num fingers: " + NewHandManager.GetCurrentFingerIDCount().ToString() + "\n" + 
-        //                   "touchCount: " + Input.touchCount;
-
-        // GUI.Label(new Rect(startPos.x, startPos.y, 100, 500), handInfo);
-    }
 }

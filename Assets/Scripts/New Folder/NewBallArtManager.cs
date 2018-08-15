@@ -66,6 +66,8 @@ public class NewBallArtManager : MonoBehaviour
         ball.color = myColor;
         line.material.color = myColor;
         line.material.color = myColor;
+        
+        GetComponent<SpriteCircleEffectSpawner>().effectColor = myColor;
     }
 
     public void SetColor(Color newColor)

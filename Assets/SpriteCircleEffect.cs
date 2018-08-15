@@ -17,12 +17,16 @@ public class SpriteCircleEffect : MonoBehaviour
     // [Range(0f, 1f)]
     // public float percent = .05f;
 
+	public Color ringColor;
+
     void Start()
     {
         foreground.sortingLayerName = "Effects";
 
         foreground.transform.localScale = Vector3.one * baseRadius;
         background.transform.localScale = Vector3.one * baseRadius;
+
+        foreground.color = ringColor;
     }
 
     void Update()

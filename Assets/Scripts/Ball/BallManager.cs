@@ -193,20 +193,4 @@ public class BallManager : MonoBehaviour {
 //			Debug.Log (balls [i].GetComponent<BallArtManager> ().zDepth);
 		}
 	}
-
-	void OnGUI() {
-		
-		for (int i = 0; i < balls.Count; i++) {
-			if (balls [i] != null) {
-				Vector3 ballPos = new Vector3 (balls [i].transform.position.x, -balls [i].transform.position.y, 0);
-				Vector3 camPos = Camera.main.WorldToScreenPoint (ballPos);
-				Vector3 offset = new Vector3 (camPos.x - 10, camPos.y - 10, camPos.z);
-				Vector3 size = Vector3.one * 20;
-				// string depth = balls [i].GetComponent<BallArtManager> ().zDepth.ToString ();
-
-				// GUI.Label (new Rect (offset, size), depth);
-			}
-		}
-			
-	}
 }

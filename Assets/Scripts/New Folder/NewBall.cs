@@ -95,6 +95,8 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
+
+        GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
     }
 
     public void GetThrown(Vector2 throwVector)

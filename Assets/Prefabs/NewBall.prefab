@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4629779840063542}
   - component: {fileID: 114494636056159008}
-  - component: {fileID: 114765757643201288}
   - component: {fileID: 50890798826892330}
   - component: {fileID: 58582016006042200}
   m_Layer: 0
@@ -72,6 +71,7 @@ GameObject:
   - component: {fileID: 4520353208788130}
   - component: {fileID: 114007034219457548}
   - component: {fileID: 114356064262534194}
+  - component: {fileID: 114386853569262222}
   m_Layer: 0
   m_Name: Art
   m_TagString: Untagged
@@ -182,9 +182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball: {fileID: 212715896425039678}
   line: {fileID: 120012429241582940}
-  targetScale: 22
-  spreadRate: 1
-  recedeRate: 0.5
 --- !u!114 &114356064262534194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,11 +194,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetScale: 40
-  spreadRate: 8.97
-  recedeRate: 2.74
   explodeDuration: 1.47
   waitDuration: 1.18
   implodeDuration: 1.08
+--- !u!114 &114386853569262222
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1813568290496366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e174b583201cd34e830af86658939fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ringDuration:
+    start: 0.11
+    end: 0.35
+  maskDuration:
+    start: 0.28
+    end: 0.6
+  baseRadius:
+    start: 5
+    end: 0.8
+  maxRadius:
+    start: 5.2
+    end: 22
+  delay:
+    start: 0
+    end: 0.1
+  effect: {fileID: 114796266806213280, guid: 3e0138a1c3daabf4d8507a8e299fe12a, type: 2}
+  percent: 0.768
 --- !u!114 &114494636056159008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,30 +244,13 @@ MonoBehaviour:
   m_IsHeld: 0
   m_BallThrown: 0
   ballColorIndex: 0
---- !u!114 &114765757643201288
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1424821910799642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66ca7b9f9b4c08242ab6cb18a0810713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  circleEffect: {fileID: 114447860911331734, guid: 54dcff5de4fa41645bb12c37c55027e1,
-    type: 2}
-  lineEffect: {fileID: 114701098450276892, guid: 8a4ceead6c523a84ba3ac30e829e0e55,
-    type: 2}
-  ringColor: {r: 1, g: 1, b: 1, a: 1}
-  circleGrowSpeed: 22.73
 --- !u!120 &120012429241582940
 LineRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1647978412313550}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

@@ -25,6 +25,7 @@ public class NewScoreManager : MonoBehaviour {
 	public static int _numBalls;
 	public static int _catchCount;
 	public static int _peakCount;
+	public static float _progress;
 
 	string scoreText;
 
@@ -43,6 +44,7 @@ public class NewScoreManager : MonoBehaviour {
 	void Update () {
 		scoreText = _numBalls.ToString() + "." + _catchCount.ToString();
 		text.text = scoreText;
+
 	}
 
 	void OnBallSpawned() {
@@ -53,6 +55,7 @@ public class NewScoreManager : MonoBehaviour {
 		// Debug.Log("caught");
 		text.text = scoreText;
 		_catchCount++;
+		_progress = Mathf.Min(_catchCount / 99, 1.0f) ;
 	}
 
 	void OnBallSlapped() {
@@ -76,5 +79,9 @@ public class NewScoreManager : MonoBehaviour {
 		_catchCount = 0;
 		_numBalls = 0;
 		yield return 0;
+	}
+
+	public static float GetProgressPercent() {
+		return _progress;
 	}
 }

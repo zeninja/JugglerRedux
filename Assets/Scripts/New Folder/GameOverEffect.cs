@@ -23,8 +23,6 @@ public class GameOverEffect : MonoBehaviour
     // GAME OVER!!
     public void HandleDeath()
     {
-        Debug.Log("Handlin death");
-
         exploding = true;
         transform.localScale = Vector3.one;
 

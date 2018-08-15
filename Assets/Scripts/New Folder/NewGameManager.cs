@@ -64,9 +64,4 @@ public class NewGameManager : MonoBehaviour {
 	public void ResetGame() {
 		SetState(GameState.preGame);
 	}
-
-	public void OnGUI() {
-		GUI.color = Color.black;
-		GUI.Label(new Rect(0, 0, 150, 150), gameState.ToString());
-	}
 }
