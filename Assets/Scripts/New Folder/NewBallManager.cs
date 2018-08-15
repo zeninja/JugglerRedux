@@ -213,4 +213,9 @@ public class NewBallManager : MonoBehaviour
 
         return true;
     }
+
+    public bool FirstBallGotThrown() {
+        
+        return false;
+    }
 }

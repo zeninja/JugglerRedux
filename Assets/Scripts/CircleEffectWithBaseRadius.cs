@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class CircleEffect : MonoBehaviour
+public class CircleEffectWithBaseRadius : MonoBehaviour
 {
     const int NUM_SEGMENTS = 100;
 
@@ -67,10 +67,10 @@ public class CircleEffect : MonoBehaviour
         Destroy(gameObject);
     }
 
-    float baseradius = 0;
+    float baseRadius;
 
     void AdjustRadiusAndWidth(float t) {
-        radius = baseradius + spreadSpeed * EZEasings.SmoothStart2(t);
+        radius = baseRadius + spreadSpeed * EZEasings.SmoothStart2(t);
         lineWidth = radius * lineWidthPercent;
     }
 

@@ -8,6 +8,10 @@ public class EZEasings : MonoBehaviour {
 		
 	// }
 
+	public static float Linear(float t) {
+		return t;
+	}
+
 	// Smooth Start
 	public static float SmoothStart2(float t) {
 		return t*t;

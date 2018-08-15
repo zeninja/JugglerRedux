@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EffectController : MonoBehaviour {
 
-	public CircleEffect circleEffect;
-	public LineEffect lineEffect;
+	// public CircleEffect circleEffect;
+	// public LineEffect lineEffect;
 
-	public Color ringColor;
+	// public Color ringColor;
 
 	#region Screenshake
 	[Range(0f, 1f)]
@@ -30,7 +30,7 @@ public class EffectController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.C)) {
-			SpawnGrowingRing(transform.position);
+			// SpawnGrowingRing(transform.position);
 		}
 
 		// Screenshake
@@ -39,24 +39,24 @@ public class EffectController : MonoBehaviour {
 
 	public float circleGrowSpeed = .5f;
 
-	public void SpawnGrowingRing(Vector2 position) {
-		CircleEffect newCircle = Instantiate(circleEffect);
+	// public void SpawnGrowingRing(Vector2 position) {
+	// 	CircleEffect newCircle = Instantiate(circleEffect);
 		
-		ringColor = GetComponentInChildren<NewBallArtManager>().myColor;
-		ringColor.a = .75f;
+	// 	ringColor = GetComponentInChildren<NewBallArtManager>().myColor;
+	// 	// ringColor.a = .75f;
 
-		newCircle.transform.position = position; 
-		newCircle.spreadSpeed = circleGrowSpeed;
-		newCircle.GetComponent<LineRenderer>().material.color = ringColor;
-		newCircle.GetComponent<LineRenderer>().material.color = ringColor;
-	}
+	// 	newCircle.transform.position = position; 
+	// 	newCircle.spreadSpeed = circleGrowSpeed;
+	// 	newCircle.GetComponent<LineRenderer>().material.color = ringColor;
+	// 	newCircle.GetComponent<LineRenderer>().material.color = ringColor;
+	// }
 
-	float GetRandomFloatNegOneToOne() {
-		return Random.Range(-1f, 1f);
-	}
+	// float GetRandomFloatNegOneToOne() {
+	// 	return Random.Range(-1f, 1f);
+	// }
 
-	float GetPerlinNoise() {
-		// hey maybe actually fill this in at some point
-		return 0;
-	}
+	// float GetPerlinNoise() {
+	// 	// hey maybe actually fill this in at some point
+	// 	return 0;
+	// }
 }

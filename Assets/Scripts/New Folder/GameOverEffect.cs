@@ -54,7 +54,7 @@ public class GameOverEffect : MonoBehaviour
         {
             if (t < explodeDuration)
             {
-                Debug.Log("growing");
+                // Debug.Log("growing");
                 t += Time.deltaTime;
                 transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStart5(t / explodeDuration);
                 yield return new WaitForEndOfFrame();
@@ -72,7 +72,7 @@ public class GameOverEffect : MonoBehaviour
         {
             if (t < waitDuration)
             {
-                Debug.Log("waiting");
+                // Debug.Log("waiting");
                 t += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             } else {
@@ -88,7 +88,7 @@ public class GameOverEffect : MonoBehaviour
         {
             if (t < implodeDuration)
             {
-                Debug.Log("imploding");
+                // Debug.Log("imploding");
                 t += Time.deltaTime;
                 transform.localScale = largeScale - largeScale * EZEasings.SmoothStop5(t / implodeDuration);
 

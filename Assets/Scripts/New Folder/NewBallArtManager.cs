@@ -130,72 +130,12 @@ public class NewBallArtManager : MonoBehaviour
     // GAME OVER!!
     public void HandleDeath()
     {
-        Debug.Log("Handlin death");
-
-        iDied = true;
-        deathTime = Time.time;
-        exploding = true;
         transform.localScale = Vector3.one;
-
         myColor = NewBallManager.GetInstance().deadBallColor;
         SetColor(myColor);
 
         GetComponentInChildren<GameOverEffect>().HandleDeath();
-        // StartCoroutine(GameOver());
     }
-
-    bool iDied;
-    bool exploding, imploding;
-
-    public float targetScale = 40;
-    public float spreadRate;
-    public float recedeRate;
-    float deathTime;
-
-    // IEnumerator GameOver() {
-    //     float deathTime = Time.time;
-        
-    //     float t = Time.time - deathTime;
-    //     while(t < 1) {
-    //         yield return new WaitForEndOfFrame();
-    //     }
-    // }
-
-    // void GameOver()
-    // {
-
-    //     if (iDied)
-    //     {
-    //         float t = Time.time - deathTime;
-
-    //         if (exploding)
-    //         {
-    //             if (transform.lossyScale.x < targetScale)
-    //             {
-    //                 // we're increaseing in size
-    //                 transform.localScale += Vector3.one * spreadRate * EZEasings.SmoothStart5(t);
-    //             }
-    //             else
-    //             {
-    //                 // We've reached target scale
-    //                 NewBallManager.GetInstance().KillAllBalls();
-    //                 exploding = false;
-    //                 imploding = true;
-    //             }
-    //         }
-    //         else if (imploding)
-    //         {
-    //             if (transform.lossyScale.x > .01f)
-    //             {
-    //                 transform.localScale -= Vector3.one * recedeRate * EZEasings.SmoothStop5(t);
-    //             } else {
-    //                 m_Ball.TimeToDie();
-    //                 // Destroy(gameObject);
-    //             }
-    //         }
-    //     }
-    // }
-
 
     public bool VelocityPositive()
     {

@@ -25,10 +25,12 @@ public class NewGameManager : MonoBehaviour {
 				Destroy(gameObject);
 			}
 		}
+
+		EventManager.StartListening("BallDied", HandleGameOver);
 	}
 
 	void Update() {
-		if( Input.touchCount == 2 && NewBallManager._ballCount == 0) {
+		if( Input.touchCount == 2) {
 			EventManager.TriggerEvent("SpawnBall");
 		}	
 	}
@@ -40,10 +42,13 @@ public class NewGameManager : MonoBehaviour {
 
 		switch(gameState) {
 			case GameState.gameOver:
-				StartCoroutine("GameOverProcedure");
+				StartCoroutine(GameOverProcedure());
 				break;
 		}
+	}
 
+	void HandleGameOver() {
+		SetState(GameState.gameOver);
 	}
 
 	IEnumerator GameOverProcedure() {

@@ -46,6 +46,9 @@ TagManager:
   - name: Pattern
     uniqueID: 1087607561
     locked: 0
+  - name: Effects
+    uniqueID: 856773013
+    locked: 0
   - name: Balls
     uniqueID: 4092015211
     locked: 0

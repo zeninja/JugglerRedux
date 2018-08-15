@@ -95,8 +95,6 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
-
-        GetComponent<EffectController>().SpawnGrowingRing(transform.position);
     }
 
     public void GetThrown(Vector2 throwVector)
@@ -138,20 +136,9 @@ public class NewBall : MonoBehaviour
         ballArtManager.HandleDeath();
     }
 
-    public void HandleDeath()
-    {
-        // Called externally, by the Ball Manager
-        FreezeBall();
-        // DestroyMe(); 
-    }
-
     public void FreezeBall() {
         rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
-    }
-
-    public void TimeToDie() {
-        DestroyMe();
     }
 
     public void DestroyMe()

@@ -12,6 +12,8 @@ public class TimeManager : MonoBehaviour
 
     public float m_TimeSmoothing = 10f;
 
+    public static float timeScalePercent; 
+
     // public float m_StartingTimeJuice = 1.0f;
     // float m_CurrentTimeJuice;
     // public float m_TimeJuiceBuildRate = .2f;
@@ -79,8 +81,13 @@ public class TimeManager : MonoBehaviour
             m_TargetTimeScale = m_NormalTimeScale;
         }
 
+        
+
         Time.timeScale = Mathf.Lerp(Time.timeScale, m_TargetTimeScale, Time.deltaTime * m_TimeSmoothing);
         m_CurrentTimeScale = Time.timeScale;
+
+        timeScalePercent = (m_NormalTimeScale - m_CurrentTimeScale) / (m_NormalTimeScale - m_SlowTimeScale);
+        // Debug.Log(timeScalePercent);
     }
 
     // void OnBallSlapped()
