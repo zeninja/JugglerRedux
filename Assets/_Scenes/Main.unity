@@ -2757,7 +2757,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.9009434, g: 0.9918685, b: 1, a: 1}
+  m_BackGroundColor: {r: 0.9647059, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -5075,6 +5075,7 @@ MonoBehaviour:
     start: 0
     end: 0.1
   effect: {fileID: 114796266806213280, guid: 3e0138a1c3daabf4d8507a8e299fe12a, type: 2}
+  effectColor: {r: 0, g: 0, b: 0, a: 0}
   useManualPercent: 0
   manualPercent: 0
 --- !u!114 &1926576450
