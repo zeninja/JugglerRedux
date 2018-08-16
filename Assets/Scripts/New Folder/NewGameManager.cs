@@ -30,7 +30,7 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if( Input.touchCount == 2) {
+		if( Input.touchCount == 2 && NewBallManager._ballCount == 0) {
 			EventManager.TriggerEvent("SpawnBall");
 		}	
 	}

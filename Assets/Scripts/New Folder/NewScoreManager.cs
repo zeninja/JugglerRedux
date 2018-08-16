@@ -55,7 +55,7 @@ public class NewScoreManager : MonoBehaviour {
 		// Debug.Log("caught");
 		text.text = scoreText;
 		_catchCount++;
-		_progress = Mathf.Min(_catchCount / 99, 1.0f) ;
+		_progress = Mathf.Min((float)_catchCount / 99f, 1.0f) ;
 	}
 
 	void OnBallSlapped() {
