@@ -94,7 +94,7 @@ public class NewUIManager : MonoBehaviour {
 
 	public void SwitchSlapsAllowed() {
 		bool slapsAllowed = ui_AllowSlaps.isOn;
-		NewBallManager.allowSlaps = slapsAllowed;
+		// NewBallManager.allowSlaps = slapsAllowed;
 
 		int slapInt = slapsAllowed ? 1: 0; // converted to an int just in case???
 

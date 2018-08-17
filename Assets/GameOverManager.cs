@@ -87,7 +87,6 @@ public class GameOverManager : MonoBehaviour
 
         while (t < explodeDuration)
         {
-            // Debug.Log("growing");
             t += Time.fixedDeltaTime;
             target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStart5(t / explodeDuration);
             yield return new WaitForFixedUpdate();
@@ -103,7 +102,6 @@ public class GameOverManager : MonoBehaviour
 
         while (t < implodeDuration)
         {
-            // Debug.Log("imploding");
             t += Time.fixedDeltaTime;
             target.transform.localScale = startScale - startScale * EZEasings.SmoothStop5(t / implodeDuration);
 
@@ -111,16 +109,6 @@ public class GameOverManager : MonoBehaviour
         }
 
     }
-
-    // public Property shortDelayRange;
-    // public Property longDelayRange;
-
-    // [System.Serializable]
-    // public class Property
-    // {
-    //     public float start;
-    //     public float end;
-    // }
 
     float percent;
 
@@ -149,9 +137,4 @@ public class GameOverManager : MonoBehaviour
             yield return new WaitForSeconds(longDelay);
         }
     }
-
-    // float GetSmoothStepRange(Property p)
-    // {
-    //     return p.start + (p.end - p.start) * EZEasings.SmoothStart3(percent);
-    // }
 }

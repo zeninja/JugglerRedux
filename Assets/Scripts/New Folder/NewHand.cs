@@ -232,13 +232,13 @@ public class NewHand : MonoBehaviour
 
     void SlapBall()
     {
-        if(!NewBallManager.allowSlaps) { return; }
+        // if(!NewBallManager.allowSlaps) { return; }
 
-        // Debug.Log("Ball slapped");
-        m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
-        // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
-        m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
-        HandleDeath();
+        // // Debug.Log("Ball slapped");
+        // m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
+        // // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
+        // m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
+        // HandleDeath();
     }
 
     void ThrowBall()

@@ -30,7 +30,7 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if( Input.touchCount == 2 && NewBallManager._ballCount == 0) {
+		if( Input.touchCount == 2 && NewBallManager._ballCount == 0 && CanSpawnBall()) {
 			EventManager.TriggerEvent("SpawnBall");
 		}	
 	}
@@ -58,5 +58,9 @@ public class NewGameManager : MonoBehaviour {
 	public void ResetGame() {
 		EventManager.TriggerEvent("Reset");
 		SetState(GameState.preGame);
+	}
+
+	bool CanSpawnBall() {
+		return gameState == GameState.preGame;
 	}
 }

@@ -56,7 +56,7 @@ public class SavedInfoManager : MonoBehaviour
         NewBallManager.GetInstance().ballScale 			 = mySettings.ballScale;
         TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
-        NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
+        // NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
 
         
 

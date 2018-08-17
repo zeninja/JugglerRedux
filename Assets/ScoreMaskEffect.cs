@@ -23,46 +23,23 @@ public class ScoreMaskEffect : MonoBehaviour {
 	}
 	#endregion
 	
-	float trauma;
-	public float smallTrauma;
-	public float largeTrauma;
-	public float traumaReductionRate = 1;
-
-
 	GameObject mask;
 
 	public float baseScale = 3;
-	public float maxScale = 22;
+	// public float maxScale = 22;
 	public float maskInDuration = .4f;
+	public float maskOutDuration;
 
-	bool canBounce = false;
+	// bool canBounce = false;
+
+	public float waitPreMask = .15f;
+	public AnimationCurve maskInAnimation;
 
 
 	void Start() {
 		mask = gameObject;
 		transform.localScale = Vector3.zero;
 	}
-
-	void Update() {
-		// if(Input.GetKeyDown(KeyCode.D))
-	}
-
-	// Update is called once per frame
-	void FixedUpdate () {
-		trauma -= Time.fixedDeltaTime * traumaReductionRate;
-		trauma = Mathf.Clamp(trauma, 0, 1);
-
-		float juiceValue = trauma * trauma * trauma;
-
-		if(canBounce) {
-			BounceMask();
-		}
-	}
-
-	public float waitPreMask = .15f;
-	public float waitPreBounce = 1.5f;
-
-	public AnimationCurve maskInAnimation;
 
 	public IEnumerator PrepEffect(SpriteRenderer deadBall) {
 		deadBall.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
@@ -81,29 +58,15 @@ public class ScoreMaskEffect : MonoBehaviour {
 			mask.transform.localScale = Vector3.one * baseScale * maskInAnimation.Evaluate(t / maskInDuration);
 			yield return new WaitForFixedUpdate();
 		}
+	}
 
-		t = 0;
-
-		while(t < waitPreBounce) {
+	public IEnumerator PlayMaskOut() {
+		float t = 0;
+		while (t < maskOutDuration) {
 			t += Time.fixedDeltaTime;
+			mask.transform.localScale = Vector3.zero +  Vector3.one * baseScale * (1 - EZEasings.SmoothStart3(t / maskOutDuration));
 			yield return new WaitForFixedUpdate();
 		}
-
-		canBounce = true;
-		trauma = 0;
-	}
-
-	public void PlaySmallEffect() {
-		trauma += smallTrauma;
-	}
-
-	public void PlayLargeEffect() {
-		trauma += largeTrauma;
-	}
-
-	void BounceMask() {
-		float diff = maxScale - baseScale;
-		mask.transform.localScale = Vector3.one * baseScale + Vector3.one * diff * trauma;
 	}
 
 	public void Reset() {

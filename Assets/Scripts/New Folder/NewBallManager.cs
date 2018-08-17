@@ -50,7 +50,7 @@ public class NewBallManager : MonoBehaviour
     public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed = BallSpawnSpeed.med;
 
-    public static bool allowSlaps;
+    // public static bool allowSlaps;
 
     public int juggleThreshold = 3;
 
