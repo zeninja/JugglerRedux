@@ -135,8 +135,7 @@ public class NewBallArtManager : MonoBehaviour
         transform.localScale = Vector3.one;
         myColor = NewBallManager.GetInstance().deadBallColor;
         SetColor(myColor);
-
-        GetComponentInChildren<GameOverEffect>().HandleDeath();
+        // GetComponentInChildren<GameOverEffect>().HandleDeath();
     }
 
     public bool VelocityPositive()

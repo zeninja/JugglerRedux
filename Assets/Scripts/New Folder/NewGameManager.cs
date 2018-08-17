@@ -42,7 +42,7 @@ public class NewGameManager : MonoBehaviour {
 
 		switch(gameState) {
 			case GameState.gameOver:
-				StartCoroutine(GameOverProcedure());
+				GameOverManager.GetInstance().StartGameOver();
 				break;
 		}
 	}
@@ -51,11 +51,11 @@ public class NewGameManager : MonoBehaviour {
 		SetState(GameState.gameOver);
 	}
 
-	IEnumerator GameOverProcedure() {
-		yield return NewBallManager.GetInstance().StartCoroutine("FreezeBalls");
-		yield return NewScoreManager.GetInstance().StartCoroutine("HandleGameOver");
-		// SetState(GameState.preGame);
-	}
+	// IEnumerator GameOverProcedure() {
+	// 	// yield return NewBallManager.GetInstance().StartCoroutine("FreezeBalls");
+	// 	// yield return NewScoreManager.GetInstance().StartCoroutine("HandleGameOver");
+	// 	// SetState(GameState.preGame);
+	// }
 
 	public static bool GameOver() {
 		return NewGameManager.gameState == GameState.gameOver;

@@ -37,4 +37,25 @@ public class Extensions : MonoBehaviour {
 		Vector3 output = new Vector3(input.x, input.y, 0);
 		return output;
 	}
+
+	// class Property {
+	// 	public float start;
+	// 	public float end;
+	// }
+
+	// float GetSmoothStepRange(AnimationParameter p)
+    // {
+    //     return p.start + (p.end - p.start) * EZEasings.SmoothStep3(percent);
+    // }
+
+	// Range Map
+	// (in, inStart, inEnd, outStart, outEnd) 
+	// {
+	//	out = in - inStart // Puts in [0, inEnd - inStart]
+	//  out /= (inEnd - inStart); // Puts in [0,1]
+	//  out = ApplyEasing(out); // in [0,1]
+	//  out *= (outEnd - outStart); // puts in [0, outRange]
+	//  return out + outStart; 
+	// }
+	
 }

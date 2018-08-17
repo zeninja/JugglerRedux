@@ -58,6 +58,8 @@ public class SavedInfoManager : MonoBehaviour
         NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
         NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
 
+        
+
         UpdateSavedValues();
     }
 

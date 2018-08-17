@@ -8,10 +8,10 @@ public class GameOverEffect : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            HandleDeath();
-        }
+        // if (Input.GetKeyDown(KeyCode.D))
+        // {
+        //     HandleDeath();
+        // }
     }
 
 
@@ -62,8 +62,6 @@ public class GameOverEffect : MonoBehaviour
             }
         }
         
-        EventManager.TriggerEvent("Reset");
-
         // wait at max scale
         t = 0;
         while (waiting)

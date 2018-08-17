@@ -27,9 +27,15 @@ public class NewScoreManager : MonoBehaviour {
 	public static int _peakCount;
 	public static float _progress;
 
+	public static int _maxCatchCount = 99;
+
 	string scoreText;
 
 	public TextMeshPro text;
+
+	float currentScore;
+	float savedHighScore;
+	string highScoreKey;
 
 	// Use this for initialization
 	void Start () {
@@ -55,7 +61,7 @@ public class NewScoreManager : MonoBehaviour {
 		// Debug.Log("caught");
 		text.text = scoreText;
 		_catchCount++;
-		_progress = Mathf.Min((float)_catchCount / 99f, 1.0f) ;
+		_progress = Mathf.Min((float)_catchCount / (float)_maxCatchCount, 1.0f) ;
 	}
 
 	void OnBallSlapped() {
@@ -75,13 +81,31 @@ public class NewScoreManager : MonoBehaviour {
 		scoreText = _numBalls.ToString() + "." + _catchCount.ToString();
 	}
 
-	public IEnumerator HandleGameOver() {
-		_catchCount = 0;
-		_numBalls = 0;
-		yield return 0;
-	}
-
 	public static float GetProgressPercent() {
 		return _progress;
+	}
+
+	public IEnumerator HighscoreProcess() {
+
+		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _catchCount.ToString()));
+
+		if(currentScore > savedHighScore) {
+			PlayerPrefs.SetFloat(highScoreKey, currentScore);
+			yield return StartCoroutine(UpdateHighScore());
+		}
+	}
+
+	public IEnumerator UpdateHighScore() {
+		float t = 0;
+		float duration = 1f;
+
+		while(t < duration) {
+			t += Time.fixedDeltaTime;
+			float percent = t / duration;
+
+			// Add an effect for the high score
+
+			yield return new WaitForFixedUpdate();
+		}
 	}
 }

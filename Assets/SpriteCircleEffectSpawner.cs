@@ -21,11 +21,10 @@ public class SpriteCircleEffectSpawner : MonoBehaviour
 
     public Color effectColor;
 
-    public bool useManualPercent = false;
-    [Range(0f, 1f)]
-    public float manualPercent;
+
     float percent;
-    float percentBasedOnNumCatches;
+
+
 
     // Update is called once per frame
     void Update()
@@ -36,36 +35,36 @@ public class SpriteCircleEffectSpawner : MonoBehaviour
         }
     }
 
+    public bool useManualPercent;
+    [Range(0, 1)]
+    public float manualPercent;
+
     public void SpawnRing(Vector2 position)
     {
-        GetPercentage();
+        percent = GetPercentage();
+
+        #if UNITY_EDITOR
+        if(useManualPercent) {
+            percent = manualPercent;
+        }
+        #endif
 
         SpriteCircleEffect s = Instantiate(effect, position, Quaternion.identity);
-        s.ringDuration = GetValueAtPercentage(ringDuration);
-        s.maskDuration = GetValueAtPercentage(maskDuration);
-        s.baseRadius   = GetValueAtPercentage(baseRadius);
-        s.targetMax    = GetValueAtPercentage(maxRadius);
-		s.delay        = GetValueAtPercentage(delay);
+        s.ringDuration = GetSmoothStepRange(ringDuration);
+        s.maskDuration = GetSmoothStepRange(maskDuration);
+        s.baseRadius   = GetSmoothStepRange(baseRadius);
+        s.targetMax    = GetSmoothStepRange(maxRadius);
+		s.delay        = GetSmoothStepRange(delay);
         s.ringColor    = effectColor;
         s.TriggerAnimation();
     }
 
-    float GetValueAtPercentage(AnimationParameter p)
+    float GetSmoothStepRange(AnimationParameter p)
     {
-        return p.start + (p.end - p.start) * EZEasings.SmoothStart3(percent);
+        return p.start + (p.end - p.start) * EZEasings.SmoothStep3(percent);
     }
 
-    void GetPercentage() {
-        #if UNITY_EDITOR
-        if(useManualPercent) {
-            percent = manualPercent;
-        } else {
-            percent = NewScoreManager.GetProgressPercent();
-        }
-        #else 
-        percent = NewScoreManager.GetProgressPercent();
-        #endif
-
-
+    float GetPercentage() {
+        return NewScoreManager.GetProgressPercent();
     }
 }
