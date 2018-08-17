@@ -62,6 +62,7 @@ public class NewBallArtManager : MonoBehaviour
 
     public void SetColor()
     {
+        spriteSortIndex = Mathf.Clamp(spriteSortIndex, 0, 8);
         myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
         ball.color = myColor;
         line.material.color = myColor;

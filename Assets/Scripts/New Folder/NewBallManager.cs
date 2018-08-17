@@ -177,14 +177,12 @@ public class NewBallManager : MonoBehaviour
         scoreIndex = 0;
     }
 
-    IEnumerator FreezeBalls()
+    public void FreezeBalls()
     {
         foreach (NewBall b in balls)
         {
             b.FreezeBall();
         }
-
-        yield return null;
     }
 
     public void KillAllBalls()

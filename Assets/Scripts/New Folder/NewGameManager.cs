@@ -51,17 +51,12 @@ public class NewGameManager : MonoBehaviour {
 		SetState(GameState.gameOver);
 	}
 
-	// IEnumerator GameOverProcedure() {
-	// 	// yield return NewBallManager.GetInstance().StartCoroutine("FreezeBalls");
-	// 	// yield return NewScoreManager.GetInstance().StartCoroutine("HandleGameOver");
-	// 	// SetState(GameState.preGame);
-	// }
-
 	public static bool GameOver() {
 		return NewGameManager.gameState == GameState.gameOver;
 	}
 
 	public void ResetGame() {
+		EventManager.TriggerEvent("Reset");
 		SetState(GameState.preGame);
 	}
 }

@@ -59,7 +59,6 @@ public class ScoreMaskEffect : MonoBehaviour {
 		}
 	}
 
-	GameObject myDeadBall;
 	public float waitPreMask = .15f;
 	public float waitPreBounce = 1.5f;
 
@@ -105,5 +104,9 @@ public class ScoreMaskEffect : MonoBehaviour {
 	void BounceMask() {
 		float diff = maxScale - baseScale;
 		mask.transform.localScale = Vector3.one * baseScale + Vector3.one * diff * trauma;
+	}
+
+	public void Reset() {
+		mask.transform.localScale = Vector3.zero;
 	}
 }
