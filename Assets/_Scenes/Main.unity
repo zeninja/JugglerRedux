@@ -1577,7 +1577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &646436041
 Transform:
   m_ObjectHideFlags: 0
@@ -3631,7 +3631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BallPrefab: {fileID: 114494636056159008, guid: 1d83a403870090f45af18050bcf66df6,
     type: 2}
-  ballScale: 0.75
+  ballScale: 0.65
   ballLaunchForce: 39
   m_BallColors:
   - {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
@@ -3644,7 +3644,7 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   deadBallColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
-  ballSpeedIndex: 0
+  ballSpeedIndex: 1
   ballSpawnSpeed: 1
   juggleThreshold: 1
 --- !u!114 &1341528088
@@ -3682,6 +3682,7 @@ MonoBehaviour:
   ui_TimeSlowFactor: {fileID: 88046765}
   ui_BallScale: {fileID: 933721196}
   ui_BallSpawnRate: {fileID: 367590815}
+  ui_playcount: {fileID: 619283406}
   ui_ShowAds: {fileID: 35867956}
   debugMenu: {fileID: 646436040}
 --- !u!114 &1341528090

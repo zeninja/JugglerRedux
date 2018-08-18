@@ -118,7 +118,7 @@ public class NewUIManager : MonoBehaviour {
 		NewBallManager.BallSpawnSpeed ballSpawnSpeed = NewBallManager.GetInstance().ballSpawnSpeed;
         int ballSpeedIndex = (int)ballSpawnSpeed;
         ballSpeedIndex = (ballSpeedIndex + 1) % 3;
-        ballSpawnSpeed = (NewBallManager.BallSpawnSpeed)ballSpeedIndex;
+        NewBallManager.GetInstance().ballSpawnSpeed = (NewBallManager.BallSpawnSpeed)ballSpeedIndex;
         NewBallManager.GetInstance().SetBallLaunchScores();
 
 		string ballSpeedText = "UNSET";

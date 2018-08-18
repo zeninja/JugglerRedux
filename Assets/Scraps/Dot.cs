@@ -28,5 +28,6 @@ public class Dot : MonoBehaviour {
 			s.color = myColor;
 			yield return new WaitForFixedUpdate();
 		}
+		Destroy(gameObject);
 	}
 }

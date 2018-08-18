@@ -119,6 +119,7 @@ MonoBehaviour:
   baseRadius: 0.8
   targetMax: 1.64
   delay: 0
+  ringColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &212335410342682788
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -152,7 +153,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 856773013
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4fdba057158a34846a5e2e4c62b0d9a1, type: 3}
   m_Color: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
@@ -198,10 +199,10 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 856773013
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4fdba057158a34846a5e2e4c62b0d9a1, type: 3}
-  m_Color: {r: 0.2783019, g: 1, b: 0.36777565, a: 1}
+  m_Color: {r: 0.2783019, g: 1, b: 0.36777565, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -250,7 +251,7 @@ SpriteMask:
   m_MaskAlphaCutoff: 0.043
   m_FrontSortingLayerID: 856773013
   m_BackSortingLayerID: 1087607561
-  m_FrontSortingLayer: -3
+  m_FrontSortingLayer: -2
   m_BackSortingLayer: -4
   m_FrontSortingOrder: 0
   m_BackSortingOrder: 0

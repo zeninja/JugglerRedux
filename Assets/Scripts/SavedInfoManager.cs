@@ -25,7 +25,7 @@ public class SavedInfoManager : MonoBehaviour
         if (PlayerPrefs.HasKey("SAVED"))
         {
             jsonString = PlayerPrefs.GetString("JSON");
-            UpdateDeviceValues();
+            UpdateInGameValues();
         }
         else
         {
@@ -36,19 +36,19 @@ public class SavedInfoManager : MonoBehaviour
     void InitValues()
     {
         mySettings = new Settings();
-        mySettings.slapForce = .5f;
-        mySettings.grabForce = 13.0f;
-        mySettings.juggleThreshold = 1;
-        mySettings.ballScale = .65f;
-        mySettings.timeScale = .7f;
-        mySettings.ballSpeedIndex = 2;
-        mySettings.allowSlaps = false;
-        mySettings.adsOff = false;
+        mySettings.slapForce = NewHandManager.GetInstance().touchSlapThrowForce;
+        mySettings.grabForce = NewHandManager.GetInstance().touchGrabThrowForce;
+        mySettings.juggleThreshold = NewBallManager.GetInstance().juggleThreshold;
+        mySettings.ballScale = NewBallManager.GetInstance().ballScale;
+        mySettings.timeScale = TimeManager.GetInstance().m_SlowTimeScale;
+        mySettings.ballSpeedIndex = NewBallManager.GetInstance().ballSpeedIndex;
+        // mySettings.allowSlaps = false;
+        mySettings.adsOff = NewAdManager.forceAdsOff;
 		
         UpdateSavedValues();
     }
 
-    void UpdateDeviceValues()
+    void UpdateInGameValues()
     {
         Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
         mySettings = JsonUtility.FromJson<Settings>(jsonString);
