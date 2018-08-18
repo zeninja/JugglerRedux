@@ -45,7 +45,7 @@ public class NewAdManager : MonoBehaviour {
 
 	public void ShowVideoAd() {
 		#if UNITY_ADS
-        if (!Advertisement.IsReady())
+        if (!Advertisement.IsReady() || debug_TurnAdsOff)
         {
             Debug.Log("Ads not ready for default zone");
             return;
