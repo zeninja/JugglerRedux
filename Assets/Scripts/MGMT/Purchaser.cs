@@ -243,6 +243,6 @@ public class Purchaser : MonoBehaviour, IStoreListener
     }
 
 	void HandlePurchaseMade() {
-		AdManager.HandlePurchaseMade();
+		// AdManager.HandlePurchaseMade();
 	}
 }

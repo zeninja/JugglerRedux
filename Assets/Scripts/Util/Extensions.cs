@@ -38,15 +38,16 @@ public class Extensions : MonoBehaviour {
 		return output;
 	}
 
-	// class Property {
-	// 	public float start;
-	// 	public float end;
-	// }
+	[System.Serializable]
+	public class Property {
+		public float start;
+		public float end;
+	}
 
-	// float GetSmoothStepRange(AnimationParameter p)
-    // {
-    //     return p.start + (p.end - p.start) * EZEasings.SmoothStep3(percent);
-    // }
+	public static float GetSmoothStepRange(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStep3(t);
+    }
 
 	// Range Map
 	// (in, inStart, inEnd, outStart, outEnd) 

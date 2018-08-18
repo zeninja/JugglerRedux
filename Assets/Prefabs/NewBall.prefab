@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 114007034219457548}
   - component: {fileID: 114356064262534194}
   - component: {fileID: 114386853569262222}
+  - component: {fileID: 114436162785578840}
   m_Layer: 0
   m_Name: Art
   m_TagString: Untagged
@@ -114,7 +115,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1424821910799642}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 100, z: 0}
+  m_LocalPosition: {x: 0, y: 4.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4520353208788130}
@@ -208,6 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e174b583201cd34e830af86658939fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effect: {fileID: 114796266806213280, guid: 3e0138a1c3daabf4d8507a8e299fe12a, type: 2}
   ringDuration:
     start: 0.11
     end: 0.35
@@ -223,8 +225,22 @@ MonoBehaviour:
   delay:
     start: 0
     end: 0.1
-  effect: {fileID: 114796266806213280, guid: 3e0138a1c3daabf4d8507a8e299fe12a, type: 2}
-  percent: 0.768
+  useManualPercent: 0
+  manualPercent: 0
+--- !u!114 &114436162785578840
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1813568290496366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4184ae1cd604d439fd157fca90f130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawTrail: 1
+  refreshInterval: 0.0245
+  dot: {fileID: 1452079700807384, guid: d1d14d5f89048404db5b1aeaa57790fb, type: 2}
 --- !u!114 &114494636056159008
 MonoBehaviour:
   m_ObjectHideFlags: 1

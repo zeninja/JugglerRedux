@@ -86,9 +86,9 @@ public class ScoreAnimation : MonoBehaviour {
 	public IEnumerator BumpScore () {
 		// emphasize each catch/score increase
 		if (!flashingScore) {
-			score.ScaleTo (scoreAnimInfo.defaultScale * scoreAnimInfo.bumpMagnitude, scoreAnimInfo.animationDuration, 0, EaseType.easeOutCirc);
+			// score.ScaleTo (scoreAnimInfo.defaultScale * scoreAnimInfo.bumpMagnitude, scoreAnimInfo.animationDuration, 0, EaseType.easeOutCirc);
 			yield return new WaitForSeconds (scoreAnimInfo.animationDuration);
-			score.ScaleTo (scoreAnimInfo.defaultScale, scoreAnimInfo.animationDuration, 0, EaseType.easeOutCirc);
+			// score.ScaleTo (scoreAnimInfo.defaultScale, scoreAnimInfo.animationDuration, 0, EaseType.easeOutCirc);
 		}
 	}
 

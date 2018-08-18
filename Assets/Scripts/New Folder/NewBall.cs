@@ -37,9 +37,12 @@ public class NewBall : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = defaultGravity;
-        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
 
         ballArtManager = GetComponentInChildren<NewBallArtManager>();
+    }
+
+    void Start() {
+        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
     }
 
     // Update is called once per frame
@@ -53,9 +56,13 @@ public class NewBall : MonoBehaviour
 
         if (rb.velocity.y < 0)
         {
-            EventManager.TriggerEvent("BallPeaked");
             m_Launching = false;
-            m_BallThrown = false;
+
+            if(m_BallThrown) {
+                EventManager.TriggerEvent("BallPeaked");
+                m_BallThrown = false;
+                // GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
+            }
         }
 
         if (!m_Launching)

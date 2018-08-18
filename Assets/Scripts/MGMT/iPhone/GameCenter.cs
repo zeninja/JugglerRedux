@@ -62,8 +62,8 @@ public class GameCenter : MonoBehaviour {
 			Debug.Log ("Got " + achievements.Length + " achievements");
 	}
 
-	public void SetHighScore(int newScore) {
-		ReportScore((long)newScore, highscoreLeaderboard);
+	public void SetHighScore(float newScore) {
+		// ReportScore((long)newScore, highscoreLeaderboard);
 	}
 
 	void ReportScore (long score, string leaderboardID) {
@@ -76,15 +76,7 @@ public class GameCenter : MonoBehaviour {
 	public void ShowLeaderboard() {
 		Social.ShowLeaderboardUI();
 	}
-//
-//	[DllImport("__Internal")]
-//	private static extern void _ReportAchievement( string achievementID, float progress );
-//
-//	public static void SetComplete(string achievementID) {
-//		#if !UNITY_EDITOR
-//		_ReportAchievement(achievementID, 100.0f);
-//		#endif
-//	}
+
 }
 
 

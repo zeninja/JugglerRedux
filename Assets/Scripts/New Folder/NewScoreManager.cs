@@ -91,6 +91,7 @@ public class NewScoreManager : MonoBehaviour {
 
 		if(currentScore > savedHighScore) {
 			PlayerPrefs.SetFloat(highScoreKey, currentScore);
+			GameCenter.GetInstance().SetHighScore(currentScore);
 			yield return StartCoroutine(UpdateHighScore());
 		}
 	}
