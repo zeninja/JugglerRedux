@@ -141,7 +141,7 @@ public class NewBallArtManager : MonoBehaviour
 
     public bool VelocityPositive()
     {
-        Debug.Log(m_Rigidbody.velocity.y);
+        // Debug.Log(m_Rigidbody.velocity.y);
         return m_Rigidbody.velocity.y > 0;
     }
 }

@@ -10,7 +10,7 @@ public class DotTrail : MonoBehaviour {
 
 	public GameObject dot;
 
-	float fadeDuration = .125f;
+	public float fadeDuration = .245f;
 
 	// Use this for initialization
 	void Start () {
@@ -22,8 +22,8 @@ public class DotTrail : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		bool velocityPositive = GetComponent<NewBallArtManager>().VelocityPositive();
-		Debug.Log(velocityPositive);
-		drawTrail = !velocityPositive && TimeManager.TimeSlowing();
+		// Debug.Log(velocityPositive);
+		drawTrail = !velocityPositive && TimeManager.TimeSlowing() && NewBallManager._ballCount > 1;
 		// drawTrail = !velocityPositive;
 		if(drawTrail) {
 			if(Time.time > nextDrawTime) {
