@@ -11,7 +11,8 @@ public class NewUIManager : MonoBehaviour {
 	public Text ui_TimeSlowFactor;
 	public Text ui_BallScale;
 	public Text ui_BallSpawnRate;
-	public Toggle ui_AllowSlaps;
+	public Text ui_playcount;
+	public Toggle ui_ShowAds;
 
 	public GameObject debugMenu;
 
@@ -25,6 +26,8 @@ public class NewUIManager : MonoBehaviour {
 		ui_JuggleThreshold.text = NewBallManager .GetInstance(). juggleThreshold    .ToString("");
 		ui_BallScale.text       = NewBallManager .GetInstance(). ballScale          .ToString("F2");
 		ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
+		ui_playcount.text       = NewAdManager.playcount.ToString();
+		ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
 
 		bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
 
@@ -38,6 +41,15 @@ public class NewUIManager : MonoBehaviour {
 		}
 		
 		debugMenu.SetActive(showDebugMenu);
+	}
+
+	public void ToggleAds() {
+		NewAdManager.forceAdsOff = !NewAdManager.forceAdsOff;
+			
+		SavedInfoManager.mySettings.adsOff = NewAdManager.forceAdsOff;
+		SavedInfoManager.UpdateSavedValues();
+		Debug.Log("FORCE ADS OFF: " + NewAdManager.forceAdsOff);
+		Debug.Log("SAVED INFO VALUE: " + SavedInfoManager.mySettings.adsOff);
 	}
 
 	public void AdjustJuggleThreshold(int adj) {
@@ -92,15 +104,15 @@ public class NewUIManager : MonoBehaviour {
 		SavedInfoManager.UpdateSavedValues();
    }
 
-	public void SwitchSlapsAllowed() {
-		bool slapsAllowed = ui_AllowSlaps.isOn;
-		// NewBallManager.allowSlaps = slapsAllowed;
+	// public void SwitchSlapsAllowed() {
+	// 	bool slapsAllowed = ui_AllowSlaps.isOn;
+	// 	// NewBallManager.allowSlaps = slapsAllowed;
 
-		int slapInt = slapsAllowed ? 1: 0; // converted to an int just in case???
+	// 	int slapInt = slapsAllowed ? 1: 0; // converted to an int just in case???
 
-		SavedInfoManager.mySettings.allowSlaps = slapsAllowed;
-		SavedInfoManager.UpdateSavedValues();
-	}
+	// 	SavedInfoManager.mySettings.allowSlaps = slapsAllowed;
+	// 	SavedInfoManager.UpdateSavedValues();
+	// }
 	
 	public void SwitchBallLaunchSpeed() {		
 		NewBallManager.BallSpawnSpeed ballSpawnSpeed = NewBallManager.GetInstance().ballSpawnSpeed;
@@ -117,7 +129,7 @@ public class NewUIManager : MonoBehaviour {
                 break;
 
             case NewBallManager.BallSpawnSpeed.med:
-                ballSpeedText = "Ball Spawn Speed:\nMed";
+                ballSpeedText = "Ball Spawn Speed:\nMedium";
                 break;
 
             case NewBallManager.BallSpawnSpeed.fast:

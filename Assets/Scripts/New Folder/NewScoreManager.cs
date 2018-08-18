@@ -26,6 +26,7 @@ public class NewScoreManager : MonoBehaviour {
 	public static int _catchCount;
 	public static int _peakCount;
 	public static float _progress;
+	public static float _lastCatchCount;
 
 	public static int _maxCatchCount = 99;
 

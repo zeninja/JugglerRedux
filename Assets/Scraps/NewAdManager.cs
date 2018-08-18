@@ -5,89 +5,102 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 #endif
 
-public class NewAdManager : MonoBehaviour {
+public class NewAdManager : MonoBehaviour
+{
 
-	static bool useAds = true;
-	static int adThreshold = 3;
-	static int currentPlays = 0;
+    public static int adThreshold = 3;
+    public static int playcount = 0;
 
-	bool isShowingAd = false;
+    bool isShowingAd = false;
 
-	public bool debug_TurnAdsOff = false;
+    public static bool forceAdsOff = false;
 
+    #region instance
+    static NewAdManager instance;
+    public static NewAdManager GetInstance()
+    {
+        return instance;
+    }
 
-	#region instance
-	static NewAdManager instance;
-	public static NewAdManager GetInstance() {
-		return instance;
-	}
+    // Use this for initialization
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
 
-	// Use this for initialization
-	void Awake () {
-		if(instance == null) {
-			instance = this;
-		} else {
-			if (instance != this) {
-				Destroy(gameObject);
+        InitializeAds();
+    }
+    #endregion
+
+    void InitializeAds()
+    {
+        string appleGameId = "1652958";
+
+        Advertisement.Initialize(appleGameId);
+
+        isShowingAd = false;
+    }
+
+    public void ShowVideoAd()
+    {
+		#if UNITY_ADS
+        if (forceAdsOff) { return; }
+
+		if(NewScoreManager._lastCatchCount >= 5) {
+			playcount++;
+		}
+
+		// If the ad isn't ready, there isn't anything we can do.. I think?
+		if (!Advertisement.IsReady())
+		{
+			Debug.Log("Ads not ready for default zone");
+			return;
+		}
+		else
+		{
+			if (playcount >= adThreshold)
+			{
+				isShowingAd = true;
+				var options = new ShowOptions { resultCallback = HandleShowResult };
+				Advertisement.Show("video", options);
 			}
 		}
+		#endif
+    }
 
-		InitializeAds();
-	}
-	#endregion
-
-	void InitializeAds() {
-		string appleGameId = "1652958";
-
-		Advertisement.Initialize(appleGameId);
-
-		// string NUM_PLAYS = "numPlays";
-		// string HAS_MADE_PURCHASE = "hasMadePurchase";
-
-		isShowingAd = false;
-	}
-
-	public void ShowVideoAd() {
-		#if UNITY_ADS
-        if (!Advertisement.IsReady() || debug_TurnAdsOff)
-        {
-            Debug.Log("Ads not ready for default zone");
-            return;
-        } else {
-			isShowingAd = true;
-
-			var options = new ShowOptions { resultCallback = HandleShowResult };
-			Advertisement.Show("video", options);
-		}
-
-        #endif
-	}
-
-	#if UNITY_ADS
+#if UNITY_ADS
     private void HandleShowResult(ShowResult result)
     {
         switch (result)
         {
             case ShowResult.Finished:
                 Debug.Log("The ad was successfully shown.");
-				isShowingAd = false;
-                //
-                // YOUR CODE TO REWARD THE GAMER
-                // Give coins etc.
+                isShowingAd = false;
+                playcount = 0;
                 break;
             case ShowResult.Skipped:
                 Debug.Log("The ad was skipped before reaching the end.");
-				isShowingAd = false;
+                isShowingAd = false;
                 break;
             case ShowResult.Failed:
                 Debug.LogError("The ad failed to be shown.");
-				isShowingAd = false;
+                isShowingAd = false;
                 break;
         }
     }
-    #endif
-	
-	public bool ShowingAd() {
-		return isShowingAd;
-	}
+#endif
+
+    public bool ShowingAd()
+    {
+        return isShowingAd;
+    }
 }

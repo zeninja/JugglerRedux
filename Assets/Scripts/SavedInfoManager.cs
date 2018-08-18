@@ -14,6 +14,7 @@ public class SavedInfoManager : MonoBehaviour
         public float timeScale;
         public int   ballSpeedIndex;
         public bool  allowSlaps;
+        public bool adsOff;
     }
 
     public static Settings mySettings;
@@ -42,12 +43,14 @@ public class SavedInfoManager : MonoBehaviour
         mySettings.timeScale = .7f;
         mySettings.ballSpeedIndex = 2;
         mySettings.allowSlaps = false;
+        mySettings.adsOff = false;
 		
         UpdateSavedValues();
     }
 
     void UpdateDeviceValues()
     {
+        Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
         mySettings = JsonUtility.FromJson<Settings>(jsonString);
 
 		NewHandManager.GetInstance().touchSlapThrowForce = mySettings.slapForce;
@@ -57,13 +60,14 @@ public class SavedInfoManager : MonoBehaviour
         TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
         // NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
-
+        NewAdManager.forceAdsOff                         = mySettings.adsOff;
         
 
         UpdateSavedValues();
     }
 
 	public static void UpdateSavedValues() {
+        Debug.Log("SAVED INFO MANAGER: Updating PLAYERPREFS saved settings");
 		jsonString = JsonUtility.ToJson(mySettings);
         PlayerPrefs.SetString("JSON", jsonString);
         PlayerPrefs.SetInt("SAVED", 1);
