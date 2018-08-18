@@ -37,8 +37,12 @@ public class NewAdManager : MonoBehaviour {
 	#endregion
 
 	void InitializeAds() {
-		string NUM_PLAYS = "numPlays";
-		string HAS_MADE_PURCHASE = "hasMadePurchase";
+		string appleGameId = "1652958";
+
+		Advertisement.Initialize(appleGameId);
+
+		// string NUM_PLAYS = "numPlays";
+		// string HAS_MADE_PURCHASE = "hasMadePurchase";
 
 		isShowingAd = false;
 	}
@@ -49,11 +53,13 @@ public class NewAdManager : MonoBehaviour {
         {
             Debug.Log("Ads not ready for default zone");
             return;
-        }
-		isShowingAd = true;
+        } else {
+			isShowingAd = true;
 
-		var options = new ShowOptions { resultCallback = HandleShowResult };
-        Advertisement.Show("video", options);
+			var options = new ShowOptions { resultCallback = HandleShowResult };
+			Advertisement.Show("video", options);
+		}
+
         #endif
 	}
 
