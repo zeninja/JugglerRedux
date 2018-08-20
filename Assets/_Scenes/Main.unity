@@ -3732,8 +3732,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   demo: {fileID: 0}
-  explodeDuration: 0.65
-  implodeDuration: 0.65
+  explodeDuration: 1.47
+  implodeDuration: 1
   countdownDuration: 1
 --- !u!114 &1341528094
 MonoBehaviour:
