@@ -87,7 +87,12 @@ public class CatchRing : MonoBehaviour {
         line.enabled = true;
     }
 
+	public bool hasSetColor = false;
+
 	public void SetColor(Color newColor) {
-		line.material.color = newColor;
+		if(!hasSetColor) {
+			line.material.color = newColor;
+			hasSetColor = true;
+		}
 	}
 }
