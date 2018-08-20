@@ -7,7 +7,6 @@ public enum HandType { holdAndThrow, throwImmediately };
 public class NewHandManager : MonoBehaviour
 {
     public static HandType _globalHandType = HandType.throwImmediately;
-    public UnityEngine.UI.Toggle handTypeToggle;
 
     #region instance
     private static NewHandManager instance;
@@ -45,7 +44,6 @@ public class NewHandManager : MonoBehaviour
 
     void Start()
     {
-        _globalHandType = handTypeToggle.isOn ? HandType.throwImmediately : HandType.holdAndThrow;
         InitSavedInfo();
     }
 

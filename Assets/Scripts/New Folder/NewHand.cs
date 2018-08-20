@@ -113,6 +113,11 @@ public class NewHand : MonoBehaviour
         }
 
         m_PositionHistory.Add(m_Transform.position);
+
+        if(Input.GetMouseButtonUp(0)) {
+            HandleDeath();
+        }
+
     }
 
     void HandleTouchInput()
@@ -223,8 +228,8 @@ public class NewHand : MonoBehaviour
     {
         if(!m_BallGrabbedFirstFrame) {
             // Debug.Log("Ball grabbed");
-            m_Ball.GetComponent<NewBall>().GetCaught();
-            // m_Ball.GetComponent<LinePredictor>().SetHand(this);
+            m_Ball.GetCaught();
+            GetComponentInChildren<CatchRing>().SetColor(m_Ball.GetComponentInChildren<NewBallArtManager>().myColor);
             m_CatchPosition = m_Transform.position;
             m_BallGrabbedFirstFrame = true;
         }

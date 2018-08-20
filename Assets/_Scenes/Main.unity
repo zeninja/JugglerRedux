@@ -2813,7 +2813,7 @@ GameObject:
   - component: {fileID: 1150503457}
   - component: {fileID: 1150503456}
   m_Layer: 0
-  m_Name: New Sprite Mask
+  m_Name: ScoreMask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3658,7 +3658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a971f6fbd11514b874a66683b5bda3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handTypeToggle: {fileID: 743367969}
   m_HandPrefab: {fileID: 114063323048531496, guid: 896a1471b660ea04cbefb799d5a61336,
     type: 2}
   mouseGrabThrowForce: 15
@@ -3733,8 +3732,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   demo: {fileID: 0}
-  explodeDuration: 1.47
-  implodeDuration: 1
+  explodeDuration: 0.65
+  implodeDuration: 0.65
   countdownDuration: 1
 --- !u!114 &1341528094
 MonoBehaviour:
