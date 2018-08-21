@@ -48,6 +48,10 @@ public class NewHand : MonoBehaviour
         m_PositionHistory = new List<Vector2>();
     }
 
+    void Start() {
+        EventManager.StartListening("GameOver", HandleDeath);
+    }
+
     void FixedUpdate()
     {
         // CheckForBall();

@@ -66,7 +66,9 @@ public class GameOverManager : MonoBehaviour
         NewBallManager.GetInstance().FreezeBalls();
         
         yield return StartCoroutine(Explode());
+        
         NewBallManager.GetInstance().KillAllBalls();
+        EventManager.TriggerEvent("CleanUp");
 
         yield return StartCoroutine(CountdownScore());
 

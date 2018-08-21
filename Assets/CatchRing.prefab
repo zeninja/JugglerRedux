@@ -53,13 +53,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineWidth:
-    start: 0.03
-    end: 0.03
+    start: 0.05
+    end: 0.05
   radius:
     start: 8
-    end: 0.5
+    end: 1
   duration: 0.14
-  percent: 0
+  ringColor: {r: 0, g: 0, b: 0, a: 0}
+  hasSetColor: 0
 --- !u!120 &120599561080656850
 LineRenderer:
   m_ObjectHideFlags: 1

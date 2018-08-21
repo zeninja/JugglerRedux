@@ -35,6 +35,8 @@ public class CatchRing : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if(NewGameManager.GameOver()) { return; }
+
 		HandleInput();
 
 		DrawRing();
@@ -43,17 +45,10 @@ public class CatchRing : MonoBehaviour {
 	float startTime;
 
 	void HandleInput() {
-		// if() {
-			if(t < duration) {
-				t += Time.fixedDeltaTime;
-				// Debug.Log(Time.time - startTime);
-			}
+		if(t < duration) {
+			t += Time.fixedDeltaTime;
+		}
 
-			// anchorPos = transform.position;//Extensions.MouseScreenToWorld();
-		// } else {
-		// 	t = 0;
-		// 	startTime = Time.time;
-		// }
 		percent = t / duration;
 		percent = Mathf.Clamp(percent, 0, 1);
 	}	

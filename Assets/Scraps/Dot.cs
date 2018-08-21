@@ -14,6 +14,8 @@ public class Dot : MonoBehaviour {
 	void Start () {
 		s = GetComponent<SpriteRenderer>();
 		StartCoroutine(FadeOut());
+
+		EventManager.StartListening("CleanUp", HandleDeath);
 	}
 
 	IEnumerator FadeOut() {
@@ -28,6 +30,10 @@ public class Dot : MonoBehaviour {
 			s.color = myColor;
 			yield return new WaitForFixedUpdate();
 		}
+		Destroy(gameObject);
+	}
+
+	void HandleDeath() {
 		Destroy(gameObject);
 	}
 }
