@@ -21,18 +21,15 @@ public class RectangleLine : MonoBehaviour
     public GameObject debug;
 
     GameObject s;
-	Vector2 anchorPos;
+	Vector2 ringAnchorPos;
 
     void Awake()
     {
-
-        s = Instantiate(debug) as GameObject;
-
         line = GetComponent<LineRenderer>();
         FindRingPositions();
         FindRectanglePositions();
 
-		originalRingPositions = ringPositions;
+		// originalRingPositions = ringPositions;
 
         ready = true;
     }
@@ -46,21 +43,7 @@ public class RectangleLine : MonoBehaviour
         {
             lineResolution--;
         }
-
-
-        if(Time.time > nextMoveTime) {
-        	s.transform.position = easedPositions[sIndex];
-        	nextMoveTime = Time.time + delay;
-        	sIndex = (sIndex + 1) % easedPositions.Count;
-        }
-
-        // DrawRectangle();
-        // DrawRing();
     }
-
-    float nextMoveTime = 0;
-    public float delay = .25f;
-    int sIndex;
 
     void FixedUpdate()
     {
@@ -96,7 +79,6 @@ public class RectangleLine : MonoBehaviour
         for (int i = 0; i < lineResolution; i++)
         {
             easedPositions.Add(rectanglePositions[i] + diffs[i] * t);
-			// easedPositions.Add(rectanglePositions[i]);
         }
 
 		line.positionCount = easedPositions.Count;
@@ -105,35 +87,56 @@ public class RectangleLine : MonoBehaviour
 
     public List<Vector3> easedPositions;
 
-    public Vector2 topLeftPos;
-    public Vector2 topRightPos;
-    public Vector2 bottomRightPos;
-    public Vector2 bottomLeftPos;
+    // public Vector2 topLeftPos;
+    // public Vector2 topRightPos;
+    // public Vector2 bottomRightPos;
+    // public Vector2 bottomLeftPos;
 
-    public float width, height;
+    // public float width, height;
 
-	public int startIndex = 0;
-	List<Vector3> originalRingPositions;
+	// public int startIndex = 0;
+	// List<Vector3> originalRingPositions;
 	public float rectBuffer;
 
+	public float radius = .5f;
+
+	public bool useOffset;
 
     void FindRectanglePositions()
     {
+		Vector2 offset = Vector2.zero;
+
+
+		if(useOffset) {
+			offset = new Vector2(Screen.width / 2, 0);
+			// Debug.Log(offset);
+			// offset = Extensions.ScreenToWorld(offset);
+			// Debug.Log(offset);
+		}
+
         // // Points for the corners of the rectangle in terms of the screen
         Vector2 screenTL = new Vector2(0, 0);
-        Vector2 screenTR = new Vector2(Screen.width, 0);
-        Vector2 screenBR = new Vector2(Screen.width, Screen.height);
+        Vector2 screenTR = new Vector2(Screen.width / 2, 0);
+        Vector2 screenBR = new Vector2(Screen.width / 2, Screen.height);
         Vector2 screenBL = new Vector2(0, Screen.height);
+
+		screenTL += offset;
+		screenTR += offset;
+		screenBR += offset;
+		screenBL += offset;
 
         Vector2 topLeftPos     = Extensions.ScreenToWorld(screenTL);
         Vector2 topRightPos    = Extensions.ScreenToWorld(screenTR);
         Vector2 bottomRightPos = Extensions.ScreenToWorld(screenBR);
         Vector2 bottomLeftPos  = Extensions.ScreenToWorld(screenBL);
+		
+		
 
-		topLeftPos += new Vector2(-rectBuffer, -rectBuffer);
-		topLeftPos += new Vector2(-rectBuffer, -rectBuffer);
-		topLeftPos += new Vector2(-rectBuffer, -rectBuffer);
-		topLeftPos += new Vector2(-rectBuffer, -rectBuffer);
+
+		topLeftPos     += new Vector2( rectBuffer,  rectBuffer);
+		topRightPos    += new Vector2(-rectBuffer,  rectBuffer);
+		bottomRightPos += new Vector2(-rectBuffer, -rectBuffer);
+		bottomLeftPos  += new Vector2( rectBuffer, -rectBuffer);
 
         rectanglePositions = new List<Vector3>();
 
@@ -141,8 +144,8 @@ public class RectangleLine : MonoBehaviour
         perimeter *= 2;
 
         // // w = (p - 2h) / 2
-        width = (perimeter - 2 * Vector2.Distance(topLeftPos, bottomLeftPos)) / 2;
-        height = (perimeter - 2 * Vector2.Distance(topLeftPos, topRightPos)) / 2;
+        float width = (perimeter - 2 * Vector2.Distance(topLeftPos, bottomLeftPos)) / 2;
+        float height = (perimeter - 2 * Vector2.Distance(topLeftPos, topRightPos)) / 2;
 
         int half = lineResolution / 2;
         int pointsPerLongSide = Mathf.FloorToInt(half * height / (width + height));
@@ -180,13 +183,11 @@ public class RectangleLine : MonoBehaviour
 		rectanglePositions.Add(capPoint);
     }
 
-	public float radius = .5f;
-
     void FindRingPositions()
     {
         ringPositions = new List<Vector3>();
 
-		anchorPos = Extensions.MouseScreenToWorld();
+		ringAnchorPos = Extensions.MouseScreenToWorld();
 
         float x;
         float y;
@@ -199,156 +200,12 @@ public class RectangleLine : MonoBehaviour
             x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
             y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
 
-            Vector3 ringPoint = (Vector3)anchorPos + new Vector3(x, y, z);
+            Vector3 ringPoint = (Vector3)ringAnchorPos + new Vector3(x, y, z);
             ringPositions.Add(ringPoint);
 
             angle -= (360f / lineResolution);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-        #region
-        void FindRectanglePositions()
-        {
-            // // Points for the corners of the rectangle in terms of the screen
-            Vector2 screenTL = new Vector2(0, 0);
-            Vector2 screenTR = new Vector2(Screen.width, 0);
-            Vector2 screenBR = new Vector2(Screen.width, Screen.height);
-            Vector2 screenBL = new Vector2(0, Screen.height);
-
-            // Vector2 topLeftPos     = Extensions.ScreenToWorld(screenTL);
-            // Vector2 topRightPos    = Extensions.ScreenToWorld(screenTR);
-            // Vector2 bottomRightPos = Extensions.ScreenToWorld(screenBR);
-            // Vector2 bottomLeftPos  = Extensions.ScreenToWorld(screenBL);
-
-            rectanglePositions = new List<Vector3>();
-
-            float perimeter = Vector2.Distance(topLeftPos, topRightPos) + Vector2.Distance(topRightPos, bottomRightPos);
-            perimeter *= 2;
-
-            // // w = (p - 2h) / 2
-            width = (perimeter - 2 * Vector2.Distance(topLeftPos, bottomLeftPos)) / 2;
-            height = (perimeter - 2 * Vector2.Distance(topLeftPos, topRightPos)) / 2;
-
-            spaceBetweenPoints = perimeter / lineResolution;
-
-            pointsPerShortSide = (width / spaceBetweenPoints);
-            pointsPerLongSide = (height / spaceBetweenPoints);
-
-            // // // w = (p - 2h) / 2
-            // float width = (perimeter - 2 * Vector2.Distance(topLeftPos, bottomLeftPos)) / 2;
-            // float height = (perimeter - 2 * Vector2.Distance(topLeftPos, topRightPos)) / 2;
-
-            // float spaceBetweenPoints = perimeter / lineResolution;
-
-            // float pointsPerShortSide = (width / spaceBetweenPoints);
-            // float pointsPerLongSide = (height / spaceBetweenPoints);
-
-            Vector2 lastPoint = Vector2.zero;
-
-            // Top Left to Top Right
-            for (int i = 0; i <= pointsPerShortSide; i++)
-            {
-                Vector2 rectPoint = topLeftPos + (topRightPos - topLeftPos) * i / pointsPerShortSide;
-                rectanglePositions.Add(rectPoint);
-
-                // GameObject d = Instantiate(debug);
-                // d.transform.position = rectPoint;
-
-                // yield return new WaitForSeconds(.2f);
-            }
-
-            for (int i = 1; i <= pointsPerLongSide; i++)
-            {
-                Vector2 rectPoint = topRightPos + (bottomRightPos - topRightPos) * i / pointsPerLongSide;
-                rectanglePositions.Add(rectPoint);
-
-                // GameObject d = Instantiate(debug);
-                // d.transform.position = rectPoint;
-
-                // yield return new WaitForSeconds(.2f);
-            }
-
-            for (int i = 1; i <= pointsPerShortSide; i++)
-            {
-                Vector2 rectPoint = bottomRightPos + (bottomLeftPos - bottomRightPos) * i / pointsPerShortSide;
-                rectanglePositions.Add(rectPoint);
-
-                //             GameObject d = Instantiate(debug);
-                // d.transform.position = rectPoint;
-
-                //             yield return new WaitForSeconds(.2f);
-
-            }
-
-            for (int i = 1; i < pointsPerLongSide; i++)
-            {
-                Vector2 rectPoint = bottomLeftPos + (topLeftPos - bottomLeftPos) * i / pointsPerLongSide;
-                rectanglePositions.Add(rectPoint);
-
-                //             GameObject d = Instantiate(debug);
-                // d.transform.position = rectPoint;
-
-                //             yield return new WaitForSeconds(.2f);
-
-
-
-            }
-        }
-
-        void FindRingPositions()
-        {
-            ringPositions = new List<Vector3>();
-
-            float radius = 1f;
-
-            float x;
-            float y;
-            float z = 10f;
-
-            float angle = 20f;
-
-            for (int i = 0; i < lineResolution; i++)
-            {
-                x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-                y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
-
-                Vector3 ringPoint = new Vector3(x, y, z);
-                ringPositions.Add(ringPoint);
-
-                angle += (360f / lineResolution);
-            }
-        }
-        #endregion
-        */
-
 
     void DrawRectangle()
     {
