@@ -12,6 +12,7 @@ public class NewHand : MonoBehaviour
     Vector2 m_GrabMoveDir;
     Vector2 m_GrabThrowVector;
     Vector2 m_CatchPosition;
+    CatchRing m_CatchRing;
 
     NewBall m_Ball;
 
@@ -46,6 +47,7 @@ public class NewHand : MonoBehaviour
         }
 
         m_PositionHistory = new List<Vector2>();
+        m_CatchRing = GetComponentInChildren<CatchRing>();
     }
 
     void Start() {
@@ -145,7 +147,6 @@ public class NewHand : MonoBehaviour
                     {
                         // Grab the ball
                         GrabBall();
-                        GetComponentInChildren<CatchRing>().SetColor(m_Ball.GetComponentInChildren<NewBallArtManager>().myColor);
                     }
                     else
                     {
@@ -248,6 +249,9 @@ public class NewHand : MonoBehaviour
             m_Ball.GetCaught();
             m_CatchPosition = m_Transform.position;
             m_BallGrabbedFirstFrame = true;
+            // CatchRing m_CatchRing = GetComponentInChildren<CatchRing>();
+            Color ballColor = m_Ball.GetComponentInChildren<NewBallArtManager>().myColor;
+            m_CatchRing.SetBallColor(ballColor);
         }
     }
 

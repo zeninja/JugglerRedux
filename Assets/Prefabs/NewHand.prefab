@@ -119,7 +119,8 @@ MonoBehaviour:
     start: 8
     end: 0.5
   duration: 0.14
-  ringColor: {r: 0, g: 0, b: 0, a: 0}
+  ringColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+  hasSetColor: 0
 --- !u!120 &120306457376358118
 LineRenderer:
   m_ObjectHideFlags: 1

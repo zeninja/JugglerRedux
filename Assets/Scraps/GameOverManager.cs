@@ -111,7 +111,7 @@ public class GameOverManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        Destroy(target);
+        Destroy(target.transform.root.gameObject);
     }
 
     public float countdownDuration = 1;

@@ -19,7 +19,10 @@ public class CatchRing : MonoBehaviour {
 	public float duration;
 	float percent;
 
-	public Color ringColor;
+	public Color defaultColor;
+	[System.NonSerialized]
+	public Color ballColor;
+	public bool handCaughtBall;
 
 	// Use this for initialization
 	void Start () {
@@ -28,9 +31,8 @@ public class CatchRing : MonoBehaviour {
 		line = GetComponent<LineRenderer>();
 		line.useWorldSpace = false;
 		line.sortingLayerName = "Default";
-		// SetColor(ringColor);
 
-
+		SetColor();
 	}
 	
 	// Update is called once per frame
@@ -78,16 +80,27 @@ public class CatchRing : MonoBehaviour {
         }
 
         line.startWidth = currentLineWidth;
-        line.endWidth = currentLineWidth;
-        line.enabled = true;
+        line.endWidth   = currentLineWidth;
+        // line.enabled = true;
     }
 
-	public bool hasSetColor = false;
+	public void SetBallColor(Color newColor) {
+		Debug.Log("SetBall color");
+		ballColor = newColor;
+		handCaughtBall = true;
+		SetColor();
+	}
 
-	public void SetColor(Color newColor) {
-		if(!hasSetColor) {
-			line.material.color = newColor;
-			hasSetColor = true;
+	public void SetColor() {
+		Debug.Log("Set Color");
+		Color ringColor = defaultColor;
+
+		if (handCaughtBall) {
+			ringColor = ballColor;
+			line.material.color = ringColor;
+			line.enabled = true;
+		} else {
+			line.enabled = false;
 		}
 	}
 }

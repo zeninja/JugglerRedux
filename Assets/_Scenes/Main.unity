@@ -1610,6 +1610,72 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 619283404}
   m_CullTransparentMesh: 0
+--- !u!1001 &624934891
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114330051019859874, guid: 896a1471b660ea04cbefb799d5a61336,
+        type: 2}
+      propertyPath: defaultColor.r
+      value: 0.20784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 114330051019859874, guid: 896a1471b660ea04cbefb799d5a61336,
+        type: 2}
+      propertyPath: defaultColor.g
+      value: 0.20784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 114330051019859874, guid: 896a1471b660ea04cbefb799d5a61336,
+        type: 2}
+      propertyPath: defaultColor.b
+      value: 0.20784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 114330051019859874, guid: 896a1471b660ea04cbefb799d5a61336,
+        type: 2}
+      propertyPath: defaultColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1486805989234084, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &646436040
 GameObject:
   m_ObjectHideFlags: 0
@@ -3790,7 +3856,7 @@ MonoBehaviour:
   - {r: 0.9058824, g: 0.678, b: 0.83794457, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
-  deadBallColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
+  deadBallColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
   ballSpeedIndex: 1
   ballSpawnSpeed: 1
   juggleThreshold: 1
@@ -3844,6 +3910,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SlowTimeScale: 0.65
   m_TimeSmoothing: 10
+  slowTimeScaleRange:
+    start: 0.75
+    end: 0.5
 --- !u!114 &1341528091
 MonoBehaviour:
   m_ObjectHideFlags: 0

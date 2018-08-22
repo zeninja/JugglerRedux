@@ -183,6 +183,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball: {fileID: 212715896425039678}
   line: {fileID: 120012429241582940}
+  popInAnimation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7003784
+      value: 1.4999962
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.019065807
+      outSlope: -0.019065807
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2911761
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  popInDuration: 0.15
 --- !u!114 &114356064262534194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,9 +273,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawTrail: 1
-  refreshInterval: 0.0245
+  refreshInterval: 0.03
   dot: {fileID: 1452079700807384, guid: d1d14d5f89048404db5b1aeaa57790fb, type: 2}
-  fadeDuration: 0.15
+  fadeDuration: 0.125
 --- !u!114 &114494636056159008
 MonoBehaviour:
   m_ObjectHideFlags: 1

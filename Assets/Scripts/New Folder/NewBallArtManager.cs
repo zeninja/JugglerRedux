@@ -51,6 +51,8 @@ public class NewBallArtManager : MonoBehaviour
 
         SetColor();
         SetDepth();
+
+        StartCoroutine(PopIn());
     }
 
     public void SetColor()
@@ -123,13 +125,18 @@ public class NewBallArtManager : MonoBehaviour
         }
     }
 
-    // GAME OVER!!
-    public void HandleDeath()
-    {
-        transform.localScale = Vector3.one;
-        myColor = NewBallManager.GetInstance().deadBallColor;
-        SetColor(myColor);
-        // GetComponentInChildren<GameOverEffect>().HandleDeath();
+    public AnimationCurve popInAnimation;
+    public float popInDuration;
+
+    IEnumerator PopIn() {
+        float t = 0;
+        float d = popInDuration;
+
+        while(t < d) {
+            t += Time.fixedDeltaTime;
+            transform.localScale = Vector2.one * popInAnimation.Evaluate(t / d);
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public bool VelocityPositive()

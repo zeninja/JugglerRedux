@@ -25,7 +25,7 @@ public class NewUIManager : MonoBehaviour {
 		ui_GrabForce.text       = NewHandManager .GetInstance(). touchGrabThrowForce.ToString("F2");
 		ui_JuggleThreshold.text = NewBallManager .GetInstance(). juggleThreshold    .ToString("");
 		ui_BallScale.text       = NewBallManager .GetInstance(). ballScale          .ToString("F2");
-		ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
+		// ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
 		ui_playcount.text       = NewAdManager.playcount.ToString();
 		ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
 
@@ -95,13 +95,13 @@ public class NewUIManager : MonoBehaviour {
     }
 
 	public void AdjustTimeScale(float adj) {
-        float timeScale = TimeManager.GetInstance().m_SlowTimeScale;
-        timeScale += adj;
-        timeScale = Mathf.Min(1, timeScale);
-        TimeManager.GetInstance().m_SlowTimeScale = timeScale;
+        // float timeScale = TimeManager.GetInstance().m_SlowTimeScale;
+        // timeScale += adj;
+        // timeScale = Mathf.Min(1, timeScale);
+        // TimeManager.GetInstance().m_SlowTimeScale = timeScale;
 
-		SavedInfoManager.mySettings.timeScale = timeScale;
-		SavedInfoManager.UpdateSavedValues();
+		// SavedInfoManager.mySettings.timeScale = timeScale;
+		// SavedInfoManager.UpdateSavedValues();
    }
 
 	// public void SwitchSlapsAllowed() {

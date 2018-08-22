@@ -91,8 +91,6 @@ public class NewBall : MonoBehaviour
         EventManager.TriggerEvent("BallSlapped");
     }
 
-    int catchFrame;
-
     public void GetCaught()
     {
         if (m_Launching || NewGameManager.GameOver()) { return; }

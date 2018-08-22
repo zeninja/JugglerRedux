@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,11 +47,14 @@ public class TimeManager : MonoBehaviour
         SlowTimeBasedOnThrows();
     }
 
+    public Extensions.Property slowTimeScaleRange;
+
     void SlowTimeBasedOnThrows()
     {
         if (NewBallManager.GetInstance().JuggleThresholdReached() || Input.GetKey(KeyCode.LeftShift))
         {
             timeSlowing = true;
+            m_SlowTimeScale = Extensions.GetSmoothStepRange(slowTimeScaleRange, NewBallManager._ballCount / 9);
             m_TargetTimeScale = m_SlowTimeScale;
         }
         else
