@@ -44,7 +44,6 @@ public class NewScoreManager : MonoBehaviour {
 		EventManager.StartListening("BallCaught", OnBallCaught);
 		EventManager.StartListening("BallPeaked", OnBallPeaked);
 		EventManager.StartListening("BallSlapped", OnBallSlapped);
-		EventManager.StartListening("Reset", Reset);
 	}
 	
 	// Update is called once per frame
@@ -75,7 +74,7 @@ public class NewScoreManager : MonoBehaviour {
 		text.text = scoreText;
 	}
 
-	void Reset() {
+	public void Reset() {
 		_catchCount = 0;
 		_numBalls = 0;
 

@@ -62,7 +62,6 @@ public class NewBallManager : MonoBehaviour
         EventManager.StartListening("BallCaught", CheckBallLaunch);
         EventManager.StartListening("BallSlapped", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
-        EventManager.StartListening("Reset", KillAllBalls);
 
         ballSpawnScores = normalBallSpawnScores;
     }
@@ -196,6 +195,7 @@ public class NewBallManager : MonoBehaviour
     void OnBallDied()
     {
         scoreIndex = 0;
+        firstBall = null;
     }
 
     public void FreezeBalls()

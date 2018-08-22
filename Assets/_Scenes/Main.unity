@@ -2965,9 +2965,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseScale: 3
-  maskInDuration: 0.93
+  maskInDuration: 0.35
   maskOutDuration: 0
-  waitPreMask: 0.49
+  waitPreMask: 0.05
   maskInAnimation:
     serializedVersion: 2
     m_Curve:
@@ -3879,9 +3879,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   demo: {fileID: 0}
-  explodeDuration: 1.47
-  implodeDuration: 1
-  countdownDuration: 1
+  explodeDuration: 0.5
+  implodeDuration: 0.5
+  countdownDuration: 0.25
 --- !u!114 &1341528094
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -67,7 +67,8 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	public void ResetGame() {
-		EventManager.TriggerEvent("Reset");
+		NewBallManager.GetInstance().KillAllBalls();
+		NewScoreManager.GetInstance().Reset();
 		SetState(GameState.preGame);
 	}
 

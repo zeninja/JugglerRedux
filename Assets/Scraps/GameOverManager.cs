@@ -79,7 +79,6 @@ public class GameOverManager : MonoBehaviour
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
 
-        Destroy(target);
     }
 
     public float explodeDuration = 1.47f;
@@ -112,6 +111,7 @@ public class GameOverManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+        Destroy(target);
     }
 
     public float countdownDuration = 1;
