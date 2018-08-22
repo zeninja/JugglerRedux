@@ -33,6 +33,7 @@ public class NewBallManager : MonoBehaviour
     public static int _ballCount;
     public float ballScale = .4f;
 
+    NewBall firstBall;
     List<NewBall> balls = new List<NewBall>();
     List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
     public float ballLaunchForce = 10;
@@ -106,6 +107,26 @@ public class NewBallManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void SpawnFirstBall() {
+        if(firstBall) { return; }
+
+        Vector2 ballSpawnPos = new Vector2(0, -2);
+        NewBall ball = Instantiate(m_BallPrefab);
+
+        ball.transform.position = ballSpawnPos;
+        ball.m_Launching = false;
+        ball.canBeCaught = false;
+        ball.GetComponent<Rigidbody2D>().velocity  = Vector2.zero;
+        ball.GetComponent<Rigidbody2D>().gravityScale = 0;
+        ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
+        firstBall = ball;
+
+        balls.Add(ball);
+        _ballCount++;
+
+        ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }
 
     void SpawnBall()

@@ -55,6 +55,8 @@ public class NewHand : MonoBehaviour
     void FixedUpdate()
     {
         // CheckForBall();
+
+        Hover();
     }
 
     void Update()
@@ -143,6 +145,7 @@ public class NewHand : MonoBehaviour
                     {
                         // Grab the ball
                         GrabBall();
+                        GetComponentInChildren<CatchRing>().SetColor(m_Ball.GetComponentInChildren<NewBallArtManager>().myColor);
                     }
                     else
                     {
@@ -173,6 +176,16 @@ public class NewHand : MonoBehaviour
 
                 m_PositionHistory.Add(m_Transform.position);
             }
+        }
+    }
+
+    void Hover() {
+        int layerMask = 1 << LayerMask.NameToLayer("Monolith");
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.zero, 0, layerMask);
+
+        if(hit) {
+            hit.transform.GetComponent<Monolith>().GetFingerHover(transform.position);
         }
     }
 
@@ -233,7 +246,6 @@ public class NewHand : MonoBehaviour
         if(!m_BallGrabbedFirstFrame) {
             // Debug.Log("Ball grabbed");
             m_Ball.GetCaught();
-            GetComponentInChildren<CatchRing>().SetColor(m_Ball.GetComponentInChildren<NewBallArtManager>().myColor);
             m_CatchPosition = m_Transform.position;
             m_BallGrabbedFirstFrame = true;
         }

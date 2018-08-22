@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { preGame, inGame, gameOver };
+public enum GameState { /*monolith,*/ preGame, inGame, gameOver };
 
 public class NewGameManager : MonoBehaviour {
 
@@ -29,10 +29,14 @@ public class NewGameManager : MonoBehaviour {
 		EventManager.StartListening("BallDied", HandleGameOver);
 	}
 
+	void Start() {
+		SetState(gameState);
+	}
+
 	void Update() {
 		if( Input.touchCount == 2 && NewBallManager._ballCount == 0 && CanSpawnBall()) {
 			EventManager.TriggerEvent("SpawnBall");
-		}	
+		}
 	}
 
 	public void SetState(GameState newState) {
@@ -41,6 +45,13 @@ public class NewGameManager : MonoBehaviour {
 		// trigger one-time effects
 
 		switch(gameState) {
+			// case GameState.monolith:
+			// 	MonolithManager.GetInstance().Initialize();
+			// 	break;
+			case GameState.preGame:
+				NewBallManager.GetInstance().SpawnFirstBall();
+				break;
+
 			case GameState.gameOver:
 				GameOverManager.GetInstance().StartGameOver();
 				break;
