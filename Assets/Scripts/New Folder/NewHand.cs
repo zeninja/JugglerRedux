@@ -26,6 +26,8 @@ public class NewHand : MonoBehaviour
     [System.NonSerialized] public float grabThrowForce = 4;
     [System.NonSerialized] public float slapThrowForce = 10;
 
+    public float vibeDuration = .05f;
+
     void Awake()
     {
         InitHand();
@@ -252,6 +254,7 @@ public class NewHand : MonoBehaviour
             // CatchRing m_CatchRing = GetComponentInChildren<CatchRing>();
             Color ballColor = m_Ball.GetComponentInChildren<NewBallArtManager>().myColor;
             m_CatchRing.SetBallColor(ballColor);
+            Vibrator.Vibrate(vibeDuration);
         }
     }
 

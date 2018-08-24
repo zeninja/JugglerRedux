@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SavedInfoManager : MonoBehaviour
+public class GlobalSettings : MonoBehaviour
 {
 	[System.Serializable]
-    public struct Settings
+    public struct GameSettings
     {
         public float slapForce;
         public float grabForce;
@@ -17,7 +17,7 @@ public class SavedInfoManager : MonoBehaviour
         public bool adsOff;
     }
 
-    public static Settings mySettings;
+    public static GameSettings mySettings;
     static string jsonString;
 
     void Awake()
@@ -35,7 +35,7 @@ public class SavedInfoManager : MonoBehaviour
 
     void InitValues()
     {
-        mySettings = new Settings();
+        mySettings = new GameSettings();
         mySettings.slapForce = NewHandManager.GetInstance().touchSlapThrowForce;
         mySettings.grabForce = NewHandManager.GetInstance().touchGrabThrowForce;
         mySettings.juggleThreshold = NewBallManager.GetInstance().juggleThreshold;
@@ -51,7 +51,7 @@ public class SavedInfoManager : MonoBehaviour
     void UpdateInGameValues()
     {
         Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
-        mySettings = JsonUtility.FromJson<Settings>(jsonString);
+        mySettings = JsonUtility.FromJson<GameSettings>(jsonString);
 
 		NewHandManager.GetInstance().touchSlapThrowForce = mySettings.slapForce;
         NewHandManager.GetInstance().touchGrabThrowForce = mySettings.grabForce;

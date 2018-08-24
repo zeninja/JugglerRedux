@@ -39,7 +39,6 @@ public class NewBallManager : MonoBehaviour
     public float ballLaunchForce = 10;
 
     public Color[] m_BallColors;
-    public Color deadBallColor;
 
     public int ballSpeedIndex;  // used to choose a SET, ie: slow, normal, fast
     int scoreIndex;             // used to trigger the ball spawn, the index of the score WITHIN one set
@@ -75,20 +74,20 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    public bool AnyBallBeingThrown()
-    {
-        bool anyBallThrowing = false;
+    // public bool AnyBallBeingThrown()
+    // {
+    //     bool anyBallThrowing = false;
 
-        foreach (NewBall n in balls)
-        {
-            if (n.m_BallThrown)
-            {
-                anyBallThrowing = true;
-                break;
-            }
-        }
-        return anyBallThrowing;
-    }
+    //     foreach (NewBall n in balls)
+    //     {
+    //         if (n.m_BallThrown)
+    //         {
+    //             anyBallThrowing = true;
+    //             break;
+    //         }
+    //     }
+    //     return anyBallThrowing;
+    // }
 
     public bool JuggleThresholdReached()
     {
@@ -124,6 +123,7 @@ public class NewBallManager : MonoBehaviour
 
         balls.Add(ball);
         _ballCount++;
+        NewScoreManager._numBalls = _ballCount;
 
         ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }

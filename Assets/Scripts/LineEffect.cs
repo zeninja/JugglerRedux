@@ -7,9 +7,10 @@ public class LineEffect : MonoBehaviour
 {
     LineRenderer line;
     public float animationDuration = .4f;
-    public float lineLength;
-    public float lineScalar;
+    public float delay;
 
+    Extensions.Property startWidth, endWidth;
+    
 
     void Start()
     {
@@ -32,7 +33,7 @@ public class LineEffect : MonoBehaviour
             t += Time.fixedDeltaTime;
 
             Vector2 startPos = transform.position;
-            Vector2 endPos = (Vector2)transform.position + lineDirection * lineLength;
+            Vector2 endPos = (Vector2)transform.position + lineDirection;
 
             line.SetPosition(0, startPos);
             line.SetPosition(1, endPos);

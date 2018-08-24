@@ -44,12 +44,12 @@ public class NewUIManager : MonoBehaviour {
 	}
 
 	public void ToggleAds() {
-		NewAdManager.forceAdsOff = !NewAdManager.forceAdsOff;
+		// NewAdManager.forceAdsOff = !NewAdManager.forceAdsOff;
 			
-		SavedInfoManager.mySettings.adsOff = NewAdManager.forceAdsOff;
-		SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.mySettings.adsOff = NewAdManager.forceAdsOff;
+		GlobalSettings.UpdateSavedValues();
 		Debug.Log("FORCE ADS OFF: " + NewAdManager.forceAdsOff);
-		Debug.Log("SAVED INFO VALUE: " + SavedInfoManager.mySettings.adsOff);
+		Debug.Log("SAVED INFO VALUE: " + GlobalSettings.mySettings.adsOff);
 	}
 
 	public void AdjustJuggleThreshold(int adj) {
@@ -58,8 +58,8 @@ public class NewUIManager : MonoBehaviour {
         juggleThreshold = Mathf.Max(1, juggleThreshold);
 		NewBallManager.GetInstance().juggleThreshold = juggleThreshold;
 
-		SavedInfoManager.mySettings.juggleThreshold = juggleThreshold;
-		SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.mySettings.juggleThreshold = juggleThreshold;
+		GlobalSettings.UpdateSavedValues();
     }
 
     public void AdjustBallScale(float adj) {
@@ -68,8 +68,8 @@ public class NewUIManager : MonoBehaviour {
         ballScale = Mathf.Clamp(ballScale, .1f, 3f);
         NewBallManager.GetInstance().ballScale = ballScale;
 
-		SavedInfoManager.mySettings.ballScale = ballScale;
-		SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.mySettings.ballScale = ballScale;
+		GlobalSettings.UpdateSavedValues();
     }
 
 	public void AdjustSlapThrowForce(float amt)
@@ -79,8 +79,8 @@ public class NewUIManager : MonoBehaviour {
         PlayerPrefs.SetFloat("touchSlapforce", touchSlapThrowForce);
 		NewHandManager.GetInstance().touchSlapThrowForce = touchSlapThrowForce;
 
-		SavedInfoManager.mySettings.slapForce = touchSlapThrowForce;
-		SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.mySettings.slapForce = touchSlapThrowForce;
+		GlobalSettings.UpdateSavedValues();
     }
 
     public void AdjustGrabThrowForce(float amt)
@@ -90,8 +90,8 @@ public class NewUIManager : MonoBehaviour {
         PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
 		NewHandManager.GetInstance().touchGrabThrowForce = touchGrabThrowForce;
 
-		SavedInfoManager.mySettings.grabForce = touchGrabThrowForce;
-		SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.mySettings.grabForce = touchGrabThrowForce;
+		GlobalSettings.UpdateSavedValues();
     }
 
 	public void AdjustTimeScale(float adj) {
@@ -138,7 +138,7 @@ public class NewUIManager : MonoBehaviour {
         }
         ui_BallSpawnRate.text = ballSpeedText;
 
-		SavedInfoManager.mySettings.ballSpeedIndex = ballSpeedIndex;
-		SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.mySettings.ballSpeedIndex = ballSpeedIndex;
+		GlobalSettings.UpdateSavedValues();
 	}
 }

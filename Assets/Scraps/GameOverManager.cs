@@ -91,7 +91,7 @@ public class GameOverManager : MonoBehaviour
         while (t < explodeDuration)
         {
             t += Time.fixedDeltaTime;
-            target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStart5(t / explodeDuration);
+            target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStop3(t / explodeDuration);
             yield return new WaitForFixedUpdate();
         }
 
@@ -130,7 +130,7 @@ public class GameOverManager : MonoBehaviour
             yield return new WaitForSeconds(shortDelay);
         }
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.15f);
 
         float longDelay = countdownDuration / NewScoreManager._numBalls;
 

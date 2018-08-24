@@ -85,14 +85,12 @@ public class CatchRing : MonoBehaviour {
     }
 
 	public void SetBallColor(Color newColor) {
-		Debug.Log("SetBall color");
 		ballColor = newColor;
 		handCaughtBall = true;
 		SetColor();
 	}
 
 	public void SetColor() {
-		Debug.Log("Set Color");
 		Color ringColor = defaultColor;
 
 		if (handCaughtBall) {
