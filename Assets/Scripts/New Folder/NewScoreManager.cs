@@ -47,15 +47,20 @@ public class NewScoreManager : MonoBehaviour {
 		EventManager.StartListening("BallSlapped", OnBallSlapped);
 		
 		InitHighscore();
-		Debug.Log(highscore);
-
-		highScoreText.text = highscore.ToString("#.#");
 	}
 
 	void InitHighscore() {
 		if(PlayerPrefs.HasKey(highScoreKey)) {
 			highscore = PlayerPrefs.GetFloat(highScoreKey);
+		} else {
+			highscore = 0.0f;
 		}
+
+		SetHighscoreText();
+	}
+
+	void SetHighscoreText() {
+		highScoreText.text = currentScoreString;
 	}
 	
 	// Update is called once per frame
@@ -110,8 +115,11 @@ public class NewScoreManager : MonoBehaviour {
 		if(currentScore > highscore) {
 			Debug.Log("UPDATING HIGH SCORE");
 
-			PlayerPrefs.SetFloat(highScoreKey, currentScore);
-			// GameCenter.GetInstance().SetHighScore(currentScore);
+			highscore = currentScore;
+			PlayerPrefs.SetFloat(highScoreKey, highscore);
+			SetHighscoreText();
+
+			// GameCenter.GetInstance().SetHighScore(highscore);
 			
 			yield return StartCoroutine(UpdateHighScore());
 		}
@@ -121,15 +129,15 @@ public class NewScoreManager : MonoBehaviour {
 
 	public Color scoreColor;
 
-	public float inOuDuration;
+	public float inOutDuration;
 
 	public IEnumerator UpdateHighScore() {
 		float t = 0;
-		inOuDuration = .15f;
+		inOutDuration = .15f;
 
-		while(t < inOuDuration) {
+		while(t < inOutDuration) {
 			t += Time.fixedDeltaTime;
-			float percent = t / inOuDuration;
+			float percent = t / inOutDuration;
 
 			scoreText.color = Color.Lerp(scoreColor, highscoreGradient.Evaluate(0), percent);
 			yield return new WaitForFixedUpdate();
@@ -149,9 +157,9 @@ public class NewScoreManager : MonoBehaviour {
 
 		t = 0;
 		
-		while(t < inOuDuration) {
+		while(t < inOutDuration) {
 			t += Time.fixedDeltaTime;
-			float percent = t / inOuDuration;
+			float percent = t / inOutDuration;
 
 			scoreText.color = Color.Lerp(highscoreGradient.Evaluate(0), scoreColor, percent);
 			yield return new WaitForFixedUpdate();

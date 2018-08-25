@@ -6,9 +6,10 @@ public class Dot : MonoBehaviour {
 
 	SpriteRenderer s;
 	Color myColor;
+	
 	public float fadeDuration;
-
 	public float threshold = .005f;
+	public float startAlpha;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +27,7 @@ public class Dot : MonoBehaviour {
 			t += Time.fixedDeltaTime;
 
 			myColor = s.color;
-			myColor.a = 1 - EZEasings.SmoothStart3(t / fadeDuration);
+			myColor.a = startAlpha * (1 - EZEasings.SmoothStart3(t / fadeDuration));
 			s.color = myColor;
 			yield return new WaitForFixedUpdate();
 		}

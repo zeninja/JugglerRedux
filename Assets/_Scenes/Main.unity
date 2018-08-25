@@ -4006,8 +4006,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
-  first: {fileID: 0}
-  second: {fileID: 0}
+  scoreColor: {r: 0, g: 0, b: 0, a: 1}
+  inOuDuration: 0.15
 --- !u!114 &1341528084
 MonoBehaviour:
   m_ObjectHideFlags: 0
