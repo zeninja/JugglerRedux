@@ -4007,7 +4007,7 @@ MonoBehaviour:
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   scoreColor: {r: 0, g: 0, b: 0, a: 1}
-  inOuDuration: 0.15
+  inOutDuration: 0.23
 --- !u!114 &1341528084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4122,7 +4122,7 @@ MonoBehaviour:
   m_SlowTimeScale: 0.65
   m_TimeSmoothing: 10
   slowTimeScaleRange:
-    start: 0.75
+    start: 0.65
     end: 0.5
 --- !u!114 &1341528091
 MonoBehaviour:
