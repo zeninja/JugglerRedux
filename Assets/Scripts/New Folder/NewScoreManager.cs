@@ -31,6 +31,7 @@ public class NewScoreManager : MonoBehaviour {
 	public static int _maxCatchCount = 99;
 
 	string currentScoreString;
+	string highScoreString;
 
 	public TextMeshPro scoreText;
 	public TextMeshPro highScoreText;
@@ -52,15 +53,17 @@ public class NewScoreManager : MonoBehaviour {
 	void InitHighscore() {
 		if(PlayerPrefs.HasKey(highScoreKey)) {
 			highscore = PlayerPrefs.GetFloat(highScoreKey);
+			highScoreString = highscore.ToString();
 		} else {
 			highscore = 0.0f;
+			highScoreString = "0.0";
 		}
-
 		SetHighscoreText();
 	}
 
 	void SetHighscoreText() {
-		highScoreText.text = currentScoreString;
+		
+		highScoreText.text = highScoreString;
 	}
 	
 	// Update is called once per frame
@@ -70,6 +73,7 @@ public class NewScoreManager : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.C)) {
 			PlayerPrefs.DeleteAll();
+			SetHighscoreText();
 		}
 	}
 
@@ -116,8 +120,10 @@ public class NewScoreManager : MonoBehaviour {
 			Debug.Log("UPDATING HIGH SCORE");
 
 			highscore = currentScore;
-			PlayerPrefs.SetFloat(highScoreKey, highscore);
+			highScoreString = highscore.ToString();
 			SetHighscoreText();
+
+			PlayerPrefs.SetFloat(highScoreKey, highscore);
 
 			// GameCenter.GetInstance().SetHighScore(highscore);
 			
