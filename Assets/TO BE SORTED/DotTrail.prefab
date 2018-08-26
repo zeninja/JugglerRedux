@@ -75,3 +75,4 @@ MonoBehaviour:
   drawTrail: 1
   refreshInterval: 0.05
   dot: {fileID: 1452079700807384, guid: d1d14d5f89048404db5b1aeaa57790fb, type: 2}
+  fadeDuration: 0.245

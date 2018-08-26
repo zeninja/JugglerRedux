@@ -9,33 +9,37 @@ public class AudioManager : MonoBehaviour {
 
 	public AudioClip catchSound;
 	public AudioClip throwSound;
-	public AudioClip startSound;
+	// public AudioClip startSound;
 	public AudioClip gameOver;
-	public AudioClip gameStart;
-	public AudioClip gameTimer;
+	// public AudioClip gameStart;
+	// public AudioClip gameTimer;
 
-	public AudioClip[] scoreSounds;
+	// public AudioClip[] scoreSounds;
 
 	AudioSource source;
 
 	public static bool muted;
 	string muteKey = "Muted";
 
-	public Slider volumeSlider;
+	// public Slider volumeSlider;
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+		} else {
+			if(instance != this) {
+				Destroy(gameObject);
+			}
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
-		instance = this;
 		source = GetComponent<AudioSource> ();
 
-		UIManager.instance.mute.onValueChanged.AddListener( delegate { UpdateMute(); } );
-
-		CheckMute();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		EventManager.StartListening("BallCaught", PlayCatch);
+		EventManager.StartListening("BallThrown", PlayThrow);
+		EventManager.StartListening("BallDied", PlayGameOver);
 	}
 
 	public static void PlayCatch() {
@@ -50,56 +54,56 @@ public class AudioManager : MonoBehaviour {
 		instance.source.PlayOneShot (instance.gameOver);
 	}
 
-	public static void PlayGameStart() {
-		instance.source.PlayOneShot (instance.gameStart);
-	}
+	// public static void PlayGameStart() {
+	// 	instance.source.PlayOneShot (instance.gameStart);
+	// }
 
-	public static void PlayScore() {
-		instance.source.PlayOneShot(instance.scoreSounds[Random.Range(0, instance.scoreSounds.Length)]);
-	}
+	// public static void PlayScore() {
+	// 	instance.source.PlayOneShot(instance.scoreSounds[Random.Range(0, instance.scoreSounds.Length)]);
+	// }
 
-	IEnumerator VolumeOn(AudioSource source) {
-		StopAllCoroutines();
+	// IEnumerator VolumeOn(AudioSource source) {
+	// 	StopAllCoroutines();
 
-		int frameCount = 3;
+	// 	int frameCount = 3;
 
-		for(int i = 0; i < frameCount; i++) {
-			source.volume = i/frameCount;
-			yield return new WaitForEndOfFrame();
-		}
-		yield return 0;
-	}
+	// 	for(int i = 0; i < frameCount; i++) {
+	// 		source.volume = i/frameCount;
+	// 		yield return new WaitForEndOfFrame();
+	// 	}
+	// 	yield return 0;
+	// }
 
-	IEnumerator VolumeOff(AudioSource source) {
-		StopAllCoroutines();
+	// IEnumerator VolumeOff(AudioSource source) {
+	// 	StopAllCoroutines();
 
-		int frameCount = 3;
+	// 	int frameCount = 3;
 
-		for(int i = 0; i < frameCount; i++) {
-			source.volume = 1 - i/frameCount;
-			yield return new WaitForEndOfFrame();
-		}
-		yield return 0;
-	}
+	// 	for(int i = 0; i < frameCount; i++) {
+	// 		source.volume = 1 - i/frameCount;
+	// 		yield return new WaitForEndOfFrame();
+	// 	}
+	// 	yield return 0;
+	// }
 
-	public void UpdateMute() {
-		muted = !UIManager.instance.mute.isOn;
-		source.mute = muted;
+	// public void UpdateMute() {
+	// 	muted = !UIManager.instance.mute.isOn;
+	// 	source.mute = muted;
 
-		int storedValue = muted ? 1 : 0;
-		PlayerPrefs.SetInt(muteKey, storedValue);
-	}
+	// 	int storedValue = muted ? 1 : 0;
+	// 	PlayerPrefs.SetInt(muteKey, storedValue);
+	// }
 
-	void CheckMute() {
-		if (!PlayerPrefs.HasKey(muteKey)) {
-			PlayerPrefs.SetInt(muteKey, 0);
-		} else {
-			muted = PlayerPrefs.GetInt(muteKey) == 1;
-			UIManager.instance.UpdateMute();
-		}
-	}
+	// void CheckMute() {
+	// 	if (!PlayerPrefs.HasKey(muteKey)) {
+	// 		PlayerPrefs.SetInt(muteKey, 0);
+	// 	} else {
+	// 		muted = PlayerPrefs.GetInt(muteKey) == 1;
+	// 		UIManager.instance.UpdateMute();
+	// 	}
+	// }
 
-	public void UpdateVolume() {
-		source.volume = volumeSlider.value;
-	}
+	// public void UpdateVolume() {
+	// 	source.volume = volumeSlider.value;
+	// }
 }

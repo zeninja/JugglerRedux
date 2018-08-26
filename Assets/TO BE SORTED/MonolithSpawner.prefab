@@ -52,3 +52,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monolith: {fileID: 114304640756916414, guid: 2f2e9f4143cbf6d46b0895101bd4cbe0, type: 2}
+  monolithColor: {r: 0, g: 0, b: 0, a: 0}
+  ballPrefab: {fileID: 0}
+  monoballPos: {x: 0, y: 4}

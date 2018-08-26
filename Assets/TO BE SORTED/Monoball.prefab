@@ -198,6 +198,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ball: {fileID: 212881900909252354}
   line: {fileID: 120321158933972054}
+  popInAnimation:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  popInDuration: 0
 --- !u!114 &114221333707742364
 MonoBehaviour:
   m_ObjectHideFlags: 1

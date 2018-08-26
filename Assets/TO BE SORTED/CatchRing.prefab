@@ -59,8 +59,8 @@ MonoBehaviour:
     start: 8
     end: 1
   duration: 0.14
-  ringColor: {r: 0, g: 0, b: 0, a: 0}
-  hasSetColor: 0
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  handCaughtBall: 0
 --- !u!120 &120599561080656850
 LineRenderer:
   m_ObjectHideFlags: 1

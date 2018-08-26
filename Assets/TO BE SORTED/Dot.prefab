@@ -53,6 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeDuration: 0.5
+  threshold: 0.005
+  startAlpha: 0.55
 --- !u!212 &212043348145514518
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -53,16 +53,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineResolution: 142
-  lineWidth: 0.1
-  easeRate: 8
+  duration: 0.15
   rectanglePositions: []
   ringPositions: []
-  debug: {fileID: 0}
-  targetFingerIndex: 0
   easedPositions: []
-  rectBuffer: 0.3
+  ringAnchorPos: {x: 0, y: 0}
+  cornerOffset: 0
   radius: 0.8
-  useOffset: 0
+  myCenter: {x: 0, y: 0}
+  startColor: {r: 0, g: 0, b: 0, a: 0}
+  debug: {fileID: 0}
 --- !u!120 &120525496391118288
 LineRenderer:
   m_ObjectHideFlags: 1

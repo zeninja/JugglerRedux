@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Vibrator : MonoBehaviour {
 
+	void Update() {
+		if(Input.touchCount == 1) {
+			Vibrate();
+		}
+	}
+
 	public static void Vibrate() {
 		Handheld.Vibrate();
 	}
