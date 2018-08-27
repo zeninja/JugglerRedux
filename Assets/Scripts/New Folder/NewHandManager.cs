@@ -25,6 +25,9 @@ public class NewHandManager : MonoBehaviour
     public float touchGrabThrowForce = 4;
     public float touchSlapThrowForce = 10;
 
+    public float maxThrowMagnitude;
+
+
     List<int> m_FingerIdList = new List<int>();
 
     void Awake()

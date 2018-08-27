@@ -4090,6 +4090,7 @@ MonoBehaviour:
   mouseSlapThrowForce: 100
   touchGrabThrowForce: 13
   touchSlapThrowForce: 0.5
+  maxThrowMagnitude: 18.32
 --- !u!114 &1341528089
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,6 +26,7 @@ public class NewHand : MonoBehaviour
     [System.NonSerialized] public float grabThrowForce = 4;
     [System.NonSerialized] public float slapThrowForce = 10;
 
+
     public float vibeDuration = .05f;
 
     void Awake()

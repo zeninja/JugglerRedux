@@ -25,18 +25,7 @@ public class NewBallArtManager : MonoBehaviour
     float defaultScale;
     public SpriteRenderer gameOverBallSprite;
 
-
-    public SquashAndStretch squashStats;
-
-    [System.Serializable]
-    public class SquashAndStretch
-    {
-        public float throwMagnitude;	// doesnt need to be public
-        public float maxThrowMagnitude;
-        public float lineLength = 1f;
-        public float squashAmount = .5f;
-
-    }
+    GrabSquishLine grabSquishLine;
 
     // Use this for initialization
     void Start()
@@ -54,6 +43,8 @@ public class NewBallArtManager : MonoBehaviour
         trail.useWorldSpace = true;
         trail.startWidth = defaultScale;
         trail.endWidth = defaultScale;
+
+        grabSquishLine = GetComponent<GrabSquishLine>();
     }
 
 
@@ -136,6 +127,9 @@ public class NewBallArtManager : MonoBehaviour
     public float lineSegmentPercent = .35f;
     public float peakPercent = .95f;
 
+   float throwMagnitudePortion;
+
+
     void DrawTrail()
     {
         // Rising
@@ -153,10 +147,9 @@ public class NewBallArtManager : MonoBehaviour
                 index++;
                 t = (float)index / ((float)predictedLine.Count * peakPercent);
                 t = Mathf.Clamp01(t);
-                m_LineLength = (int)(EZEasings.Arch2(t) * maxLineLength);
 
-                // 2a. Smooth the line length?
-                // int smoothedLineLength = Mathf.Lerp()
+                float percent = EZEasings.Arch2(t);
+                m_LineLength = (int)(percent * maxLineLength);
 
                 // 3. Trim the line
                 if (m_LinePointList.Count > m_LineLength)
@@ -168,7 +161,7 @@ public class NewBallArtManager : MonoBehaviour
                     }
                 }
 
-                Debug.Log(t + " | " + m_LineLength + " | " + m_LinePointList.Count);
+                // Debug.Log(t + " | " + percent + " | ");
 
 
                 // 4. Set the line
@@ -178,78 +171,47 @@ public class NewBallArtManager : MonoBehaviour
                 // trail.startWidth = defaultScale;
                 // trail.startWidth = defaultScale;
                 // float t = m_LinePointList.Count /  m_LineLength;
-                trail.startWidth = defaultScale * (1 - risingSquash * t);
-                trail.endWidth   = defaultScale * (1 - risingSquash * t);
+                trail.startWidth = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
+                trail.endWidth   = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
 
                 // SquishLine(percent);
+                trail.enabled = true;
             }
         }
         else
         {
-            // if(m_Ball.IsHeld()) {
-            //     // Held
-            //     squashStats.throwMagnitude = m_Ball.currentThrowVector.magnitude;
-            //     percent = squashStats.throwMagnitude / squashStats.maxThrowMagnitude;
-            //     percent = Mathf.Clamp01(percent);
-            //     SquishLine(percent);
+            if(m_Ball.IsHeld()) {
+                // Held
+                float throwMagnitude = m_Ball.currentThrowVector.magnitude;
+                float maxThrowMagnitude = NewHandManager.GetInstance().maxThrowMagnitude;
+                throwMagnitudePortion = throwMagnitude / maxThrowMagnitude;
+                throwMagnitudePortion = Mathf.Clamp01(throwMagnitudePortion);
+                // SquishLine(throwMagnitudePortion);
+                grabSquishLine.SquishLine(m_Ball.currentThrowVector, defaultScale, throwMagnitudePortion);
+                trail.enabled = false;
+    
+            } else {
+                // Falling
+                m_LinePointList.Clear();
+                trail.startWidth = defaultScale;
+                trail.endWidth   = defaultScale;
+                trail.positionCount = 2;
+                trail.SetPosition(0, transform.position);
+                trail.SetPosition(1, transform.position);
+                trail.enabled = true;
+            }
 
-            // } else {
-            //     // Falling
-            //     m_LinePointList.Clear();
-            //     trail.startWidth = defaultScale;
-            //     trail.endWidth   = defaultScale;
-            //     trail.positionCount = 2;
-            //     trail.SetPosition(0, transform.position);
-            //     trail.SetPosition(1, transform.position);
-            // }
+            index = 0;
 
             // line.enabled = false;
 
 
-            m_LinePointList.Clear();
-            trail.positionCount = 2;
-            trail.SetPosition(0, transform.position);
-            trail.SetPosition(1, transform.position);
-            index = 0;
+            // m_LinePointList.Clear();
+            // trail.positionCount = 2;
+            // trail.SetPosition(0, transform.position);
+            // trail.SetPosition(1, transform.position);
         }
     }
-
-    // public float squashAmount;
-
-    // void SquishLine(float t)
-    // {
-
-    //     Vector2 lineWidthRange = new Vector2(1, .5f);
-    //     trail.startWidth = defaultScale * (1 - squashAmount * t);
-    //     trail.endWidth = defaultScale * (1 - squashAmount * t);
-
-    //     // float angle = Vector3.Angle(transform.position, (Vector3)transform.position + (Vector3)m_Ball.currentThrowVector);
-    //     // Debug.Log(angle);
-    //     // float leftAngle = angle - 90;
-    //     // float rightAngle = angle + 90;
-
-    //     Vector2 startPos, endPos;
-
-    //     // startPos = new Vector2(Mathf.Sin(Mathf.Deg2Rad * leftAngle),  Mathf.Cos(Mathf.Deg2Rad * leftAngle));
-    //     // endPos   = new Vector2(Mathf.Sin(Mathf.Deg2Rad * rightAngle), Mathf.Cos(Mathf.Deg2Rad * rightAngle));
-
-    //     startPos = (Vector2)transform.position + new Vector2(-squashStats.lineLength * t, 0);
-    //     endPos = (Vector2)transform.position + new Vector2(squashStats.lineLength * t, 0);
-
-    //     trail.SetPosition(0, startPos);
-    //     trail.SetPosition(1, endPos);
-    // }
-
-    // void UpdateLineWidth(float t)
-    // {
-    // }
-
-    // public float squashAmount = .76f;
-
-    // void AdjustLineWidth() {
-    //     float t = (float)m_LinePointList.Count / (float)m_LineLength;
-    //     trail.startWidth = NewBallManager.GetInstance().ballScale * (1 - squashAmount * t);
-    // }
 
     public AnimationCurve popInAnimation;
     public float popInDuration;
