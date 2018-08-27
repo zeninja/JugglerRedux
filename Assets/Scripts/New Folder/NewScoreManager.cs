@@ -113,7 +113,6 @@ public class NewScoreManager : MonoBehaviour {
 		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _catchCount.ToString()));
 		highscore = PlayerPrefs.GetFloat(highScoreKey);
 
-		Debug.Log("HIGH SCORE PROCESS");
 		Debug.Log(currentScore + " | " +  highscore);
 
 		if(currentScore > highscore) {

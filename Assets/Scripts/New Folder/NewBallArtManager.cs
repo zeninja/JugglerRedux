@@ -8,7 +8,7 @@ public class NewBallArtManager : MonoBehaviour
     List<Vector3> m_LinePointList;
     List<Vector3> predictedLine;
     // List<Vector3> m_LineSegment;
-    public int m_LineLength = 5;
+    int m_LineLength = 5;
 
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
@@ -60,6 +60,7 @@ public class NewBallArtManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
         DrawTrail();
     }
 
@@ -132,7 +133,8 @@ public class NewBallArtManager : MonoBehaviour
     int index = 0;
     public float t;
 
-    public float smoothingSpeed = 100;
+    public float lineSegmentPercent = .35f;
+    public float peakPercent = .95f;
 
     void DrawTrail()
     {
@@ -147,18 +149,27 @@ public class NewBallArtManager : MonoBehaviour
                 m_LinePointList.Add(transform.position);
 
                 // 2. Set the line length;
-                int maxLineLength = predictedLine.Count / 2;
+                int maxLineLength = (int)(predictedLine.Count * lineSegmentPercent);
                 index++;
-                t = (float)index / (float)predictedLine.Count;
+                t = (float)index / ((float)predictedLine.Count * peakPercent);
                 t = Mathf.Clamp01(t);
                 m_LineLength = (int)(EZEasings.Arch2(t) * maxLineLength);
-                Debug.Log(m_LineLength);
+
+                // 2a. Smooth the line length?
+                // int smoothedLineLength = Mathf.Lerp()
 
                 // 3. Trim the line
                 if (m_LinePointList.Count > m_LineLength)
                 {
-                    m_LinePointList.RemoveAt(0);
+                    int iter = 0;
+                    while(m_LinePointList.Count > m_LineLength && iter < 100) {
+                        m_LinePointList.RemoveAt(0);
+                        iter++;
+                    }
                 }
+
+                Debug.Log(t + " | " + m_LineLength + " | " + m_LinePointList.Count);
+
 
                 // 4. Set the line
                 trail.positionCount = m_LinePointList.Count;
@@ -258,6 +269,7 @@ public class NewBallArtManager : MonoBehaviour
 
     public bool VelocityPositive()
     {
+        if(m_Rigidbody == null) { return false; }
         // Debug.Log(m_Rigidbody.velocity.y);
         return m_Rigidbody.velocity.y > 0;
     }

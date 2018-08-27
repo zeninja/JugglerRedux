@@ -214,7 +214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098dd87e50de36d4db2868e0382e7456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LineLength: 48
   trail: {fileID: 120637689961078774}
   gameOverBallSprite: {fileID: 212065913777486124}
   squashStats:
@@ -223,8 +222,9 @@ MonoBehaviour:
     lineLength: 1
     squashAmount: 0.5
   risingSquash: 0.05
-  percent: 0
-  squashAmount: 0.67
+  t: 0
+  lineSegmentPercent: 0.35
+  peakPercent: 0.95
   popInAnimation:
     serializedVersion: 2
     m_Curve:
@@ -315,6 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PreviewLineSegments: 120
+  m_FinalPositionList: []
 --- !u!114 &114898421787277310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -428,7 +429,7 @@ LineRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1520845706993934}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
