@@ -45,7 +45,7 @@ public class NewAdManager : MonoBehaviour
     {
         string appleGameId = "1652958";
 
-        Advertisement.Initialize(appleGameId);
+        // Advertisement.Initialize(appleGameId);
 
         isShowingAd = false;
     }

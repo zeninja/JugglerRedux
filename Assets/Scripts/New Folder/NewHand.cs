@@ -255,6 +255,8 @@ public class NewHand : MonoBehaviour
             Color ballColor = m_Ball.GetComponentInChildren<NewBallArtManager>().myColor;
             m_CatchRing.SetBallColor(ballColor);
             Vibrator.Vibrate(vibeDuration);
+
+            m_Ball.GetComponent<LinePredictor>().HandleCatch(this);
         }
     }
 
@@ -271,6 +273,9 @@ public class NewHand : MonoBehaviour
 
     void ThrowBall()
     {
+        // TODO: CLEAN UP
+        m_Ball.GetComponent<LinePredictor>().HandleThrow();
+
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
         HandleDeath();

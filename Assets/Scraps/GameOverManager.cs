@@ -53,6 +53,7 @@ public class GameOverManager : MonoBehaviour
 
     public void SetTargetBall(SpriteRenderer s) {
         target = s;
+        target.enabled = true;
         target.sortingOrder = 100;
     }
 

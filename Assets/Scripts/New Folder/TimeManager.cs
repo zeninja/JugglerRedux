@@ -45,6 +45,14 @@ public class TimeManager : MonoBehaviour
     void Update()
     {
         SlowTimeBasedOnThrows();
+
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.D)) {
+            PauseTime();
+        }
+    }
+
+    void PauseTime(){
+        Time.timeScale = 0;
     }
 
     public Extensions.Property slowTimeScaleRange;

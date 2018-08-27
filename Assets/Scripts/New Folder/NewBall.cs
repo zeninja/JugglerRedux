@@ -101,6 +101,8 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
+        
+        ballArtManager.HandleCatch();
 
         GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
     }
@@ -116,6 +118,8 @@ public class NewBall : MonoBehaviour
 
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
+
+        ballArtManager.HandleThrow();
 
         NewBallManager.GetInstance().UpdateEndgame(this);
     }
@@ -140,7 +144,8 @@ public class NewBall : MonoBehaviour
 
     void KillThisBall() {
         FreezeBall();
-        GameOverManager.GetInstance().SetTargetBall(ballArtManager.ball);
+        ballArtManager.KillTrail();
+        GameOverManager.GetInstance().SetTargetBall(ballArtManager.gameOverBallSprite);
         EventManager.TriggerEvent("BallDied");
         // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
@@ -157,5 +162,9 @@ public class NewBall : MonoBehaviour
 
     public void UpdateColor() {
         GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
+    }
+
+    public bool IsHeld() {
+        return m_IsHeld;
     }
 }
