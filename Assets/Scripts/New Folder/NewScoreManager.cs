@@ -40,6 +40,12 @@ public class NewScoreManager : MonoBehaviour {
 	float highscore;
 	static string highScoreKey = "highScore";
 
+	public Gradient highscoreGradient;
+	public Color scoreColor;
+
+	public float pauseBeforeCountdown = .25f;
+	public float inOutDuration;
+
 	// Use this for initialization
 	void Start () {
 		EventManager.StartListening("SpawnBall", OnBallSpawned);
@@ -113,10 +119,10 @@ public class NewScoreManager : MonoBehaviour {
 		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _catchCount.ToString()));
 		highscore = PlayerPrefs.GetFloat(highScoreKey);
 
-		Debug.Log(currentScore + " | " +  highscore);
+		// Debug.Log(currentScore + " | " +  highscore);
 
 		if(currentScore > highscore) {
-			Debug.Log("UPDATING HIGH SCORE");
+			// Debug.Log("UPDATING HIGH SCORE");
 
 			highscore = currentScore;
 			highScoreString = highscore.ToString();
@@ -124,19 +130,15 @@ public class NewScoreManager : MonoBehaviour {
 
 			PlayerPrefs.SetFloat(highScoreKey, highscore);
 
-			// GameCenter.GetInstance().SetHighScore(highscore);
+			GameCenter.GetInstance().SetHighScore(highscore);
 			
 			yield return StartCoroutine(UpdateHighScore());
 		}
 	}
 
-	public Gradient highscoreGradient;
-
-	public Color scoreColor;
-
-	public float inOutDuration;
-
 	public IEnumerator UpdateHighScore() {
+		yield return new WaitForSeconds(pauseBeforeCountdown);
+
 		float t = 0;
 		inOutDuration = .15f;
 

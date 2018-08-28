@@ -120,6 +120,7 @@ public class NewBallManager : MonoBehaviour
         ball.transform.position = ballSpawnPos;
         ball.m_Launching = false;
         ball.canBeCaught = false;
+        ball.firstBall   = true;
         ball.GetComponent<Rigidbody2D>().velocity  = Vector2.zero;
         ball.GetComponent<Rigidbody2D>().gravityScale = 0;
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
@@ -235,10 +236,5 @@ public class NewBallManager : MonoBehaviour
         }
 
         return true;
-    }
-
-    public bool FirstBallGotThrown() {
-        
-        return false;
     }
 }

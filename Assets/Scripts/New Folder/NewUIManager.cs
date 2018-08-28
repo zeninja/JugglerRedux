@@ -19,6 +19,8 @@ public class NewUIManager : MonoBehaviour {
 	bool showDebugMenu = false;
 	bool canShowMenu = true;
 
+	public GameObject menuButtons;
+
 	// Update is called once per frame
 	void Update () {
 		ui_SlapForce.text       = NewHandManager .GetInstance(). touchSlapThrowForce.ToString("F2");
@@ -41,6 +43,8 @@ public class NewUIManager : MonoBehaviour {
 		}
 		
 		debugMenu.SetActive(showDebugMenu);
+
+		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
 	}
 
 	public void ToggleAds() {

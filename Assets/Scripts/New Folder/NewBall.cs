@@ -33,6 +33,8 @@ public class NewBall : MonoBehaviour
     [System.NonSerialized]
     public bool dead;
 
+    public bool firstBall;
+
     // Use this for initialization
     void Awake()
     {
@@ -94,6 +96,8 @@ public class NewBall : MonoBehaviour
     public void GetCaught()
     {
         if (m_Launching || NewGameManager.GameOver()) { return; }
+
+        if(firstBall) { NewGameManager.GetInstance().StartGame(); }
 
         m_IsHeld = true;
         framesSinceCatch = 0;

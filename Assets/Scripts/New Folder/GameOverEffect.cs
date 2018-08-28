@@ -95,8 +95,8 @@ public class GameOverEffect : MonoBehaviour
             }
         }
 
-        NewGameManager.GetInstance().ResetGame();
+        // NewGameManager.GetInstance().ResetGame();
 
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
 }

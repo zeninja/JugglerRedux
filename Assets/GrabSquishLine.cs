@@ -12,6 +12,7 @@ public class GrabSquishLine : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ball = GetComponentInParent<NewBall>();
+		squishLine.material.color = GetComponent<NewBallArtManager>().myColor;
 	}
 	
 	// Update is called once per frame
@@ -40,7 +41,7 @@ public class GrabSquishLine : MonoBehaviour {
 			rightAngle = rightAngle % 360;
 		}
 
-        Debug.Log(angle + " | " + leftAngle + " | " + rightAngle);
+        // Debug.Log(angle + " | " + leftAngle + " | " + rightAngle);
 
         Vector2 startPos, endPos;
 

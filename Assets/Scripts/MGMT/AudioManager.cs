@@ -9,19 +9,12 @@ public class AudioManager : MonoBehaviour {
 
 	public AudioClip catchSound;
 	public AudioClip throwSound;
-	// public AudioClip startSound;
 	public AudioClip gameOver;
-	// public AudioClip gameStart;
-	// public AudioClip gameTimer;
-
-	// public AudioClip[] scoreSounds;
 
 	AudioSource source;
 
 	public static bool muted;
-	string muteKey = "Muted";
-
-	// public Slider volumeSlider;
+	string muteKey = "mute";
 
 	void Awake() {
 		if(instance == null) {
@@ -31,11 +24,12 @@ public class AudioManager : MonoBehaviour {
 				Destroy(gameObject);
 			}
 		}
+
+		InitMute();
 	}
 
 	// Use this for initialization
 	void Start () {
-		source = GetComponent<AudioSource> ();
 
 		EventManager.StartListening("BallCaught", PlayCatch);
 		EventManager.StartListening("BallThrown", PlayThrow);
@@ -54,56 +48,22 @@ public class AudioManager : MonoBehaviour {
 		instance.source.PlayOneShot (instance.gameOver);
 	}
 
-	// public static void PlayGameStart() {
-	// 	instance.source.PlayOneShot (instance.gameStart);
-	// }
+	void InitMute() {
+		if (!PlayerPrefs.HasKey(muteKey)) {
+			PlayerPrefs.SetInt(muteKey, 0);
+		} else {
+			muted = PlayerPrefs.GetInt(muteKey) == 1;
+		}
 
-	// public static void PlayScore() {
-	// 	instance.source.PlayOneShot(instance.scoreSounds[Random.Range(0, instance.scoreSounds.Length)]);
-	// }
+		source = GetComponent<AudioSource>();
+		source.mute = muted;
+	}
 
-	// IEnumerator VolumeOn(AudioSource source) {
-	// 	StopAllCoroutines();
+	public void ToggleMute() {
+		muted = !muted;
+		source.mute = muted;
 
-	// 	int frameCount = 3;
-
-	// 	for(int i = 0; i < frameCount; i++) {
-	// 		source.volume = i/frameCount;
-	// 		yield return new WaitForEndOfFrame();
-	// 	}
-	// 	yield return 0;
-	// }
-
-	// IEnumerator VolumeOff(AudioSource source) {
-	// 	StopAllCoroutines();
-
-	// 	int frameCount = 3;
-
-	// 	for(int i = 0; i < frameCount; i++) {
-	// 		source.volume = 1 - i/frameCount;
-	// 		yield return new WaitForEndOfFrame();
-	// 	}
-	// 	yield return 0;
-	// }
-
-	// public void UpdateMute() {
-	// 	muted = !UIManager.instance.mute.isOn;
-	// 	source.mute = muted;
-
-	// 	int storedValue = muted ? 1 : 0;
-	// 	PlayerPrefs.SetInt(muteKey, storedValue);
-	// }
-
-	// void CheckMute() {
-	// 	if (!PlayerPrefs.HasKey(muteKey)) {
-	// 		PlayerPrefs.SetInt(muteKey, 0);
-	// 	} else {
-	// 		muted = PlayerPrefs.GetInt(muteKey) == 1;
-	// 		UIManager.instance.UpdateMute();
-	// 	}
-	// }
-
-	// public void UpdateVolume() {
-	// 	source.volume = volumeSlider.value;
-	// }
+		int muteVal = muted ? 1 : 0;
+		PlayerPrefs.SetInt(muteKey, muteVal);
+	}
 }

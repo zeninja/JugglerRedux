@@ -75,6 +75,7 @@ public class TimeManager : MonoBehaviour
 
         Time.timeScale = Mathf.Lerp(Time.timeScale, m_TargetTimeScale, Time.deltaTime * m_TimeSmoothing);
         m_CurrentTimeScale = Time.timeScale;
+        // Debug.Log(m_CurrentTimeScale);
 
         timeScalePercent = 1 - (m_CurrentTimeScale - m_SlowTimeScale) / (m_NormalTimeScale - m_SlowTimeScale);
         // Debug.Log(timeScalePercent);
