@@ -74,21 +74,6 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    // public bool AnyBallBeingThrown()
-    // {
-    //     bool anyBallThrowing = false;
-
-    //     foreach (NewBall n in balls)
-    //     {
-    //         if (n.m_BallThrown)
-    //         {
-    //             anyBallThrowing = true;
-    //             break;
-    //         }
-    //     }
-    //     return anyBallThrowing;
-    // }
-
     public bool JuggleThresholdReached()
     {
         int numBallsThrowing = 0;
@@ -124,6 +109,7 @@ public class NewBallManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().velocity  = Vector2.zero;
         ball.GetComponent<Rigidbody2D>().gravityScale = 0;
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
+        ball.GetComponentInChildren<NewBallArtManager>().PopInAnimation();
         firstBall = ball;
 
         balls.Add(ball);
@@ -135,6 +121,7 @@ public class NewBallManager : MonoBehaviour
 
     void SpawnBall()
     {
+        // Debug.Log("1. Spawning ball.");
         Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
         NewBall ball = Instantiate(m_BallPrefab);
 
@@ -143,6 +130,7 @@ public class NewBallManager : MonoBehaviour
         ball.canBeCaught = false;
         ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
+        ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
 
         balls.Add(ball);
         _ballCount++;
@@ -236,5 +224,9 @@ public class NewBallManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    public Vector2 GetLaunchVelocity() {
+        return Vector2.up * ballLaunchForce;
     }
 }

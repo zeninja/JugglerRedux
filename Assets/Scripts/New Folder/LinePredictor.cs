@@ -17,7 +17,7 @@ public class LinePredictor : MonoBehaviour
     LineRenderer previewLine;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         previewLine = GetComponent<LineRenderer>();
     }
@@ -32,7 +32,7 @@ public class LinePredictor : MonoBehaviour
         // m_PreviewLineRenderer.SetPositions(linePositions.ToArray());
     }
 
-    void FindPositionList() {
+    public void FindPositionList() {
         Vector3 currentVelocity = GetCurrentShotVelocity();
         List<Vector3> completeLinePositionList = new List<Vector3>();
         Vector3 currentLinePoint = Vector2.zero;
@@ -90,24 +90,50 @@ public class LinePredictor : MonoBehaviour
         previewLine.SetPositions(m_FinalPositionList.ToArray());
     }
 
-    // bool EnableLine()
-    // {
-    //     return m_Ball.m_IsHeld || m_gotThrown || m_Ball.m_BallThrown;
-    // }
+    public List<Vector3> FindLaunchList() {
+        m_LineStartPosition = transform.position;
+        
+        Vector3 currentVelocity = NewBallManager.GetInstance().GetLaunchVelocity();
+        List<Vector3> launchList = new List<Vector3>();
+        Vector3 currentLinePoint = Vector2.zero;
+
+        const float dragPerFrame = -0.1f;
+        Vector3 gravity = (Physics2D.gravity * Time.fixedDeltaTime);
+
+        for(int i = 0; i < 500; i++) {
+            launchList.Add(m_LineStartPosition + currentLinePoint);
+
+            //Add Drag
+            Vector3 dragForce = dragPerFrame * currentVelocity.normalized * currentVelocity.sqrMagnitude;
+            currentVelocity += dragForce * Time.fixedDeltaTime;
+
+            //Add Gravity
+            currentVelocity += gravity;
+
+            currentLinePoint += currentVelocity * Time.fixedDeltaTime;
+
+            if(currentVelocity.y < 0) {
+                break;
+            }
+        }
+
+        // Debug.Log("4. SET LAUNCH LIST. LENGTH IS: " + launchList.Count);
+        return launchList;
+    }
 
     Vector2 GetCurrentShotVelocity()
     {
         if (m_Hand != null)
         {
+            // Hand exists, getting thrown
             return m_Hand.GetThrowVector();
         }
         else
         {
-            // Debug.Log("hand null");
-            return Vector3.zero;
+            // Launching
+            return (Vector2)transform.position + NewBallManager.GetInstance().GetLaunchVelocity();
         }
     }
-
 
     public void HandleCatch(NewHand hand) {
         m_Hand = hand;
@@ -122,6 +148,9 @@ public class LinePredictor : MonoBehaviour
 
     public List<Vector3> GetPointList()
     {
+        if(m_FinalPositionList.Count == 0) {
+            FindPositionList();
+        }
         return m_FinalPositionList;
     }
 }
