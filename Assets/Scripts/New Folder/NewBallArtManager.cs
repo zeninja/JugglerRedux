@@ -115,6 +115,12 @@ public class NewBallArtManager : MonoBehaviour
         // ballSprite.enabled = true;
     }
 
+    bool ballDead = false;
+
+    public void HandleDeath() {
+        ballDead = true;
+    }
+
     void GetPredictedLine() {
         predictedLine = GetComponentInParent<LinePredictor>().GetPointList();
     }
@@ -132,6 +138,11 @@ public class NewBallArtManager : MonoBehaviour
 
     void DrawTrail()
     {
+        if(DisableTrail()) {
+            trail.enabled = false;
+            return;
+        }
+
         // Rising
         if (VelocityPositive())
         {
@@ -202,24 +213,19 @@ public class NewBallArtManager : MonoBehaviour
             }
 
             index = 0;
-
-            // line.enabled = false;
-
-
-            // m_LinePointList.Clear();
-            // trail.positionCount = 2;
-            // trail.SetPosition(0, transform.position);
-            // trail.SetPosition(1, transform.position);
         }
     }
 
     public AnimationCurve popInAnimation;
     public float popInDuration;
 
+    bool popInDone = true;
+
     IEnumerator PopIn()
     {
         float t = 0;
         float d = popInDuration;
+        popInDone = false;
 
         while (t < d)
         {
@@ -227,6 +233,7 @@ public class NewBallArtManager : MonoBehaviour
             transform.localScale = Vector2.one * popInAnimation.Evaluate(t / d);
             yield return new WaitForFixedUpdate();
         }
+        popInDone = true;
     }
 
     public bool VelocityPositive()
@@ -236,8 +243,8 @@ public class NewBallArtManager : MonoBehaviour
         return m_Rigidbody.velocity.y > 0;
     }
 
-    public void KillTrail()
-    {
-        trail.enabled = false;
+    bool DisableTrail() {
+        // Debug.Log(ballDead + " | " + !popInDone);
+        return ballDead || !popInDone;
     }
 }

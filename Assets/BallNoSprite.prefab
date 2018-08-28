@@ -234,6 +234,7 @@ MonoBehaviour:
   m_IsHeld: 0
   m_BallThrown: 0
   ballColorIndex: 0
+  firstBall: 0
 --- !u!114 &114268252499269196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -469,7 +470,7 @@ LineRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1464574029738678}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

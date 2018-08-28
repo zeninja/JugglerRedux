@@ -7,7 +7,9 @@ using UnityEngine.SocialPlatforms.GameCenter;
 
 public class GameCenter : MonoBehaviour {
 
-	string highscoreLeaderboard = "highscore";
+	string leaderboardID = "unset";
+	string iphoneString  = "highscore_iphone";
+	string ipadString    = "highscore_ipad";
 
 //	public static string get10Pts	   = "Get10Pts";		// achievement ID in itunes Connect
 //	public static string get100Pts	   = "Get100Pts";		// achievement ID in itunes Connect
@@ -39,6 +41,16 @@ public class GameCenter : MonoBehaviour {
 		if(!Social.localUser.authenticated) {
 			Social.localUser.Authenticate (ProcessAuthentication);
 		}
+
+		#if !UNITY_EDITOR
+			#if UNITY_IPHONE
+			leaderboardID = iphoneString;
+			#endif
+
+			#if UNITY_IPAD
+			leaderboardID = ipadString;
+			#endif
+		#endif
 	}
 
 	// This function gets called when Authenticate completes
@@ -63,12 +75,15 @@ public class GameCenter : MonoBehaviour {
 	}
 
 	public void SetHighScore(float newScore) {
-		// ReportScore((long)newScore, highscoreLeaderboard);
+		ReportScore((long)newScore, leaderboardID);
 	}
 
-	void ReportScore (long score, string leaderboardID) {
-		Debug.Log ("Reporting score " + score + " on leaderboard " + leaderboardID);
-		Social.ReportScore (score, leaderboardID, success => {
+	void ReportScore (long score, string id) {
+		// Don't send a score if we're in the editor
+		if(id == "unset") { return; }
+
+		Debug.Log ("Reporting score " + score + " on leaderboard " + id);
+		Social.ReportScore (score, id, success => {
 			Debug.Log(success ? "Reported score successfully" : "Failed to report score");
 		});
 	}
