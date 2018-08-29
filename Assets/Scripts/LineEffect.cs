@@ -16,8 +16,10 @@ public class LineEffect : MonoBehaviour
         // line.useWorldSpace = false;
     }
 
-    void Update() {
-        if(Input.GetKeyDown(KeyCode.Space)) {
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             PlayLine(startPos, endPos, animationDuration);
         }
     }
@@ -28,26 +30,49 @@ public class LineEffect : MonoBehaviour
         animationDuration = duration;
         StartCoroutine(AnimateLine());
     }
+    Vector2 lineStart;
+    Vector2 lineEnd;
+
+    public float linePercentage = 0.95f;
 
     IEnumerator AnimateLine()
     {
+        lineStart = startPos;
+        lineEnd = startPos;
+
+        StartCoroutine(AnimatePoint(lineStart, 0));
+        while(animationCompletion < linePercentage) {
+            yield return new WaitForFixedUpdate();
+        }
+
+        StartCoroutine(AnimatePoint(lineEnd, 1));
+
+
+    }
+
+    bool animatingStart = false;
+
+    IEnumerator AnimatePoint(Vector2 targetPos, int positionIndex)
+    {
+
         float t = 0;
         float percent = t;
 
-        Vector2 lineStart = startPos;
-        Vector2 lineEnd   = startPos;
+        animatingStart = true;
 
         while (t < animationDuration)
         {
             t += Time.fixedDeltaTime;
             percent = t / animationDuration;
+            percent = Mathf.Clamp01(percent);
 
-            lineStart = startPos + (endPos - startPos) * EZEasings.SmoothStart3(percent);
-            lineEnd   = startPos + (endPos - startPos) * EZEasings.SmoothStart5(percent);
+            targetPos = startPos + (endPos - startPos) * EZEasings.SmoothStart3(percent);
+            line.SetPosition(positionIndex, targetPos);
 
-            line.SetPosition(0, lineStart);
-            line.SetPosition(1, lineEnd);
+            animationCompletion = percent;
             yield return new WaitForFixedUpdate();
         }
     }
+
+    float animationCompletion;
 }
