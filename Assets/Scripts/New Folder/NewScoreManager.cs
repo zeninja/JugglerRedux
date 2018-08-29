@@ -23,10 +23,10 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	public static int _numBalls;
-	public static int _catchCount;
+	// public static int _catchCount;
 	public static int _peakCount;
 	public static float _progress;
-	public static float _lastCatchCount;
+	public static float _lastPeakCount;
 
 	public static int _maxCatchCount = 99;
 
@@ -74,7 +74,7 @@ public class NewScoreManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		currentScoreString = _numBalls.ToString() + "." + _catchCount.ToString();
+		currentScoreString = _numBalls.ToString() + "." + _peakCount.ToString();
 		scoreText.text = currentScoreString;
 
 		if(Input.GetKeyDown(KeyCode.C)) {
@@ -89,26 +89,27 @@ public class NewScoreManager : MonoBehaviour {
 
 	void OnBallCaught() {
 		// Debug.Log("caught");
-		scoreText.text = currentScoreString;
-		_catchCount++;
-		_progress = Mathf.Min((float)_catchCount / (float)_maxCatchCount, 1.0f) ;
+		// scoreText.text = currentScoreString;
+		// _catchCount++;
+		// _progress = Mathf.Min((float)_catchCount / (float)_maxCatchCount, 1.0f) ;
 	}
 
 	void OnBallSlapped() {
 		// Debug.Log("slapped");
-		scoreText.text = currentScoreString;
-		_catchCount++;
+		// scoreText.text = currentScoreString;
+		// _catchCount++;
 	}
 
 	void OnBallPeaked() {
 		scoreText.text = currentScoreString;
+		_peakCount++;
 	}
 
 	public void Reset() {
-		_catchCount = 0;
+		_peakCount = 0;
 		_numBalls = 0;
 
-		currentScoreString = _numBalls.ToString() + "." + _catchCount.ToString();
+		currentScoreString = _numBalls.ToString() + "." + _peakCount.ToString();
 	}
 
 	public static float GetProgressPercent() {
@@ -116,8 +117,10 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	public IEnumerator HighscoreProcess() {
-		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _catchCount.ToString()));
+		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _peakCount.ToString()));
 		highscore = PlayerPrefs.GetFloat(highScoreKey);
+
+		_lastPeakCount = _peakCount;
 
 		// Debug.Log(currentScore + " | " +  highscore);
 

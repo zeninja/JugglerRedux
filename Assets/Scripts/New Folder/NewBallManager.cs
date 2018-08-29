@@ -58,8 +58,9 @@ public class NewBallManager : MonoBehaviour
     void Start()
     {
         EventManager.StartListening("SpawnBall", SpawnBall);
-        EventManager.StartListening("BallCaught", CheckBallLaunch);
-        EventManager.StartListening("BallSlapped", CheckBallLaunch);
+        // EventManager.StartListening("BallCaught", CheckBallLaunch);
+        // EventManager.StartListening("BallSlapped", CheckBallLaunch);
+        EventManager.StartListening("BallPeaked", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
 
         ballSpawnScores = normalBallSpawnScores;
@@ -160,7 +161,7 @@ public class NewBallManager : MonoBehaviour
     {
         if (scoreIndex < ballSpawnScores.Length)
         {
-            if (NewScoreManager._catchCount == ballSpawnScores[scoreIndex])
+            if (NewScoreManager._peakCount == ballSpawnScores[scoreIndex])
             {
                 scoreIndex++;
                 EventManager.TriggerEvent("SpawnBall");
@@ -168,22 +169,22 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    public void UpdateEndgame(NewBall nb)
-    {
-        int endgameIndex = 8;
+    // public void UpdateEndgame(NewBall nb)
+    // {
+    //     int endgameIndex = 8;
 
-        if (_ballCount == endgameIndex)
-        {
-            if (!AllBallsUnitedAtIndex(endgameIndex))
-            {
-                if (nb.ballColorIndex < endgameIndex)
-                {
-                    nb.ballColorIndex++;
-                    nb.UpdateColor();
-                }
-            }
-        }
-    }
+    //     if (_ballCount == endgameIndex)
+    //     {
+    //         if (!AllBallsUnitedAtIndex(endgameIndex))
+    //         {
+    //             if (nb.ballColorIndex < endgameIndex)
+    //             {
+    //                 nb.ballColorIndex++;
+    //                 nb.UpdateColor();
+    //             }
+    //         }
+    //     }
+    // }
 
     void OnBallDied()
     {
@@ -213,18 +214,18 @@ public class NewBallManager : MonoBehaviour
         _ballCount = 0;
     }
 
-    public bool AllBallsUnitedAtIndex(int index)
-    {
-        foreach (NewBall b in balls)
-        {
-            if (b.ballColorIndex != index)
-            {
-                return false;
-            }
-        }
+    // public bool AllBallsUnitedAtIndex(int index)
+    // {
+    //     foreach (NewBall b in balls)
+    //     {
+    //         if (b.ballColorIndex != index)
+    //         {
+    //             return false;
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     public Vector2 GetLaunchVelocity() {
         return Vector2.up * ballLaunchForce;

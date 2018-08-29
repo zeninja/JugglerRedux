@@ -39,16 +39,16 @@ public class GameOverManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (demo != null)
-            {
-                target = demo;
-                NewScoreManager._numBalls = 6;
-                NewScoreManager._catchCount = 66;
-                StartGameOver();
-            }
-        }
+        // if (Input.GetKeyDown(KeyCode.D))
+        // {
+        //     if (demo != null)
+        //     {
+        //         target = demo;
+        //         NewScoreManager._numBalls = 6;
+        //         NewScoreManager._peakCount = 66;
+        //         StartGameOver();
+        //     }
+        // }
     }
 
     public void SetTargetBall(SpriteRenderer s) {
@@ -123,11 +123,11 @@ public class GameOverManager : MonoBehaviour
 
         yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
 
-        float shortDelay = countdownDuration / NewScoreManager._catchCount;        
+        float shortDelay = countdownDuration / NewScoreManager._peakCount;        
 
-        while (NewScoreManager._catchCount > 0)
+        while (NewScoreManager._peakCount > 0)
         {
-            NewScoreManager._catchCount--;
+            NewScoreManager._peakCount--;
             yield return new WaitForSeconds(shortDelay);
         }
 

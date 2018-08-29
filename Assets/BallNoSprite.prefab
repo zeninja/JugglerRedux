@@ -237,10 +237,8 @@ MonoBehaviour:
   trail: {fileID: 120637689961078774}
   gameOverBallSprite: {fileID: 212065913777486124}
   risingSquash: 0.41
-  t: 0
-  lineSegmentPercent: 0.35
   peakPercent: 0.95
-  launchLineLength: 34
+  launchLineLength: 40
   popInAnimation:
     serializedVersion: 2
     m_Curve:

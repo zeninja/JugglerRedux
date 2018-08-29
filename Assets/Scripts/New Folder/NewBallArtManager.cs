@@ -10,7 +10,6 @@ public class NewBallArtManager : MonoBehaviour
     List<Vector3> launchPointList;
     // List<Vector3> m_LineSegment;
     int m_LineLength = 5;
-    int launchLength = 10;
 
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
@@ -143,10 +142,8 @@ public class NewBallArtManager : MonoBehaviour
 
     public float risingSquash;
 
-    int index = 0;
-    public float t;
+    int indexAlongLine = 0;
 
-    public float lineSegmentPercent = .35f;
     public float peakPercent = .95f;
 
     float throwMagnitudePortion = -1;
@@ -171,9 +168,10 @@ public class NewBallArtManager : MonoBehaviour
                 m_LinePointList.Add(transform.position);
 
                 // 2. Set the line length;
-                int maxLineLength = GetMaxLineLength();
-                index++;
-                t = (float)index / ((float)predictedPointList.Count * peakPercent);
+                float lineSegmentPercent = .35f;
+                int maxLineLength = (int)(predictedPointList.Count * lineSegmentPercent);
+                indexAlongLine++;
+                float t = (float)indexAlongLine / ((float)predictedPointList.Count * peakPercent);
                 t = Mathf.Clamp01(t);
 
                 float percent = EZEasings.Arch2(t);
@@ -200,8 +198,8 @@ public class NewBallArtManager : MonoBehaviour
                 // 2. Set the line length;
                 int maxLineLength = launchLineLength;
 
-                index++;
-                t = (float)index / ((float)launchPointList.Count * peakPercent);
+                indexAlongLine++;
+                float t = (float)indexAlongLine / ((float)launchPointList.Count * peakPercent);
                 t = Mathf.Clamp01(t);
 
                 float percent = EZEasings.Arch2(t);
@@ -252,7 +250,7 @@ public class NewBallArtManager : MonoBehaviour
                 trail.enabled = true;
             }
 
-            index = 0;
+            indexAlongLine = 0;
         }
     }
 
@@ -295,11 +293,6 @@ public class NewBallArtManager : MonoBehaviour
     {
         if (m_Rigidbody == null) { return false; }
         return m_Rigidbody.velocity.y > 0;
-    }
-
-    int GetMaxLineLength()
-    {
-       return (int)(predictedPointList.Count * lineSegmentPercent);
     }
 
     bool DisableTrail()

@@ -12,7 +12,7 @@ public class NewBall : MonoBehaviour
 
     [HideInInspector]
     public bool canBeCaught = false;
-    [HideInInspector]
+    // [HideInInspector]
     public bool m_Launching;
     [HideInInspector]
     public Vector2 currentThrowVector;
@@ -26,6 +26,8 @@ public class NewBall : MonoBehaviour
     int ballCatchCount;
     public int ballColorIndex;
     //
+
+    bool canPeak = false;
 
     NewBallArtManager ballArtManager;
 
@@ -61,7 +63,7 @@ public class NewBall : MonoBehaviour
         {
             m_Launching = false;
 
-            if(m_BallThrown) {
+            if(m_BallThrown && canPeak) {
                 EventManager.TriggerEvent("BallPeaked");
                 m_BallThrown = false;
                 // GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
@@ -125,7 +127,13 @@ public class NewBall : MonoBehaviour
 
         ballArtManager.HandleThrow();
 
-        NewBallManager.GetInstance().UpdateEndgame(this);
+        if(throwVector.y > 0) {
+            canPeak = true;
+        } else {
+            canPeak = false;
+        }
+
+        // NewBallManager.GetInstance().UpdateEndgame(this);
     }
 
     void CheckBounds()
@@ -164,9 +172,14 @@ public class NewBall : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void UpdateColor() {
-        GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
-    }
+    // public void UpdateColor() {
+    //     if(ballColorIndex < NewBallManager.GetInstance().m_BallColors.Length - 1) {
+    //         Debug.Log(ballColorIndex);
+    //         GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
+    //     } else {
+    //         GetComponent<NewBallArtManager>().SetColor(Color.black);
+    //     }
+    // }
 
     public bool IsHeld() {
         return m_IsHeld;

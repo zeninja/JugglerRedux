@@ -45,7 +45,7 @@ public class NewAdManager : MonoBehaviour
     {
         string appleGameId = "1652958";
 
-        // Advertisement.Initialize(appleGameId);
+        Advertisement.Initialize(appleGameId);
 
         isShowingAd = false;
     }
@@ -55,7 +55,7 @@ public class NewAdManager : MonoBehaviour
 		#if UNITY_ADS
         if (forceAdsOff) { return; }
 
-		if(NewScoreManager._lastCatchCount >= 5) {
+		if(NewScoreManager._lastPeakCount >= 5) {
 			playcount++;
 		}
 

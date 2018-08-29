@@ -7,36 +7,46 @@ public class LineEffect : MonoBehaviour
 {
     LineRenderer line;
     public float animationDuration = .4f;
-    public float delay;
 
-    Extensions.Property startWidth, endWidth;
-    
+    public Vector2 startPos, endPos;
 
     void Start()
     {
         line = gameObject.GetComponent<LineRenderer>();
-        line.useWorldSpace = false;
+        // line.useWorldSpace = false;
+    }
+
+    void Update() {
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            PlayLine(startPos, endPos, animationDuration);
+        }
     }
 
 
-    public void PlayLine(float duration)
+    public void PlayLine(Vector2 startPos, Vector2 endPos, float duration)
     {
         animationDuration = duration;
+        StartCoroutine(AnimateLine());
     }
 
-    IEnumerator AnimateLine(Vector2 lineDirection)
+    IEnumerator AnimateLine()
     {
         float t = 0;
+        float percent = t;
+
+        Vector2 lineStart = startPos;
+        Vector2 lineEnd   = startPos;
 
         while (t < animationDuration)
         {
             t += Time.fixedDeltaTime;
+            percent = t / animationDuration;
 
-            Vector2 startPos = transform.position;
-            Vector2 endPos = (Vector2)transform.position + lineDirection;
+            lineStart = startPos + (endPos - startPos) * EZEasings.SmoothStart3(percent);
+            lineEnd   = startPos + (endPos - startPos) * EZEasings.SmoothStart5(percent);
 
-            line.SetPosition(0, startPos);
-            line.SetPosition(1, endPos);
+            line.SetPosition(0, lineStart);
+            line.SetPosition(1, lineEnd);
             yield return new WaitForFixedUpdate();
         }
     }
