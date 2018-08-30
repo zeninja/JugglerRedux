@@ -16,7 +16,7 @@ public class Dot : MonoBehaviour {
 		s = GetComponent<SpriteRenderer>();
 		StartCoroutine(FadeOut());
 
-		EventManager.StartListening("CleanUp", HandleDeath);
+		// EventManager.StartListening("CleanUp", HandleDeath);
 	}
 
 	IEnumerator FadeOut() {
