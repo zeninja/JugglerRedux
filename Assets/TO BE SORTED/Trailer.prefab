@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1611769461538144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8489578, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawTrail: 1
-  refreshInterval: 0.26
-  dot: {fileID: 1452079700807384, guid: d1d14d5f89048404db5b1aeaa57790fb, type: 2}
-  fadeDuration: 0.55
-  dotColor: {r: 0, g: 0, b: 0, a: 1}
-  defaultScale: 0.14
+  refreshInterval: 0.07
+  dot: {fileID: 1452079700807384, guid: 805dcaff7e3636046815db602660760f, type: 2}
+  dotColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
+  defaultScale: 0.17
+  numDots: 5

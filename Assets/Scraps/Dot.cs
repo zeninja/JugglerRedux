@@ -11,10 +11,19 @@ public class Dot : MonoBehaviour {
 	public float threshold = .005f;
 	public float startAlpha;
 
+	public bool fade;
+	float startScale;
+
 	// Use this for initialization
 	void Start () {
 		s = GetComponent<SpriteRenderer>();
-		StartCoroutine(FadeOut());
+		startScale = transform.localScale.x;
+
+		if(fade) {
+			StartCoroutine(FadeOut());
+		} else {
+			StartCoroutine(Shrink());
+		}
 
 		// EventManager.StartListening("CleanUp", HandleDeath);
 	}
@@ -29,6 +38,20 @@ public class Dot : MonoBehaviour {
 			myColor = s.color;
 			myColor.a = startAlpha * (1 - EZEasings.SmoothStart3(t / fadeDuration));
 			s.color = myColor;
+			yield return new WaitForFixedUpdate();
+		}
+		Destroy(gameObject);
+	}
+
+	IEnumerator Shrink() {
+		if(fadeDuration < threshold) { Destroy(gameObject); }
+
+		float t = 0; 
+		while (t < fadeDuration) {
+			t += Time.fixedDeltaTime;
+			float percent = t / fadeDuration;
+
+			transform.localScale = Vector2.one * (startScale - startScale * percent);
 			yield return new WaitForFixedUpdate();
 		}
 		Destroy(gameObject);

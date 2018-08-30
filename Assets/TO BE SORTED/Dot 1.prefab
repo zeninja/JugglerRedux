@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114392183739751474}
   - component: {fileID: 212043348145514518}
   m_Layer: 0
-  m_Name: Dot
+  m_Name: Dot 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,10 +52,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d419bb032238c19419fe6157e7ac8f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeDuration: 0.5
+  fadeDuration: 0.05
   threshold: 0.005
   startAlpha: 0.55
-  fade: 1
+  fade: 0
 --- !u!212 &212043348145514518
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -88,8 +88,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 856773013
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4fdba057158a34846a5e2e4c62b0d9a1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

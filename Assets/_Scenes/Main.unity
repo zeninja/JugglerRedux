@@ -4346,6 +4346,7 @@ GameObject:
   - component: {fileID: 1341528097}
   - component: {fileID: 1341528098}
   - component: {fileID: 1341528099}
+  - component: {fileID: 1341528100}
   m_Layer: 0
   m_Name: MGMT
   m_TagString: Untagged
@@ -4462,6 +4463,7 @@ MonoBehaviour:
   ballSpeedIndex: 1
   ballSpawnSpeed: 1
   juggleThreshold: 1
+  ballSpawnPos: {x: 0, y: 0}
 --- !u!114 &1341528088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4709,6 +4711,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineExplosion: {fileID: 114860354154714662, guid: 5f899c92638659a428d1d247f1cd72fa,
     type: 2}
+--- !u!114 &1341528100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1341528082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6647d1483f627a4e99c907ab12fd4f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trailer: {fileID: 114540386939505768, guid: eea723fc40657e34ba2d51fa9d601815, type: 2}
+  duration: 0.84
+  height: 2.87
+  dotScale: 0.17
+  delay: 1.5
+  offset: {x: 0, y: 0.2, z: 3.08}
 --- !u!1 &1365929774
 GameObject:
   m_ObjectHideFlags: 0

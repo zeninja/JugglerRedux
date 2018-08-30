@@ -16,6 +16,8 @@ public class NewGameManager : MonoBehaviour {
 	}
 	#endregion
 
+	PregameTrailSpawner pregameTrail;
+
 	void Awake() {
 		Application.targetFrameRate = 120;
 
@@ -26,6 +28,8 @@ public class NewGameManager : MonoBehaviour {
 				Destroy(gameObject);
 			}
 		}
+
+		pregameTrail = GetComponent<PregameTrailSpawner>();
 
 		EventManager.StartListening("BallDied", HandleGameOver);
 	}
@@ -53,6 +57,12 @@ public class NewGameManager : MonoBehaviour {
 			// 	break;
 			case GameState.preGame:
 				NewBallManager.GetInstance().SpawnFirstBall();
+				pregameTrail.EnableTrail(true);
+				pregameTrail.SetPosition();
+				break;
+
+			case GameState.gameOn:
+				pregameTrail.EnableTrail(false);
 				break;
 
 			case GameState.gameOver:

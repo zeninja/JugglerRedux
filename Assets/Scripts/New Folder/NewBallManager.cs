@@ -54,6 +54,8 @@ public class NewBallManager : MonoBehaviour
 
     public int juggleThreshold = 3;
 
+    public Vector2 ballSpawnPos;
+
     // Use this for initialization
     void Start()
     {
@@ -100,7 +102,7 @@ public class NewBallManager : MonoBehaviour
 
         xSwitcher *= -1;
 
-        Vector2 ballSpawnPos = new Vector2(xSwitcher, -2);
+        ballSpawnPos = new Vector2(xSwitcher, -2);
         NewBall ball = Instantiate(m_BallPrefab);
 
         ball.transform.position = ballSpawnPos;

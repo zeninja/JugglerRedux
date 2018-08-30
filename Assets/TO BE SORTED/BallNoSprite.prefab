@@ -292,7 +292,7 @@ MonoBehaviour:
   numLines: 12
   innerRadius: 1.19
   outerRadius: 11.22
-  lineColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  lineColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
   duration: 0.25
   hangDuration: 0.25
   rotationSpeed: -2.48
