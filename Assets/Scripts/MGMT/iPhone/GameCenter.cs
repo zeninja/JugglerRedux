@@ -42,14 +42,13 @@ public class GameCenter : MonoBehaviour {
 			Social.localUser.Authenticate (ProcessAuthentication);
 		}
 
-		#if !UNITY_EDITOR
-			#if UNITY_IPHONE
-			leaderboardID = iphoneString;
-			#endif
+		#if UNITY_IPHONE
+		Debug.Log("Set string to iphone string");
+		leaderboardID = iphoneString;
+		#endif
 
-			#if UNITY_IPAD
-			leaderboardID = ipadString;
-			#endif
+		#if UNITY_IPAD
+		leaderboardID = ipadString;
 		#endif
 	}
 
@@ -80,7 +79,9 @@ public class GameCenter : MonoBehaviour {
 
 	void ReportScore (long score, string id) {
 		// Don't send a score if we're in the editor
-		if(id == "unset") { return; }
+		#if UNITY_EDITOR
+		return;
+		#endif
 
 		Debug.Log ("Reporting score " + score + " on leaderboard " + id);
 		Social.ReportScore (score, id, success => {
