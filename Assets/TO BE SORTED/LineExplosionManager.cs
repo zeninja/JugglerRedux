@@ -34,7 +34,7 @@ public class LineExplosionManager : MonoBehaviour {
 		l.SpawnLines(spawnPosition);
 
 		float t = 0;
-		float explosionDuration = l.duration * 2 + l.hangDuration;
+		float explosionDuration = l.duration + l.hangDuration;
 		
 		while (t < explosionDuration) {
 			t += Time.fixedDeltaTime;

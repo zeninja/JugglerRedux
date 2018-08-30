@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fcf1e80798316146b32448b540423a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineEffect: {fileID: 114706400180151252, guid: 1e8dd8d7925815f4fb3f0b41c885c6f6,
+  lineEffect: {fileID: 114832697321419414, guid: ad50484c67b258c45a5350a6465ce848,
     type: 2}
   startWidth: 0.07
   endWidth: 1.84
@@ -296,6 +296,7 @@ MonoBehaviour:
   duration: 0.25
   hangDuration: 0.25
   rotationSpeed: -2.48
+  isLocal: 1
 --- !u!114 &114519462727111778
 MonoBehaviour:
   m_ObjectHideFlags: 1
