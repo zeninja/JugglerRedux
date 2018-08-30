@@ -13,8 +13,6 @@ public class GameOverManager : MonoBehaviour
     SpriteRenderer target;
     NewScoreManager scoreManger;
 
-    public SpriteRenderer demo;
-
     void Awake()
     {
         if (instance == null)
@@ -36,26 +34,14 @@ public class GameOverManager : MonoBehaviour
         scoreManger = GetComponent<NewScoreManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // if (Input.GetKeyDown(KeyCode.D))
-        // {
-        //     if (demo != null)
-        //     {
-        //         target = demo;
-        //         NewScoreManager._numBalls = 6;
-        //         NewScoreManager._peakCount = 66;
-        //         StartGameOver();
-        //     }
-        // }
-    }
-
-    public void SetTargetBall(SpriteRenderer s) {
+    public void SetTargetBall(SpriteRenderer s, Vector2 ballPos) {
         target = s;
         target.enabled = true;
         target.sortingOrder = 100;
+        deadBallPos = ballPos;
     }
+
+    Vector2 deadBallPos;
 
     public void StartGameOver()
     {
@@ -66,6 +52,8 @@ public class GameOverManager : MonoBehaviour
     {
         NewBallManager.GetInstance().FreezeBalls();
         
+        yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
+
         yield return StartCoroutine(Explode());
         
         NewBallManager.GetInstance().KillAllBalls();
@@ -80,6 +68,14 @@ public class GameOverManager : MonoBehaviour
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
 
+    }
+
+    public static bool animatingLines = true;
+
+    IEnumerator PlayLines() {
+        while (animatingLines) {
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public float explodeDuration = 1.47f;

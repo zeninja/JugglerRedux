@@ -4335,6 +4335,7 @@ GameObject:
   - component: {fileID: 1341528096}
   - component: {fileID: 1341528097}
   - component: {fileID: 1341528098}
+  - component: {fileID: 1341528099}
   m_Layer: 0
   m_Name: MGMT
   m_TagString: Untagged
@@ -4417,7 +4418,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341528082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7072631, y: 0.060804464, z: -0.0009765625}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4540,7 +4541,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a3bdb9d4c19d464b9753e320ecbb086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  demo: {fileID: 0}
   explodeDuration: 0.5
   implodeDuration: 0.5
   countdownDuration: 0.35
@@ -4686,6 +4686,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1341528099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1341528082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628300c474b236a48924890ec6adbb6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineExplosion: {fileID: 114860354154714662, guid: 5f899c92638659a428d1d247f1cd72fa,
+    type: 2}
 --- !u!1 &1365929774
 GameObject:
   m_ObjectHideFlags: 0

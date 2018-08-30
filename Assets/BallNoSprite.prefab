@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 114519462727111778}
   - component: {fileID: 114898421787277310}
   - component: {fileID: 114573115351020746}
+  - component: {fileID: 114398377848809900}
   m_Layer: 0
   m_Name: Art
   m_TagString: Untagged
@@ -273,6 +274,28 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   popInDuration: 0.15
+--- !u!114 &114398377848809900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1263078919729966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fcf1e80798316146b32448b540423a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineEffect: {fileID: 114706400180151252, guid: 1e8dd8d7925815f4fb3f0b41c885c6f6,
+    type: 2}
+  startWidth: 0.07
+  endWidth: 1.84
+  numLines: 12
+  innerRadius: 1.19
+  outerRadius: 11.22
+  lineColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
+  duration: 0.25
+  hangDuration: 0.25
+  rotationSpeed: -2.48
 --- !u!114 &114519462727111778
 MonoBehaviour:
   m_ObjectHideFlags: 1

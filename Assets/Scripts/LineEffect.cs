@@ -5,29 +5,43 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class LineEffect : MonoBehaviour
 {
+    [System.NonSerialized]
+    public LineExplosion lineExplosion;
+
     LineRenderer line;
-    public float animationDuration = .4f;
+    public float duration = .4f;
+    public float hangDuration;
+
+    public float outerWidth;
+    public float innerWidth;
 
     public Vector2 startPos, endPos;
 
-    void Start()
+    float animationCompletion;
+
+    void Awake()
     {
-        line = gameObject.GetComponent<LineRenderer>();
-        // line.useWorldSpace = false;
+        line = GetComponent<LineRenderer>();
+        line.useWorldSpace = false;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            PlayLine(startPos, endPos, animationDuration);
+            PlayLine(startPos, endPos, duration, innerWidth, outerWidth);
         }
     }
 
 
-    public void PlayLine(Vector2 startPos, Vector2 endPos, float duration)
+    public void PlayLine(Vector2 a_startPos, Vector2 a_endPos, float a_duration, float a_innerWidth, float a_outerWidth, float a_hangDuration = 0)
     {
-        animationDuration = duration;
+        startPos = a_startPos;
+        endPos   = a_endPos;
+        duration = a_duration;
+        innerWidth = a_innerWidth;
+        outerWidth = a_outerWidth;
+        hangDuration = a_hangDuration;
         StartCoroutine(AnimateLine());
     }
     Vector2 lineStart;
@@ -40,14 +54,29 @@ public class LineEffect : MonoBehaviour
         lineStart = startPos;
         lineEnd = startPos;
 
+        line.SetPosition(0, startPos);
+        line.SetPosition(1, startPos);
+
         StartCoroutine(AnimatePoint(lineStart, 0));
         while(animationCompletion < linePercentage) {
+            line.startWidth = innerWidth + (outerWidth - innerWidth) * EZEasings.SmoothStart3(animationCompletion);
+            line.endWidth   = innerWidth;
+            yield return new WaitForFixedUpdate();
+        }
+
+        float t = 0;
+        while (t < hangDuration) {
+            t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
         StartCoroutine(AnimatePoint(lineEnd, 1));
+        while(animationCompletion < linePercentage) {
+            yield return new WaitForFixedUpdate();
+        }
 
-
+        LineExplosionManager.explosionHappening = false;
+        Destroy(gameObject);
     }
 
     bool animatingStart = false;
@@ -60,10 +89,10 @@ public class LineEffect : MonoBehaviour
 
         animatingStart = true;
 
-        while (t < animationDuration)
+        while (t < duration)
         {
             t += Time.fixedDeltaTime;
-            percent = t / animationDuration;
+            percent = t / duration;
             percent = Mathf.Clamp01(percent);
 
             targetPos = startPos + (endPos - startPos) * EZEasings.SmoothStart3(percent);
@@ -74,5 +103,7 @@ public class LineEffect : MonoBehaviour
         }
     }
 
-    float animationCompletion;
+    public void SetColor(Color newColor) {
+        line.material.color = newColor;
+    }
 }

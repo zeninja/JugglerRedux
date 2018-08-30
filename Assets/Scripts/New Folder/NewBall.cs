@@ -157,7 +157,7 @@ public class NewBall : MonoBehaviour
     void KillThisBall() {
         FreezeBall();
         ballArtManager.HandleDeath();
-        GameOverManager.GetInstance().SetTargetBall(ballArtManager.gameOverBallSprite);
+        GameOverManager.GetInstance().SetTargetBall(ballArtManager.gameOverBallSprite, transform.position);
         EventManager.TriggerEvent("BallDied");
         // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
