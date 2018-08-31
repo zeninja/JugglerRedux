@@ -133,6 +133,7 @@ public class NewScoreManager : MonoBehaviour {
 
 			PlayerPrefs.SetFloat(highScoreKey, highscore);
 
+			Debug.Log("REPORTING HIGH SCORE. VALUE IS: " +  highscore);
 			GameCenter.GetInstance().SetHighScore(highscore);
 			
 			yield return StartCoroutine(UpdateHighScore());

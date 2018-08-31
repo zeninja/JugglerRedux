@@ -287,6 +287,8 @@ public class NewBallArtManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         popInDone = true;
+
+        NewGameManager.GetInstance().PrepGame();
     }
 
     public bool VelocityPositive()

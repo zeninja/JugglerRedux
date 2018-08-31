@@ -13,7 +13,7 @@ public class NewAdManager : MonoBehaviour
 
     bool isShowingAd = false;
 
-    public static bool forceAdsOff = false;
+    public static bool forceAdsOff = true;
 
     #region instance
     static NewAdManager instance;

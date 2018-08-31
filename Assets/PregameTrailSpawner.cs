@@ -20,7 +20,7 @@ public class PregameTrailSpawner : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        startPos = NewBallManager.GetInstance().ballSpawnPos;
+        // startPos = NewBallManager.GetInstance().ballSpawnPos;
         trailObj = Instantiate(trailer);
         trailObj.defaultScale = dotScale;
     }
@@ -66,7 +66,9 @@ public class PregameTrailSpawner : MonoBehaviour
     public Vector3 offset;
 
     public void SetPosition() {
+        // Debug.Log("Set pos");
         startPos = (Vector3)NewBallManager.GetInstance().ballSpawnPos + offset;
+        // Debug.Log(startPos + " | " + offset);
     }
 
     void Reset()

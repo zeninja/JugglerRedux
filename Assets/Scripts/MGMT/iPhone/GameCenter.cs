@@ -74,17 +74,32 @@ public class GameCenter : MonoBehaviour {
 	}
 
 	public void SetHighScore(float newScore) {
-		ReportScore((long)newScore, leaderboardID);
+		Debug.Log("Got highscore: " + newScore);
+		ReportScore(newScore, leaderboardID);
 	}
 
-	void ReportScore (long score, string id) {
+	void ReportScore (float score, string id) {
 		// Don't send a score if we're in the editor
 		#if UNITY_EDITOR
 		return;
 		#endif
+ 
+		string s1 = string.Format("{0:0.0}",score); // "123.0"
+		string s2 = string.Format("{0:0.00}",score); // "123.50"
 
-		Debug.Log ("Reporting score " + score + " on leaderboard " + id);
-		Social.ReportScore (score, id, success => {
+		string s = "";
+
+		if(s1 == score.ToString()) {
+			Debug.Log("FOUND SINGLE DECIMAL");
+			s = s1;
+		} else {
+			Debug.Log("FOUND DOUBLE DECIMAL");
+			s = s2;
+		}
+
+
+		// Debug.Log ("Reporting score " + score + " on leaderboard " + id);
+		Social.ReportScore (long.Parse(s.Replace(".", "")), id, success => {
 			Debug.Log(success ? "Reported score successfully" : "Failed to report score");
 		});
 	}
