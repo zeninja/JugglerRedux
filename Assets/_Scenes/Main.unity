@@ -2248,6 +2248,52 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!1001 &750832290
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4339752970581996, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1351766925786958, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2e5e5120dcf6544109a74e22d5764d3d, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &813235555
 GameObject:
   m_ObjectHideFlags: 0
@@ -3734,6 +3780,27 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1176613939}
   m_CullTransparentMesh: 0
+--- !u!1 &1199609869 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1321246052182356, guid: 2e5e5120dcf6544109a74e22d5764d3d,
+    type: 2}
+  m_PrefabInternal: {fileID: 750832290}
+--- !u!114 &1199609877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1199609869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dot: {fileID: 0}
+  circleCount: 5
+  circleRadius:
+    start: 0
+    end: 0
 --- !u!1 &1216637825
 GameObject:
   m_ObjectHideFlags: 0
@@ -4414,7 +4481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474a39529298ff84095fdb887fb4de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BallPrefab: {fileID: 114230880112545526, guid: e26f0d48d768ac64bb1cac8b580a96a0,
+  m_BallPrefab: {fileID: 114465222049891262, guid: 2e5e5120dcf6544109a74e22d5764d3d,
     type: 2}
   ballScale: 0.65
   ballLaunchForce: 39
