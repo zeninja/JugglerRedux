@@ -59,7 +59,7 @@ MonoBehaviour:
   innerRadius: 1
   outerRadius: 11.22
   lineColor: {r: 0, g: 0, b: 0, a: 1}
-  duration: 0.25
-  hangDuration: 0.25
-  rotationSpeed: 4.27
+  duration: 0.1
+  hangDuration: 0.4
+  rotationSpeed: 72.5
   isLocal: 1

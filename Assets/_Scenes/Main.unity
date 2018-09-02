@@ -4522,8 +4522,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a3bdb9d4c19d464b9753e320ecbb086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explodeDuration: 0.5
-  implodeDuration: 0.5
+  explodeDuration: 0.35
+  implodeDuration: 0.35
   countdownDuration: 0.35
 --- !u!114 &1341528094
 MonoBehaviour:
