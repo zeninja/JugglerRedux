@@ -97,12 +97,13 @@ public class NewBallManager : MonoBehaviour
 
     int xSwitcher = 1;
 
+    public Vector2 spawnPos;
     public void SpawnFirstBall() {
         if(firstBall) { return; }
 
         xSwitcher *= -1;
 
-        ballSpawnPos = new Vector2(xSwitcher, -2);
+        ballSpawnPos = new Vector2(xSwitcher * spawnPos.x, spawnPos.y);
         NewBall ball = Instantiate(m_BallPrefab);
 
         ball.transform.position = ballSpawnPos;

@@ -13,7 +13,7 @@ public class NewAdManager : MonoBehaviour
 
     bool isShowingAd = false;
 
-    public static bool forceAdsOff = false;
+    public static bool forceAdsOff = true;
 
     #region instance
     static NewAdManager instance;
@@ -90,6 +90,7 @@ public class NewAdManager : MonoBehaviour
             case ShowResult.Skipped:
                 Debug.Log("The ad was skipped before reaching the end.");
                 isShowingAd = false;
+                playcount = 1;
                 break;
             case ShowResult.Failed:
                 Debug.LogError("The ad failed to be shown.");

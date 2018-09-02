@@ -28,10 +28,15 @@ public class LineExplosionManager : MonoBehaviour {
 
 	public static bool explosionHappening;
 
+    public bool spawnLines = false;
+
 	public IEnumerator SpawnExplosion(Vector2 spawnPosition) {
 		// Debug.Log("Spawning exploision");
 		LineExplosion l = Instantiate(lineExplosion);
-		l.SpawnLines(spawnPosition);
+		
+        if(spawnLines) {
+            l.SpawnLines(spawnPosition);
+        }
 
 		float t = 0;
 		float explosionDuration = l.duration + l.hangDuration;

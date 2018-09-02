@@ -55,6 +55,8 @@ public class GameOverManager : MonoBehaviour
         yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
 
         yield return StartCoroutine(Explode());
+
+        // yield return StartCoroutine(BallExplosionManager.GetInstance().ExplodeBall());
         
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");

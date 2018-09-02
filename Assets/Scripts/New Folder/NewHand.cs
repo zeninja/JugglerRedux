@@ -241,6 +241,9 @@ public class NewHand : MonoBehaviour
     void FindGrabThrowVector()
     {
         m_GrabMoveDir = (Vector2)m_Transform.position - m_CatchPosition;
+
+        // if(m_GrabMoveDir.magnitude > maxThrowMagnitude) 
+
         m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
         m_Ball.currentThrowVector = m_GrabThrowVector;
     }

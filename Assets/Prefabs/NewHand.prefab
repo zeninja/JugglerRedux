@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 58407881993644934}
   - component: {fileID: 212720833258028590}
   - component: {fileID: 120306457376358118}
-  - component: {fileID: 114695478944118914}
   m_Layer: 0
   m_Name: NewHand
   m_TagString: Untagged
@@ -89,7 +88,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.75
 --- !u!114 &114063323048531496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,19 +120,8 @@ MonoBehaviour:
     start: 8
     end: 0.75
   duration: 0.165
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  defaultColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
   handCaughtBall: 0
---- !u!114 &114695478944118914
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486805989234084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 410f67c92c2a31140b9766c5ae15a483, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!120 &120306457376358118
 LineRenderer:
   m_ObjectHideFlags: 1
