@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { /*monolith,*/ preGame, gameOn, gameOver };
+public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver };
 
 public class NewGameManager : MonoBehaviour {
 
@@ -55,10 +55,14 @@ public class NewGameManager : MonoBehaviour {
 			// case GameState.monolith:
 			// 	MonolithManager.GetInstance().Initialize();
 			// 	break;
+			case GameState.ballSpawn:
+				NewBallManager.GetInstance().SpawnFirstBall();
+				break;
+
 			case GameState.preGame:
 				NewBallManager.GetInstance().SpawnFirstBall();
-				pregameTrail.EnableTrail(true);
 				pregameTrail.SetPosition();
+				pregameTrail.EnableTrail(true);
 				break;
 
 			case GameState.gameOn:
@@ -85,6 +89,10 @@ public class NewGameManager : MonoBehaviour {
 
 	public void ResetGame() {
 		NewScoreManager.GetInstance().Reset();
+		SetState(GameState.ballSpawn);
+	}
+
+	public void PrepGame() {
 		SetState(GameState.preGame);
 	}
 
