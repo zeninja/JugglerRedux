@@ -44,6 +44,12 @@ public class Extensions : MonoBehaviour {
 		public float end;
 	}
 
+	[System.Serializable]
+	public class ColorProperty {
+		public Color start;
+		public Color end;
+	}
+
 	public static float GetSmoothStepRange(Property p, float t)
     {
         return p.start + (p.end - p.start) * EZEasings.SmoothStep3(t);

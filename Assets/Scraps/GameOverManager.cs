@@ -13,6 +13,8 @@ public class GameOverManager : MonoBehaviour
     SpriteRenderer target;
     NewScoreManager scoreManger;
 
+    GameOverStacker gameOverStacker;
+
     void Awake()
     {
         if (instance == null)
@@ -48,13 +50,19 @@ public class GameOverManager : MonoBehaviour
         StartCoroutine(GameOver());
     }
 
+    public void SetGameOverStacker(GameOverStacker g) {
+        gameOverStacker = g;
+    }
+
     IEnumerator GameOver()
     {
-        NewBallManager.GetInstance().FreezeBalls();
+        // NewBallManager.GetInstance().FreezeBalls();
         
-        yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
+        yield return StartCoroutine(gameOverStacker.SpawnCircles(NewBallManager._ballCount));
 
-        yield return StartCoroutine(Explode());
+        // yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
+
+        // yield return StartCoroutine(Explode());
 
         // yield return StartCoroutine(BallExplosionManager.GetInstance().ExplodeBall());
         

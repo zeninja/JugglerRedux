@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 114982193036836314}
   - component: {fileID: 114985717274484724}
   - component: {fileID: 114053946870157220}
+  - component: {fileID: 114642954969744592}
   m_Layer: 0
   m_Name: Art
   m_TagString: Untagged
@@ -339,6 +340,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4353e2b6d7e480c8c991010ea0d71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114642954969744592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1321246052182356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dot: {fileID: 212043348145514518, guid: 95fbf946767c8e9419f50a9d3cecceee, type: 2}
+  circleCount: 5
+  circleRadius:
+    start: 0
+    end: 24.1
+  duration: 1
 --- !u!114 &114694580239537826
 MonoBehaviour:
   m_ObjectHideFlags: 1

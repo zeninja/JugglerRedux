@@ -2,41 +2,113 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameOverStacker : MonoBehaviour {
+public class GameOverStacker : MonoBehaviour
+{
 
-	public SpriteRenderer dot;
+	// public int numCircles = 5;
+    public SpriteRenderer dot;
+    public Extensions.Property circleRadius;
+    public Extensions.ColorProperty stackColor;
 
-	public int circleCount = 5;
-	public Extensions.Property circleRadius;
+	Extensions.ColorProperty automatedStackColor;
 
+	public float totalDuration = .35f;
 
-	IEnumerator StackCircles() {
+	public float tint = .55f;
 
-		for(int i = 0; i < circleCount; i++) {
-			yield return StartCoroutine(SpawnCircle(duration));
+    void Start()
+    {
+        // circleRadius.start = NewBallManager.GetInstance().ballScale;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // TriggerStack();
+        }
+	}
+
+	// public void TriggerStack(int circleCount = 10) {
+	// 	numCircles = circleCount;
+	// 	StartCoroutine(SpawnCircles());
+	// }
+
+	// IEnumerator SpawnCircles() {
+	// 	float d = totalDuration / numCircles;
+
+	// 	for(int i = 0; i < numCircles; i++) {
+	// 		StartCoroutine(SpawnCircle(d, i));
+
+	// 		yield return new WaitForSeconds(d);
+	// 	}
+	// }
+
+	public IEnumerator SpawnCircles(int numCircles) {
+		float d = totalDuration / numCircles;
+
+		for(int i = 0; i < numCircles; i++) {
+			StartCoroutine(SpawnCircle(d, i, numCircles));
+
+			yield return new WaitForSeconds(d);
 		}
 
 	}
 
-	public float duration;
+    IEnumerator SpawnCircle(float d, int i, int numCircles)
+    {
+        float t = 0;
 
-	IEnumerator SpawnCircle(float d) {
-			float t = 0;
-			d = 1;
+		float evenScalePortion = (float)i     / (float)numCircles;
 
-			SpriteRenderer s = Instantiate (dot);
+		float scalePortion  = EZEasings.Linear((float)i     / (float)numCircles);
+		float scalePortion2 = EZEasings.Linear((float)(i+1) / (float)numCircles);
 
-			while(t < d) {	
-				t += Time.fixedDeltaTime;
-				float percent = t / d;
+	    float scaleDifference = circleRadius.end - circleRadius.start;
 
-				s.transform.localScale = Vector2.one * GetScale(percent);
+        SpriteRenderer s = Instantiate(dot, transform.position, Quaternion.identity);
+        s.color = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
+		s.sortingOrder = -1 - i;
 
-				yield return new WaitForFixedUpdate();
-			}
-	}
+		// Debug.Log(scalePortion);
+		// Debug.Log(scalePortion2);
 
-	float GetScale(float t) {
-		return EZEasings.SmoothStart4(t);
+		float startRange = .65f;
+
+		Extensions.Property scaleRange = new Extensions.Property();
+		scaleRange.start = startRange + scaleDifference * scalePortion;
+		scaleRange.end   = startRange + scaleDifference * scalePortion2;
+
+		// Debug.Log(scaleRange.start);
+		// Debug.Log(scaleRange.end);
+
+		Vector2 startScale = Vector2.one * scaleRange.start;
+
+		Vector2 stackedCircleDifference = Vector2.one * (scaleRange.end - scaleRange.start);
+        Vector2 targetScale = startScale;
+
+
+		yield return null;
+
+        while (t < d)
+        {
+            t += Time.fixedDeltaTime;
+            float percent = t / d;
+            percent = Mathf.Clamp01(percent);
+
+            targetScale = startScale + stackedCircleDifference * EZEasings.SmoothStart3(percent);
+			// Debug.Log(targetScale);
+
+            s.transform.localScale = targetScale;
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+	public void SetStackColors(Color startColor) {
+		automatedStackColor = new Extensions.ColorProperty();
+		automatedStackColor.start = startColor;
+		automatedStackColor.end   = startColor * tint;
+		automatedStackColor.end.a = 1;
 	}
 }

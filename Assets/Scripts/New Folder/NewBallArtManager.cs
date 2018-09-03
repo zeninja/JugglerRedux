@@ -127,6 +127,10 @@ public class NewBallArtManager : MonoBehaviour
     public void HandleDeath()
     {
         ballDead = true;
+
+        GetComponent<GameOverStacker>().SetStackColors(myColor);
+        GameOverManager.GetInstance().SetGameOverStacker(GetComponent<GameOverStacker>());
+        // GetComponent<GameOverStacker>().TriggerStack(NewBallManager._ballCount);
     }
 
     void GetPredictedLine()
