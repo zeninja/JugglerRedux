@@ -130,8 +130,8 @@ public class NewBallArtManager : MonoBehaviour
     {
         ballDead = true;
 
-        GetComponent<GameOverStacker>().SetStackColors(myColor);
-        GameOverManager.GetInstance().SetGameOverStacker(GetComponent<GameOverStacker>());
+        // GetComponent<GameOverStacker>().SetStackColors(myColor);
+        // GameOverManager.GetInstance().SetGameOverStacker(GetComponent<GameOverStacker>());
         // GetComponent<GameOverStacker>().TriggerStack(NewBallManager._ballCount);
     }
 

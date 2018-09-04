@@ -65,7 +65,6 @@ public class ScoreMaskEffect : MonoBehaviour {
 		while (t < maskOutDuration) {
 			t += Time.fixedDeltaTime;
 			mask.transform.localScale = Vector3.one * baseScale * (1 - EZEasings.SmoothStart3(t / maskOutDuration));
-			Debug.Log(mask.transform.localScale);
 			yield return new WaitForFixedUpdate();
 		}
 	}

@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class GameOverStacker : MonoBehaviour
 {
+    static GameOverStacker instance;
+    public static GameOverStacker GetInstance()
+    {
+        return instance;
+    }
 
 	public int numCircles = 5;
     public SpriteRenderer dot;
     public Extensions.Property circleRadius;
-    // public Extensions.ColorProperty stackColor;
 
 	Extensions.ColorProperty automatedStackColor;
 
@@ -16,44 +20,20 @@ public class GameOverStacker : MonoBehaviour
 
 	public float tint = .55f;
 
-    void Start()
-    {
-        // circleRadius.start = NewBallManager.GetInstance().ballScale;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // TriggerStack();
-        }
+	void Awake() {
+		instance = this;
 	}
 
-	// public void TriggerStack(int circleCount = 10) {
-	// 	numCircles = circleCount;
-	// 	StartCoroutine(SpawnCircles());
-	// }
-
-	// IEnumerator SpawnCircles() {
-	// 	float d = totalDuration / numCircles;
-
-	// 	for(int i = 0; i < numCircles; i++) {
-	// 		StartCoroutine(SpawnCircle(d, i));
-
-	// 		yield return new WaitForSeconds(d);
-	// 	}
-	// }
-
-	public IEnumerator SpawnCircles(int circleCount = 5) {
+	public IEnumerator SpawnCircles(Vector2 startPos, int circleCount = 5) {
 		dots = new List<SpriteRenderer>();
-		scaleRanges = new List<Extensions.Property>();
+		// scaleRanges = new Extensions.Property[circleCount];
 
 		numCircles = circleCount;
 
 		float d = totalDuration / numCircles;
 
 		for(int i = 0; i < numCircles; i++) {
-			StartCoroutine(SpawnCircle(d, i, numCircles));
+			StartCoroutine(SpawnCircle(startPos, d, i));
 
 			float t = 0;
 			while(t < d) {
@@ -61,10 +41,11 @@ public class GameOverStacker : MonoBehaviour
 				yield return new WaitForFixedUpdate();
 			}
 		}
+		// Debug.Log(scaleRanges.Length);
 	}
 
 
-    IEnumerator SpawnCircle(float d, int i, int numCircles)
+    IEnumerator SpawnCircle(Vector2 startPos, float d, int i)
     {
         float t = 0;
 
@@ -75,7 +56,7 @@ public class GameOverStacker : MonoBehaviour
 
 	    float scaleDifference = circleRadius.end - circleRadius.start;
 
-        SpriteRenderer s = Instantiate(dot, transform.position, Quaternion.identity);
+        SpriteRenderer s = Instantiate(dot, startPos, Quaternion.identity);
         s.color = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
 		s.sortingOrder = 100 - i;
 
@@ -112,7 +93,8 @@ public class GameOverStacker : MonoBehaviour
         }
     }
 
-	List<Extensions.Property> scaleRanges;
+	public List<Extensions.Property> scaleRanges;
+	// Extensions.Property[] scaleRanges;
 
 	List<SpriteRenderer> dots;
 
@@ -127,7 +109,6 @@ public class GameOverStacker : MonoBehaviour
 			while(t < d) {
 				float p = t / d;
 				
-
 				Vector2 start = Vector2.one * scaleRanges[i].end;
 				Vector2 end   = Vector2.one * scaleRanges[i].start;
 				// Debug.Log()

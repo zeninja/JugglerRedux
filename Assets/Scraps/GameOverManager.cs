@@ -13,7 +13,7 @@ public class GameOverManager : MonoBehaviour
     SpriteRenderer target;
     NewScoreManager scoreManger;
 
-    GameOverStacker gameOverStacker;
+    // GameOverStacker gameOverStacker;
 
     void Awake()
     {
@@ -36,12 +36,24 @@ public class GameOverManager : MonoBehaviour
         scoreManger = GetComponent<NewScoreManager>();
     }
 
-    public void SetTargetBall(SpriteRenderer s, Vector2 ballPos) {
-        target = s;
+    public void SetTargetBall(NewBall ball) {
+        deadBall = ball;
+        target = deadBall.ballArtManager.gameOverBallSprite;
         target.enabled = true;
         target.sortingOrder = 100;
-        deadBallPos = ballPos;
+
+        deadBallPos = ball.transform.position;
+
     }
+    
+    NewBall deadBall;
+
+    // public void SetTargetBall(SpriteRenderer s, Vector2 ballPos) {
+    //     target = s;
+    //     target.enabled = true;
+    //     target.sortingOrder = 100;
+    //     deadBallPos = ballPos;
+    // }
 
     Vector2 deadBallPos;
 
@@ -50,16 +62,17 @@ public class GameOverManager : MonoBehaviour
         StartCoroutine(GameOver());
     }
 
-    public void SetGameOverStacker(GameOverStacker g) {
-        gameOverStacker = g;
-    }
+    // public void SetGameOverStacker(GameOverStacker g) {
+    //     gameOverStacker = g;
+    // }
 
     IEnumerator GameOver()
     {
         NewBallManager.GetInstance().FreezeBalls();
         // NewBallManager.GetInstance().PrepGameOver();
 
-        yield return StartCoroutine(gameOverStacker.SpawnCircles(5));
+        GameOverStacker.GetInstance().SetStackColors(deadBall.ballArtManager.myColor);
+        yield return StartCoroutine(GameOverStacker.GetInstance().SpawnCircles(deadBallPos));
 
         // yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
 
@@ -83,10 +96,8 @@ public class GameOverManager : MonoBehaviour
         yield return StartCoroutine(InterstitalAd());
 
         // yield return StartCoroutine(Implode());
-        
-
-        yield return StartCoroutine(gameOverStacker.ShrinkCircles());
-
+    
+        yield return StartCoroutine(GameOverStacker.GetInstance().ShrinkCircles());
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();

@@ -4360,6 +4360,7 @@ GameObject:
   - component: {fileID: 1341528098}
   - component: {fileID: 1341528100}
   - component: {fileID: 1341528101}
+  - component: {fileID: 1341528099}
   m_Layer: 0
   m_Name: MGMT
   m_TagString: Untagged
@@ -4712,6 +4713,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1341528099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1341528082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numCircles: 5
+  dot: {fileID: 212043348145514518, guid: 95fbf946767c8e9419f50a9d3cecceee, type: 2}
+  circleRadius:
+    start: 0
+    end: 24.1
+  totalDuration: 0.35
+  tint: 0.55
+  scaleRanges: []
+  shrinkDuration: 0.35
 --- !u!114 &1341528100
 MonoBehaviour:
   m_ObjectHideFlags: 0

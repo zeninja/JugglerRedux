@@ -29,7 +29,8 @@ public class NewBall : MonoBehaviour
 
     bool canPeak = false;
 
-    NewBallArtManager ballArtManager;
+    [System.NonSerialized]
+    public NewBallArtManager ballArtManager;
 
     int framesSinceCatch = 0;
     [System.NonSerialized]
@@ -157,7 +158,7 @@ public class NewBall : MonoBehaviour
     void KillThisBall() {
         FreezeBall();
         ballArtManager.HandleDeath();
-        GameOverManager.GetInstance().SetTargetBall(ballArtManager.gameOverBallSprite, transform.position);
+        GameOverManager.GetInstance().SetTargetBall(this);
         EventManager.TriggerEvent("BallDied");
         // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
