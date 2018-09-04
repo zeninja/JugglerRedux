@@ -45,7 +45,7 @@ public class NewBallManager : MonoBehaviour
     int[] ballSpawnScores;
     int[] slowBallSpawnScores = new int[] { 5, 10, 25, 50, 75, 100, 125 };
     int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70, 99 };
-    int[] fastBallSpawnScores = new int[] { 5, 10, 15, 20, 25, 30, 35 };
+    int[] fastBallSpawnScores = new int[] { 5, 10, 20, 35, 50, 65, 80, 99 };
 
     public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed = BallSpawnSpeed.med;
