@@ -45,6 +45,8 @@ public class NewBallArtManager : MonoBehaviour
         trail.endWidth = defaultScale;
 
         grabSquishLine = GetComponent<GrabSquishLine>();
+
+        EventManager.StartListening("CleanUp", HandleDeath);
     }
 
 
@@ -306,4 +308,8 @@ public class NewBallArtManager : MonoBehaviour
         // Debug.Log(ballDead + " | " + !popInDone);
         return ballDead || !popInDone;
     }
+
+    // public void PrepGameOver() {
+    //     trail.sortingOrder =trail 
+    // }
 }

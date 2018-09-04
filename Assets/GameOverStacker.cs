@@ -5,10 +5,10 @@ using UnityEngine;
 public class GameOverStacker : MonoBehaviour
 {
 
-	// public int numCircles = 5;
+	public int numCircles = 5;
     public SpriteRenderer dot;
     public Extensions.Property circleRadius;
-    public Extensions.ColorProperty stackColor;
+    // public Extensions.ColorProperty stackColor;
 
 	Extensions.ColorProperty automatedStackColor;
 
@@ -44,16 +44,25 @@ public class GameOverStacker : MonoBehaviour
 	// 	}
 	// }
 
-	public IEnumerator SpawnCircles(int numCircles) {
+	public IEnumerator SpawnCircles(int circleCount = 5) {
+		dots = new List<SpriteRenderer>();
+		scaleRanges = new List<Extensions.Property>();
+
+		numCircles = circleCount;
+
 		float d = totalDuration / numCircles;
 
 		for(int i = 0; i < numCircles; i++) {
 			StartCoroutine(SpawnCircle(d, i, numCircles));
 
-			yield return new WaitForSeconds(d);
+			float t = 0;
+			while(t < d) {
+				t += Time.fixedDeltaTime;
+				yield return new WaitForFixedUpdate();
+			}
 		}
-
 	}
+
 
     IEnumerator SpawnCircle(float d, int i, int numCircles)
     {
@@ -68,10 +77,9 @@ public class GameOverStacker : MonoBehaviour
 
         SpriteRenderer s = Instantiate(dot, transform.position, Quaternion.identity);
         s.color = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
-		s.sortingOrder = -1 - i;
+		s.sortingOrder = 100 - i;
 
-		// Debug.Log(scalePortion);
-		// Debug.Log(scalePortion2);
+		dots.Add(s);
 
 		float startRange = .65f;
 
@@ -79,8 +87,7 @@ public class GameOverStacker : MonoBehaviour
 		scaleRange.start = startRange + scaleDifference * scalePortion;
 		scaleRange.end   = startRange + scaleDifference * scalePortion2;
 
-		// Debug.Log(scaleRange.start);
-		// Debug.Log(scaleRange.end);
+		scaleRanges.Add(scaleRange);
 
 		Vector2 startScale = Vector2.one * scaleRange.start;
 
@@ -104,6 +111,38 @@ public class GameOverStacker : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
     }
+
+	List<Extensions.Property> scaleRanges;
+
+	List<SpriteRenderer> dots;
+
+	public float shrinkDuration;
+
+	public IEnumerator ShrinkCircles() {
+		float t = 0;
+		float d = shrinkDuration / numCircles;
+
+		for(int i = numCircles - 1; i >= 0; i--) {
+			t = 0;
+			while(t < d) {
+				float p = t / d;
+				
+
+				Vector2 start = Vector2.one * scaleRanges[i].end;
+				Vector2 end   = Vector2.one * scaleRanges[i].start;
+				// Debug.Log()
+				Vector2 range = end - start;
+
+				dots[i].transform.localScale = start + range * EZEasings.SmoothStart3(p);
+
+				t += Time.fixedDeltaTime;
+				yield return new WaitForFixedUpdate();
+			}
+
+			dots[i].transform.localScale = Vector2.zero;
+			Destroy(dots[i].gameObject);
+		}
+	}
 
 	public void SetStackColors(Color startColor) {
 		automatedStackColor = new Extensions.ColorProperty();

@@ -203,6 +203,13 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
+    public void PrepGameOver() {
+        // foreach (NewBall b in balls)
+        // {
+        //     b.GetComponentInChildren<NewBallArtManager>().PrepGameOver();
+        // }
+    }
+
     public void KillAllBalls()
     {
         for (int i = 0; i < balls.Count; i++)

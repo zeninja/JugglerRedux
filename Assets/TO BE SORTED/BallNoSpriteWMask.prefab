@@ -56,7 +56,6 @@ GameObject:
   - component: {fileID: 114853097118004822}
   - component: {fileID: 114982193036836314}
   - component: {fileID: 114985717274484724}
-  - component: {fileID: 114053946870157220}
   - component: {fileID: 114642954969744592}
   m_Layer: 0
   m_Name: Art
@@ -286,29 +285,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   popInDuration: 0.15
---- !u!114 &114053946870157220
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1321246052182356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fcf1e80798316146b32448b540423a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineEffect: {fileID: 114832697321419414, guid: ad50484c67b258c45a5350a6465ce848,
-    type: 2}
-  startWidth: 0.07
-  endWidth: 1.84
-  numLines: 12
-  innerRadius: 1.19
-  outerRadius: 11.22
-  lineColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
-  duration: 0.25
-  hangDuration: 0.25
-  rotationSpeed: -2.48
-  isLocal: 1
 --- !u!114 &114465222049891262
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -351,12 +327,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numCircles: 5
   dot: {fileID: 212043348145514518, guid: 95fbf946767c8e9419f50a9d3cecceee, type: 2}
-  circleCount: 5
   circleRadius:
     start: 0
     end: 24.1
-  duration: 1
+  totalDuration: 0.35
+  tint: 0.55
+  scaleRanges: []
+  shrinkDuration: 0.35
 --- !u!114 &114694580239537826
 MonoBehaviour:
   m_ObjectHideFlags: 1

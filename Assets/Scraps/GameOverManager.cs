@@ -56,9 +56,10 @@ public class GameOverManager : MonoBehaviour
 
     IEnumerator GameOver()
     {
-        // NewBallManager.GetInstance().FreezeBalls();
-        
-        yield return StartCoroutine(gameOverStacker.SpawnCircles(NewBallManager._ballCount));
+        NewBallManager.GetInstance().FreezeBalls();
+        // NewBallManager.GetInstance().PrepGameOver();
+
+        yield return StartCoroutine(gameOverStacker.SpawnCircles(5));
 
         // yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
 
@@ -69,11 +70,23 @@ public class GameOverManager : MonoBehaviour
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
 
-        yield return StartCoroutine(CountdownScore());
+        // yield return StartCoroutine(CountdownScore());
+
+        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
+        yield return new WaitForSeconds(.15f);
+        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
+
+        NewScoreManager._peakCount = 0;
+        NewScoreManager._numBalls  = 0;
+        Destroy(target.transform.root.gameObject);
 
         yield return StartCoroutine(InterstitalAd());
 
-        yield return StartCoroutine(Implode());
+        // yield return StartCoroutine(Implode());
+        
+
+        yield return StartCoroutine(gameOverStacker.ShrinkCircles());
+
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
@@ -125,7 +138,7 @@ public class GameOverManager : MonoBehaviour
 
     IEnumerator CountdownScore()
     {
-        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PrepEffect(target));
+        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
 
         yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
 
