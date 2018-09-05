@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class NewBallManager : MonoBehaviour
 {
-
     #region instance
     private static NewBallManager instance;
     public static NewBallManager GetInstance()
@@ -73,7 +72,9 @@ public class NewBallManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            EventManager.TriggerEvent("SpawnBall");
+            if (_ballCount < endgameBallCount) { 
+                EventManager.TriggerEvent("SpawnBall");
+            }
         }
     }
 
@@ -125,21 +126,24 @@ public class NewBallManager : MonoBehaviour
 
     void SpawnBall()
     {
-        // Debug.Log("1. Spawning ball.");
-        Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
-        NewBall ball = Instantiate(m_BallPrefab);
+        if(_ballCount < endgameBallCount) { 
 
-        ball.transform.position = ballSpawnPos;
-        ball.m_Launching = true;
-        ball.canBeCaught = false;
-        ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
-        ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
-        ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
+            // Debug.Log("1. Spawning ball.");
+            Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            NewBall ball = Instantiate(m_BallPrefab);
 
-        balls.Add(ball);
-        _ballCount++;
+            ball.transform.position = ballSpawnPos;
+            ball.m_Launching = true;
+            ball.canBeCaught = false;
+            ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
+            ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
+            ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
 
-        ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+            balls.Add(ball);
+            _ballCount++;
+
+            ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+        }
     }
 
     public void SetBallLaunchScores()
@@ -172,22 +176,26 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    // public void UpdateEndgame(NewBall nb)
-    // {
-    //     int endgameIndex = 8;
+    public static int endgameBallCount = 9;
 
-    //     if (_ballCount == endgameIndex)
-    //     {
-    //         if (!AllBallsUnitedAtIndex(endgameIndex))
-    //         {
-    //             if (nb.ballColorIndex < endgameIndex)
-    //             {
-    //                 nb.ballColorIndex++;
-    //                 nb.UpdateColor();
-    //             }
-    //         }
-    //     }
-    // }
+    public void UpdateEndgame(NewBall nb)
+    {
+        if (_ballCount == endgameBallCount)
+        {
+            Debug.Log("1. ball count equal");
+            if (!AllBallsUnitedAtIndex(endgameBallCount))
+            {
+                Debug.Log("2. " + nb.ballColorIndex + " | " + endgameBallCount);
+
+                if (nb.ballColorIndex < endgameBallCount)
+                {
+                    Debug.Log("3. updating color");
+                    nb.ballColorIndex++;
+                    nb.UpdateColor();
+                }
+            }
+        }
+    }
 
     void OnBallDied()
     {
@@ -224,18 +232,18 @@ public class NewBallManager : MonoBehaviour
         _ballCount = 0;
     }
 
-    // public bool AllBallsUnitedAtIndex(int index)
-    // {
-    //     foreach (NewBall b in balls)
-    //     {
-    //         if (b.ballColorIndex != index)
-    //         {
-    //             return false;
-    //         }
-    //     }
+    public bool AllBallsUnitedAtIndex(int index)
+    {
+        foreach (NewBall b in balls)
+        {
+            if (b.ballColorIndex != index)
+            {
+                return false;
+            }
+        }
 
-    //     return true;
-    // }
+        return true;
+    }
 
     public Vector2 GetLaunchVelocity() {
         return Vector2.up * ballLaunchForce;

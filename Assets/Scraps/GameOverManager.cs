@@ -87,6 +87,7 @@ public class GameOverManager : MonoBehaviour
 
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
         yield return new WaitForSeconds(.15f);
+        yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
 
         NewScoreManager._peakCount = 0;

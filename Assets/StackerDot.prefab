@@ -59,7 +59,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 33002cc94f79e044eafe22f246d854f0, type: 2}
+  - {fileID: 2100000, guid: dbb69d45c057346489999e2462e983c3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,9 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac8d437a6dce4ef42b9bfb46b3d78a66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ringPositions: []
   anchorPos: {x: 0, y: 0}
   radius: 0.5
   color: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
+  depth: 0
 --- !u!114 &114656353901559204
 MonoBehaviour:
   m_ObjectHideFlags: 1
