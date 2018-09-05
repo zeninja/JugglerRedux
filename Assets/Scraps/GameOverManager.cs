@@ -91,13 +91,14 @@ public class GameOverManager : MonoBehaviour
 
         NewScoreManager._peakCount = 0;
         NewScoreManager._numBalls  = 0;
-        Destroy(target.transform.root.gameObject);
 
         yield return StartCoroutine(InterstitalAd());
 
         // yield return StartCoroutine(Implode());
     
         yield return StartCoroutine(GameOverStacker.GetInstance().ShrinkCircles());
+                Destroy(target.transform.root.gameObject);
+
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();

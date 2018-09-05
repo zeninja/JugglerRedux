@@ -11,6 +11,8 @@ public class ProceduralCircle : MonoBehaviour
 
     public Color color;
 
+    public int depth;
+
     void Awake()
     {
         if (resolution % 2 != 0)
@@ -39,6 +41,7 @@ public class ProceduralCircle : MonoBehaviour
         if(!ready) { return; }
         GetComponent<MeshRenderer>().material.color = color;
         GetComponent<MonolithMesh>().UpdateValues(anchorPos, ringPositions);
+        GetComponent<MeshRenderer>().sortingOrder =  100 - depth;
     }
 
     void FindRingPositions()
@@ -63,13 +66,13 @@ public class ProceduralCircle : MonoBehaviour
             angle += (360f / resolution);
         }
 
-        // angle = 0;
+        angle = 0;
 
-        // x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-        // y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+        x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius / 2;
+        y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius / 2;
 
-        // Vector3 lastPoint = (Vector3)anchorPos + new Vector3(x, y, z);
-        // ringPositions.Add(lastPoint);
+        Vector3 lastPoint = (Vector3)anchorPos + new Vector3(x, y, z);
+        ringPositions.Add(lastPoint);
     }
 
     public void UpdateValues(float newRadius, Vector2 anchor) {

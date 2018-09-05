@@ -20,7 +20,9 @@ public class GameOverStacker : MonoBehaviour
 
 	public float totalDuration = .35f;
 
-	public float tint = .55f;
+	public float startTint = .55f;
+	public float endTint   = .55f;
+
 
 	public Color startColor;
 
@@ -31,7 +33,7 @@ public class GameOverStacker : MonoBehaviour
 
 	void Update() {
 		if(Input.GetKeyDown(KeyCode.Space)) {
-			StartCoroutine(SpawnCircles(transform.position));
+			// StartCoroutine(SpawnCircles(transform.position));
 		}
 
 		SetStackColors(startColor);
@@ -72,7 +74,7 @@ public class GameOverStacker : MonoBehaviour
 		Color dotColor = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
 
 		StackerDot s = Instantiate(dot, Vector2.zero, Quaternion.identity);
-		s.SetInfo(startPos, dotColor);
+		s.SetInfo(startPos, dotColor, i);
 		dots.Add(s);
 
 		float startRange = .65f;
@@ -141,8 +143,8 @@ public class GameOverStacker : MonoBehaviour
 
 	public void SetStackColors(Color startColor) {
 		automatedStackColor = new Extensions.ColorProperty();
-		automatedStackColor.start = startColor;
-		automatedStackColor.end   = startColor * tint;
+		automatedStackColor.start = startColor * startTint;
+		automatedStackColor.end   = startColor * endTint;
 		automatedStackColor.end.a = 1;
 	}
 }

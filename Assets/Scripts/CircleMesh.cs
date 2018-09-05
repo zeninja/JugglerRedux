@@ -26,7 +26,7 @@ public class CircleMesh : MonoBehaviour
     }
 
     public void UpdateValues(Vector2 center, List<Vector3> vertList) {
-        Debug.Log("vert list changing");
+        // Debug.Log("vert list changing");
 
         anchorPos = center;
 
@@ -73,7 +73,7 @@ public class CircleMesh : MonoBehaviour
         // mesh.normals = normals;
 		mesh.RecalculateNormals();
 
-        Debug.Log("Updating mesh");
+        // Debug.Log("Updating mesh");
     }
 
 	public GUIStyle style;

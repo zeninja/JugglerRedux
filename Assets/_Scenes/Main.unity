@@ -4719,7 +4719,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341528082}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
   m_Name: 
@@ -4730,7 +4730,8 @@ MonoBehaviour:
     start: 0.65
     end: 24
   totalDuration: 0.23
-  tint: 0.55
+  startTint: 0.85
+  endTint: 0.55
   startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
   scaleRanges: []
   shrinkDuration: 0.65

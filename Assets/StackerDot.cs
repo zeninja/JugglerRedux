@@ -11,8 +11,9 @@ public class StackerDot : MonoBehaviour {
 		GetComponent<ProceduralCircle>().radius = r;
 	}
 
-	public void SetInfo(Vector2 anchor, Color dotColor) {
+	public void SetInfo(Vector2 anchor, Color dotColor, int depth) {
 		GetComponent<ProceduralCircle>().anchorPos = anchor;
 		GetComponent<ProceduralCircle>().color = dotColor;
+		GetComponent<ProceduralCircle>().depth = depth;
 	}
 }
