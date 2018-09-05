@@ -4724,15 +4724,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numCircles: 5
-  dot: {fileID: 212043348145514518, guid: 95fbf946767c8e9419f50a9d3cecceee, type: 2}
+  numCircles: 10
+  dot: {fileID: 114672393284500732, guid: 38df3499bd585994699f0bd6de2a22c3, type: 2}
   circleRadius:
-    start: 0
-    end: 24.1
-  totalDuration: 0.35
+    start: 0.65
+    end: 30
+  totalDuration: 0.23
   tint: 0.55
+  startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
   scaleRanges: []
-  shrinkDuration: 0.35
+  shrinkDuration: 0.65
 --- !u!114 &1341528100
 MonoBehaviour:
   m_ObjectHideFlags: 0

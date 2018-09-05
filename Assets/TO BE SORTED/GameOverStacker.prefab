@@ -82,15 +82,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numCircles: 10
-  dot: {fileID: 212043348145514518, guid: 95fbf946767c8e9419f50a9d3cecceee, type: 2}
+  dot: {fileID: 114672393284500732, guid: 38df3499bd585994699f0bd6de2a22c3, type: 2}
   circleRadius:
     start: 0.65
-    end: 27.1
-  stackColor:
-    start: {r: 0.7735849, g: 0.25178, b: 0.25178, a: 1}
-    end: {r: 0.3490566, g: 0.0016464973, b: 0.0016464973, a: 1}
+    end: 30
   totalDuration: 0.23
   tint: 0.55
+  startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
+  scaleRanges: []
+  shrinkDuration: 0.65
 --- !u!212 &212095723798912998
 SpriteRenderer:
   m_ObjectHideFlags: 1

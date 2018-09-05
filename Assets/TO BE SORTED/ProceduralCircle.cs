@@ -5,9 +5,11 @@ using UnityEngine;
 public class ProceduralCircle : MonoBehaviour
 {
     int resolution = 1000;
-    public List<Vector3> ringPositions;
+    List<Vector3> ringPositions;
     public Vector2 anchorPos;
     public float radius = .5f;
+
+    public Color color;
 
     void Awake()
     {
@@ -20,25 +22,26 @@ public class ProceduralCircle : MonoBehaviour
     void Update()
     {
         FindRingPositions();
+        UpdateMesh();
+
         ready = true;
     }
 
     void FixedUpdate()
     {
-        UpdateMesh();
+        // UpdateMesh();
     }
 
     bool ready = false;
 
     void UpdateMesh() {
         if(!ready) { return; }
+        GetComponent<MeshRenderer>().material.color = color;
         GetComponent<MonolithMesh>().UpdateValues(anchorPos, ringPositions);
     }
 
     void FindRingPositions()
     {
-        ringPositions = new List<Vector3>();
-
         // anchorPos = Extensions.MouseScreenToWorld();
 
         float x;
@@ -49,8 +52,8 @@ public class ProceduralCircle : MonoBehaviour
 
         for (int i = 0; i < resolution; i++)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-            y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius / 2;
+            y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius / 2;
 
             Vector3 ringPoint = (Vector3)anchorPos + new Vector3(x, y, z);
             ringPositions.Add(ringPoint);
@@ -67,7 +70,8 @@ public class ProceduralCircle : MonoBehaviour
         ringPositions.Add(lastPoint);
     }
 
-    public void UpdateValues(float newRadius) {
+    public void UpdateValues(float newRadius, Vector2 anchor) {
         radius = newRadius;
+        anchorPos = anchor;
     }
 }
