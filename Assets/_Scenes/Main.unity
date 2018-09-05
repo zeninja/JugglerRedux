@@ -4728,7 +4728,7 @@ MonoBehaviour:
   dot: {fileID: 114672393284500732, guid: 38df3499bd585994699f0bd6de2a22c3, type: 2}
   circleRadius:
     start: 0.65
-    end: 30
+    end: 24
   totalDuration: 0.23
   tint: 0.55
   startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}

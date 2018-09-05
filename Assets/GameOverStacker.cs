@@ -96,7 +96,7 @@ public class GameOverStacker : MonoBehaviour
             float percent = t / d;
             percent = Mathf.Clamp01(percent);
 
-            // targetScale = startScale + stackedCircleDifference * EZEasings.SmoothStart3(percent);
+            targetScale = startScale + stackedCircleDifference * EZEasings.SmoothStart3(percent);
 			// Debug.Log(targetScale);
 
             // s.transform.localScale = targetScale;
@@ -118,24 +118,22 @@ public class GameOverStacker : MonoBehaviour
 		float d = shrinkDuration / numCircles;
 
 		for(int i = numCircles - 1; i >= 0; i--) {
-			Debug.Log(i);
+			// Debug.Log(i);
 			t = 0;
 			while(t < d) {
 				float p = t / d;
 				
 				float start = scaleRanges[i].end;
 				float end   = scaleRanges[i].start;
-				float range = end - start;
+				float range = start - end;
 
-				float target = end - range * (1 - EZEasings.SmoothStart3(p));
+				float target = end + range * (1 - EZEasings.SmoothStart3(p));
 
 				dots[i].SetTargetRadius(target);
 
 				t += Time.fixedDeltaTime;
 				yield return new WaitForFixedUpdate();
 			}
-			Debug.Break();
-
 			dots[i].transform.localScale = Vector2.zero;
 			Destroy(dots[i].gameObject);
 		}

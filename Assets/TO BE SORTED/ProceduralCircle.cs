@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProceduralCircle : MonoBehaviour
 {
     int resolution = 1000;
-    List<Vector3> ringPositions;
+    public List<Vector3> ringPositions;
     public Vector2 anchorPos;
     public float radius = .5f;
 
@@ -17,6 +17,7 @@ public class ProceduralCircle : MonoBehaviour
         {
             resolution--;
         }
+        ringPositions.Clear();
     }
 
     void Update()
@@ -43,6 +44,7 @@ public class ProceduralCircle : MonoBehaviour
     void FindRingPositions()
     {
         // anchorPos = Extensions.MouseScreenToWorld();
+        ringPositions = new List<Vector3>();
 
         float x;
         float y;
@@ -61,13 +63,13 @@ public class ProceduralCircle : MonoBehaviour
             angle += (360f / resolution);
         }
 
-        angle = 0;
+        // angle = 0;
 
-        x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-        y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+        // x = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
+        // y = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
 
-        Vector3 lastPoint = (Vector3)anchorPos + new Vector3(x, y, z);
-        ringPositions.Add(lastPoint);
+        // Vector3 lastPoint = (Vector3)anchorPos + new Vector3(x, y, z);
+        // ringPositions.Add(lastPoint);
     }
 
     public void UpdateValues(float newRadius, Vector2 anchor) {
