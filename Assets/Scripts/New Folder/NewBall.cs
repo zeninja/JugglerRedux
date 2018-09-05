@@ -49,16 +49,19 @@ public class NewBall : MonoBehaviour
 
     void Start() {
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
+        ballColorIndex = NewBallManager._ballCount - 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetMouseButtonDown(1))
         {
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
         }
+
+
 
         if (rb.velocity.y < 0)
         {
@@ -134,7 +137,7 @@ public class NewBall : MonoBehaviour
             canPeak = false;
         }
 
-        // NewBallManager.GetInstance().UpdateEndgame(this);
+        NewBallManager.GetInstance().UpdateEndgame(this);
     }
 
     void CheckBounds()
@@ -173,14 +176,13 @@ public class NewBall : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // public void UpdateColor() {
-    //     if(ballColorIndex < NewBallManager.GetInstance().m_BallColors.Length - 1) {
-    //         Debug.Log(ballColorIndex);
-    //         GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
-    //     } else {
-    //         GetComponent<NewBallArtManager>().SetColor(Color.black);
-    //     }
-    // }
+    public void UpdateColor() {
+        if(ballColorIndex < NewBallManager.endgameBallCount) {
+            // Debug.Log( ballColorIndex);
+            // ballColorIndex++;
+            ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
+        }
+    }
 
     public bool IsHeld() {
         return m_IsHeld;

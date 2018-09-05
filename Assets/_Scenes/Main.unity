@@ -4469,13 +4469,13 @@ MonoBehaviour:
   - {r: 0.9058824, g: 0.6596079, b: 0.29019612, a: 1}
   - {r: 0.922, g: 0.953, b: 0.559, a: 1}
   - {r: 0.4642867, g: 0.791, b: 0.29019612, a: 1}
-  - {r: 0.2116674, g: 0.47558478, b: 0.99264705, a: 1}
-  - {r: 0.40804717, g: 0.02027464, b: 0.5514706, a: 1}
-  - {r: 0.9058824, g: 0.678, b: 0.83794457, a: 1}
+  - {r: 0.21176472, g: 0.6396074, b: 0.99215686, a: 1}
+  - {r: 0.110137045, g: 0.27369064, b: 0.9339623, a: 1}
+  - {r: 0.5592625, g: 0.08677464, b: 0.735849, a: 1}
+  - {r: 0.9058824, g: 0.6784314, b: 0.83921576, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
-  - {r: 1, g: 1, b: 1, a: 1}
   ballSpeedIndex: 1
-  ballSpawnSpeed: 1
+  ballSpawnSpeed: 2
   juggleThreshold: 1
   ballSpawnPos: {x: 1, y: 0}
   spawnPos: {x: 1, y: -2.5}
@@ -4719,27 +4719,29 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341528082}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce1807b8833174edf8332a50f7cd0dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numCircles: 5
-  dot: {fileID: 212043348145514518, guid: 95fbf946767c8e9419f50a9d3cecceee, type: 2}
+  numCircles: 10
+  dot: {fileID: 114672393284500732, guid: 38df3499bd585994699f0bd6de2a22c3, type: 2}
   circleRadius:
-    start: 0
-    end: 24.1
-  totalDuration: 0.35
-  tint: 0.55
+    start: 0.65
+    end: 24
+  totalDuration: 0.23
+  startTint: 0.85
+  endTint: 0.55
+  startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
   scaleRanges: []
-  shrinkDuration: 0.35
+  shrinkDuration: 0.65
 --- !u!114 &1341528100
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1341528082}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6647d1483f627a4e99c907ab12fd4f5, type: 3}
   m_Name: 

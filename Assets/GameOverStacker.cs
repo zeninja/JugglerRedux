@@ -11,29 +11,45 @@ public class GameOverStacker : MonoBehaviour
     }
 
 	public int numCircles = 5;
-    public SpriteRenderer dot;
+    // public SpriteRenderer dot;
+	public StackerDot dot;
+
     public Extensions.Property circleRadius;
 
 	Extensions.ColorProperty automatedStackColor;
 
 	public float totalDuration = .35f;
 
-	public float tint = .55f;
+	public float startTint = .55f;
+	public float endTint   = .55f;
+
+
+	public Color startColor;
 
 	void Awake() {
 		instance = this;
+		SetStackColors(startColor);
+	}
+
+	void Update() {
+		if(Input.GetKeyDown(KeyCode.Space)) {
+			// StartCoroutine(SpawnCircles(transform.position));
+		}
+
+		SetStackColors(startColor);
 	}
 
 	public IEnumerator SpawnCircles(Vector2 startPos, int circleCount = 5) {
-		dots = new List<SpriteRenderer>();
+		dots = new List<StackerDot>();
 		// scaleRanges = new Extensions.Property[circleCount];
 
 		numCircles = circleCount;
+		// numCircles = 1;
 
 		float d = totalDuration / numCircles;
 
 		for(int i = 0; i < numCircles; i++) {
-			StartCoroutine(SpawnCircle(startPos, d, i));
+			StartCoroutine(SpawnProceduralCircle(startPos, d, i));
 
 			float t = 0;
 			while(t < d) {
@@ -44,8 +60,7 @@ public class GameOverStacker : MonoBehaviour
 		// Debug.Log(scaleRanges.Length);
 	}
 
-
-    IEnumerator SpawnCircle(Vector2 startPos, float d, int i)
+    IEnumerator SpawnProceduralCircle(Vector2 startPos, float d, int i)
     {
         float t = 0;
 
@@ -56,10 +71,10 @@ public class GameOverStacker : MonoBehaviour
 
 	    float scaleDifference = circleRadius.end - circleRadius.start;
 
-        SpriteRenderer s = Instantiate(dot, startPos, Quaternion.identity);
-        s.color = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
-		s.sortingOrder = 100 - i;
+		Color dotColor = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
 
+		StackerDot s = Instantiate(dot, Vector2.zero, Quaternion.identity);
+		s.SetInfo(startPos, dotColor, i);
 		dots.Add(s);
 
 		float startRange = .65f;
@@ -70,11 +85,10 @@ public class GameOverStacker : MonoBehaviour
 
 		scaleRanges.Add(scaleRange);
 
-		Vector2 startScale = Vector2.one * scaleRange.start;
+		float startScale = scaleRange.start;
 
-		Vector2 stackedCircleDifference = Vector2.one * (scaleRange.end - scaleRange.start);
-        Vector2 targetScale = startScale;
-
+		float stackedCircleDifference = (scaleRange.end - scaleRange.start);
+        float targetScale = startScale;
 
 		yield return null;
 
@@ -87,7 +101,8 @@ public class GameOverStacker : MonoBehaviour
             targetScale = startScale + stackedCircleDifference * EZEasings.SmoothStart3(percent);
 			// Debug.Log(targetScale);
 
-            s.transform.localScale = targetScale;
+            // s.transform.localScale = targetScale;
+			s.SetTargetRadius(targetScale);
 
             yield return new WaitForFixedUpdate();
         }
@@ -96,7 +111,7 @@ public class GameOverStacker : MonoBehaviour
 	public List<Extensions.Property> scaleRanges;
 	// Extensions.Property[] scaleRanges;
 
-	List<SpriteRenderer> dots;
+	List<StackerDot> dots;
 
 	public float shrinkDuration;
 
@@ -105,21 +120,22 @@ public class GameOverStacker : MonoBehaviour
 		float d = shrinkDuration / numCircles;
 
 		for(int i = numCircles - 1; i >= 0; i--) {
+			// Debug.Log(i);
 			t = 0;
 			while(t < d) {
 				float p = t / d;
 				
-				Vector2 start = Vector2.one * scaleRanges[i].end;
-				Vector2 end   = Vector2.one * scaleRanges[i].start;
-				// Debug.Log()
-				Vector2 range = end - start;
+				float start = scaleRanges[i].end;
+				float end   = scaleRanges[i].start;
+				float range = start - end;
 
-				dots[i].transform.localScale = start + range * EZEasings.SmoothStart3(p);
+				float target = end + range * (1 - EZEasings.SmoothStart3(p));
+
+				dots[i].SetTargetRadius(target);
 
 				t += Time.fixedDeltaTime;
 				yield return new WaitForFixedUpdate();
 			}
-
 			dots[i].transform.localScale = Vector2.zero;
 			Destroy(dots[i].gameObject);
 		}
@@ -127,8 +143,8 @@ public class GameOverStacker : MonoBehaviour
 
 	public void SetStackColors(Color startColor) {
 		automatedStackColor = new Extensions.ColorProperty();
-		automatedStackColor.start = startColor;
-		automatedStackColor.end   = startColor * tint;
+		automatedStackColor.start = startColor * startTint;
+		automatedStackColor.end   = startColor * endTint;
 		automatedStackColor.end.a = 1;
 	}
 }

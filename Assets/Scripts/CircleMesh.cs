@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonolithMesh : MonoBehaviour
+public class CircleMesh : MonoBehaviour
 {
 
     Mesh mesh;
@@ -11,7 +11,7 @@ public class MonolithMesh : MonoBehaviour
     Vector3[] normals;
     int numVerts;
 
-    Vector2 anchorPos;
+    public Vector2 anchorPos;
 
 
     void Awake()
@@ -32,7 +32,7 @@ public class MonolithMesh : MonoBehaviour
 
         vertList.Insert(0, anchorPos);
         verts = vertList.ToArray();
-   		numVerts = vertList.Count;
+   		numVerts = verts.Length;
         tris = new int[(numVerts * 3)];
 
         MakeMesh();
@@ -63,6 +63,8 @@ public class MonolithMesh : MonoBehaviour
         // } 
     }
 
+    public Vector3 normal;
+
     void UpdateMesh()
     {
 		mesh.Clear();
@@ -70,5 +72,9 @@ public class MonolithMesh : MonoBehaviour
 		mesh.triangles = tris;
         // mesh.normals = normals;
 		mesh.RecalculateNormals();
+
+        // Debug.Log("Updating mesh");
     }
+
+	public GUIStyle style;
 }

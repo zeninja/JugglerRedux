@@ -226,7 +226,6 @@ public class NewBallArtManager : MonoBehaviour
                 // trail.endWidth   = defaultScale * (1 - risingSquash * percent);
             }
 
-
             trail.enabled = true;
 
         }
@@ -254,6 +253,7 @@ public class NewBallArtManager : MonoBehaviour
                 trail.SetPosition(0, transform.position);
                 trail.SetPosition(1, transform.position);
                 trail.enabled = true;
+                grabSquishLine.Reset();
             }
 
             indexAlongLine = 0;

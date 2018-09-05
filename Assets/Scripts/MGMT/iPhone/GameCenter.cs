@@ -86,15 +86,19 @@ public class GameCenter : MonoBehaviour {
  
 		string s1 = string.Format("{0:0.0}",score); // "123.0"
 		string s2 = string.Format("{0:0.00}",score); // "123.50"
+		string s3 = string.Format("{0:0.000}",score); // "123.500"
 
 		string s = "";
 
 		if(s1 == score.ToString()) {
 			Debug.Log("FOUND SINGLE DECIMAL");
 			s = s1;
-		} else {
+		} else if(s2 == score.ToString()) {
 			Debug.Log("FOUND DOUBLE DECIMAL");
 			s = s2;
+		} else {
+			Debug.Log("FOUND TRIPLE DECIMAL");
+			s = s3;
 		}
 
 
