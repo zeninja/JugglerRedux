@@ -45,6 +45,9 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = defaultGravity;
 
         ballArtManager = GetComponentInChildren<NewBallArtManager>();
+        if(firstBall){
+            
+        }
     }
 
     void Start() {
@@ -131,6 +134,8 @@ public class NewBall : MonoBehaviour
 
         ballArtManager.HandleThrow();
 
+        currentThrowVector = Vector2.zero;
+
         if(throwVector.y > 0) {
             canPeak = true;
         } else {
@@ -179,7 +184,7 @@ public class NewBall : MonoBehaviour
     public void UpdateColor() {
         if(ballColorIndex < NewBallManager.endgameBallCount) {
             // Debug.Log( ballColorIndex);
-            // ballColorIndex++;
+            ballColorIndex++;
             ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
         }
     }

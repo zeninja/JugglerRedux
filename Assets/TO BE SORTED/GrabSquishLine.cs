@@ -20,11 +20,7 @@ public class GrabSquishLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!ball.IsHeld())
-        {
-            squishLine.SetPosition(0, transform.position);
-            squishLine.SetPosition(1, transform.position);
-        }
+        // Reset();
         squishLine.enabled = ShowLine();
 
 
@@ -36,6 +32,12 @@ public class GrabSquishLine : MonoBehaviour
 
     public void SquishLine(Vector2 throwVector, float startScale, float t)
     {
+        if(throwVector == null) {
+            Debug.Log("returning");
+            squishLine.positionCount = 0;
+            return;
+        }
+
         squishLine.startWidth = startScale * (1 - squashAmount * t);
         squishLine.endWidth = startScale * (1 - squashAmount * t);
 
@@ -67,6 +69,7 @@ public class GrabSquishLine : MonoBehaviour
 
         endPos = transform.position + new Vector3(x2, y2, 0);
 
+        squishLine.positionCount = 2;
         squishLine.SetPosition(0, startPos);
         squishLine.SetPosition(1, endPos);
     }
@@ -77,8 +80,7 @@ public class GrabSquishLine : MonoBehaviour
     }
 
     public void Reset() {
-        squishLine.SetPosition(0, transform.position);
-        squishLine.SetPosition(1, transform.position);
+        squishLine.positionCount = 0;
     }
 
     // void UpdateLineWidth(float t)

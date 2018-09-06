@@ -89,20 +89,26 @@ public class GameCenter : MonoBehaviour {
 		string s3 = string.Format("{0:0.000}",score); // "123.500"
 
 		string s = "";
+		string end = "";
 
 		if(s1 == score.ToString()) {
 			Debug.Log("FOUND SINGLE DECIMAL");
 			s = s1;
+			end = "_1x";
 		} else if(s2 == score.ToString()) {
 			Debug.Log("FOUND DOUBLE DECIMAL");
 			s = s2;
+			end = "_2x";
 		} else {
 			Debug.Log("FOUND TRIPLE DECIMAL");
 			s = s3;
+			end = "_3x";
 		}
 
+		id = id + end;
 
-		// Debug.Log ("Reporting score " + score + " on leaderboard " + id);
+		Debug.Log ("Reporting score " + score + " on leaderboard " + id);
+		
 		Social.ReportScore (long.Parse(s.Replace(".", "")), id, success => {
 			Debug.Log(success ? "Reported score successfully" : "Failed to report score");
 		});
