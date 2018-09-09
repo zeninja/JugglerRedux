@@ -122,7 +122,7 @@ public class NewScoreManager : MonoBehaviour {
 
 		_lastPeakCount = _peakCount;
 
-		// Debug.Log(currentScore + " | " +  highscore);
+		Debug.Log(currentScore + " | " +  highscore);
 
 		if(currentScore > highscore) {
 			// Debug.Log("UPDATING HIGH SCORE");
@@ -133,7 +133,7 @@ public class NewScoreManager : MonoBehaviour {
 
 			PlayerPrefs.SetFloat(highScoreKey, highscore);
 
-			// Debug.Log("REPORTING HIGH SCORE. VALUE IS: " +  highscore);
+			Debug.Log("REPORTING HIGH SCORE. VALUE IS: " +  highscore);
 			GameCenter.GetInstance().SetHighScore(highscore);
 			
 			yield return StartCoroutine(UpdateHighScore());

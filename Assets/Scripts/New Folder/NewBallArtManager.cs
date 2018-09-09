@@ -164,6 +164,8 @@ public class NewBallArtManager : MonoBehaviour
             return;
         }
 
+        
+
         // Rising
         if (VelocityPositive())
         {
@@ -240,7 +242,9 @@ public class NewBallArtManager : MonoBehaviour
                 throwMagnitudePortion = throwMagnitude / maxThrowMagnitude;
                 throwMagnitudePortion = Mathf.Clamp01(throwMagnitudePortion);
 
-                grabSquishLine.SquishLine(m_Ball.currentThrowVector, defaultScale, throwMagnitudePortion);
+                // grabSquishLine.SquishLine(m_Ball.currentThrowVector, defaultScale, throwMagnitudePortion);
+
+
                 trail.enabled = false;
 
             }
@@ -254,8 +258,10 @@ public class NewBallArtManager : MonoBehaviour
                 trail.SetPosition(0, transform.position);
                 trail.SetPosition(1, transform.position);
                 trail.enabled = true;
-                grabSquishLine.Reset();
+                // grabSquishLine.Reset();
             }
+
+            grabSquishLine.SquishLine(m_Ball.currentThrowVector, defaultScale, throwMagnitudePortion);
 
             indexAlongLine = 0;
         }
