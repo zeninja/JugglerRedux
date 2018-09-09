@@ -24,7 +24,7 @@ public class NewBallArtManager : MonoBehaviour
     public LineRenderer trail;
 
     float defaultScale;
-    public SpriteRenderer gameOverBallSprite;
+    public SpriteRenderer m_BallSprite;
 
     GrabSquishLine grabSquishLine;
 
@@ -53,7 +53,12 @@ public class NewBallArtManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        ActivateSprite();
         DrawTrail();
+    }
+
+    void ActivateSprite() {
+        m_BallSprite.enabled  = !m_Ball.IsHeld();
     }
 
     #region util
@@ -73,7 +78,7 @@ public class NewBallArtManager : MonoBehaviour
     {
         spriteSortIndex = Mathf.Clamp(spriteSortIndex, 0, 8);
         myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
-        gameOverBallSprite.color = myColor;
+        m_BallSprite.color = myColor;
         trail.material.color = myColor;
         trail.material.color = myColor;
 
@@ -129,10 +134,6 @@ public class NewBallArtManager : MonoBehaviour
     public void HandleDeath()
     {
         ballDead = true;
-
-        // GetComponent<GameOverStacker>().SetStackColors(myColor);
-        // GameOverManager.GetInstance().SetGameOverStacker(GetComponent<GameOverStacker>());
-        // GetComponent<GameOverStacker>().TriggerStack(NewBallManager._ballCount);
     }
 
     void GetPredictedLine()
@@ -141,7 +142,7 @@ public class NewBallArtManager : MonoBehaviour
     }
 
     void GetLaunchLine() {
-        // Debug.Log("3. Getting launch line");
+        // Debug.Log("3. Getting launch line);
         launchPointList = GetComponentInParent<LinePredictor>().FindLaunchList();
 
     }

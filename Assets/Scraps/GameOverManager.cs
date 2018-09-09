@@ -38,7 +38,7 @@ public class GameOverManager : MonoBehaviour
 
     public void SetTargetBall(NewBall ball) {
         deadBall = ball;
-        target = deadBall.ballArtManager.gameOverBallSprite;
+        target = deadBall.ballArtManager.m_BallSprite;
         target.enabled = true;
         target.sortingOrder = 100;
 
