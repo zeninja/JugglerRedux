@@ -15,6 +15,7 @@ public class GlobalSettings : MonoBehaviour
         public int   ballSpeedIndex;
         public bool  allowSlaps;
         public bool adsOff;
+        public bool dragUpToThrow;
     }
 
     public static GameSettings mySettings;
@@ -22,6 +23,7 @@ public class GlobalSettings : MonoBehaviour
 
     void Awake()
     {
+        #if !UNITY_EDITOR
         if (PlayerPrefs.HasKey("SAVED"))
         {
             jsonString = PlayerPrefs.GetString("JSON");
@@ -31,19 +33,25 @@ public class GlobalSettings : MonoBehaviour
         {
             InitValues();
         }
+        #else 
+        InitValues();
+        #endif
+        // InitValues();
     }
 
     void InitValues()
     {
         mySettings = new GameSettings();
-        mySettings.slapForce = NewHandManager.GetInstance().touchSlapThrowForce;
-        mySettings.grabForce = NewHandManager.GetInstance().touchGrabThrowForce;
+        mySettings.slapForce       = NewHandManager.GetInstance().touchSlapThrowForce;
+        mySettings.grabForce       = NewHandManager.GetInstance().touchGrabThrowForce;
         mySettings.juggleThreshold = NewBallManager.GetInstance().juggleThreshold;
-        mySettings.ballScale = NewBallManager.GetInstance().ballScale;
-        mySettings.timeScale = TimeManager.GetInstance().m_SlowTimeScale;
-        mySettings.ballSpeedIndex = NewBallManager.GetInstance().ballSpeedIndex;
-        // mySettings.allowSlaps = false;
-        mySettings.adsOff = NewAdManager.forceAdsOff;
+        mySettings.ballScale       = NewBallManager.GetInstance().ballScale;
+        mySettings.timeScale       = TimeManager   .GetInstance().m_SlowTimeScale;
+        mySettings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
+        mySettings.adsOff          = NewAdManager.forceAdsOff;
+        mySettings.dragUpToThrow   = NewHandManager.dragUpToThrow;
+
+        Debug.Log("INIT VALUES. BALL SCALE: " + mySettings.ballScale);
 		
         UpdateSavedValues();
     }
@@ -59,7 +67,6 @@ public class GlobalSettings : MonoBehaviour
         NewBallManager.GetInstance().ballScale 			 = mySettings.ballScale;
         TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
-        // NewBallManager.allowSlaps 						 = mySettings.allowSlaps;
         NewAdManager.forceAdsOff                         = mySettings.adsOff;
         
 

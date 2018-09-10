@@ -28,6 +28,8 @@ public class NewBallArtManager : MonoBehaviour
 
     GrabSquishLine grabSquishLine;
 
+    bool initialized;
+
     // Use this for initialization
     void Start()
     {
@@ -47,12 +49,16 @@ public class NewBallArtManager : MonoBehaviour
         grabSquishLine = GetComponent<GrabSquishLine>();
 
         EventManager.StartListening("CleanUp", HandleDeath);
+
+        initialized = true;
     }
 
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(!initialized) { return; }
+        
         ActivateSprite();
         DrawTrail();
     }
@@ -79,7 +85,6 @@ public class NewBallArtManager : MonoBehaviour
         spriteSortIndex = Mathf.Clamp(spriteSortIndex, 0, 8);
         myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
         m_BallSprite.color = myColor;
-        trail.material.color = myColor;
         trail.material.color = myColor;
 
         GetComponent<SpriteCircleEffectSpawner>().effectColor = myColor;
@@ -197,7 +202,7 @@ public class NewBallArtManager : MonoBehaviour
                 trail.endWidth = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
 
             }
-            else if (m_Ball.m_Launching)
+            else if (m_Ball.IsLaunching())
             {
                 // Debug.Log("Launching: " + launchPointList.Count);
 

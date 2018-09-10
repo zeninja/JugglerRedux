@@ -36,7 +36,7 @@ public class GameOverStacker : MonoBehaviour
 			// StartCoroutine(SpawnCircles(transform.position));
 		}
 
-		SetStackColors(startColor);
+		// SetStackColors(startColor);
 	}
 
 	public IEnumerator SpawnCircles(Vector2 startPos, int circleCount = 5) {

@@ -224,7 +224,7 @@ public class NewHand : MonoBehaviour
             if (other.CompareTag("Ball"))
             {
                 NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
-                if (!ballToJuggle.m_Launching) { 
+                if (!ballToJuggle.IsLaunching()) { 
                     // Debug.Log("Set a new ball");
                     SetBall(ballToJuggle);
                 }
@@ -240,7 +240,8 @@ public class NewHand : MonoBehaviour
 
     void FindGrabThrowVector()
     {
-        m_GrabMoveDir = (Vector2)m_Transform.position - m_CatchPosition;
+        int throwDirectionModifier = NewHandManager.dragUpToThrow ? 1 : -1;
+        m_GrabMoveDir = ((Vector2)m_Transform.position - m_CatchPosition) * throwDirectionModifier;
 
         // if(m_GrabMoveDir.magnitude > maxThrowMagnitude) 
 

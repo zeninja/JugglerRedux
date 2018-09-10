@@ -119,7 +119,7 @@ MonoBehaviour:
   radius:
     start: 8
     end: 0.75
-  duration: 0.165
+  duration: 0.001
   defaultColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
   handCaughtBall: 0
 --- !u!120 &120306457376358118

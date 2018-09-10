@@ -80,20 +80,33 @@ public class NewBallManager : MonoBehaviour
 
     public bool JuggleThresholdReached()
     {
-        int numBallsThrowing = 0;
+        bool useRisingBalls = false;
 
-        foreach (NewBall n in balls)
-        {
-            if (n.m_BallThrown)
+        if(useRisingBalls) {
+            int numBallsThrowing = 0;
+
+            foreach (NewBall n in balls)
             {
-                numBallsThrowing++;
-                if (numBallsThrowing >= juggleThreshold)
+                if (n.m_BallThrown)
                 {
+                    numBallsThrowing++;
+                    if (numBallsThrowing >= juggleThreshold)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            foreach(NewBall n in balls) {
+                if(n.IsFalling()) {
                     return true;
                 }
             }
+            return false;
         }
-        return false;
+
+
     }
 
     int xSwitcher = 1;
@@ -108,14 +121,13 @@ public class NewBallManager : MonoBehaviour
         NewBall ball = Instantiate(m_BallPrefab);
 
         ball.transform.position = ballSpawnPos;
-        ball.m_Launching = false;
-        ball.canBeCaught = false;
         ball.firstBall   = true;
         ball.GetComponent<Rigidbody2D>().velocity  = Vector2.zero;
         ball.GetComponent<Rigidbody2D>().gravityScale = 0;
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
         ball.GetComponentInChildren<NewBallArtManager>().PopInAnimation();
         firstBall = ball;
+
 
         balls.Add(ball);
         _ballCount++;
@@ -133,8 +145,7 @@ public class NewBallManager : MonoBehaviour
             NewBall ball = Instantiate(m_BallPrefab);
 
             ball.transform.position = ballSpawnPos;
-            ball.m_Launching = true;
-            ball.canBeCaught = false;
+            ball.SetBallState(NewBall.BallState.launching);
             ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
             ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
             ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
@@ -182,6 +193,7 @@ public class NewBallManager : MonoBehaviour
     {
         if (_ballCount == endgameBallCount)
         {
+
             Debug.Log("1. ball count equal");
             if (!AllBallsUnitedAtIndex(endgameBallCount))
             {

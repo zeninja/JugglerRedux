@@ -145,4 +145,16 @@ public class NewUIManager : MonoBehaviour {
 		GlobalSettings.mySettings.ballSpeedIndex = ballSpeedIndex;
 		GlobalSettings.UpdateSavedValues();
 	}
+
+	public ThrowDirectionSprite throwDirectionSprite;
+
+	public void SwitchDragDirection() {
+		bool throwDirection = !NewHandManager.dragUpToThrow;
+		NewHandManager.dragUpToThrow = throwDirection;
+
+		throwDirectionSprite.UpdateThrowSprite();
+
+		GlobalSettings.mySettings.dragUpToThrow = throwDirection;
+		GlobalSettings.UpdateSavedValues();
+	}
 }

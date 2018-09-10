@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class NewBall : MonoBehaviour
 {
+    public enum BallState { rising, falling, caught, launching, dead }
+    public BallState m_State;
+
+    public enum BallStage { easy, normal, hard }
+    public BallStage stage;
+
     Rigidbody2D rb;
 
     // public float scale = .25f;
     public float defaultGravity = 20;
     public float drag = -0.1f;
 
-    [HideInInspector]
-    public bool canBeCaught = false;
-    // [HideInInspector]
-    public bool m_Launching;
     [HideInInspector]
     public Vector2 currentThrowVector;
 
@@ -68,7 +70,7 @@ public class NewBall : MonoBehaviour
 
         if (rb.velocity.y < 0)
         {
-            m_Launching = false;
+            SetBallState(BallState.falling);
 
             if(m_BallThrown && canPeak) {
                 EventManager.TriggerEvent("BallPeaked");
@@ -77,7 +79,7 @@ public class NewBall : MonoBehaviour
             }
         }
 
-        if (!m_Launching)
+        if (!IsLaunching())
         {
             CheckBounds();
         }
@@ -92,9 +94,13 @@ public class NewBall : MonoBehaviour
         rb.AddForce(force);
     }
 
+    public void SetBallState(BallState newState) {
+        m_State = newState;
+    }
+
     public void GetCaughtAndThrown(Vector2 throwVector)
     {
-        if (m_Launching || NewGameManager.GameOver()) { return; }
+        if (IsLaunching() || NewGameManager.GameOver()) { return; }
 
         rb.velocity = Vector2.zero;
         rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
@@ -104,7 +110,7 @@ public class NewBall : MonoBehaviour
 
     public void GetCaught()
     {
-        if (m_Launching || NewGameManager.GameOver()) { return; }
+        if (IsLaunching() || NewGameManager.GameOver()) { return; }
 
         if(firstBall) { NewGameManager.GetInstance().StartGame(); }
 
@@ -122,7 +128,7 @@ public class NewBall : MonoBehaviour
 
     public void GetThrown(Vector2 throwVector)
     {
-        if (m_Launching || NewGameManager.GameOver()) { return; }
+        if (IsLaunching() || NewGameManager.GameOver()) { return; }
 
         m_IsHeld = false;
         rb.velocity = Vector2.zero;
@@ -191,5 +197,13 @@ public class NewBall : MonoBehaviour
 
     public bool IsHeld() {
         return m_IsHeld;
+    }
+
+    public bool IsFalling() {
+        return m_State == BallState.falling;
+    }
+
+    public bool IsLaunching() {
+        return m_State == BallState.launching;
     }
 }
