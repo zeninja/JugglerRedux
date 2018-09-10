@@ -58,7 +58,7 @@ public class NewBallArtManager : MonoBehaviour
     void FixedUpdate()
     {
         if(!initialized) { return; }
-        
+
         ActivateSprite();
         DrawTrail();
     }
@@ -160,6 +160,8 @@ public class NewBallArtManager : MonoBehaviour
 
     float throwMagnitudePortion = -1;
 
+    public float lineLengthPercent = .15f;
+
 
     void DrawTrail()
     {
@@ -182,8 +184,7 @@ public class NewBallArtManager : MonoBehaviour
                 m_LinePointList.Add(transform.position);
 
                 // 2. Set the line length;
-                float lineSegmentPercent = .35f;
-                int maxLineLength = (int)(predictedPointList.Count * lineSegmentPercent);
+                int maxLineLength = (int)(predictedPointList.Count * lineLengthPercent);
                 indexAlongLine++;
                 float t = (float)indexAlongLine / ((float)predictedPointList.Count * peakPercent);
                 t = Mathf.Clamp01(t);
