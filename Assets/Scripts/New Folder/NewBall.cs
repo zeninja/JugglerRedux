@@ -206,4 +206,8 @@ public class NewBall : MonoBehaviour
     public bool IsLaunching() {
         return m_State == BallState.launching;
     }
+
+    public bool IsRising() {
+        return m_State == BallState.rising;
+    }
 }

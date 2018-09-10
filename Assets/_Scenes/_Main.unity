@@ -4702,15 +4702,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1813113145929716, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 120528579138601014, guid: 9da8f1b0080f84262a21a09d2f1f9f39,
+    - target: {fileID: 114296390110368266, guid: 9da8f1b0080f84262a21a09d2f1f9f39,
         type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 33002cc94f79e044eafe22f246d854f0, type: 2}
+      propertyPath: risingSquash
+      value: 0.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
   m_IsPrefabAsset: 0

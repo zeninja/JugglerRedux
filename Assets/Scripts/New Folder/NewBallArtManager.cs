@@ -57,14 +57,15 @@ public class NewBallArtManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(!initialized) { return; }
+        if (!initialized) { return; }
 
         ActivateSprite();
         DrawTrail();
     }
 
-    void ActivateSprite() {
-        m_BallSprite.enabled  = !m_Ball.IsHeld();
+    void ActivateSprite()
+    {
+        m_BallSprite.enabled = !m_Ball.IsHeld() && !VelocityPositive();
     }
 
     #region util
@@ -76,7 +77,8 @@ public class NewBallArtManager : MonoBehaviour
         SetDepth();
     }
 
-    public void PopInAnimation() {
+    public void PopInAnimation()
+    {
         StartCoroutine(PopIn());
     }
 
@@ -146,7 +148,8 @@ public class NewBallArtManager : MonoBehaviour
         predictedPointList = GetComponentInParent<LinePredictor>().GetPointList();
     }
 
-    void GetLaunchLine() {
+    void GetLaunchLine()
+    {
         // Debug.Log("3. Getting launch line);
         launchPointList = GetComponentInParent<LinePredictor>().FindLaunchList();
 
@@ -171,7 +174,7 @@ public class NewBallArtManager : MonoBehaviour
             return;
         }
 
-        
+
 
         // Rising
         if (VelocityPositive())
@@ -199,9 +202,10 @@ public class NewBallArtManager : MonoBehaviour
                 trail.positionCount = m_LinePointList.Count;
                 trail.SetPositions(m_LinePointList.ToArray());
 
-                trail.startWidth = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
-                trail.endWidth = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
+                float trailWidth = defaultScale * (1 - risingSquash * (1 - EZEasings.SmoothStart3(t))); // * throwMagnitudePortion);
 
+                trail.startWidth = trailWidth;
+                trail.endWidth   = trailWidth;
             }
             else if (m_Ball.IsLaunching())
             {
