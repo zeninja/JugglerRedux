@@ -98,11 +98,27 @@ public class NewBallManager : MonoBehaviour
             }
             return false;
         } else {
+
             foreach(NewBall n in balls) {
                 if(n.IsFalling()) {
                     return true;
                 }
             }
+
+            int numBallsThrowing = 0;
+
+            foreach (NewBall n in balls)
+            {
+                if (n.m_BallThrown)
+                {
+                    numBallsThrowing++;
+                    if (numBallsThrowing >= juggleThreshold)
+                    {
+                        return true;
+                    }
+                }
+            }
+            
             return false;
         }
 
@@ -154,6 +170,8 @@ public class NewBallManager : MonoBehaviour
             _ballCount++;
 
             ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+
+            BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
         }
     }
 
@@ -221,13 +239,6 @@ public class NewBallManager : MonoBehaviour
         {
             b.FreezeBall();
         }
-    }
-
-    public void PrepGameOver() {
-        // foreach (NewBall b in balls)
-        // {
-        //     b.GetComponentInChildren<NewBallArtManager>().PrepGameOver();
-        // }
     }
 
     public void KillAllBalls()

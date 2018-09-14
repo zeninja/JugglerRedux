@@ -20,7 +20,6 @@ public class NewBallArtManager : MonoBehaviour
     [System.NonSerialized]
     public int spriteSortIndex;
 
-    // public SpriteRenderer ballSprite;
     public LineRenderer trail;
 
     float defaultScale;
@@ -65,7 +64,7 @@ public class NewBallArtManager : MonoBehaviour
 
     void ActivateSprite()
     {
-        m_BallSprite.enabled = !m_Ball.IsHeld() && !VelocityPositive();
+        m_BallSprite.enabled = (!m_Ball.IsHeld() && !VelocityPositive()) || BallPeaking();
     }
 
     #region util
@@ -202,7 +201,12 @@ public class NewBallArtManager : MonoBehaviour
                 trail.positionCount = m_LinePointList.Count;
                 trail.SetPositions(m_LinePointList.ToArray());
 
-                float trailWidth = defaultScale * (1 - risingSquash * (1 - EZEasings.SmoothStart3(t))); // * throwMagnitudePortion);
+                // 5. Adjust trail width
+                // float trailWidth = defaultScale * (1 - risingSquash * (1 - EZEasings.SmoothStart3(t))); // * throwMagnitudePortion);
+                float squashAmount = risingSquash * (1 - EZEasings.SmoothStop2(t));
+                // Debug.Log(squashAmount);
+                float trailWidth = defaultScale - squashAmount;
+                // Debug.Log(trailWidth);
 
                 trail.startWidth = trailWidth;
                 trail.endWidth   = trailWidth;
@@ -275,6 +279,10 @@ public class NewBallArtManager : MonoBehaviour
 
             indexAlongLine = 0;
         }
+
+        // if(trail.positionCount < 1) {
+        //     Debug.Log(m_Rigidbody.velocity.y);
+        // }
     }
 
     void TrimLine()
@@ -318,6 +326,12 @@ public class NewBallArtManager : MonoBehaviour
     {
         if (m_Rigidbody == null) { return false; }
         return m_Rigidbody.velocity.y > 0;
+    }
+
+    bool BallPeaking() {
+        // return false;
+        // return trail.positionCount < 1;
+        return trail.positionCount < 1 && !m_Ball.IsHeld();
     }
 
     bool DisableTrail()

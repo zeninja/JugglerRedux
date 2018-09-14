@@ -191,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1030218780260200}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.05, z: 0}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4744050376268750}
@@ -286,8 +286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trail: {fileID: 120528579138601014}
   m_BallSprite: {fileID: 212793265894763756}
-  risingSquash: 0.25
-  peakPercent: 0.95
+  risingSquash: 0.65
+  peakPercent: 1
   lineLengthPercent: 0.15
   launchLineLength: 40
   popInAnimation:
@@ -605,9 +605,7 @@ LineRenderer:
   m_SortingLayerID: 856773013
   m_SortingLayer: -2
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: -3.48, z: 0}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 1

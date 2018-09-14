@@ -47,9 +47,6 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = defaultGravity;
 
         ballArtManager = GetComponentInChildren<NewBallArtManager>();
-        if(firstBall){
-            
-        }
     }
 
     void Start() {
@@ -60,7 +57,7 @@ public class NewBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #if UNITYEDITOR
+        #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(1))
         {
             rb.velocity = Vector2.zero;

@@ -6,7 +6,7 @@ public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver };
 
 public class NewGameManager : MonoBehaviour {
 
-	public static GameState gameState = GameState.preGame;
+	public static GameState gameState = GameState.ballSpawn;
 	public GameState debugState;
 
 	#region instance
@@ -56,11 +56,13 @@ public class NewGameManager : MonoBehaviour {
 			// 	MonolithManager.GetInstance().Initialize();
 			// 	break;
 			case GameState.ballSpawn:
+				Debug.Log("Spawn ball");
 				NewBallManager.GetInstance().SpawnFirstBall();
+				BallCountdownManager.GetInstance().SetUpCountdown();
 				break;
 
 			case GameState.preGame:
-				NewBallManager.GetInstance().SpawnFirstBall();
+				// NewBallManager.GetInstance().SpawnFirstBall();
 				pregameTrail.SetPosition();
 				pregameTrail.EnableTrail(true);
 				break;
