@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class LinePredictor : MonoBehaviour
+public class FirstBallPreview : MonoBehaviour
 {
     public int m_PreviewLineSegments = 120;
 
-    NewHand m_Hand;
+    public NewHand m_Hand;
 
     Vector3 m_LineStartPosition;
     public List<Vector3> m_FinalPositionList;
@@ -20,6 +20,11 @@ public class LinePredictor : MonoBehaviour
     void Awake()
     {
         previewLine = GetComponent<LineRenderer>();
+        previewLine.material.color = GetComponentInChildren<NewBallArtManager>().myColor;
+        previewLine.positionCount = 0;
+
+        m_LineStartPosition = transform.position;
+
     }
 
     // Update is called once per frame
@@ -27,13 +32,17 @@ public class LinePredictor : MonoBehaviour
     {
         FindPositionList();
 
+        // if(GetComponent<NewBall>().firstBall) {
+        //     // previewLine.positionCount = m_PreviewLineSegments;
+        //     previewLine.SetPositions(m_FinalPositionList.ToArray());
+        // }
 
-        // m_PreviewLineRenderer.positionCount = m_PreviewLineSegments;
-        // m_PreviewLineRenderer.SetPositions(linePositions.ToArray());
     }
 
     public void FindPositionList() {
+        
         Vector3 currentVelocity = GetCurrentShotVelocity();
+        // Debug.Log(GetCurrentShotVelocity());
         List<Vector3> completeLinePositionList = new List<Vector3>();
         Vector3 currentLinePoint = Vector2.zero;
 
@@ -90,36 +99,7 @@ public class LinePredictor : MonoBehaviour
         previewLine.SetPositions(m_FinalPositionList.ToArray());
     }
 
-    public List<Vector3> FindLaunchList() {
-        m_LineStartPosition = transform.position;
-        
-        Vector3 currentVelocity = NewBallManager.GetInstance().GetLaunchVelocity();
-        List<Vector3> launchList = new List<Vector3>();
-        Vector3 currentLinePoint = Vector2.zero;
-
-        const float dragPerFrame = -0.1f;
-        Vector3 gravity = (Physics2D.gravity * Time.fixedDeltaTime);
-
-        for(int i = 0; i < 500; i++) {
-            launchList.Add(m_LineStartPosition + currentLinePoint);
-
-            //Add Drag
-            Vector3 dragForce = dragPerFrame * currentVelocity.normalized * currentVelocity.sqrMagnitude;
-            currentVelocity += dragForce * Time.fixedDeltaTime;
-
-            //Add Gravity
-            currentVelocity += gravity;
-
-            currentLinePoint += currentVelocity * Time.fixedDeltaTime;
-
-            if(currentVelocity.y < 0) {
-                break;
-            }
-        }
-
-        // Debug.Log("4. SET LAUNCH LIST. LENGTH IS: " + launchList.Count);
-        return launchList;
-    }
+   
 
     Vector2 GetCurrentShotVelocity()
     {
@@ -144,13 +124,5 @@ public class LinePredictor : MonoBehaviour
     {
         m_Hand = null;
         // m_LineStartPosition = transform.position;
-    }
-
-    public List<Vector3> GetPointList()
-    {
-        if(m_FinalPositionList.Count == 0) {
-            FindPositionList();
-        }
-        return m_FinalPositionList;
     }
 }

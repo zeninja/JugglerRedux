@@ -164,7 +164,7 @@ public class NewBallManager : MonoBehaviour
             ball.SetBallState(NewBall.BallState.launching);
             ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
             ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
-            ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
+            // ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
 
             balls.Add(ball);
             _ballCount++;

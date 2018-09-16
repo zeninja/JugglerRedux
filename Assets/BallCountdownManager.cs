@@ -22,7 +22,16 @@ public class BallCountdownManager : MonoBehaviour
 
     List<CountdownTally> tallys;
 
+    [System.NonSerialized]
     public CountdownTally nextTally;
+    
+    public float spacing = 28;
+    float xSpacing;
+    float ySpacing;
+    int ballsPerLine = 5;
+
+
+    bool ballsInstantiated = false;
 
     void Awake()
     {
@@ -39,6 +48,9 @@ public class BallCountdownManager : MonoBehaviour
 
 	void Start() {
 		EventManager.StartListening("BallPeaked", PopOutTally);
+
+        xSpacing =  spacing;
+        ySpacing = -spacing;
 	}
 
     void Update()
@@ -46,7 +58,6 @@ public class BallCountdownManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SetCountdownNumber(countdownToNextball);
-            // StartCoroutine(SpawnCountdownBalls());
         }
 
         if (ballsInstantiated)
@@ -66,18 +77,10 @@ public class BallCountdownManager : MonoBehaviour
 
     public void SetCountdownNumber(int countdownNumber)
     {
-		// Debug.Log("Set countdown");
-		// Debug.Log(countdownNumber);
         countdownToNextball = countdownNumber;
         StartCoroutine(SpawnCountdownBalls());
     }
 
-    public float xSpacing;
-    public float ySpacing;
-    int ballsPerLine = 5;
-
-
-    bool ballsInstantiated = false;
     IEnumerator SpawnCountdownBalls()
     {
 
@@ -118,8 +121,6 @@ public class BallCountdownManager : MonoBehaviour
         nextTally = tallys[tallys.Count - 1];
 
         ballsInstantiated = true;
-
-		// Debug.Break();
     }
 
     // util for now
@@ -169,7 +170,14 @@ public class BallCountdownManager : MonoBehaviour
 	}
 
 	public void SetUpCountdown() {
-		Debug.Log("Setting up countdown");
 		SetCountdownNumber(5);
 	}
+
+    public void Reset() {
+
+
+        tallys.Clear();
+
+        Debug.Log("Clreaing");
+    }
 }

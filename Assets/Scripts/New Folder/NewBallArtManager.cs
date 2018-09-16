@@ -8,34 +8,45 @@ public class NewBallArtManager : MonoBehaviour
     List<Vector3> m_LinePointList;
     List<Vector3> predictedPointList;
     List<Vector3> launchPointList;
-    // List<Vector3> m_LineSegment;
     int m_LineLength = 5;
 
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
 
-    [System.NonSerialized]
-    public Color myColor;
-
-    [System.NonSerialized]
-    public int spriteSortIndex;
-
-    public LineRenderer trail;
-
-    float defaultScale;
-    public SpriteRenderer m_BallSprite;
-
     GrabSquishLine grabSquishLine;
 
+    public SpriteRenderer m_BallSprite;
+    public LineRenderer trail;
+    
+    [System.NonSerialized] public Color myColor;
+    [System.NonSerialized] public int spriteSortIndex;
+    [System.NonSerialized] public BallSpriteMask ballMask;
+    [System.NonSerialized] public BallPredictor m_BallPredictor;
+
+    public float risingSquash;
+    public float peakPercent = .95f;
+    public float lineLengthPercent = .15f;
+    public float currentWidth;
+    public int launchLineLength = 40;
+
+
+    int indexAlongLine = 0;
+    float throwMagnitudePortion = -1;
+
+    float defaultScale;
     bool initialized;
 
     // Use this for initialization
     void Start()
     {
-        m_Ball = GetComponentInParent<NewBall>();
-        m_Rigidbody = GetComponentInParent<Rigidbody2D>();
+        grabSquishLine  = GetComponent<GrabSquishLine>();
+        m_Ball          = GetComponentInParent<NewBall>();
+        m_Rigidbody     = GetComponentInParent<Rigidbody2D>();
+        m_BallSprite    = GetComponentInChildren<SpriteRenderer>();
+        ballMask        = GetComponentInChildren<BallSpriteMask>();
+        m_BallPredictor = GetComponentInChildren<BallPredictor>();
 
-        m_LinePointList = new List<Vector3>();
+        m_LinePointList    = new List<Vector3>();
         predictedPointList = new List<Vector3>();
 
         defaultScale = transform.root.localScale.x;
@@ -45,13 +56,18 @@ public class NewBallArtManager : MonoBehaviour
         trail.startWidth = defaultScale;
         trail.endWidth = defaultScale;
 
-        grabSquishLine = GetComponent<GrabSquishLine>();
-
         EventManager.StartListening("CleanUp", HandleDeath);
+
+        CheckLaunch();
 
         initialized = true;
     }
 
+    void CheckLaunch() {
+        if(m_Ball.IsLaunching()) {
+            GetLaunchLine();
+        }
+    }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -95,7 +111,7 @@ public class NewBallArtManager : MonoBehaviour
     {
         // overload method for setting the color directly
         myColor = newColor;
-        // ballSprite.color = myColor;
+        m_BallSprite.color = myColor;
         trail.material.color = myColor;
     }
 
@@ -103,7 +119,7 @@ public class NewBallArtManager : MonoBehaviour
     {
         int numLayersPerBall = 3;
 
-        // ballSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        m_BallSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
         trail.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
     }
 
@@ -112,28 +128,10 @@ public class NewBallArtManager : MonoBehaviour
         spriteSortIndex = newIndex;
         int numLayersPerBall = 3;
 
-        // ballSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        m_BallSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
         trail.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
     }
     #endregion
-
-    public void HandleLaunch()
-    {
-        // Debug.Log("2. Handling launch");
-        GetLaunchLine();
-    }
-
-    public void HandleCatch()
-    {
-        // ballSprite.enabled = false;
-    }
-
-    public void HandleThrow()
-    {
-        GetPredictedLine();
-
-        // ballSprite.enabled = true;
-    }
 
     bool ballDead = false;
 
@@ -142,28 +140,18 @@ public class NewBallArtManager : MonoBehaviour
         ballDead = true;
     }
 
-    void GetPredictedLine()
+    void GetPredictedLine(Vector2 throwVector)
     {
-        predictedPointList = GetComponentInParent<LinePredictor>().GetPointList();
+        Vector2 anchorPos = transform.position;
+        predictedPointList = m_BallPredictor.GetPositionList(anchorPos, throwVector);
     }
 
     void GetLaunchLine()
     {
-        // Debug.Log("3. Getting launch line);
-        launchPointList = GetComponentInParent<LinePredictor>().FindLaunchList();
-
+        Vector2 launchPos    = transform.position;
+        Vector2 launchVector = Vector2.up * NewBallManager.GetInstance().ballLaunchForce;
+        launchPointList = m_BallPredictor.GetPositionList(launchPos, launchVector);
     }
-
-    public float risingSquash;
-
-    int indexAlongLine = 0;
-
-    public float peakPercent = .95f;
-
-    float throwMagnitudePortion = -1;
-
-    public float lineLengthPercent = .15f;
-
 
     void DrawTrail()
     {
@@ -172,8 +160,6 @@ public class NewBallArtManager : MonoBehaviour
             trail.enabled = false;
             return;
         }
-
-
 
         // Rising
         if (VelocityPositive())
@@ -205,7 +191,8 @@ public class NewBallArtManager : MonoBehaviour
                 // float trailWidth = defaultScale * (1 - risingSquash * (1 - EZEasings.SmoothStart3(t))); // * throwMagnitudePortion);
                 float squashAmount = risingSquash * (1 - EZEasings.SmoothStop2(t));
                 // Debug.Log(squashAmount);
-                float trailWidth = defaultScale - squashAmount;
+                currentWidth = defaultScale - squashAmount;
+                float trailWidth = currentWidth;
                 // Debug.Log(trailWidth);
 
                 trail.startWidth = trailWidth;
@@ -298,8 +285,6 @@ public class NewBallArtManager : MonoBehaviour
         }
     }
 
-    public int launchLineLength = 50;
-
     public AnimationCurve popInAnimation;
     public float popInDuration;
 
@@ -334,9 +319,14 @@ public class NewBallArtManager : MonoBehaviour
         return trail.positionCount < 1 && !m_Ball.IsHeld();
     }
 
+    public bool trailOff = true;
+
     bool DisableTrail()
     {
         // Debug.Log(ballDead + " | " + !popInDone);
+        if(trailOff) {
+            return false;
+        }
         return ballDead || !popInDone;
     }
 

@@ -10,19 +10,19 @@ public class NewBall : MonoBehaviour
     public enum BallStage { easy, normal, hard }
     public BallStage stage;
 
+    [System.NonSerialized] public NewBallArtManager ballArtManager;
+    [System.NonSerialized] public PredictiveLineDrawer predictiveLine;
+
     Rigidbody2D rb;
 
-    // public float scale = .25f;
     public float defaultGravity = 20;
     public float drag = -0.1f;
 
-    [HideInInspector]
-    public Vector2 currentThrowVector;
+    [HideInInspector] public Vector2 currentThrowVector;
+    [HideInInspector] public bool m_BallThrown = false;
 
-    public bool m_IsHeld;
+    bool m_IsHeld;
 
-    [HideInInspector]
-    public bool m_BallThrown = false;
 
     // Endgame
     int ballCatchCount;
@@ -31,12 +31,8 @@ public class NewBall : MonoBehaviour
 
     bool canPeak = false;
 
-    [System.NonSerialized]
-    public NewBallArtManager ballArtManager;
-
     int framesSinceCatch = 0;
-    [System.NonSerialized]
-    public bool dead;
+    [System.NonSerialized] public bool dead;
 
     public bool firstBall;
 
@@ -47,11 +43,17 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = defaultGravity;
 
         ballArtManager = GetComponentInChildren<NewBallArtManager>();
+        predictiveLine = GetComponentInChildren<PredictiveLineDrawer>();
+
     }
 
     void Start() {
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
         ballColorIndex = NewBallManager._ballCount - 1;
+
+        if(firstBall) {
+            predictiveLine.EnableLine(true);
+        }
     }
 
     // Update is called once per frame
@@ -70,9 +72,7 @@ public class NewBall : MonoBehaviour
             SetBallState(BallState.falling);
 
             if(m_BallThrown && canPeak) {
-                EventManager.TriggerEvent("BallPeaked");
-                m_BallThrown = false;
-                // GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
+                Peak();               
             }
         }
 
@@ -92,24 +92,29 @@ public class NewBall : MonoBehaviour
     }
 
     public void SetBallState(BallState newState) {
+
+        BallState oldState = m_State;
+
         m_State = newState;
+
+        // Nothing has changed. break out early.
+        if(oldState == m_State) { return; }
+
+        switch(m_State) {
+            case BallState.launching:
+                break;
+        }
     }
 
-    public void GetCaughtAndThrown(Vector2 throwVector)
-    {
-        if (IsLaunching() || NewGameManager.GameOver()) { return; }
-
-        rb.velocity = Vector2.zero;
-        rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
-        rb.gravityScale = defaultGravity;
-        EventManager.TriggerEvent("BallSlapped");
+    public void UpdateThrowInfo(Vector2 throwVector) {
+        currentThrowVector = throwVector;
+        predictiveLine.DrawLine(transform.position, currentThrowVector);
     }
 
     public void GetCaught()
     {
         if (IsLaunching() || NewGameManager.GameOver()) { return; }
-
-        if(firstBall) { NewGameManager.GetInstance().StartGame(); }
+        if (firstBall)     { NewGameManager.GetInstance().StartGame(); }
 
         m_IsHeld = true;
         framesSinceCatch = 0;
@@ -117,10 +122,10 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
-        
-        ballArtManager.HandleCatch();
 
         GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
+
+        SetBallState(BallState.caught);
     }
 
     public void GetThrown(Vector2 throwVector)
@@ -134,18 +139,25 @@ public class NewBall : MonoBehaviour
 
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
-
-        ballArtManager.HandleThrow();
+        BroadcastMessage("HandleThrow");
 
         currentThrowVector = Vector2.zero;
 
         if(throwVector.y > 0) {
             canPeak = true;
+            SetBallState(BallState.rising);
         } else {
             canPeak = false;
+            SetBallState(BallState.falling);
         }
 
         NewBallManager.GetInstance().UpdateEndgame(this);
+    }
+
+    void Peak() {
+        BroadcastMessage("HandlePeak");
+        EventManager.TriggerEvent("BallPeaked");
+        m_BallThrown = false;
     }
 
     void CheckBounds()
