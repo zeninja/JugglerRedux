@@ -1,4 +1,4 @@
-﻿Shader "Custom/SpriteMaskInteraction"
+﻿Shader "Custom/SpriteMaskOutside"
 {
     Properties
     {
@@ -30,7 +30,7 @@
         Pass
         {
             Stencil {
-                Ref 1  //Customize this value
+                Ref 0  //Customize this value
                 Comp Equal //Customize the compare function
                 Pass Keep
             }

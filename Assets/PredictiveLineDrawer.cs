@@ -7,16 +7,15 @@ public class PredictiveLineDrawer : MonoBehaviour {
 	// public NewBall m_Ball;
 	public bool drawLine;
 	public LineRenderer predictiveLine;
-	public SpriteRenderer peakPoint;
+	public SpriteMask peakPoint;
 
 	public Color lineColor;
 
 	// Use this for initialization
 	void Start () {
-		// m_Ball = GetComponent<NewBall>();
 		predictiveLine = GetComponent<LineRenderer>();
-
 		predictiveLine.material.color = lineColor;
+		WarningLines.GetInstance().SetWarningMask(peakPoint);
 	}
 	
 	// Update is called once per frame
@@ -29,7 +28,6 @@ public class PredictiveLineDrawer : MonoBehaviour {
 	}
 
 	public void EnableLine(bool isDrawing) {
-		Debug.Log("Enabling line");
 		drawLine = isDrawing;
 	}
 
@@ -38,6 +36,7 @@ public class PredictiveLineDrawer : MonoBehaviour {
 		predictiveLine.positionCount = positions.Length;
 		predictiveLine.SetPositions(positions);
 		peakPoint.transform.position = positions[positions.Length - 1];
+		// WarningLines.GetInstance().
 	}
 
 	// Don't believe VSCode's lies

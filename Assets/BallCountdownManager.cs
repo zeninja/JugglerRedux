@@ -174,7 +174,9 @@ public class BallCountdownManager : MonoBehaviour
 	}
 
     public void Reset() {
-
+        foreach(CountdownTally t in tallys) {
+            Destroy(t.gameObject);
+        }
 
         tallys.Clear();
 
