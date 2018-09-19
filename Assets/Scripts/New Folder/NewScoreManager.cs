@@ -137,6 +137,8 @@ public class NewScoreManager : MonoBehaviour {
 			GameCenter.GetInstance().SetHighScore(highscore);
 			
 			yield return StartCoroutine(UpdateHighScore());
+		} else {
+			yield return new WaitForSeconds(.1f);
 		}
 	}
 

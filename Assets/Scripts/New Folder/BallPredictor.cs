@@ -5,6 +5,8 @@ using UnityEngine;
 public class BallPredictor : MonoBehaviour
 {
     List<Vector3> linePositionList = new List<Vector3>();
+    Vector2 peakPos;
+
 
     public List<Vector3> GetPositionList(Vector2 anchorPos, Vector3 currentVelocity) {
         Vector3 currentLinePoint = Vector2.zero;
@@ -35,17 +37,5 @@ public class BallPredictor : MonoBehaviour
         peakPos = linePositionList[linePositionList.Count - 1];
 
         return linePositionList;
-    }
-
-    Vector2 peakPos;
-
-    public RisingSquash risingSquash;
-
-    void HandleThrow() {
-        if(peakPos != null) {
-            risingSquash.SetPeakPos(peakPos);
-        } else {
-            Invoke("HandleThrow", Time.fixedDeltaTime);
-        }
     }
 }

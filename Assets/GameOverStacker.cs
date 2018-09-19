@@ -33,7 +33,7 @@ public class GameOverStacker : MonoBehaviour
 
 	void Update() {
 		if(Input.GetKeyDown(KeyCode.Space)) {
-			StartCoroutine(SpawnCircles(transform.position, numCircles));
+			// StartCoroutine(SpawnCircles(transform.position, numCircles));
 		}
 
 		// SetStackColors(startColor);
