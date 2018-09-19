@@ -41,7 +41,7 @@ public class ProceduralCircle : MonoBehaviour
         if(!ready) { return; }
         GetComponent<MeshRenderer>().material.color = color;
         GetComponent<MonolithMesh>().UpdateValues(anchorPos, ringPositions);
-        GetComponent<MeshRenderer>().sortingOrder =  100 - depth;
+        GetComponent<MeshRenderer>().sortingOrder = -depth;
     }
 
     void FindRingPositions()

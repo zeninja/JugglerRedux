@@ -6,8 +6,9 @@ public class GrabSquishLine : MonoBehaviour
 {
 
     public LineRenderer squishLine;
-
     NewBall ball;
+
+    float defaultScale;
 
 
     // Use this for initialization
@@ -15,6 +16,7 @@ public class GrabSquishLine : MonoBehaviour
     {
         ball = GetComponentInParent<NewBall>();
         squishLine.material.color = GetComponent<NewBallArtManager>().myColor;
+        defaultScale = NewBallManager.GetInstance().ballScale;
     }
 
     // Update is called once per frame
@@ -22,8 +24,8 @@ public class GrabSquishLine : MonoBehaviour
     {
         // Reset();
         squishLine.enabled = ShowLine();
-
-
+        
+        SquishLine(ball.currentThrowVector, defaultScale, GetThrowMagnitudePortion());
     }
 
     public float lineLength = 1f;
@@ -72,6 +74,18 @@ public class GrabSquishLine : MonoBehaviour
         squishLine.positionCount = 2;
         squishLine.SetPosition(0, startPos);
         squishLine.SetPosition(1, endPos);
+    }
+
+    float GetThrowMagnitudePortion() {
+        // Throws don't have a max throw speed, but the graphics need one to avoid getting insane??
+
+        float throwMagnitudePortion = 0;
+        float throwMagnitude = ball.currentThrowVector.magnitude;
+        float maxThrowMagnitude = NewHandManager.GetInstance().maxThrowMagnitude;
+        throwMagnitudePortion = throwMagnitude / maxThrowMagnitude;
+        throwMagnitudePortion = Mathf.Clamp01(throwMagnitudePortion);
+        
+        return throwMagnitudePortion;
     }
 
     bool ShowLine()

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class NewBall : MonoBehaviour
 {
-    public enum BallState { rising, falling, caught, launching, dead }
+    public enum BallState { rising, falling, caught, launching, dead, firstBall }
     public BallState m_State;
 
     public enum BallStage { easy, normal, hard }
     public BallStage stage;
 
-    [System.NonSerialized] public NewBallArtManager ballArtManager;
+    [System.NonSerialized] public NewBallArtManager    ballArtManager;
     [System.NonSerialized] public PredictiveLineDrawer predictiveLine;
 
     Rigidbody2D rb;
@@ -51,9 +51,9 @@ public class NewBall : MonoBehaviour
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
         ballColorIndex = NewBallManager._ballCount - 1;
 
-        if(firstBall) {
-            predictiveLine.EnableLine(true);
-        }
+        // if(firstBall) {
+        //     predictiveLine.EnableLine(true);
+        // }
     }
 
     // Update is called once per frame
@@ -108,13 +108,15 @@ public class NewBall : MonoBehaviour
 
     public void UpdateThrowInfo(Vector2 throwVector) {
         currentThrowVector = throwVector;
-        predictiveLine.DrawLine(transform.position, currentThrowVector);
+        // predictiveLine.DrawLine(transform.position, currentThrowVector);
     }
 
     public void GetCaught()
     {
         if (IsLaunching() || NewGameManager.GameOver()) { return; }
-        if (firstBall)     { NewGameManager.GetInstance().StartGame(); }
+        if (firstBall)     { NewGameManager.GetInstance().StartGame();
+                             firstBall = false; 
+                           }
 
         m_IsHeld = true;
         framesSinceCatch = 0;
@@ -122,6 +124,8 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
+
+        BroadcastMessage("HandleCatch", SendMessageOptions.DontRequireReceiver);
 
         GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
 
@@ -139,7 +143,7 @@ public class NewBall : MonoBehaviour
 
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
-        BroadcastMessage("HandleThrow");
+        BroadcastMessage("HandleThrow", SendMessageOptions.DontRequireReceiver);
 
         currentThrowVector = Vector2.zero;
 
@@ -155,7 +159,7 @@ public class NewBall : MonoBehaviour
     }
 
     void Peak() {
-        BroadcastMessage("HandlePeak");
+        BroadcastMessage("HandlePeak", SendMessageOptions.DontRequireReceiver);
         EventManager.TriggerEvent("BallPeaked");
         m_BallThrown = false;
     }

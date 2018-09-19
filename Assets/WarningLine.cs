@@ -11,11 +11,9 @@ public class WarningLine : MonoBehaviour {
 
 	[System.NonSerialized] public float offset;
 
-	public Material inside, outside;
-
 	// Use this for initialization
 	void Start () {
-		
+		GetComponent<LineRenderer>().material.renderQueue = 3000;
 	}
 	
 	// Update is called once per frame

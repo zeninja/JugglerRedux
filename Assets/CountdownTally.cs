@@ -50,4 +50,8 @@ public class CountdownTally : MonoBehaviour {
 		}
 		Destroy(gameObject);
 	}
+
+	public void SetColor(int colorIndex) {
+		GetComponent<SpriteRenderer>().color = NewBallManager.GetInstance().m_BallColors[colorIndex];
+	}
 }

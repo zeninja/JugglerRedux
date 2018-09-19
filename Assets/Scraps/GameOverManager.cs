@@ -43,7 +43,6 @@ public class GameOverManager : MonoBehaviour
         target.sortingOrder = 100;
 
         deadBallPos = ball.transform.position;
-
     }
     
     NewBall deadBall;
@@ -83,6 +82,7 @@ public class GameOverManager : MonoBehaviour
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
 
+
         // yield return StartCoroutine(CountdownScore());
 
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
@@ -93,26 +93,25 @@ public class GameOverManager : MonoBehaviour
         NewScoreManager._peakCount = 0;
         NewScoreManager._numBalls  = 0;
 
+        NewScoreManager.GetInstance().EnableScore(false);
+
         yield return StartCoroutine(InterstitalAd());
 
-        // yield return StartCoroutine(Implode());
+        yield return StartCoroutine(ShowLogo());
+
+        NewScoreManager.GetInstance().EnableScore(true);
+
+        yield return new WaitForSeconds(.15f);
     
         yield return StartCoroutine(GameOverStacker.GetInstance().ShrinkCircles());
-                Destroy(target.transform.root.gameObject);
+        
+        Destroy(target.transform.root.gameObject);
 
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
 
-    }
-
-    public static bool animatingLines = true;
-
-    IEnumerator PlayLines() {
-        while (animatingLines) {
-            yield return new WaitForFixedUpdate();
-        }
-    }
+    }  
 
     public float explodeDuration = 1.47f;
 
@@ -147,36 +146,18 @@ public class GameOverManager : MonoBehaviour
         Destroy(target.transform.root.gameObject);
     }
 
-    public float countdownDuration = 1;
-
-    IEnumerator CountdownScore()
-    {
-        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
-
-        yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
-
-        float shortDelay = countdownDuration / NewScoreManager._peakCount;        
-
-        while (NewScoreManager._peakCount > 0)
-        {
-            NewScoreManager._peakCount--;
-            yield return new WaitForSeconds(shortDelay);
-        }
-
-        yield return new WaitForSeconds(.15f);
-
-        float longDelay = countdownDuration / NewScoreManager._numBalls;
-
-        while (NewScoreManager._numBalls > 0)
-        {
-            NewScoreManager._numBalls--;
-            yield return new WaitForSeconds(longDelay);
-        }
-    }
-
     IEnumerator InterstitalAd() {
         NewAdManager.GetInstance().ShowVideoAd();
         while(NewAdManager.GetInstance().ShowingAd()) {
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public LogoAnimator logoAnimator;
+
+    IEnumerator ShowLogo() {
+        logoAnimator.ShowLogo();
+        while(logoAnimator.GetComponent<Animation>().isPlaying) {
             yield return new WaitForEndOfFrame();
         }
     }

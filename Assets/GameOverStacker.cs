@@ -33,7 +33,7 @@ public class GameOverStacker : MonoBehaviour
 
 	void Update() {
 		if(Input.GetKeyDown(KeyCode.Space)) {
-			// StartCoroutine(SpawnCircles(transform.position));
+			StartCoroutine(SpawnCircles(transform.position, numCircles));
 		}
 
 		// SetStackColors(startColor);
@@ -41,10 +41,7 @@ public class GameOverStacker : MonoBehaviour
 
 	public IEnumerator SpawnCircles(Vector2 startPos, int circleCount = 5) {
 		dots = new List<StackerDot>();
-		// scaleRanges = new Extensions.Property[circleCount];
-
 		numCircles = circleCount;
-		// numCircles = 1;
 
 		float d = totalDuration / numCircles;
 
@@ -57,7 +54,10 @@ public class GameOverStacker : MonoBehaviour
 				yield return new WaitForFixedUpdate();
 			}
 		}
-		// Debug.Log(scaleRanges.Length);
+		
+		if (GetComponent<Rainbower>() != null) {
+			GetComponent<Rainbower>().SetDots(dots);
+		}
 	}
 
     IEnumerator SpawnProceduralCircle(Vector2 startPos, float d, int i)
@@ -68,6 +68,8 @@ public class GameOverStacker : MonoBehaviour
 
 		float scalePortion  = EZEasings.Linear((float)i     / (float)numCircles);
 		float scalePortion2 = EZEasings.Linear((float)(i+1) / (float)numCircles);
+
+		// float adjustedEnd   = Extensions.ScreenToWorld()
 
 	    float scaleDifference = circleRadius.end - circleRadius.start;
 

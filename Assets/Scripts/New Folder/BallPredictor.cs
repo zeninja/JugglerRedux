@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BallPredictor : MonoBehaviour
 {
+    List<Vector3> linePositionList = new List<Vector3>();
+
     public List<Vector3> GetPositionList(Vector2 anchorPos, Vector3 currentVelocity) {
-        List<Vector3> linePositionList = new List<Vector3>();
-        Vector3       currentLinePoint         = Vector2.zero;
+        Vector3 currentLinePoint = Vector2.zero;
 
         const float dragPerFrame = -0.1f;
         Vector3 gravity = (Physics2D.gravity * Time.fixedDeltaTime);
@@ -31,6 +32,20 @@ public class BallPredictor : MonoBehaviour
             }
         }
 
+        peakPos = linePositionList[linePositionList.Count - 1];
+
         return linePositionList;
+    }
+
+    Vector2 peakPos;
+
+    public RisingSquash risingSquash;
+
+    void HandleThrow() {
+        if(peakPos != null) {
+            risingSquash.SetPeakPos(peakPos);
+        } else {
+            Invoke("HandleThrow", Time.fixedDeltaTime);
+        }
     }
 }

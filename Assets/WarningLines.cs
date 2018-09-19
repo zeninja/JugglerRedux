@@ -19,8 +19,9 @@ public class WarningLines : MonoBehaviour {
 		}
 	}
 
+	[System.NonSerialized] public SpriteMask  warningMask;
+
 	public WarningLine warningLine;
-	public SpriteMask  warningMask;
 	public Color lineColor;
 	public int numLines = 9;
 	public float lineWidth;
@@ -77,8 +78,10 @@ public class WarningLines : MonoBehaviour {
 	public void CheckMaskPosition() {
 		if(warningMask == null) { return; }
 
-		float x = 2;//Extensions.ScreenToWorld(new Vector3(Screen.width / 2, 0, 0)) .x;
-		float y = 5.5f;//Extensions.ScreenToWorld(new Vector3(0, Screen.height / 2, 0)).y;
+		Vector2 edge = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
+		float x = edge.x;
+		float y = edge.y;
 
 		if (warningMask.transform.position.x > x || warningMask.transform.position.x < -x ||
 		    warningMask.transform.position.y > y || warningMask.transform.position.y < -y) {
@@ -86,6 +89,11 @@ public class WarningLines : MonoBehaviour {
 		} else {
 			t -= maskShrinkRate;
 		}
+
+		Vector3 warningPos = warningMask.transform.position;
+		float wx = warningPos.x;
+		float wy = warningPos.y;
+		warningMask.transform.position = new Vector3(Mathf.Clamp(wx, -x, x), Mathf.Clamp(wy, -y, y), 0);
 
 		t = Mathf.Clamp01(t);
 

@@ -178,4 +178,8 @@ public class NewScoreManager : MonoBehaviour {
 
 		scoreText.color = scoreColor;
 	}
+
+	public void EnableScore(bool val) {
+		scoreText.gameObject.SetActive(val);
+	}
 }

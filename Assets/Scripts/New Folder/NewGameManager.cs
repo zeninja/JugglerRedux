@@ -58,7 +58,7 @@ public class NewGameManager : MonoBehaviour {
 			case GameState.ballSpawn:
 				Debug.Log("Spawn ball");
 				NewBallManager.GetInstance().SpawnFirstBall();
-				BallCountdownManager.GetInstance().SetUpCountdown();
+				// BallCountdownManager.GetInstance().SetUpCountdown();
 				break;
 
 			case GameState.preGame:
@@ -69,6 +69,7 @@ public class NewGameManager : MonoBehaviour {
 
 			case GameState.gameOn:
 				// pregameTrail.EnableTrail(false);
+				// BallCountdownManager.GetInstance().SetUpCountdown();
 				break;
 
 			case GameState.gameOver:
@@ -79,6 +80,7 @@ public class NewGameManager : MonoBehaviour {
 
 	public void StartGame() {
 		SetState(GameState.gameOn);
+		BallCountdownManager.GetInstance().SetUpCountdown();
 	}
 
 	void HandleGameOver() {
@@ -95,7 +97,7 @@ public class NewGameManager : MonoBehaviour {
 
 	public void ResetGame() {
 		NewScoreManager.GetInstance().Reset();
-		BallCountdownManager.GetInstance().Reset();
+		// BallCountdownManager.GetInstance().Reset();
 		SetState(GameState.ballSpawn);
 	}
 

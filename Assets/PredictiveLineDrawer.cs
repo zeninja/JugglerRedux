@@ -15,16 +15,19 @@ public class PredictiveLineDrawer : MonoBehaviour {
 	void Start () {
 		predictiveLine = GetComponent<LineRenderer>();
 		predictiveLine.material.color = lineColor;
-		WarningLines.GetInstance().SetWarningMask(peakPoint);
+		// WarningLines.GetInstance().SetWarningMask(peakPoint);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(NewGameManager.GameOver()) { return; }
+		if(NewGameManager.GameOver()) { 
+			Destroy(peakPoint);
+			return; 
+		}
 		// if(peakPoint == null) { return; }
 
-		predictiveLine.enabled = drawLine;
-		peakPoint.enabled      = drawLine;
+		predictiveLine.enabled = false;
+		// peakPoint.enabled      = drawLine;
 	}
 
 	public void EnableLine(bool isDrawing) {

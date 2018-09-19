@@ -48,6 +48,7 @@ public class BallCountdownManager : MonoBehaviour
 
 	void Start() {
 		EventManager.StartListening("BallPeaked", PopOutTally);
+        EventManager.StartListening("CleanUp", Clear);
 
         xSpacing =  spacing;
         ySpacing = -spacing;
@@ -57,7 +58,7 @@ public class BallCountdownManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SetCountdownNumber(countdownToNextball);
+            // SetCountdownNumber(countdownToNextball);
         }
 
         if (ballsInstantiated)
@@ -107,6 +108,7 @@ public class BallCountdownManager : MonoBehaviour
             y += yOffset;
 
             c.transform.position = transform.TransformPoint(new Vector2(x, y));
+            c.SetColor(NewBallManager._ballCount);
 
             tallys.Add(c);
 
@@ -173,13 +175,14 @@ public class BallCountdownManager : MonoBehaviour
 		SetCountdownNumber(5);
 	}
 
-    public void Reset() {
+    public void Clear() {
         foreach(CountdownTally t in tallys) {
             Destroy(t.gameObject);
         }
 
         tallys.Clear();
 
-        Debug.Log("Clreaing");
+        // Debug.Log("Clreaing");
+        // Debug.Break();
     }
 }

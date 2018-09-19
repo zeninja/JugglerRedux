@@ -152,9 +152,35 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114918194941495588, guid: a5f582815a7ebe54297d23f17552273a,
+        type: 2}
+      propertyPath: numCircles
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5f582815a7ebe54297d23f17552273a, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1176177190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1217251342215846, guid: a5f582815a7ebe54297d23f17552273a,
+    type: 2}
+  m_PrefabInternal: {fileID: 639928222}
+--- !u!114 &1176177193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1176177190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54222702229544ba73777fb653c26c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colors:
+  - {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
+  - {r: 0.90588236, g: 0.6770959, b: 0.29019606, a: 1}
+  - {r: 0.89590687, g: 0.90588236, b: 0.29019606, a: 1}
+  timeBetweenBows: 0.075
 --- !u!1 &1542626115
 GameObject:
   m_ObjectHideFlags: 0

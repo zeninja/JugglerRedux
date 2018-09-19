@@ -54,6 +54,15 @@ public class Extensions : MonoBehaviour {
     {
         return p.start + (p.end - p.start) * EZEasings.SmoothStep3(t);
     }
+	
+
+	public static IEnumerator Wait(float d) {
+		float t = 0;
+		while (t < d) {
+			t += Time.fixedDeltaTime;
+			yield return new WaitForFixedUpdate();
+		}
+	}
 
 	// Range Map
 	// (in, inStart, inEnd, outStart, outEnd) 
