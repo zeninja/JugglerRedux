@@ -69,8 +69,10 @@ public class GameOverManager : MonoBehaviour
     {
         NewBallManager.GetInstance().FreezeBalls();
         // NewBallManager.GetInstance().PrepGameOver();
+        NewScoreManager.GetInstance().CheckHighscore();
 
         GameOverStacker.GetInstance().SetStackColors(deadBall.ballArtManager.myColor);
+        GameOverStacker.GetInstance().SetGameOverDotCount();
         yield return StartCoroutine(GameOverStacker.GetInstance().SpawnCircles(deadBallPos));
 
         // yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));

@@ -37,23 +37,32 @@ public class ScreenInfo : MonoBehaviour
 		world_BL = new Vector2( w/2, -h/2);
 		world_BR = new Vector2(-w/2, -h/2);
 
-        // StartCoroutine(SpawnPoints());
+        
+    }
+
+    public bool debug;
+    
+    void Start() {
+        if(debug) {
+            StartCoroutine(SpawnPoints());
+
+        }
     }
 
     public GameObject dot;
 
-    // IEnumerator SpawnPoints() {
-	// 	GameObject d1 = Instantiate (dot) as GameObject;
-    //     d1.transform.position = world_TL;
-    //     yield return new WaitForSeconds(.5f);
-	// 	GameObject d2 = Instantiate (dot) as GameObject;
-    //     d2.transform.position = world_TR;
-    //     yield return new WaitForSeconds(.5f);
-	// 	GameObject d3 = Instantiate (dot) as GameObject;
-    //     d3.transform.position = world_BL;
-    //     yield return new WaitForSeconds(.5f);
-	// 	GameObject d4 = Instantiate (dot) as GameObject;
-    //     d4.transform.position = world_BR;
-    //     yield return new WaitForSeconds(.5f);
-    // }
+    IEnumerator SpawnPoints() {
+		GameObject d1 = Instantiate (dot) as GameObject;
+        d1.transform.position = world_TL;
+        yield return new WaitForSeconds(.5f);
+		GameObject d2 = Instantiate (dot) as GameObject;
+        d2.transform.position = world_TR;
+        yield return new WaitForSeconds(.5f);
+		GameObject d3 = Instantiate (dot) as GameObject;
+        d3.transform.position = world_BL;
+        yield return new WaitForSeconds(.5f);
+		GameObject d4 = Instantiate (dot) as GameObject;
+        d4.transform.position = world_BR;
+        yield return new WaitForSeconds(.5f);
+    }
 }

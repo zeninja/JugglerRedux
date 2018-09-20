@@ -39,7 +39,8 @@ public class BallSprite : MonoBehaviour {
 	// }
 
 	public void UpdateToHard() {
-		GetComponent<SpriteRenderer>().sprite = hardSprite;
+		m_Sprite.sprite = hardSprite;
+		peakSprite.sprite = hardSprite;
 	}
 
 	IEnumerator Peak() {

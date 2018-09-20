@@ -22,6 +22,12 @@ public class NewScoreManager : MonoBehaviour {
 		}
 	}
 
+	public class Score {
+		public int balls;
+		public int peaks;
+		public float airtime;
+	}
+
 	public static int _numBalls;
 	// public static int _catchCount;
 	public static int _peakCount;
@@ -110,10 +116,25 @@ public class NewScoreManager : MonoBehaviour {
 		_numBalls = 0;
 
 		currentScoreString = _numBalls.ToString() + "." + _peakCount.ToString();
+		newHighscore = false;
 	}
 
 	public static float GetProgressPercent() {
 		return _progress;
+	}
+
+	public static bool newHighscore;
+
+	public void CheckHighscore() {
+		Debug.Log("Checking highscore");
+
+		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _peakCount.ToString()));
+		highscore = PlayerPrefs.GetFloat(highScoreKey);
+
+		Debug.Log(currentScore + " | " +  highscore);
+
+		newHighscore = currentScore > highscore;
+		Debug.Log(newHighscore);
 	}
 
 	public IEnumerator HighscoreProcess() {
@@ -122,9 +143,9 @@ public class NewScoreManager : MonoBehaviour {
 
 		_lastPeakCount = _peakCount;
 
-		Debug.Log(currentScore + " | " +  highscore);
+		// Debug.Log(currentScore + " | " +  highscore);
 
-		if(currentScore > highscore) {
+		if(newHighscore) {
 			// Debug.Log("UPDATING HIGH SCORE");
 
 			highscore = currentScore;

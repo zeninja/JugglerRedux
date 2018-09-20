@@ -16,6 +16,8 @@ public class StackerDot : MonoBehaviour {
 		GetComponent<ProceduralCircle>().anchorPos = anchor;
 		GetComponent<ProceduralCircle>().color = dotColor;
 		GetComponent<ProceduralCircle>().depth = depth;
+
+		startColor = dotColor;
 	}
 
 	public void SetColor(Color dotColor) {
@@ -45,5 +47,10 @@ public class StackerDot : MonoBehaviour {
 		colorIndex = (colorIndex + 1 ) % colors.Length;
 
 		StartCoroutine(Rainbow());
+	}
+
+	public void ReturnToDefaultColor() {
+		Debug.Log("Resturning to start");
+		SetColor(startColor);
 	}
 }

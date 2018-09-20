@@ -4,46 +4,92 @@ using UnityEngine;
 
 public class Rainbower : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+	public List<StackerDot> dots;
+	public Color[] colors;
+	public float waveProgressionRate = .125f;
+
+
+	void Start() {
+		PrepWave();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.R)) {
-			StartRainbow();
+			// StartRainbow();
 			// StartCoroutine(StartRainbow());
+
+			StartCoroutine(Wave(waveDuration));
 		}
 	}
-	
-	List<StackerDot> dots;
 
 	public void SetDots(List<StackerDot> a_dots) {
 		dots = a_dots;
 	}
 
-	public Color[] colors;
-	public float timeBetweenBows = .125f;
-
-	public void StartRainbow() {
-
+	void PrepWave() {
 		if(NewBallManager.GetInstance() != null) {
-			Debug.Log("Setting colors");
 			colors = new Color[NewBallManager._ballCount];
-			colors = NewBallManager.GetInstance().m_BallColors;
+
+			for(int i = 0; i < NewBallManager._ballCount; i++) {
+				colors[i] = NewBallManager.GetInstance().m_BallColors[i];
+			}
 		}
+	}
 
-		for(int i = 0; i < dots.Count; i++) {
-			StartCoroutine(dots[i].StartRainbow(colors, i * timeBetweenBows));
 
-			// dots[i].StartRainbow(colors, i)
-			// yield return StartCoroutine(Extensions.Wait(timeBetweenBows));
+	IEnumerator Wave() {
+		int index = 0;
+		int waveRings = colors.Length;
+
+		while ( index < dots.Count + waveRings) {
+			// Progress through every dot in the stack
+			for(int i = 0; i < dots.Count; i++) {
+
+				// int waveIndex = index - waveRings;
+
+				// Adjust the set of rings in the wave
+				for (int j = 0; j < waveRings; j++) {
+					if (index - j >= 0  && index - j < dots.Count) {
+						dots[index - j].SetColor(colors[j]);
+					}
+				}
+
+
+				Debug.Log(index - waveRings);
+
+				// Reset rings that have been passed in the wave
+				if(i <= index - waveRings) {
+					dots[i].ReturnToDefaultColor();
+				}
+			}
+			yield return StartCoroutine(Extensions.Wait(waveProgressionRate));
+			index++;
 		}
+	}
 
-		// for(int i = 0; i < dots.Count; i++) {
-		// 	dots[i].EndRainbow();
-		// 	yield return StartCoroutine(Extensions.Wait(timeBetweenBows));
-		// }
+	public float waveDuration = .3f;
+
+	IEnumerator Wave(float duration) {
+		int waveRings = colors.Length;
+		int iterations = dots.Count + waveRings;
+		float split = duration / (float)iterations;
+
+		for(int index = 0; index < iterations; index++) {
+			for(int i = 0; i < dots.Count; i++) {
+				// Adjust the set of rings in the wave
+				for (int j = 0; j < waveRings; j++) {
+					if (index - j >= 0  && index - j < dots.Count) {
+						dots[index - j].SetColor(colors[j]);
+					}
+				}
+
+				// Reset rings that have been passed in the wave
+				if(i <= index - waveRings) {
+					dots[i].ReturnToDefaultColor();
+				}
+			}
+			yield return StartCoroutine(Extensions.Wait(split));
+		}
 	}
 }
