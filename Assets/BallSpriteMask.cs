@@ -27,7 +27,7 @@ public class BallSpriteMask : MonoBehaviour
         switch (m_Ball.m_State)
         {
             case NewBall.BallState.rising:
-				UpdateWidth(art.currentWidth);
+				// UpdateWidth(art.currentWidth);
 			    break;
             case NewBall.BallState.falling:
                 UpdateWidth(defaultScale);

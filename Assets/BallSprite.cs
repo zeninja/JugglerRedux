@@ -7,9 +7,14 @@ public class BallSprite : MonoBehaviour {
 	NewBall m_Ball;
 	SpriteRenderer m_Sprite;
 
+	public SpriteMask peakMask;
+	public SpriteRenderer peakSprite;
+
+	public Sprite hardSprite;
+
 	// Use this for initialization
 	void Start () {
-		m_Ball = GetComponentInParent<NewBall>();
+		m_Ball   = GetComponentInParent<NewBall>();
 		m_Sprite = GetComponent<SpriteRenderer>();
 
 		peakSprite.color = GetComponentInParent<NewBallArtManager>().myColor;
@@ -19,20 +24,23 @@ public class BallSprite : MonoBehaviour {
 	void FixedUpdate () {
 		m_Sprite.enabled = m_Ball.m_State == NewBall.BallState.rising  ||
 						   m_Ball.m_State == NewBall.BallState.falling ||
-						   m_Ball.m_State == NewBall.BallState.firstBall;
-		
-		if(m_Sprite.enabled == false && m_Ball.m_State != NewBall.BallState.caught && m_Ball.m_State != NewBall.BallState.launching) {
-			Debug.Log("breaking");
-			Debug.Break();
-		}
+						   m_Ball.m_State == NewBall.BallState.firstBall ||
+						   m_Ball.m_State == NewBall.BallState.launching;
 	}
 
+	// Called via Broadcast message
 	public void HandlePeak() {
+		peakSprite.color = m_Sprite.color;
 		StartCoroutine(Peak());
 	}
 
-	public SpriteMask peakMask;
-	public SpriteRenderer peakSprite;
+	// public void UpdateToNormal() {
+		
+	// }
+
+	public void UpdateToHard() {
+		GetComponent<SpriteRenderer>().sprite = hardSprite;
+	}
 
 	IEnumerator Peak() {
 		peakMask.transform.localScale   = Vector2.zero;
@@ -62,5 +70,9 @@ public class BallSprite : MonoBehaviour {
 		peakMask.enabled = false;
 		peakSprite.enabled = false;
 
+	}
+
+	public void AdjustDepth() {
+		m_Sprite.sortingOrder = GetComponentInParent<NewBallArtManager>().currentDepth;
 	}
 }

@@ -49,8 +49,6 @@ public class NewBallManager : MonoBehaviour
     public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed = BallSpawnSpeed.med;
 
-    // public static bool allowSlaps;
-
     public int juggleThreshold = 3;
 
     public Vector2 ballSpawnPos;
@@ -59,8 +57,6 @@ public class NewBallManager : MonoBehaviour
     void Start()
     {
         EventManager.StartListening("SpawnBall", SpawnBall);
-        // EventManager.StartListening("BallCaught", CheckBallLaunch);
-        // EventManager.StartListening("BallSlapped", CheckBallLaunch);
         EventManager.StartListening("BallPeaked", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
 
@@ -126,7 +122,6 @@ public class NewBallManager : MonoBehaviour
     }
 
     int xSwitcher = 1;
-
     public Vector2 spawnPos;
     public void SpawnFirstBall() {
         if(firstBall) { return; }
@@ -143,7 +138,6 @@ public class NewBallManager : MonoBehaviour
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
         ball.GetComponentInChildren<NewBallArtManager>().PopInAnimation();
         firstBall = ball;
-
 
         balls.Add(ball);
         _ballCount++;
@@ -207,23 +201,11 @@ public class NewBallManager : MonoBehaviour
 
     public static int endgameBallCount = 9;
 
-    public void UpdateEndgame(NewBall nb)
+    public void UpdateEndgame(NewBall b)
     {
         if (_ballCount == endgameBallCount)
         {
-
-            Debug.Log("1. ball count equal");
-            if (!AllBallsUnitedAtIndex(endgameBallCount))
-            {
-                Debug.Log("2. " + nb.ballColorIndex + " | " + endgameBallCount);
-
-                if (nb.ballColorIndex < endgameBallCount)
-                {
-                    Debug.Log("3. updating color");
-                    nb.ballColorIndex++;
-                    nb.UpdateColor();
-                }
-            }
+            b.UpdateStage();
         }
     }
 
@@ -255,16 +237,12 @@ public class NewBallManager : MonoBehaviour
         _ballCount = 0;
     }
 
-    public bool AllBallsUnitedAtIndex(int index)
-    {
-        foreach (NewBall b in balls)
-        {
-            if (b.ballColorIndex != index)
-            {
+    public bool AllBallsNormal() {
+        foreach (NewBall b in balls) {
+            if(b.stage != NewBall.BallStage.normal) {
                 return false;
             }
         }
-
         return true;
     }
 

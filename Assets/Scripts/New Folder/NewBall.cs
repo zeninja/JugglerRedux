@@ -10,7 +10,7 @@ public class NewBall : MonoBehaviour
     public enum BallStage { easy, normal, hard }
     public BallStage stage;
 
-    [System.NonSerialized] public NewBallArtManager    ballArtManager;
+    [System.NonSerialized] public NewBallArtManager ballArtManager;
     [System.NonSerialized] public PredictiveLineDrawer predictiveLine;
 
     Rigidbody2D rb;
@@ -47,7 +47,8 @@ public class NewBall : MonoBehaviour
 
     }
 
-    void Start() {
+    void Start()
+    {
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
         ballColorIndex = NewBallManager._ballCount - 1;
 
@@ -59,20 +60,21 @@ public class NewBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetMouseButtonDown(1))
         {
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
         }
-        #endif
+#endif
 
         if (rb.velocity.y < 0)
         {
             SetBallState(BallState.falling);
 
-            if(m_BallThrown && canPeak) {
-                Peak();               
+            if (m_BallThrown && canPeak)
+            {
+                Peak();
             }
         }
 
@@ -91,22 +93,18 @@ public class NewBall : MonoBehaviour
         rb.AddForce(force);
     }
 
-    public void SetBallState(BallState newState) {
+    public void SetBallState(BallState newState)
+    {
 
         BallState oldState = m_State;
-
         m_State = newState;
 
         // Nothing has changed. break out early.
-        if(oldState == m_State) { return; }
-
-        switch(m_State) {
-            case BallState.launching:
-                break;
-        }
+        if (oldState == m_State) { return; }
     }
 
-    public void UpdateThrowInfo(Vector2 throwVector) {
+    public void UpdateThrowInfo(Vector2 throwVector)
+    {
         currentThrowVector = throwVector;
         // predictiveLine.DrawLine(transform.position, currentThrowVector);
     }
@@ -114,21 +112,21 @@ public class NewBall : MonoBehaviour
     public void GetCaught()
     {
         if (IsLaunching() || NewGameManager.GameOver()) { return; }
-        if (firstBall)     { NewGameManager.GetInstance().StartGame();
-                             firstBall = false; 
-                           }
+        if (firstBall)
+        {
+            NewGameManager.GetInstance().StartGame();
+            firstBall = false;
+        }
 
         m_IsHeld = true;
         framesSinceCatch = 0;
-        
+
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
 
         BroadcastMessage("HandleCatch", SendMessageOptions.DontRequireReceiver);
-
         GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
-
         SetBallState(BallState.caught);
     }
 
@@ -147,21 +145,24 @@ public class NewBall : MonoBehaviour
 
         currentThrowVector = Vector2.zero;
 
-        if(throwVector.y > 0) {
+        if (throwVector.y > 0)
+        {
             canPeak = true;
             SetBallState(BallState.rising);
-        } else {
+        }
+        else
+        {
             canPeak = false;
             SetBallState(BallState.falling);
         }
-
-        NewBallManager.GetInstance().UpdateEndgame(this);
     }
 
-    void Peak() {
+    void Peak()
+    {
         BroadcastMessage("HandlePeak", SendMessageOptions.DontRequireReceiver);
         EventManager.TriggerEvent("BallPeaked");
         m_BallThrown = false;
+        NewBallManager.GetInstance().UpdateEndgame(this);
     }
 
     void CheckBounds()
@@ -178,11 +179,13 @@ public class NewBall : MonoBehaviour
         }
     }
 
-    public bool CaughtJustNow() {
+    public bool CaughtJustNow()
+    {
         return framesSinceCatch < 1;
     }
 
-    void KillThisBall() {
+    void KillThisBall()
+    {
         FreezeBall();
         ballArtManager.HandleDeath();
         GameOverManager.GetInstance().SetTargetBall(this);
@@ -190,7 +193,8 @@ public class NewBall : MonoBehaviour
         // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
 
-    public void FreezeBall() {
+    public void FreezeBall()
+    {
         rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
     }
@@ -200,27 +204,59 @@ public class NewBall : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void UpdateColor() {
-        if(ballColorIndex < NewBallManager.endgameBallCount) {
-            // Debug.Log( ballColorIndex);
-            ballColorIndex++;
-            ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
-        }
+    void SetBallStage(BallStage newStage)
+    {
+        stage = newStage;
+        UpdateStage();
     }
 
-    public bool IsHeld() {
+    public void UpdateStage()
+    {
+
+        switch (stage)
+        {
+            case BallStage.easy:
+                if (ballColorIndex < NewBallManager.endgameBallCount)
+                {
+                    ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
+                    ballColorIndex++;
+                } else {
+                    SetBallStage(BallStage.normal);
+                }
+                break;
+
+            case BallStage.normal:
+                ballArtManager.UpdateToNormal();
+
+                if(NewBallManager.GetInstance().AllBallsNormal()) {
+                    SetBallStage(BallStage.normal);
+                }
+                break;
+        
+            case BallStage.hard:
+                ballArtManager.UpdateToHard();
+                break;
+        }
+
+    }
+
+    public bool IsHeld()
+    {
         return m_IsHeld;
     }
 
-    public bool IsFalling() {
+    public bool IsFalling()
+    {
         return m_State == BallState.falling;
     }
 
-    public bool IsLaunching() {
+    public bool IsLaunching()
+    {
         return m_State == BallState.launching;
     }
 
-    public bool IsRising() {
+    public bool IsRising()
+    {
         return m_State == BallState.rising;
     }
 }
