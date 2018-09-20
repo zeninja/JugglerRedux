@@ -18,6 +18,8 @@ public class BallSprite : MonoBehaviour {
 		m_Sprite = GetComponent<SpriteRenderer>();
 
 		peakSprite.color = GetComponentInParent<NewBallArtManager>().myColor;
+
+		EventManager.StartListening("CleanUp", DisableSprite);
 	}
 	
 	// Update is called once per frame
@@ -34,9 +36,9 @@ public class BallSprite : MonoBehaviour {
 		StartCoroutine(Peak());
 	}
 
-	// public void UpdateToNormal() {
-		
-	// }
+	void DisableSprite() {
+		gameObject.SetActive(false);
+	}
 
 	public void UpdateToHard() {
 		m_Sprite.sprite = hardSprite;

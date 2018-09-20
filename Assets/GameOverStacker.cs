@@ -55,12 +55,14 @@ public class GameOverStacker : MonoBehaviour
 
 	public float[] floats;
 
+	Vector2 targetPos;
+
 	float FindOuterRadius() {
 		floats = new float[4];
-		floats[0] = Vector3.Distance(ScreenInfo.world_TL, (Vector2)transform.position);
-		floats[1] = Vector3.Distance(ScreenInfo.world_TR, (Vector2)transform.position);
-		floats[2] = Vector3.Distance(ScreenInfo.world_BL, (Vector2)transform.position);
-		floats[3] = Vector3.Distance(ScreenInfo.world_BR, (Vector2)transform.position);
+		floats[0] = Vector3.Distance(ScreenInfo.world_TL, targetPos);
+		floats[1] = Vector3.Distance(ScreenInfo.world_TR, targetPos);
+		floats[2] = Vector3.Distance(ScreenInfo.world_BL, targetPos);
+		floats[3] = Vector3.Distance(ScreenInfo.world_BR, targetPos);
 		
 		float max = Mathf.Max(floats) * 2;
 
@@ -130,6 +132,7 @@ public class GameOverStacker : MonoBehaviour
     IEnumerator SpawnProceduralCircle(Vector2 startPos, float d, int i)
     {
         float t = 0;
+		targetPos = startPos;
 
 		float evenScalePortion = (float)i     / (float)numCircles;
 
