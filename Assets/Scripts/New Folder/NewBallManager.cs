@@ -41,7 +41,7 @@ public class NewBallManager : MonoBehaviour
 
     public int ballSpeedIndex;  // used to choose a SET, ie: slow, normal, fast
     int scoreIndex;             // used to trigger the ball spawn, the index of the score WITHIN one set
-    int[] ballSpawnScores;
+    public int[] ballSpawnScores;
     int[] slowBallSpawnScores = new int[] { 5, 10, 25, 50, 75, 100, 125 };
     int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70, 99 };
     int[] fastBallSpawnScores = new int[] { 5, 10, 20, 35, 50, 65, 80, 99 };
@@ -60,7 +60,7 @@ public class NewBallManager : MonoBehaviour
         EventManager.StartListening("BallPeaked", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
 
-        ballSpawnScores = normalBallSpawnScores;
+        ballSpawnScores = fastBallSpawnScores;
     }
 
     // Update is called once per frame
@@ -165,7 +165,9 @@ public class NewBallManager : MonoBehaviour
 
             ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
 
-            BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
+            if(scoreIndex < ballSpawnScores.Length) {
+                BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
+            }
         }
     }
 
@@ -205,7 +207,7 @@ public class NewBallManager : MonoBehaviour
     {
         if (_ballCount == endgameBallCount)
         {
-            b.UpdateStage();
+            b.ProcessStageTransition();
         }
     }
 
@@ -237,12 +239,17 @@ public class NewBallManager : MonoBehaviour
         _ballCount = 0;
     }
 
+    bool keepChecking;
+
     public bool AllBallsNormal() {
+        if(!keepChecking) { return true; }
+
         foreach (NewBall b in balls) {
             if(b.stage != NewBall.BallStage.normal) {
                 return false;
             }
         }
+        keepChecking = false;
         return true;
     }
 

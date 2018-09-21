@@ -1538,20 +1538,20 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &470640453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 470640452}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d644fcb8a5b9e42408f4bc03843e83f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   triggerHeight: -2
-  throwVector: {x: 0, y: 5}
+  throwVector: {x: 0, y: 10.28}
 --- !u!4 &470640454
 Transform:
   m_ObjectHideFlags: 0
@@ -3993,6 +3993,11 @@ MonoBehaviour:
   - {r: 0.90588236, g: 0.6770959, b: 0.29019606, a: 1}
   - {r: 0.89590687, g: 0.90588236, b: 0.29019606, a: 1}
   waveProgressionRate: 0.125
+  numBalls: 0
+  completion: 0
+  tideDuration:
+    start: 0
+    end: 0
   waveDuration: 0.3
 --- !u!1 &1176613939
 GameObject:
@@ -4750,6 +4755,7 @@ MonoBehaviour:
   - {r: 0.9058824, g: 0.6784314, b: 0.83921576, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   ballSpeedIndex: 1
+  ballSpawnScores: 
   ballSpawnSpeed: 2
   juggleThreshold: 1
   ballSpawnPos: {x: 1, y: 0}
@@ -5011,6 +5017,7 @@ MonoBehaviour:
   startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
   scaleRanges: []
   shrinkDuration: 0.175
+  manualTrigger: 0
   floats: []
 --- !u!1 &1407683388
 GameObject:

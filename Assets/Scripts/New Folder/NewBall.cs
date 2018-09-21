@@ -207,10 +207,24 @@ public class NewBall : MonoBehaviour
     void SetBallStage(BallStage newStage)
     {
         stage = newStage;
-        UpdateStage();
+        switch (stage)
+        {
+            case BallStage.easy:
+
+                break;
+
+            case BallStage.normal:
+                ballArtManager.UpdateToNormal();
+                break;
+        
+            case BallStage.hard:
+                ballArtManager.UpdateToHard();
+                break;
+        }
+
     }
 
-    public void UpdateStage()
+    public void ProcessStageTransition()
     {
 
         switch (stage)
@@ -223,13 +237,12 @@ public class NewBall : MonoBehaviour
                 } else {
                     SetBallStage(BallStage.normal);
                 }
+
                 break;
 
             case BallStage.normal:
-                ballArtManager.UpdateToNormal();
-
                 if(NewBallManager.GetInstance().AllBallsNormal()) {
-                    SetBallStage(BallStage.normal);
+                    SetBallStage(BallStage.hard);
                 }
                 break;
         

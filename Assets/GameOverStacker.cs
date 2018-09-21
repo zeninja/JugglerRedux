@@ -29,10 +29,12 @@ public class GameOverStacker : MonoBehaviour
 		SetStackColors(startColor);
 	}
 
+	public bool manualTrigger = false;
+
 	void Update() {
 		SetCircleRadius();
 
-		if(Input.GetKeyDown(KeyCode.Space)) {
+		if(Input.GetKeyDown(KeyCode.Space) && manualTrigger) {
 			StartCoroutine(SpawnCircles(transform.position, numCircles));
 		}
 	}
@@ -70,7 +72,7 @@ public class GameOverStacker : MonoBehaviour
 
 		// float test = ScreenInfo.pixel_TL - Camera.main.WorldToScreenPoint(transform.position);
 
-		Debug.Log(max);
+		// Debug.Log(max);
 		return max;
 	}
 
@@ -139,7 +141,7 @@ public class GameOverStacker : MonoBehaviour
 		float scalePortion  = EZEasings.Linear((float)i     / (float)numCircles);
 		float scalePortion2 = EZEasings.Linear((float)(i+1) / (float)numCircles);
 
-		Debug.Log(scalePortion2);
+		// Debug.Log(scalePortion2);
 
 		// float adjustedEnd   = Extensions.ScreenToWorld()
 

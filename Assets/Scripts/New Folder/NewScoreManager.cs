@@ -74,7 +74,6 @@ public class NewScoreManager : MonoBehaviour {
 	}
 
 	void SetHighscoreText() {
-		
 		highScoreText.text = highScoreString;
 	}
 	
@@ -97,7 +96,7 @@ public class NewScoreManager : MonoBehaviour {
 		// Debug.Log("caught");
 		// scoreText.text = currentScoreString;
 		// _catchCount++;
-		// _progress = Mathf.Min((float)_catchCount / (float)_maxCatchCount, 1.0f) ;
+		// _progress = Mathf.Min((float)_catchCount / (float)_maxCatchCount, 1.0f);
 	}
 
 	void OnBallSlapped() {
