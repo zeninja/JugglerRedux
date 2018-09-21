@@ -13,6 +13,8 @@ public class GameOverManager : MonoBehaviour
     SpriteRenderer target;
     NewScoreManager scoreManger;
 
+    // GameOverStacker gameOverStacker;
+
     void Awake()
     {
         if (instance == null)
@@ -34,12 +36,23 @@ public class GameOverManager : MonoBehaviour
         scoreManger = GetComponent<NewScoreManager>();
     }
 
-    public void SetTargetBall(SpriteRenderer s, Vector2 ballPos) {
-        target = s;
+    public void SetTargetBall(NewBall ball) {
+        deadBall = ball;
+        target = deadBall.ballArtManager.m_BallSprite;
         target.enabled = true;
         target.sortingOrder = 100;
-        deadBallPos = ballPos;
+
+        deadBallPos = ball.transform.position;
     }
+    
+    NewBall deadBall;
+
+    // public void SetTargetBall(SpriteRenderer s, Vector2 ballPos) {
+    //     target = s;
+    //     target.enabled = true;
+    //     target.sortingOrder = 100;
+    //     deadBallPos = ballPos;
+    // }
 
     Vector2 deadBallPos;
 
@@ -48,37 +61,57 @@ public class GameOverManager : MonoBehaviour
         StartCoroutine(GameOver());
     }
 
+    // public void SetGameOverStacker(GameOverStacker g) {
+    //     gameOverStacker = g;
+    // }
+
     IEnumerator GameOver()
     {
         NewBallManager.GetInstance().FreezeBalls();
-        
-        yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
+        // NewBallManager.GetInstance().PrepGameOver();
 
-        yield return StartCoroutine(Explode());
+        GameOverStacker.GetInstance().SetStackColors(deadBall.ballArtManager.myColor);
+        yield return StartCoroutine(GameOverStacker.GetInstance().SpawnCircles(deadBallPos));
+
+        // yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
+
+        // yield return StartCoroutine(Explode());
 
         // yield return StartCoroutine(BallExplosionManager.GetInstance().ExplodeBall());
         
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
 
-        yield return StartCoroutine(CountdownScore());
+
+        // yield return StartCoroutine(CountdownScore());
+
+        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
+        yield return new WaitForSeconds(.15f);
+        yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
+        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
+
+        NewScoreManager._peakCount = 0;
+        NewScoreManager._numBalls  = 0;
+
+        NewScoreManager.GetInstance().EnableScore(false);
 
         yield return StartCoroutine(InterstitalAd());
 
-        yield return StartCoroutine(Implode());
+        yield return StartCoroutine(ShowLogo());
+
+        NewScoreManager.GetInstance().EnableScore(true);
+
+        yield return new WaitForSeconds(.15f);
+    
+        yield return StartCoroutine(GameOverStacker.GetInstance().ShrinkCircles());
+        
+        Destroy(target.transform.root.gameObject);
+
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
 
-    }
-
-    public static bool animatingLines = true;
-
-    IEnumerator PlayLines() {
-        while (animatingLines) {
-            yield return new WaitForFixedUpdate();
-        }
-    }
+    }  
 
     public float explodeDuration = 1.47f;
 
@@ -113,36 +146,18 @@ public class GameOverManager : MonoBehaviour
         Destroy(target.transform.root.gameObject);
     }
 
-    public float countdownDuration = 1;
-
-    IEnumerator CountdownScore()
-    {
-        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PrepEffect(target));
-
-        yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
-
-        float shortDelay = countdownDuration / NewScoreManager._peakCount;        
-
-        while (NewScoreManager._peakCount > 0)
-        {
-            NewScoreManager._peakCount--;
-            yield return new WaitForSeconds(shortDelay);
-        }
-
-        yield return new WaitForSeconds(.15f);
-
-        float longDelay = countdownDuration / NewScoreManager._numBalls;
-
-        while (NewScoreManager._numBalls > 0)
-        {
-            NewScoreManager._numBalls--;
-            yield return new WaitForSeconds(longDelay);
-        }
-    }
-
     IEnumerator InterstitalAd() {
         NewAdManager.GetInstance().ShowVideoAd();
         while(NewAdManager.GetInstance().ShowingAd()) {
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public LogoAnimator logoAnimator;
+
+    IEnumerator ShowLogo() {
+        logoAnimator.ShowLogo();
+        while(logoAnimator.GetComponent<Animation>().isPlaying) {
             yield return new WaitForEndOfFrame();
         }
     }

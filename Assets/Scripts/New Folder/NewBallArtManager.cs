@@ -7,51 +7,79 @@ public class NewBallArtManager : MonoBehaviour
 
     List<Vector3> m_LinePointList;
     List<Vector3> predictedPointList;
-    List<Vector3> launchPointList;
-    // List<Vector3> m_LineSegment;
+    List<Vector3> launchPointList = new List<Vector3>();
     int m_LineLength = 5;
 
     NewBall m_Ball;
     Rigidbody2D m_Rigidbody;
 
-    [System.NonSerialized]
-    public Color myColor;
+    GrabSquishLine grabSquishLine;
 
-    [System.NonSerialized]
-    public int spriteSortIndex;
-
-    // public SpriteRenderer ballSprite;
+    public SpriteRenderer m_BallSprite;
     public LineRenderer trail;
+    
+    [System.NonSerialized] public Color myColor;
+    [System.NonSerialized] public int spriteSortIndex;
+    [System.NonSerialized] public BallSpriteMask ballMask;
+    public BallPredictor m_BallPredictor;
+
+    public float risingSquash;
+    public float peakPercent = .95f;
+    public float lineLengthPercent = .15f;
+    public float currentWidth;
+    public int launchLineLength = 40;
+
+
+    int indexAlongLine = 0;
+    float throwMagnitudePortion = -1;
 
     float defaultScale;
-    public SpriteRenderer gameOverBallSprite;
-
-    GrabSquishLine grabSquishLine;
+    bool initialized;
 
     // Use this for initialization
     void Start()
     {
-        m_Ball = GetComponentInParent<NewBall>();
-        m_Rigidbody = GetComponentInParent<Rigidbody2D>();
+        grabSquishLine  = GetComponent<GrabSquishLine>();
+        m_Ball          = GetComponentInParent<NewBall>();
+        m_Rigidbody     = GetComponentInParent<Rigidbody2D>();
+        m_BallSprite    = GetComponentInChildren<SpriteRenderer>();
+        ballMask        = GetComponentInChildren<BallSpriteMask>();
+        m_BallPredictor = GetComponentInChildren<BallPredictor>();
 
-        m_LinePointList = new List<Vector3>();
+        m_LinePointList    = new List<Vector3>();
         predictedPointList = new List<Vector3>();
 
         defaultScale = transform.root.localScale.x;
 
-        trail.sortingLayerName = "Default";
-        trail.useWorldSpace = true;
-        trail.startWidth = defaultScale;
-        trail.endWidth = defaultScale;
+        // trail.sortingLayerName = "Default";
+        // trail.useWorldSpace = true;
+        // trail.startWidth = defaultScale;
+        // trail.endWidth = defaultScale;
 
-        grabSquishLine = GetComponent<GrabSquishLine>();
+        EventManager.StartListening("CleanUp", HandleDeath);
+
+        CheckLaunch();
+
+        initialized = true;
     }
 
+    void CheckLaunch() {
+        if(m_Ball.IsLaunching()) {
+            GetLaunchLine();
+        }
+    }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        DrawTrail();
+        if (!initialized) { return; }
+
+        // CheckBallState();
+    }
+
+    void ActivateSprite()
+    {
+        // m_BallSprite.enabled = (!m_Ball.IsHeld() && !VelocityPositive()) || BallPeaking();
     }
 
     #region util
@@ -63,7 +91,8 @@ public class NewBallArtManager : MonoBehaviour
         SetDepth();
     }
 
-    public void PopInAnimation() {
+    public void PopInAnimation()
+    {
         StartCoroutine(PopIn());
     }
 
@@ -71,9 +100,8 @@ public class NewBallArtManager : MonoBehaviour
     {
         spriteSortIndex = Mathf.Clamp(spriteSortIndex, 0, 8);
         myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
-        gameOverBallSprite.color = myColor;
-        trail.material.color = myColor;
-        trail.material.color = myColor;
+        m_BallSprite.color = myColor;
+        // trail.material.color = myColor;
 
         GetComponent<SpriteCircleEffectSpawner>().effectColor = myColor;
     }
@@ -82,16 +110,16 @@ public class NewBallArtManager : MonoBehaviour
     {
         // overload method for setting the color directly
         myColor = newColor;
-        // ballSprite.color = myColor;
-        trail.material.color = myColor;
+        m_BallSprite.color = myColor;
+        // trail.material.color = myColor;
     }
 
     public void SetDepth()
     {
         int numLayersPerBall = 3;
 
-        // ballSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
-        trail.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
+        m_BallSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        // trail.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
     }
 
     public void SetDepth(int newIndex)
@@ -99,28 +127,10 @@ public class NewBallArtManager : MonoBehaviour
         spriteSortIndex = newIndex;
         int numLayersPerBall = 3;
 
-        // ballSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
-        trail.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
+        m_BallSprite.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 3); // Up front
+        // trail.sortingOrder = spriteSortIndex * numLayersPerBall - (numLayersPerBall - 2);
     }
     #endregion
-
-    public void HandleLaunch()
-    {
-        // Debug.Log("2. Handling launch");
-        GetLaunchLine();
-    }
-
-    public void HandleCatch()
-    {
-        // ballSprite.enabled = false;
-    }
-
-    public void HandleThrow()
-    {
-        GetPredictedLine();
-
-        // ballSprite.enabled = true;
-    }
 
     bool ballDead = false;
 
@@ -129,100 +139,37 @@ public class NewBallArtManager : MonoBehaviour
         ballDead = true;
     }
 
-    void GetPredictedLine()
+    void GetPredictedLine(Vector2 throwVector)
     {
-        predictedPointList = GetComponentInParent<LinePredictor>().GetPointList();
+        Vector2 anchorPos = transform.position;
+        predictedPointList = m_BallPredictor.GetPositionList(anchorPos, throwVector);
     }
 
-    void GetLaunchLine() {
-        // Debug.Log("3. Getting launch line");
-        launchPointList = GetComponentInParent<LinePredictor>().FindLaunchList();
+    void GetLaunchLine()
+    {
+        Vector2 launchPos    = transform.position;
+        Vector2 launchVector = Vector2.up * NewBallManager.GetInstance().ballLaunchForce;
 
+        // if(m_BallPredictor == null) {
+        //     m_BallPredictor = GetComponentInChildren<BallPredictor>();
+        // }
+        // Debug.Log(launchPointList);
+
+        launchPointList = m_BallPredictor.GetPositionList(launchPos, launchVector);
     }
-
-    public float risingSquash;
-
-    int indexAlongLine = 0;
-
-    public float peakPercent = .95f;
-
-    float throwMagnitudePortion = -1;
-
 
     void DrawTrail()
     {
         if (DisableTrail())
         {
-            trail.enabled = false;
+            // trail.enabled = false;
             return;
         }
 
         // Rising
         if (VelocityPositive())
         {
-            if (m_Ball.m_BallThrown)
-            {
-                // Debug.Log("Thrown");
-
-                // 1. Add the most recent position;
-                m_LinePointList.Add(transform.position);
-
-                // 2. Set the line length;
-                float lineSegmentPercent = .35f;
-                int maxLineLength = (int)(predictedPointList.Count * lineSegmentPercent);
-                indexAlongLine++;
-                float t = (float)indexAlongLine / ((float)predictedPointList.Count * peakPercent);
-                t = Mathf.Clamp01(t);
-
-                float percent = EZEasings.Arch2(t);
-                m_LineLength = (int)(percent * maxLineLength);
-
-                // 3. Trim the line
-                TrimLine();
-
-                // 4. Set the line
-                trail.positionCount = m_LinePointList.Count;
-                trail.SetPositions(m_LinePointList.ToArray());
-
-                trail.startWidth = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
-                trail.endWidth = defaultScale * (1 - risingSquash * percent * throwMagnitudePortion);
-
-            }
-            else if (m_Ball.m_Launching)
-            {
-                // Debug.Log("Launching: " + launchPointList.Count);
-
-                // 1. Add the most recent position;
-                m_LinePointList.Add(transform.position);
-
-                // 2. Set the line length;
-                int maxLineLength = launchLineLength;
-
-                indexAlongLine++;
-                float t = (float)indexAlongLine / ((float)launchPointList.Count * peakPercent);
-                t = Mathf.Clamp01(t);
-
-                float percent = EZEasings.Arch2(t);
-                m_LineLength = (int)(percent * maxLineLength);
-
-                // float percent = 0;
-                // m_LineLength = maxLineLength;
-
-                // 3. Trim the line
-                TrimLine();
-
-                // 4. Set the line
-                trail.positionCount = m_LinePointList.Count;
-                trail.SetPositions(m_LinePointList.ToArray());
-
-                // Adjust the width
-                // trail.startWidth = defaultScale * (1 - risingSquash * percent);
-                // trail.endWidth   = defaultScale * (1 - risingSquash * percent);
-            }
-
-
-            trail.enabled = true;
-
+            
         }
         else
         {
@@ -234,40 +181,42 @@ public class NewBallArtManager : MonoBehaviour
                 throwMagnitudePortion = throwMagnitude / maxThrowMagnitude;
                 throwMagnitudePortion = Mathf.Clamp01(throwMagnitudePortion);
 
-                grabSquishLine.SquishLine(m_Ball.currentThrowVector, defaultScale, throwMagnitudePortion);
-                trail.enabled = false;
+                // grabSquishLine.SquishLine(m_Ball.currentThrowVector, defaultScale, throwMagnitudePortion);
+                // trail.enabled = false;
 
             }
             else
             {
                 // Falling
                 m_LinePointList.Clear();
-                trail.startWidth = defaultScale;
-                trail.endWidth = defaultScale;
-                trail.positionCount = 2;
-                trail.SetPosition(0, transform.position);
-                trail.SetPosition(1, transform.position);
-                trail.enabled = true;
+                // trail.startWidth = defaultScale;
+                // trail.endWidth = defaultScale;
+                // trail.positionCount = 2;
+                // trail.SetPosition(0, transform.position);
+                // trail.SetPosition(1, transform.position);
+                // trail.enabled = true;
+                // grabSquishLine.Reset();
             }
-
             indexAlongLine = 0;
         }
+
+        // if(trail.positionCount < 1) {
+        //     Debug.Log(m_Rigidbody.velocity.y);
+        // }
     }
 
-    void TrimLine()
-    {
-        if (m_LinePointList.Count > m_LineLength)
-        {
-            int iter = 0;
-            while (m_LinePointList.Count > m_LineLength && iter < 100)
-            {
-                m_LinePointList.RemoveAt(0);
-                iter++;
-            }
-        }
-    }
-
-    public int launchLineLength = 50;
+    // void TrimLine()
+    // {
+    //     if (m_LinePointList.Count > m_LineLength)
+    //     {
+    //         int iter = 0;
+    //         while (m_LinePointList.Count > m_LineLength && iter < 100)
+    //         {
+    //             m_LinePointList.RemoveAt(0);
+    //             iter++;
+    //         }
+    //     }
+    // }
 
     public AnimationCurve popInAnimation;
     public float popInDuration;
@@ -297,9 +246,96 @@ public class NewBallArtManager : MonoBehaviour
         return m_Rigidbody.velocity.y > 0;
     }
 
+    bool BallPeaking() {
+        // return false;
+        // return trail.positionCount < 1;
+        return trail.positionCount < 1 && !m_Ball.IsHeld();
+    }
+
+    public bool trailOff = true;
+
     bool DisableTrail()
     {
         // Debug.Log(ballDead + " | " + !popInDone);
+        if(trailOff) {
+            return false;
+        }
         return ballDead || !popInDone;
+    }
+
+    // public void PrepGameOver() {
+    //     trail.sortingOrder =trail 
+    // }
+
+    void DrawRisingTrailOld() {
+                    // if (m_Ball.m_BallThrown)
+            // {
+            //     // Debug.Log("Thrown");
+
+            //     // 1. Add the most recent position;
+            //     m_LinePointList.Add(transform.position);
+
+            //     // 2. Set the line length;
+            //     int maxLineLength = (int)(predictedPointList.Count * lineLengthPercent);
+            //     indexAlongLine++;
+            //     float t = (float)indexAlongLine / ((float)predictedPointList.Count * peakPercent);
+            //     t = Mathf.Clamp01(t);
+
+            //     float percent = EZEasings.Arch2(t);
+            //     m_LineLength = (int)(percent * maxLineLength);
+
+            //     // 3. Trim the line
+            //     TrimLine();
+
+            //     // 4. Set the line
+            //     trail.positionCount = m_LinePointList.Count;
+            //     trail.SetPositions(m_LinePointList.ToArray());
+
+            //     // 5. Adjust trail width
+            //     // float trailWidth = defaultScale * (1 - risingSquash * (1 - EZEasings.SmoothStart3(t))); // * throwMagnitudePortion);
+            //     float squashAmount = risingSquash * (1 - EZEasings.SmoothStop2(t));
+            //     // Debug.Log(squashAmount);
+            //     currentWidth = defaultScale - squashAmount;
+            //     float trailWidth = currentWidth;
+            //     // Debug.Log(trailWidth);
+
+            //     trail.startWidth = trailWidth;
+            //     trail.endWidth   = trailWidth;
+
+            //     Debug.Log(trail.positionCount);
+            // }
+            // else if (m_Ball.IsLaunching())
+            // {
+            //     // Debug.Log("Launching: " + launchPointList.Count);
+
+            //     // 1. Add the most recent position;
+            //     m_LinePointList.Add(transform.position);
+
+            //     // 2. Set the line length;
+            //     int maxLineLength = launchLineLength;
+
+            //     indexAlongLine++;
+            //     float t = (float)indexAlongLine / ((float)launchPointList.Count * peakPercent);
+            //     t = Mathf.Clamp01(t);
+
+            //     float percent = EZEasings.Arch2(t);
+            //     m_LineLength = (int)(percent * maxLineLength);
+
+            //     // float percent = 0;
+            //     // m_LineLength = maxLineLength;
+
+            //     // 3. Trim the line
+            //     TrimLine();
+
+            //     // 4. Set the line
+            //     trail.positionCount = m_LinePointList.Count;
+            //     trail.SetPositions(m_LinePointList.ToArray());
+
+            //     // Adjust the width
+            //     // trail.startWidth = defaultScale * (1 - risingSquash * percent);
+            //     // trail.endWidth   = defaultScale * (1 - risingSquash * percent);
+            // }
+
+            // trail.enabled = true;
     }
 }

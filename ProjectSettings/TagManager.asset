@@ -44,6 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 4284581913
     locked: 0
+  - name: Warning
+    uniqueID: 2360983475
+    locked: 0
   - name: Pattern
     uniqueID: 1087607561
     locked: 0
@@ -53,6 +56,9 @@ TagManager:
   - name: Effects
     uniqueID: 856773013
     locked: 0
+  - name: Countdown
+    uniqueID: 2449821543
+    locked: 0
   - name: Balls
     uniqueID: 4092015211
     locked: 0
@@ -61,6 +67,9 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 150301983
+    locked: 0
+  - name: GameOver
+    uniqueID: 3464574511
     locked: 0
   - name: Topmost
     uniqueID: 1058539291

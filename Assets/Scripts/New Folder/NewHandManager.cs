@@ -27,6 +27,8 @@ public class NewHandManager : MonoBehaviour
 
     public float maxThrowMagnitude;
 
+    public static bool dragUpToThrow = true;
+
 
     List<int> m_FingerIdList = new List<int>();
 

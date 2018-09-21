@@ -51,12 +51,12 @@ public class BackgroundLineEffect : MonoBehaviour
     {
         UpdateLines();
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            SetBGLineAlpha(.5f);
-        }
+        // if (Input.GetKeyDown(KeyCode.D))
+        // {
+        //     SetBGLineAlpha(.5f);
+        // }
 
-		SetBGLineAlpha(TimeManager.timeScalePercent);
+		// SetBGLineAlpha(TimeManager.timeScalePercent);
     }
 
 

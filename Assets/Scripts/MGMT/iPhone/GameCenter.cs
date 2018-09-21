@@ -8,8 +8,10 @@ using UnityEngine.SocialPlatforms.GameCenter;
 public class GameCenter : MonoBehaviour {
 
 	string leaderboardID = "unset";
-	string iphoneString  = "highscore_iphone";
-	string ipadString    = "highscore_ipad";
+	// string iphoneString  = "highscore_iphone";
+	// string ipadString    = "highscore_ipad";
+
+	string peaks = "highscore_peaks";
 
 //	public static string get10Pts	   = "Get10Pts";		// achievement ID in itunes Connect
 //	public static string get100Pts	   = "Get100Pts";		// achievement ID in itunes Connect
@@ -42,14 +44,16 @@ public class GameCenter : MonoBehaviour {
 			Social.localUser.Authenticate (ProcessAuthentication);
 		}
 
-		#if UNITY_IPHONE
-		Debug.Log("Set string to iphone string");
-		leaderboardID = iphoneString;
-		#endif
+		// #if UNITY_IPHONE
+		// Debug.Log("Set string to iphone string");
+		// leaderboardID = iphoneString;
+		// #endif
 
-		#if UNITY_IPAD
-		leaderboardID = ipadString;
-		#endif
+		// #if UNITY_IPAD
+		// leaderboardID = ipadString;
+		// #endif
+
+		leaderboardID = peaks;
 	}
 
 	// This function gets called when Authenticate completes
@@ -84,22 +88,34 @@ public class GameCenter : MonoBehaviour {
 		return;
 		#endif
  
-		string s1 = string.Format("{0:0.0}",score); // "123.0"
-		string s2 = string.Format("{0:0.00}",score); // "123.50"
+		// string s1 = string.Format("{0:0.0}",score); // "123.0"
+		// string s2 = string.Format("{0:0.00}",score); // "123.50"
+		// string s3 = string.Format("{0:0.000}",score); // "123.500"
 
-		string s = "";
+		// string s = "";
+		// string end = "";
 
-		if(s1 == score.ToString()) {
-			Debug.Log("FOUND SINGLE DECIMAL");
-			s = s1;
-		} else {
-			Debug.Log("FOUND DOUBLE DECIMAL");
-			s = s2;
-		}
+		// if(s1 == score.ToString()) {
+		// 	Debug.Log("FOUND SINGLE DECIMAL");
+		// 	s = s1;
+		// 	end = "_1x";
+		// } else if(s2 == score.ToString()) {
+		// 	Debug.Log("FOUND DOUBLE DECIMAL");
+		// 	s = s2;
+		// 	end = "_2x";
+		// } else {
+		// 	Debug.Log("FOUND TRIPLE DECIMAL");
+		// 	s = s3;
+		// 	end = "_3x";
+		// }
 
+		// id = id + end;
 
-		// Debug.Log ("Reporting score " + score + " on leaderboard " + id);
-		Social.ReportScore (long.Parse(s.Replace(".", "")), id, success => {
+		// long.Parse(s.Replace(".", ""))
+
+		Debug.Log ("Reporting score " + score + " on leaderboard " + id);
+		
+		Social.ReportScore ((long)score, id, success => {
 			Debug.Log(success ? "Reported score successfully" : "Failed to report score");
 		});
 	}

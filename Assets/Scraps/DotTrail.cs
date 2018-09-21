@@ -20,10 +20,10 @@ public class DotTrail : MonoBehaviour {
 	float nextDrawTime;
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		bool velocityPositive = GetComponent<NewBallArtManager>().VelocityPositive();
 		// Debug.Log(velocityPositive);
-		drawTrail = !velocityPositive && TimeManager.TimeSlowing() && NewBallManager._ballCount > 1;
+		drawTrail = !velocityPositive && TimeManager.TimeSlowing() && NewBallManager._ballCount >= 1 && !GetComponentInParent<NewBall>().IsHeld();
 		// drawTrail = !velocityPositive;
 		if(drawTrail) {
 			if(Time.time > nextDrawTime) {

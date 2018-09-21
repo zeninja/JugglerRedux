@@ -6,7 +6,7 @@ public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver };
 
 public class NewGameManager : MonoBehaviour {
 
-	public static GameState gameState = GameState.preGame;
+	public static GameState gameState = GameState.ballSpawn;
 	public GameState debugState;
 
 	#region instance
@@ -16,7 +16,7 @@ public class NewGameManager : MonoBehaviour {
 	}
 	#endregion
 
-	PregameTrailSpawner pregameTrail;
+	// PregameTrailSpawner pregameTrail;
 
 	void Awake() {
 		Application.targetFrameRate = 120;
@@ -29,7 +29,7 @@ public class NewGameManager : MonoBehaviour {
 			}
 		}
 
-		pregameTrail = GetComponent<PregameTrailSpawner>();
+		// pregameTrail = GetComponent<PregameTrailSpawner>();
 
 		EventManager.StartListening("BallDied", HandleGameOver);
 	}
@@ -56,17 +56,20 @@ public class NewGameManager : MonoBehaviour {
 			// 	MonolithManager.GetInstance().Initialize();
 			// 	break;
 			case GameState.ballSpawn:
+				Debug.Log("Spawn ball");
 				NewBallManager.GetInstance().SpawnFirstBall();
+				// BallCountdownManager.GetInstance().SetUpCountdown();
 				break;
 
 			case GameState.preGame:
-				NewBallManager.GetInstance().SpawnFirstBall();
-				pregameTrail.SetPosition();
-				pregameTrail.EnableTrail(true);
+				// NewBallManager.GetInstance().SpawnFirstBall();
+				// pregameTrail.SetPosition();
+				// pregameTrail.EnableTrail(true);
 				break;
 
 			case GameState.gameOn:
-				pregameTrail.EnableTrail(false);
+				// pregameTrail.EnableTrail(false);
+				// BallCountdownManager.GetInstance().SetUpCountdown();
 				break;
 
 			case GameState.gameOver:
@@ -77,10 +80,15 @@ public class NewGameManager : MonoBehaviour {
 
 	public void StartGame() {
 		SetState(GameState.gameOn);
+		BallCountdownManager.GetInstance().SetUpCountdown();
 	}
 
 	void HandleGameOver() {
 		SetState(GameState.gameOver);
+	}
+
+	public static bool PreGame() {
+		return NewGameManager.gameState == GameState.preGame;
 	}
 
 	public static bool GameOver() {
@@ -89,6 +97,7 @@ public class NewGameManager : MonoBehaviour {
 
 	public void ResetGame() {
 		NewScoreManager.GetInstance().Reset();
+		// BallCountdownManager.GetInstance().Reset();
 		SetState(GameState.ballSpawn);
 	}
 

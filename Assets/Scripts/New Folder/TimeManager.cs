@@ -62,7 +62,7 @@ public class TimeManager : MonoBehaviour
         if (NewBallManager.GetInstance().JuggleThresholdReached() || Input.GetKey(KeyCode.LeftShift))
         {
             timeSlowing = true;
-            m_SlowTimeScale = Extensions.GetSmoothStepRange(slowTimeScaleRange, NewBallManager._ballCount / 9);
+            m_SlowTimeScale = Extensions.GetSmoothStepRange(slowTimeScaleRange, (float)NewBallManager._ballCount / (float)9);
             m_TargetTimeScale = m_SlowTimeScale;
         }
         else
@@ -75,7 +75,6 @@ public class TimeManager : MonoBehaviour
 
         Time.timeScale = Mathf.Lerp(Time.timeScale, m_TargetTimeScale, Time.deltaTime * m_TimeSmoothing);
         m_CurrentTimeScale = Time.timeScale;
-        // Debug.Log(m_CurrentTimeScale);
 
         timeScalePercent = 1 - (m_CurrentTimeScale - m_SlowTimeScale) / (m_NormalTimeScale - m_SlowTimeScale);
         // Debug.Log(timeScalePercent);

@@ -11,7 +11,7 @@ public class MonolithMesh : MonoBehaviour
     Vector3[] normals;
     int numVerts;
 
-    public Vector2 anchorPos;
+    Vector2 anchorPos;
 
 
     void Awake()
@@ -32,7 +32,7 @@ public class MonolithMesh : MonoBehaviour
 
         vertList.Insert(0, anchorPos);
         verts = vertList.ToArray();
-   		numVerts = verts.Length;
+   		numVerts = vertList.Count;
         tris = new int[(numVerts * 3)];
 
         MakeMesh();
@@ -63,8 +63,6 @@ public class MonolithMesh : MonoBehaviour
         // } 
     }
 
-    public Vector3 normal;
-
     void UpdateMesh()
     {
 		mesh.Clear();
@@ -73,6 +71,4 @@ public class MonolithMesh : MonoBehaviour
         // mesh.normals = normals;
 		mesh.RecalculateNormals();
     }
-
-	public GUIStyle style;
 }

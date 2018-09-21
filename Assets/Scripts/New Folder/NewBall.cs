@@ -4,23 +4,25 @@ using UnityEngine;
 
 public class NewBall : MonoBehaviour
 {
+    public enum BallState { rising, falling, caught, launching, dead, firstBall }
+    public BallState m_State;
+
+    public enum BallStage { easy, normal, hard }
+    public BallStage stage;
+
+    [System.NonSerialized] public NewBallArtManager    ballArtManager;
+    [System.NonSerialized] public PredictiveLineDrawer predictiveLine;
+
     Rigidbody2D rb;
 
-    // public float scale = .25f;
     public float defaultGravity = 20;
     public float drag = -0.1f;
 
-    [HideInInspector]
-    public bool canBeCaught = false;
-    // [HideInInspector]
-    public bool m_Launching;
-    [HideInInspector]
-    public Vector2 currentThrowVector;
+    [HideInInspector] public Vector2 currentThrowVector;
+    [HideInInspector] public bool m_BallThrown = false;
 
-    public bool m_IsHeld;
+    bool m_IsHeld;
 
-    [HideInInspector]
-    public bool m_BallThrown = false;
 
     // Endgame
     int ballCatchCount;
@@ -29,11 +31,8 @@ public class NewBall : MonoBehaviour
 
     bool canPeak = false;
 
-    NewBallArtManager ballArtManager;
-
     int framesSinceCatch = 0;
-    [System.NonSerialized]
-    public bool dead;
+    [System.NonSerialized] public bool dead;
 
     public bool firstBall;
 
@@ -44,33 +43,40 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = defaultGravity;
 
         ballArtManager = GetComponentInChildren<NewBallArtManager>();
+        predictiveLine = GetComponentInChildren<PredictiveLineDrawer>();
+
     }
 
     void Start() {
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
+        ballColorIndex = NewBallManager._ballCount - 1;
+
+        // if(firstBall) {
+        //     predictiveLine.EnableLine(true);
+        // }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        #if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(1))
         {
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
         }
+        #endif
 
         if (rb.velocity.y < 0)
         {
-            m_Launching = false;
+            SetBallState(BallState.falling);
 
             if(m_BallThrown && canPeak) {
-                EventManager.TriggerEvent("BallPeaked");
-                m_BallThrown = false;
-                // GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
+                Peak();               
             }
         }
 
-        if (!m_Launching)
+        if (!IsLaunching())
         {
             CheckBounds();
         }
@@ -85,21 +91,32 @@ public class NewBall : MonoBehaviour
         rb.AddForce(force);
     }
 
-    public void GetCaughtAndThrown(Vector2 throwVector)
-    {
-        if (m_Launching || NewGameManager.GameOver()) { return; }
+    public void SetBallState(BallState newState) {
 
-        rb.velocity = Vector2.zero;
-        rb.AddForce(throwVector * rb.mass, ForceMode2D.Impulse);
-        rb.gravityScale = defaultGravity;
-        EventManager.TriggerEvent("BallSlapped");
+        BallState oldState = m_State;
+
+        m_State = newState;
+
+        // Nothing has changed. break out early.
+        if(oldState == m_State) { return; }
+
+        switch(m_State) {
+            case BallState.launching:
+                break;
+        }
+    }
+
+    public void UpdateThrowInfo(Vector2 throwVector) {
+        currentThrowVector = throwVector;
+        // predictiveLine.DrawLine(transform.position, currentThrowVector);
     }
 
     public void GetCaught()
     {
-        if (m_Launching || NewGameManager.GameOver()) { return; }
-
-        if(firstBall) { NewGameManager.GetInstance().StartGame(); }
+        if (IsLaunching() || NewGameManager.GameOver()) { return; }
+        if (firstBall)     { NewGameManager.GetInstance().StartGame();
+                             firstBall = false; 
+                           }
 
         m_IsHeld = true;
         framesSinceCatch = 0;
@@ -107,15 +124,17 @@ public class NewBall : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
-        
-        ballArtManager.HandleCatch();
+
+        BroadcastMessage("HandleCatch", SendMessageOptions.DontRequireReceiver);
 
         GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
+
+        SetBallState(BallState.caught);
     }
 
     public void GetThrown(Vector2 throwVector)
     {
-        if (m_Launching || NewGameManager.GameOver()) { return; }
+        if (IsLaunching() || NewGameManager.GameOver()) { return; }
 
         m_IsHeld = false;
         rb.velocity = Vector2.zero;
@@ -124,16 +143,25 @@ public class NewBall : MonoBehaviour
 
         m_BallThrown = true;
         EventManager.TriggerEvent("BallThrown");
+        BroadcastMessage("HandleThrow", SendMessageOptions.DontRequireReceiver);
 
-        ballArtManager.HandleThrow();
+        currentThrowVector = Vector2.zero;
 
         if(throwVector.y > 0) {
             canPeak = true;
+            SetBallState(BallState.rising);
         } else {
             canPeak = false;
+            SetBallState(BallState.falling);
         }
 
-        // NewBallManager.GetInstance().UpdateEndgame(this);
+        NewBallManager.GetInstance().UpdateEndgame(this);
+    }
+
+    void Peak() {
+        BroadcastMessage("HandlePeak", SendMessageOptions.DontRequireReceiver);
+        EventManager.TriggerEvent("BallPeaked");
+        m_BallThrown = false;
     }
 
     void CheckBounds()
@@ -157,7 +185,7 @@ public class NewBall : MonoBehaviour
     void KillThisBall() {
         FreezeBall();
         ballArtManager.HandleDeath();
-        GameOverManager.GetInstance().SetTargetBall(ballArtManager.gameOverBallSprite, transform.position);
+        GameOverManager.GetInstance().SetTargetBall(this);
         EventManager.TriggerEvent("BallDied");
         // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
@@ -172,16 +200,27 @@ public class NewBall : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // public void UpdateColor() {
-    //     if(ballColorIndex < NewBallManager.GetInstance().m_BallColors.Length - 1) {
-    //         Debug.Log(ballColorIndex);
-    //         GetComponent<NewBallArtManager>().SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
-    //     } else {
-    //         GetComponent<NewBallArtManager>().SetColor(Color.black);
-    //     }
-    // }
+    public void UpdateColor() {
+        if(ballColorIndex < NewBallManager.endgameBallCount) {
+            // Debug.Log( ballColorIndex);
+            ballColorIndex++;
+            ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
+        }
+    }
 
     public bool IsHeld() {
         return m_IsHeld;
+    }
+
+    public bool IsFalling() {
+        return m_State == BallState.falling;
+    }
+
+    public bool IsLaunching() {
+        return m_State == BallState.launching;
+    }
+
+    public bool IsRising() {
+        return m_State == BallState.rising;
     }
 }

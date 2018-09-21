@@ -122,7 +122,7 @@ public class NewScoreManager : MonoBehaviour {
 
 		_lastPeakCount = _peakCount;
 
-		// Debug.Log(currentScore + " | " +  highscore);
+		Debug.Log(currentScore + " | " +  highscore);
 
 		if(currentScore > highscore) {
 			// Debug.Log("UPDATING HIGH SCORE");
@@ -137,6 +137,8 @@ public class NewScoreManager : MonoBehaviour {
 			GameCenter.GetInstance().SetHighScore(highscore);
 			
 			yield return StartCoroutine(UpdateHighScore());
+		} else {
+			yield return new WaitForSeconds(.1f);
 		}
 	}
 
@@ -177,5 +179,9 @@ public class NewScoreManager : MonoBehaviour {
 		}
 
 		scoreText.color = scoreColor;
+	}
+
+	public void EnableScore(bool val) {
+		scoreText.gameObject.SetActive(val);
 	}
 }

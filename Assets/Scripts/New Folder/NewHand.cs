@@ -24,8 +24,6 @@ public class NewHand : MonoBehaviour
     List<Vector2> m_PositionHistory;
 
     [System.NonSerialized] public float grabThrowForce = 4;
-    [System.NonSerialized] public float slapThrowForce = 10;
-
 
     public float vibeDuration = .05f;
 
@@ -41,12 +39,10 @@ public class NewHand : MonoBehaviour
         if (useMouse)
         {
             grabThrowForce = NewHandManager.GetInstance().mouseGrabThrowForce;
-            slapThrowForce = NewHandManager.GetInstance().mouseSlapThrowForce;
         }
         else
         {
             grabThrowForce = NewHandManager.GetInstance().touchGrabThrowForce;
-            slapThrowForce = NewHandManager.GetInstance().touchSlapThrowForce;
         }
 
         m_PositionHistory = new List<Vector2>();
@@ -115,11 +111,6 @@ public class NewHand : MonoBehaviour
                         ThrowBall();
                     }
                 }
-                else
-                {
-                    SlapBall();
-                    // GrabBall();
-                }
             }
         }
 
@@ -163,10 +154,6 @@ public class NewHand : MonoBehaviour
                                 ThrowBall();
                             }
                         }
-                        else if (t.phase != TouchPhase.Ended)
-                        {
-                            SlapBall();
-                        }
                     }
                 }
                 else
@@ -193,30 +180,6 @@ public class NewHand : MonoBehaviour
         }
     }
 
-    // void CheckForBall()
-    // {
-    //     float radius = GetComponent<CircleCollider2D>().radius;
-
-    //     RaycastHit2D hit = Physics2D.CircleCast(m_Transform.position, radius, Vector2.zero);
-
-    //     // Only catch one ball at a time
-    //     if (hit && m_Ball == null)
-    //     {
-    //         if (hit.collider.gameObject.CompareTag("Ball"))
-    //         {
-    //             // Debug.Log("Hit a ball");
-    //             NewBall ballToJuggle = hit.collider.gameObject.GetComponent<NewBall>();
-
-    //             // only catch balls that are not launching
-    //             if (!ballToJuggle.m_Launching)
-    //             {
-    //                 // Debug.Log("Setting ball");
-    //                 SetBall(ballToJuggle);
-    //             }
-    //         }
-    //     }
-    // }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (m_Ball == null)
@@ -224,8 +187,7 @@ public class NewHand : MonoBehaviour
             if (other.CompareTag("Ball"))
             {
                 NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
-                if (!ballToJuggle.m_Launching) { 
-                    // Debug.Log("Set a new ball");
+                if (!ballToJuggle.IsLaunching()) { 
                     SetBall(ballToJuggle);
                 }
             }
@@ -235,17 +197,15 @@ public class NewHand : MonoBehaviour
     void SetBall(NewBall caughtBall)
     {
         m_Ball = caughtBall;
-        // Debug.Break();
     }
 
     void FindGrabThrowVector()
     {
-        m_GrabMoveDir = (Vector2)m_Transform.position - m_CatchPosition;
-
-        // if(m_GrabMoveDir.magnitude > maxThrowMagnitude) 
-
+        int throwDirectionModifier = NewHandManager.dragUpToThrow ? 1 : -1;
+        m_GrabMoveDir = ((Vector2)m_Transform.position - m_CatchPosition) * throwDirectionModifier;
         m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
-        m_Ball.currentThrowVector = m_GrabThrowVector;
+
+        m_Ball.UpdateThrowInfo(m_GrabThrowVector);
     }
 
     void GrabBall()
@@ -258,28 +218,13 @@ public class NewHand : MonoBehaviour
             // CatchRing m_CatchRing = GetComponentInChildren<CatchRing>();
             Color ballColor = m_Ball.GetComponentInChildren<NewBallArtManager>().myColor;
             m_CatchRing.SetBallColor(ballColor);
+            
             Vibrator.Vibrate(vibeDuration);
-
-            m_Ball.GetComponent<LinePredictor>().HandleCatch(this);
         }
-    }
-
-    void SlapBall()
-    {
-        // if(!NewBallManager.allowSlaps) { return; }
-
-        // // Debug.Log("Ball slapped");
-        // m_SlapThrowVector = m_MostRecentMoveDir * slapThrowForce;
-        // // Debug.Log("Slapping. Slap vector: " + m_SlapThrowVector);
-        // m_Ball.GetComponent<NewBall>().GetCaughtAndThrown(m_SlapThrowVector);
-        // HandleDeath();
     }
 
     void ThrowBall()
     {
-        // TODO: CLEAN UP
-        m_Ball.GetComponent<LinePredictor>().HandleThrow();
-
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
         HandleDeath();

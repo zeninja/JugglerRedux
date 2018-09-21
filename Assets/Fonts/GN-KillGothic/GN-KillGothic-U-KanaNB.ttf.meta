@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: c2f4a863b6c2a9b42828a5f1574b1e3a
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: GN-KMBFont-UB-NewstyleKanaB
+  fontNames:
+  - GN-KMBFont-UB-NewstyleKanaB
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
