@@ -82,7 +82,7 @@ public class GameOverManager : MonoBehaviour
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
 
-
+    //
         // yield return StartCoroutine(CountdownScore());
 
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
