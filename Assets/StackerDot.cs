@@ -50,7 +50,6 @@ public class StackerDot : MonoBehaviour {
 	}
 
 	public void ReturnToDefaultColor() {
-		Debug.Log("Resturning to start");
 		SetColor(startColor);
 	}
 }

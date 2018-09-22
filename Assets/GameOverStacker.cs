@@ -10,211 +10,236 @@ public class GameOverStacker : MonoBehaviour
         return instance;
     }
 
-	public int numCircles = 5;
-	public StackerDot dot;
-    public Extensions.Property circleRadius;
-	Extensions.ColorProperty automatedStackColor;
-	public float totalDuration = .35f;
-	public float startTint = .55f;
-	public float endTint   = .55f;
+    public int numCircles = 5;
+    public StackerDot dot;
+    public Extensions.Property tunnelRadius;
+    Extensions.ColorProperty automatedStackColor;
+    public float totalDuration = .35f;
+    public float startTint = .55f;
+    public float endTint = .55f;
 
-	public Color startColor;
+    public Color startColor;
 
-	public List<Extensions.Property> scaleRanges;
-	List<StackerDot> dots;
-	public float shrinkDuration;
+    public List<Extensions.Property> scaleRanges;
+    List<StackerDot> dots;
+    public float shrinkDuration;
 
-	void Awake() {
-		instance = this;
-		SetStackColors(startColor);
-	}
+    void Awake()
+    {
+        instance = this;
+        SetStackColors(startColor);
+    }
 
-	public bool manualTrigger = false;
+    public bool manualTrigger = false;
 
-	void Update() {
-		SetCircleRadius();
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && manualTrigger)
+        {
+            SpawnCircles(transform.position);
+            StartCoroutine(RevealCircles());
+        }
+    }
 
-		if(Input.GetKeyDown(KeyCode.Space) && manualTrigger) {
-			StartCoroutine(SpawnCircles(transform.position, numCircles));
-		}
-	}
+    public void SetGameOverDotCount()
+    {
+        if (NewScoreManager.newHighscore)
+        {
+            numCircles = 20;
+            // numCircles = NewScoreManager._numBalls * NewScoreManager._numBalls;
+            // Debug.Log("squared circle: " + numCircles);
+        }
+        else
+        {
+            numCircles = 5;
+            // numCircles = NewScoreManager._numBalls;
+        }
+    }
 
-	void SetCircleRadius() {
-		circleRadius.start = 1; //NewBallManager.GetInstance().ballScale;
-		circleRadius.end   = FindOuterRadius();
-	}
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(ScreenInfo.world_TL, transform.position);
 
-	public void SetGameOverDotCount() {
-		if(NewScoreManager.newHighscore) {
-			numCircles = 20;
-			// numCircles = NewScoreManager._numBalls * NewScoreManager._numBalls;
-			// Debug.Log("squared circle: " + numCircles);
-		} else {
-			numCircles = 5;
-			// numCircles = NewScoreManager._numBalls;
-		}
-	}
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(ScreenInfo.world_TR, transform.position);
 
-	public float[] floats;
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(ScreenInfo.world_BL, transform.position);
 
-	Vector2 targetPos;
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(ScreenInfo.world_BR, transform.position);
+    }
 
-	float FindOuterRadius() {
-		floats = new float[4];
-		floats[0] = Vector3.Distance(ScreenInfo.world_TL, targetPos);
-		floats[1] = Vector3.Distance(ScreenInfo.world_TR, targetPos);
-		floats[2] = Vector3.Distance(ScreenInfo.world_BL, targetPos);
-		floats[3] = Vector3.Distance(ScreenInfo.world_BR, targetPos);
-		
-		float max = Mathf.Max(floats) * 2;
+    public void SpawnCircles(Vector2 startPos)
+    {
+        dots = new List<StackerDot>();
 
-		Debug.Log((ScreenInfo.world_TL - ScreenInfo.world_BR).magnitude);
+        // Find outer radius
+        tunnelRadius.start = 0;
+        tunnelRadius.end = FindOuterRadius(startPos);
 
-		// float test = ScreenInfo.pixel_TL - Camera.main.WorldToScreenPoint(transform.position);
+        float d = totalDuration / numCircles;
+        float totalScaleDiff = tunnelRadius.end - tunnelRadius.start;
 
-		// Debug.Log(max);
-		return max;
-	}
+        for (int i = 0; i < numCircles; i++)
+        {
+            Extensions.Property scaleRange = new Extensions.Property();
+            scaleRange.start = totalScaleDiff * EZEasings.SmoothStart2((float)i / (float)numCircles);
+            scaleRange.end = totalScaleDiff * EZEasings.SmoothStart2((float)(i + 1) / (float)numCircles);
+            scaleRanges.Add(scaleRange);
 
-	void OnDrawGizmos () {
-		Gizmos.color = Color.red;
-		Gizmos.DrawLine(ScreenInfo.world_TL, transform.position);
-		
-		Gizmos.color = Color.blue;
-		Gizmos.DrawLine(ScreenInfo.world_TR, transform.position);
+            SpawnProceduralCircle(startPos, d, scaleRange, i);
+        }
 
-		Gizmos.color = Color.green;
-		Gizmos.DrawLine(ScreenInfo.world_BL, transform.position);
+        Rainbower.GetInstance().SetDots(dots);
+    }
 
-		Gizmos.color = Color.white;
-		Gizmos.DrawLine(ScreenInfo.world_BR, transform.position);
-	}
+    public float revealDuration;
 
-	public IEnumerator SpawnCircles(Vector2 startPos, int circleCount) {
-		dots = new List<StackerDot>();
-		numCircles = circleCount;
 
-		float d = totalDuration / numCircles;
 
-		for(int i = 0; i < numCircles; i++) {
-			StartCoroutine(SpawnProceduralCircle(startPos, d, i));
+    void SpawnProceduralCircle(Vector2 startPos, float d, Extensions.Property scaleRange, int i)
+    {
+        float linearPortion = (float)i / (float)numCircles;
 
-			float t = 0;
-			while(t < d) {
-				t += Time.fixedDeltaTime;
-				yield return new WaitForFixedUpdate();
-			}
-		}
-		
-		if (GetComponent<Rainbower>() != null) {
-			GetComponent<Rainbower>().SetDots(dots);
-		}
-	}
+        // Spawn the dot
+        StackerDot s = Instantiate(dot, Vector2.zero, Quaternion.identity);
+        Color dotColor = Color.Lerp(automatedStackColor.start, automatedStackColor.end, linearPortion);
 
-	public IEnumerator SpawnCircles(Vector2 startPos) {
-		dots = new List<StackerDot>();
+        s.SetInfo(startPos, dotColor, i);
+        s.gameObject.name = i.ToString();
+        s.gameObject.SetActive(false);
+        dots.Add(s);
 
-		float d = totalDuration / numCircles;
+        s.SetTargetRadius(scaleRange.end);
+    }
 
-		for(int i = 0; i < numCircles; i++) {
-			StartCoroutine(SpawnProceduralCircle(startPos, d, i));
-
-			float t = 0;
-			while(t < d) {
-				t += Time.fixedDeltaTime;
-				yield return new WaitForFixedUpdate();
-			}
-		}
-		
-		if (GetComponent<Rainbower>() != null) {
-			GetComponent<Rainbower>().SetDots(dots);
-		}
-	}
-
-    IEnumerator SpawnProceduralCircle(Vector2 startPos, float d, int i)
+    IEnumerator RevealCircles()
     {
         float t = 0;
-		targetPos = startPos;
+        float d = revealDuration;
 
-		float evenScalePortion = (float)i     / (float)numCircles;
+        while (t < d)
+        {
+            float p = t / d;
+            int index = Mathf.CeilToInt((float)numCircles * EZEasings.SmoothStart2(p));
+            index = Mathf.Min(index, numCircles - 1);
 
-		float scalePortion  = EZEasings.Linear((float)i     / (float)numCircles);
-		float scalePortion2 = EZEasings.Linear((float)(i+1) / (float)numCircles);
+            for(int i = 0; i < dots.Count; i++) {
+                if(i <= index) {
+                    dots[i].gameObject.SetActive(true);
+                }
+            }
 
-		// Debug.Log(scalePortion2);
+            t += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+    }
 
-		// float adjustedEnd   = Extensions.ScreenToWorld()
+    public IEnumerator HideCircles()
+    {
+        float t = revealDuration;
+        float d = revealDuration;
 
-	    float scaleDifference = circleRadius.end - circleRadius.start;
+        while (t >= 0)
+        {
+            float p = t / d;
+            int index = Mathf.CeilToInt((float)numCircles * EZEasings.SmoothStart2(p));
+            index = Mathf.Clamp(index, 0, numCircles - 1);
 
-		Color dotColor = Color.Lerp(automatedStackColor.start, automatedStackColor.end, evenScalePortion);
+            for(int i = 0; i < dots.Count; i++) {
+                if(i >= index) {
+                    dots[i].gameObject.SetActive(false);
+                }
+            }
 
-		StackerDot s = Instantiate(dot, Vector2.zero, Quaternion.identity);
-		s.SetInfo(startPos, dotColor, i);
-		dots.Add(s);
+            t -= Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
 
-		float startRange = 1; //NewBallManager.GetInstance().ballScale;
+        for(int i = 0; i < dots.Count; i++) {
+            Destroy(dots[i]);
+        }
+    }
 
-		Extensions.Property scaleRange = new Extensions.Property();
-		scaleRange.start = startRange + scaleDifference * scalePortion;
-		scaleRange.end   = startRange + scaleDifference * scalePortion2;
+    // public IEnumerator ShrinkCircles()
+    // {
+    //     float t = 0;
+    //     float d = shrinkDuration / numCircles;
 
-		scaleRanges.Add(scaleRange);
+    //     for (int i = numCircles - 1; i >= 0; i--)
+    //     {
+    //         t = 0;
+    //         while (t < d)
+    //         {
+    //             float p = t / d;
 
-		float startScale = scaleRange.start;
+    //             float start = scaleRanges[i].end;
+    //             float end = scaleRanges[i].start;
+    //             float range = start - end;
 
-		float stackedCircleDifference = (scaleRange.end - scaleRange.start);
+    //             float target = end + range * (1 - EZEasings.SmoothStart3(p));
+
+    //             dots[i].SetTargetRadius(target);
+
+    //             t += Time.fixedDeltaTime;
+    //             yield return new WaitForFixedUpdate();
+    //         }
+    //         dots[i].transform.localScale = Vector2.zero;
+    //         Destroy(dots[i].gameObject);
+    //     }
+    // }
+
+    public void SetStackColors(Color startColor)
+    {
+        automatedStackColor = new Extensions.ColorProperty();
+        automatedStackColor.start = startColor * startTint;
+        automatedStackColor.end = startColor * endTint;
+        automatedStackColor.start.a = 1;
+        automatedStackColor.end.a = 1;
+    }
+
+    float FindOuterRadius(Vector2 anchorPos)
+    {
+        float[] distanceToCorner = new float[4];
+        distanceToCorner[0] = Vector3.Distance(ScreenInfo.world_TL, anchorPos);
+        distanceToCorner[1] = Vector3.Distance(ScreenInfo.world_TR, anchorPos);
+        distanceToCorner[2] = Vector3.Distance(ScreenInfo.world_BL, anchorPos);
+        distanceToCorner[3] = Vector3.Distance(ScreenInfo.world_BR, anchorPos);
+
+        float max = Mathf.Max(distanceToCorner) * 2;
+        return max;
+    }
+
+    public IEnumerator HandleGameOver(Vector2 pos, Color ballColor)
+    {
+        SetStackColors(ballColor);
+        SetGameOverDotCount();
+        SpawnCircles(pos);
+        yield return StartCoroutine(RevealCircles());
+        yield return null;
+    }
+
+    IEnumerator ScaleCircleIn(StackerDot s, float d, Extensions.Property scaleRange)
+    {
+        float startScale = scaleRange.start;
+        float scaleDiff = (scaleRange.end - scaleRange.start);
         float targetScale = startScale;
 
-		yield return null;
-
+        float t = 0;
         while (t < d)
         {
             t += Time.fixedDeltaTime;
             float percent = t / d;
             percent = Mathf.Clamp01(percent);
 
-            targetScale = startScale + stackedCircleDifference * EZEasings.SmoothStart3(percent);
-			// Debug.Log(targetScale);
-
-            // s.transform.localScale = targetScale;
-			s.SetTargetRadius(targetScale);
+            targetScale = startScale + scaleDiff * EZEasings.SmoothStart3(percent);
+            s.SetTargetRadius(targetScale);
 
             yield return new WaitForFixedUpdate();
         }
+
+        yield return new WaitForEndOfFrame();
     }
-
-	public IEnumerator ShrinkCircles() {
-		float t = 0;
-		float d = shrinkDuration / numCircles;
-
-		for(int i = numCircles - 1; i >= 0; i--) {
-			// Debug.Log(i);
-			t = 0;
-			while(t < d) {
-				float p = t / d;
-				
-				float start = scaleRanges[i].end;
-				float end   = scaleRanges[i].start;
-				float range = start - end;
-
-				float target = end + range * (1 - EZEasings.SmoothStart3(p));
-
-				dots[i].SetTargetRadius(target);
-
-				t += Time.fixedDeltaTime;
-				yield return new WaitForFixedUpdate();
-			}
-			dots[i].transform.localScale = Vector2.zero;
-			Destroy(dots[i].gameObject);
-		}
-	}
-
-	public void SetStackColors(Color startColor) {
-		automatedStackColor = new Extensions.ColorProperty();
-		automatedStackColor.start = startColor * startTint;
-		automatedStackColor.end   = startColor * endTint;
-		automatedStackColor.start.a = 1;
-		automatedStackColor.end.a   = 1;
-	}
 }

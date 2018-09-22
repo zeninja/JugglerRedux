@@ -13,8 +13,6 @@ public class GameOverManager : MonoBehaviour
     SpriteRenderer target;
     NewScoreManager scoreManger;
 
-    // GameOverStacker gameOverStacker;
-
     void Awake()
     {
         if (instance == null)
@@ -46,14 +44,6 @@ public class GameOverManager : MonoBehaviour
     }
     
     NewBall deadBall;
-
-    // public void SetTargetBall(SpriteRenderer s, Vector2 ballPos) {
-    //     target = s;
-    //     target.enabled = true;
-    //     target.sortingOrder = 100;
-    //     deadBallPos = ballPos;
-    // }
-
     Vector2 deadBallPos;
 
     public void StartGameOver()
@@ -61,31 +51,15 @@ public class GameOverManager : MonoBehaviour
         StartCoroutine(GameOver());
     }
 
-    // public void SetGameOverStacker(GameOverStacker g) {
-    //     gameOverStacker = g;
-    // }
-
     IEnumerator GameOver()
     {
         NewBallManager.GetInstance().FreezeBalls();
-        // NewBallManager.GetInstance().PrepGameOver();
         NewScoreManager.GetInstance().CheckHighscore();
 
-        GameOverStacker.GetInstance().SetStackColors(deadBall.ballArtManager.myColor);
-        GameOverStacker.GetInstance().SetGameOverDotCount();
-        yield return StartCoroutine(GameOverStacker.GetInstance().SpawnCircles(deadBallPos));
-
-        // yield return StartCoroutine(LineExplosionManager.GetInstance().SpawnExplosion(deadBallPos));
-
-        // yield return StartCoroutine(Explode());
-
-        // yield return StartCoroutine(BallExplosionManager.GetInstance().ExplodeBall());
+        yield return StartCoroutine(GameOverStacker.GetInstance().HandleGameOver(deadBallPos, deadBall.ballArtManager.myColor));
         
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
-
-
-        // yield return StartCoroutine(CountdownScore());
 
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
         yield return new WaitForSeconds(.15f);
@@ -96,19 +70,16 @@ public class GameOverManager : MonoBehaviour
         NewScoreManager._numBalls  = 0;
 
         NewScoreManager.GetInstance().EnableScore(false);
-
+        
         yield return StartCoroutine(InterstitalAd());
-
         yield return StartCoroutine(ShowLogo());
 
         NewScoreManager.GetInstance().EnableScore(true);
-
+        
         yield return new WaitForSeconds(.15f);
-    
-        yield return StartCoroutine(GameOverStacker.GetInstance().ShrinkCircles());
+        yield return StartCoroutine(GameOverStacker.GetInstance().HideCircles());
         
         Destroy(target.transform.root.gameObject);
-
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();

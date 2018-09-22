@@ -103,11 +103,13 @@ public class NewBallArtManager : MonoBehaviour
     public int currentDepth = 0;
 
     public void BringToFront() {
+        // Debug.Log("BOUGHT TO FROOOONNNTTT");
         currentDepth = 0;
         BroadcastMessage("AdjustDepth", SendMessageOptions.DontRequireReceiver);
     }
 
     void IncrementDepth() {
+        // Debug.Log("Back it up");
         currentDepth--;
         BroadcastMessage("AdjustDepth", SendMessageOptions.DontRequireReceiver);
     }
@@ -140,7 +142,6 @@ public class NewBallArtManager : MonoBehaviour
         normalStageColor = NewBallManager.GetInstance().m_BallColors[lastIndex];
         GetComponent<DotTrail>().TriggerEndgame();
         SetColor(normalStageColor);
-        
     }
 
     public void UpdateToHard() {

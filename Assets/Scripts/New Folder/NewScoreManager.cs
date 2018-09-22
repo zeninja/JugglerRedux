@@ -125,15 +125,11 @@ public class NewScoreManager : MonoBehaviour {
 	public static bool newHighscore;
 
 	public void CheckHighscore() {
-		Debug.Log("Checking highscore");
-
 		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _peakCount.ToString()));
 		highscore = PlayerPrefs.GetFloat(highScoreKey);
+		newHighscore = currentScore > highscore;
 
 		Debug.Log(currentScore + " | " +  highscore);
-
-		newHighscore = currentScore > highscore;
-		Debug.Log(newHighscore);
 	}
 
 	public IEnumerator HighscoreProcess() {
@@ -142,10 +138,8 @@ public class NewScoreManager : MonoBehaviour {
 
 		_lastPeakCount = _peakCount;
 
-		// Debug.Log(currentScore + " | " +  highscore);
-
 		if(newHighscore) {
-			// Debug.Log("UPDATING HIGH SCORE");
+			// StartCoroutine(RainbowText());
 
 			highscore = currentScore;
 			highScoreString = highscore.ToString();
@@ -156,13 +150,14 @@ public class NewScoreManager : MonoBehaviour {
 			Debug.Log("REPORTING HIGH SCORE. VALUE IS: " +  highscore);
 			GameCenter.GetInstance().SetHighScore(highscore);
 			
-			yield return StartCoroutine(UpdateHighScore());
+			yield return StartCoroutine(Rainbower.GetInstance().MakeWaves());
+
 		} else {
 			yield return new WaitForSeconds(.1f);
 		}
 	}
 
-	public IEnumerator UpdateHighScore() {
+	public IEnumerator RainbowText() {
 		yield return new WaitForSeconds(pauseBeforeCountdown);
 
 		float t = 0;
