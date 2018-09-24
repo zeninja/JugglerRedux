@@ -60,7 +60,8 @@ public class NewBallManager : MonoBehaviour
         EventManager.StartListening("BallPeaked", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
 
-        ballSpawnScores = fastBallSpawnScores;
+        // ballSpawnScores = fastBallSpawnScores;
+        SetBallLaunchScores();
     }
 
     // Update is called once per frame
@@ -128,7 +129,11 @@ public class NewBallManager : MonoBehaviour
 
         xSwitcher *= -1;
 
-        ballSpawnPos = new Vector2(xSwitcher * spawnPos.x, spawnPos.y);
+        if (GlobalSettings.Settings.offsetXSpawnPosition) {
+            ballSpawnPos = new Vector2(xSwitcher * spawnPos.x, spawnPos.y);
+        } else {
+            ballSpawnPos = new Vector2(0, spawnPos.y);
+        }
         NewBall ball = Instantiate(m_BallPrefab);
 
         ball.transform.position = ballSpawnPos;

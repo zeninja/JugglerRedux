@@ -1172,7 +1172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!331 &833593002
 SpriteMask:
   m_ObjectHideFlags: 0
@@ -1650,10 +1650,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warningLine: {fileID: 114054641284421134, guid: 260a424381a22f445bafc0def0fe8dbb,
     type: 2}
-  warningMask: {fileID: 0}
   lineColor: {r: 0.9963192, g: 1, b: 0, a: 1}
-  numLines: 5
-  lineWidth: 5
+  numLines: 8
+  lineWidth: 3
   rotation: 200
   scrollSpeed: 0.0325
   width: 46.73

@@ -4,17 +4,8 @@ using UnityEngine;
 
 public class Rainbower : MonoBehaviour
 {
-    static Rainbower instance;
-    public static Rainbower GetInstance()
-    {
-        return instance;
-    }
-
-	List<StackerDot> dots;
-    Color[] colors;
-
     void Awake()
-    {        
+    {
         if (instance == null)
         {
             instance = this;
@@ -28,17 +19,33 @@ public class Rainbower : MonoBehaviour
         }
     }
 
-    void Start() {
-
+    static Rainbower instance;
+    public static Rainbower GetInstance()
+    {
+        return instance;
     }
+
+    List<StackerDot> dots;
+    public Color[] colors;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            StartCoroutine(MakeWaves());
+            StartCoroutine(MakeWaves(numBalls));
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            numBalls++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            numBalls--;
+        }
+        numBalls = Mathf.Clamp(numBalls, 1, 9);
 
     }
 
@@ -78,29 +85,30 @@ public class Rainbower : MonoBehaviour
             }
         }
     }
-    
-    public IEnumerator MakeWaves() {
-        Debug.Log("makin waves");
-        int balls = NewScoreManager._numBalls;
-        float waveTime = GetTideDuration((float)balls / 9f);
-        yield return StartCoroutine(DoTheWave(balls, waveTime));
+
+    public int numWaves;
+
+    public IEnumerator MakeWaves(int ballCount)
+    {
+        int balls = ballCount;
+        float tDuration = GetTideDuration((float)balls / 9f);
+
+        PrepWave();
+        yield return StartCoroutine(DoTheWave(numWaves, tDuration));
     }
 
     public float timeBetweenWaves = .15f;
 
     public IEnumerator DoTheWave(int numWaves, float duration)
     {
-        PrepWave();
+        // int totalWaveTunnelLength = numWaves * bandsPerColor;
 
-        // float timeBetweenWaves = (float)duration / (float)numWaves;
         for (int i = 0; i < numWaves; i++)
         {
-            StartCoroutine(Wave(waveDuration));
+            yield return StartCoroutine(Wave(waveDuration));
             yield return StartCoroutine(Extensions.Wait(timeBetweenWaves));
         }
     }
-
-
 
     public float waveDuration = .3f;
     IEnumerator Wave(float duration)
@@ -111,77 +119,44 @@ public class Rainbower : MonoBehaviour
         while (t < d)
         {
             float p = t / d;
-            AdjustRings(p);
+            UpdateAllBands(p);
             t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
-        AdjustRings(1);
-	}
+        UpdateAllBands(1);
+    }
 
-    void AdjustRings(float p)
+    public int colorsInWave;
+    public int bandsPerColor = 5;
+
+
+    void UpdateAllBands(float p)
     {
-        int waveRings = colors.Length;
-        float tunnelLength = dots.Count + waveRings;
-		int index = Mathf.CeilToInt(tunnelLength * EZEasings.SmoothStart2(p));
+        colorsInWave = Mathf.Min(colorsInWave, colors.Length);
+        int tunnelLength = dots.Count + colorsInWave * bandsPerColor;
+        int index = Mathf.CeilToInt(tunnelLength * EZEasings.SmoothStart5(p));
 
         for (int i = 0; i < dots.Count; i++)
         {
-            // Adjust the set of rings in the wave
-            for (int j = 0; j < waveRings; j++)
+            for (int j = 0; j < colorsInWave; j++)
             {
-                if (index - j >= 0 && index - j < dots.Count)
+                for (int k = 0; k < bandsPerColor; k++)
                 {
-                    dots[index - j].SetColor(colors[j]);
+                    if (index - k >= 0 && index - k < dots.Count)
+                    {
+                        dots[index - k].SetColor(colors[j]);
+                    }
+
+                    // Reset rings that have been passed in the wave
+                    if (i <= index - colorsInWave)
+                    {
+                        dots[i].ReturnToDefaultColor();
+                    }
                 }
             }
 
-            // Reset rings that have been passed in the wave
-            if (i <= index - waveRings)
-            {
-                dots[i].ReturnToDefaultColor();
-            }
+
         }
     }
-
-
-	// public float timeBetweenWaves;
-
-	// public IEnumerator DoTheWave(int numWaves)
-    // {
-    //     for (int i = 0; i < numWaves; i++)
-    //     {
-    //         StartCoroutine(Wave(waveDuration));
-    //         yield return StartCoroutine(Extensions.Wait(timeBetweenWaves));
-    //     }
-    // }
-
-	// IEnumerator Wave(float duration)
-    // {
-    //     int waveRings = colors.Length;
-    //     int iterations = dots.Count + waveRings;
-    //     float split = duration / (float)iterations;
-
-    //     for (int index = 0; index < iterations; index++)
-    //     {
-    //         for (int i = 0; i < dots.Count; i++)
-    //         {
-    //             // Adjust the set of rings in the wave
-    //             for (int j = 0; j < waveRings; j++)
-    //             {
-    //                 if (index - j >= 0 && index - j < dots.Count)
-    //                 {
-    //                     dots[index - j].SetColor(colors[j]);
-    //                 }
-    //             }
-
-    //             // Reset rings that have been passed in the wave
-    //             if (i <= index - waveRings)
-    //             {
-    //                 dots[i].ReturnToDefaultColor();
-    //             }
-    //         }
-    //         yield return StartCoroutine(Extensions.Wait(split));
-    //     }
-    // }
 }

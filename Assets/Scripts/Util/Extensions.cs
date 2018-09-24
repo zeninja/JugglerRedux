@@ -54,6 +54,46 @@ public class Extensions : MonoBehaviour {
     {
         return p.start + (p.end - p.start) * EZEasings.SmoothStep3(t);
     }
+
+	public static float GetSmoothStart2Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStart3(t);
+    }
+
+	public static float GetSmoothStart3Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStart3(t);
+    }
+
+	public static float GetSmoothStart4Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStart4(t);
+    }
+
+	public static float GetSmoothStart5Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStart5(t);
+    }
+
+	public static float GetSmoothStop2Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStop2(t);
+    }
+
+	public static float GetSmoothStop3Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStop3(t);
+    }
+
+	public static float GetSmoothStop4Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStop4(t);
+    }
+
+	public static float GetSmoothStop5Range(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.SmoothStop5(t);
+    }
 	
 
 	public static IEnumerator Wait(float d) {

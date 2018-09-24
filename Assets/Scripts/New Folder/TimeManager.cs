@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TimeManager : MonoBehaviour
 {
     float m_TargetTimeScale;
-    float m_CurrentTimeScale;
+    public float m_CurrentTimeScale;
     public float m_SlowTimeScale = .5f;
     float m_NormalTimeScale = 1.0f;
 

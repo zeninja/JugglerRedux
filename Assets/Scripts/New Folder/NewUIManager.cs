@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class NewUIManager : MonoBehaviour {
 
+	// In-Game
+	public TextMeshPro ui_juggleTime;
+
+
+	// Debug
 	public Text ui_SlapForce;
 	public Text ui_GrabForce;
 	public Text ui_JuggleThreshold;
@@ -13,6 +19,7 @@ public class NewUIManager : MonoBehaviour {
 	public Text ui_BallSpawnRate;
 	public Text ui_playcount;
 	public Toggle ui_ShowAds;
+
 
 	public GameObject debugMenu;
 
@@ -30,6 +37,8 @@ public class NewUIManager : MonoBehaviour {
 		// ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
 		ui_playcount.text       = NewAdManager.playcount.ToString();
 		ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
+
+		ui_juggleTime.text		= TimeManager.GetInstance().m_CurrentTimeScale.ToString("F2");
 
 		bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
 
@@ -50,10 +59,10 @@ public class NewUIManager : MonoBehaviour {
 	public void ToggleAds() {
 		// NewAdManager.forceAdsOff = !NewAdManager.forceAdsOff;
 			
-		GlobalSettings.mySettings.adsOff = NewAdManager.forceAdsOff;
+		GlobalSettings.Settings.adsOff = NewAdManager.forceAdsOff;
 		GlobalSettings.UpdateSavedValues();
 		Debug.Log("FORCE ADS OFF: " + NewAdManager.forceAdsOff);
-		Debug.Log("SAVED INFO VALUE: " + GlobalSettings.mySettings.adsOff);
+		Debug.Log("SAVED INFO VALUE: " + GlobalSettings.Settings.adsOff);
 	}
 
 	public void AdjustJuggleThreshold(int adj) {
@@ -62,7 +71,7 @@ public class NewUIManager : MonoBehaviour {
         juggleThreshold = Mathf.Max(1, juggleThreshold);
 		NewBallManager.GetInstance().juggleThreshold = juggleThreshold;
 
-		GlobalSettings.mySettings.juggleThreshold = juggleThreshold;
+		GlobalSettings.Settings.juggleThreshold = juggleThreshold;
 		GlobalSettings.UpdateSavedValues();
     }
 
@@ -72,7 +81,7 @@ public class NewUIManager : MonoBehaviour {
         ballScale = Mathf.Clamp(ballScale, .1f, 3f);
         NewBallManager.GetInstance().ballScale = ballScale;
 
-		GlobalSettings.mySettings.ballScale = ballScale;
+		GlobalSettings.Settings.ballScale = ballScale;
 		GlobalSettings.UpdateSavedValues();
     }
 
@@ -83,7 +92,7 @@ public class NewUIManager : MonoBehaviour {
         PlayerPrefs.SetFloat("touchSlapforce", touchSlapThrowForce);
 		NewHandManager.GetInstance().touchSlapThrowForce = touchSlapThrowForce;
 
-		GlobalSettings.mySettings.slapForce = touchSlapThrowForce;
+		GlobalSettings.Settings.slapForce = touchSlapThrowForce;
 		GlobalSettings.UpdateSavedValues();
     }
 
@@ -94,7 +103,7 @@ public class NewUIManager : MonoBehaviour {
         PlayerPrefs.SetFloat("touchGrabForce", touchGrabThrowForce);
 		NewHandManager.GetInstance().touchGrabThrowForce = touchGrabThrowForce;
 
-		GlobalSettings.mySettings.grabForce = touchGrabThrowForce;
+		GlobalSettings.Settings.grabForce = touchGrabThrowForce;
 		GlobalSettings.UpdateSavedValues();
     }
 
@@ -142,7 +151,7 @@ public class NewUIManager : MonoBehaviour {
         }
         ui_BallSpawnRate.text = ballSpeedText;
 
-		GlobalSettings.mySettings.ballSpeedIndex = ballSpeedIndex;
+		GlobalSettings.Settings.ballSpeedIndex = ballSpeedIndex;
 		GlobalSettings.UpdateSavedValues();
 	}
 
@@ -154,7 +163,7 @@ public class NewUIManager : MonoBehaviour {
 
 		throwDirectionSprite.UpdateThrowSprite();
 
-		GlobalSettings.mySettings.dragUpToThrow = throwDirection;
+		GlobalSettings.Settings.dragUpToThrow = throwDirection;
 		GlobalSettings.UpdateSavedValues();
 	}
 }

@@ -24,16 +24,16 @@ public class BallSprite : MonoBehaviour {
 		Debug.Log("setting up ball sprite");
 
 
-		// EventManager.StartListening("CleanUp", DisableSprite);
+		EventManager.StartListening("CleanUp", DisableSprite);
 
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		// m_Sprite.enabled = m_Ball.m_State == NewBall.BallState.rising  ||
-		// 				   m_Ball.m_State == NewBall.BallState.falling ||
-		// 				   m_Ball.m_State == NewBall.BallState.firstBall ||
-		// 				   m_Ball.m_State == NewBall.BallState.launching;
+		m_Sprite.enabled = m_Ball.m_State == NewBall.BallState.rising  ||
+						   m_Ball.m_State == NewBall.BallState.falling ||
+						   m_Ball.m_State == NewBall.BallState.firstBall ||
+						   m_Ball.m_State == NewBall.BallState.launching;
 	}
 
 	void Update() {

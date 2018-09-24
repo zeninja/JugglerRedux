@@ -454,7 +454,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1469224065831818}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e174b583201cd34e830af86658939fe, type: 3}
   m_Name: 
@@ -572,7 +572,8 @@ MonoBehaviour:
   peakMask: {fileID: 331201274780265718}
   peakSprite: {fileID: 212305403034421634}
   hardSprite: {fileID: 21300000, guid: e04d0791ef0554e1d93ddd1039d06667, type: 3}
-  peakDuration: 0.25
+  modifier: 0.5
+  peakDuration: 0.15
 --- !u!114 &114686869594164432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -867,9 +868,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -202952085
   m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4fdba057158a34846a5e2e4c62b0d9a1, type: 3}
-  m_Color: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -877,7 +878,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!212 &212793265894763756
 SpriteRenderer:
@@ -923,7 +924,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 2
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!331 &331201274780265718
 SpriteMask:

@@ -15,8 +15,13 @@ public class GameOverStacker : MonoBehaviour
     public Extensions.Property tunnelRadius;
     Extensions.ColorProperty automatedStackColor;
     public float totalDuration = .35f;
-    public float startTint = .55f;
-    public float endTint = .55f;
+
+    Extensions.Property tint;
+    public Extensions.Property normalTint;
+    public Extensions.Property highScoreTint;
+
+    // public float startTint = .55f;
+    // public float endTint = .55f;
 
     public Color startColor;
 
@@ -27,6 +32,7 @@ public class GameOverStacker : MonoBehaviour
     void Awake()
     {
         instance = this;
+        tint = normalTint;
         SetStackColors(startColor);
     }
 
@@ -76,17 +82,18 @@ public class GameOverStacker : MonoBehaviour
         dots = new List<StackerDot>();
 
         // Find outer radius
-        tunnelRadius.start = 0;
+        // tunnelRadius.start = 0;
         tunnelRadius.end = FindOuterRadius(startPos);
 
         float d = totalDuration / numCircles;
-        float totalScaleDiff = tunnelRadius.end - tunnelRadius.start;
+        float totalScaleDiff = tunnelRadius.start + tunnelRadius.end - tunnelRadius.start;
 
         for (int i = 0; i < numCircles; i++)
         {
             Extensions.Property scaleRange = new Extensions.Property();
             scaleRange.start = totalScaleDiff * EZEasings.SmoothStart2((float)i / (float)numCircles);
-            scaleRange.end = totalScaleDiff * EZEasings.SmoothStart2((float)(i + 1) / (float)numCircles);
+            scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart2((float)(i + 1) / (float)numCircles);
+
             scaleRanges.Add(scaleRange);
 
             SpawnProceduralCircle(startPos, d, scaleRange, i);
@@ -96,7 +103,6 @@ public class GameOverStacker : MonoBehaviour
     }
 
     public float revealDuration;
-
 
 
     void SpawnProceduralCircle(Vector2 startPos, float d, Extensions.Property scaleRange, int i)
@@ -158,44 +164,27 @@ public class GameOverStacker : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+        dots[0].gameObject.SetActive(false);
+        
+
         for(int i = 0; i < dots.Count; i++) {
-            Destroy(dots[i]);
+            Destroy(dots[i].gameObject);
         }
     }
 
-    // public IEnumerator ShrinkCircles()
-    // {
-    //     float t = 0;
-    //     float d = shrinkDuration / numCircles;
-
-    //     for (int i = numCircles - 1; i >= 0; i--)
-    //     {
-    //         t = 0;
-    //         while (t < d)
-    //         {
-    //             float p = t / d;
-
-    //             float start = scaleRanges[i].end;
-    //             float end = scaleRanges[i].start;
-    //             float range = start - end;
-
-    //             float target = end + range * (1 - EZEasings.SmoothStart3(p));
-
-    //             dots[i].SetTargetRadius(target);
-
-    //             t += Time.fixedDeltaTime;
-    //             yield return new WaitForFixedUpdate();
-    //         }
-    //         dots[i].transform.localScale = Vector2.zero;
-    //         Destroy(dots[i].gameObject);
-    //     }
-    // }
+    public void SetTint() {
+        if(!NewScoreManager.newHighscore) {
+            tint = normalTint;
+        } else {
+            tint = highScoreTint;
+        }
+    }
 
     public void SetStackColors(Color startColor)
     {
         automatedStackColor = new Extensions.ColorProperty();
-        automatedStackColor.start = startColor * startTint;
-        automatedStackColor.end = startColor * endTint;
+        automatedStackColor.start = startColor * tint.start;
+        automatedStackColor.end = startColor * tint.end;
         automatedStackColor.start.a = 1;
         automatedStackColor.end.a = 1;
     }
@@ -214,6 +203,7 @@ public class GameOverStacker : MonoBehaviour
 
     public IEnumerator HandleGameOver(Vector2 pos, Color ballColor)
     {
+        SetTint();
         SetStackColors(ballColor);
         SetGameOverDotCount();
         SpawnCircles(pos);

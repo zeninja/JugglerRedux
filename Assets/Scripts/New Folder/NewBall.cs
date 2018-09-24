@@ -126,7 +126,6 @@ public class NewBall : MonoBehaviour
         EventManager.TriggerEvent("BallCaught");
 
         BroadcastMessage("HandleCatch", SendMessageOptions.DontRequireReceiver);
-        GetComponentInChildren<SpriteCircleEffectSpawner>().SpawnRing(transform.position);
         SetBallState(BallState.caught);
     }
 

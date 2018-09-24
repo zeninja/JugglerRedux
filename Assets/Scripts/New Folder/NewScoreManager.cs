@@ -150,7 +150,7 @@ public class NewScoreManager : MonoBehaviour {
 			Debug.Log("REPORTING HIGH SCORE. VALUE IS: " +  highscore);
 			GameCenter.GetInstance().SetHighScore(highscore);
 			
-			yield return StartCoroutine(Rainbower.GetInstance().MakeWaves());
+			yield return StartCoroutine(Rainbower.GetInstance().MakeWaves(_numBalls));
 
 		} else {
 			yield return new WaitForSeconds(.1f);

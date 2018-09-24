@@ -56,7 +56,6 @@ public class NewGameManager : MonoBehaviour {
 			// 	MonolithManager.GetInstance().Initialize();
 			// 	break;
 			case GameState.ballSpawn:
-				Debug.Log("Spawn ball");
 				NewBallManager.GetInstance().SpawnFirstBall();
 				// BallCountdownManager.GetInstance().SetUpCountdown();
 				break;

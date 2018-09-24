@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class CatchRing : MonoBehaviour {
+public class FingerRing : MonoBehaviour {
 
 	LineRenderer line;
 	int NUM_SEGMENTS = 1000;
@@ -15,6 +15,7 @@ public class CatchRing : MonoBehaviour {
 	public float duration;
 
 	public Color defaultColor;
+	bool ringTriggered;
 
 
 	// Use this for initialization
@@ -35,7 +36,20 @@ public class CatchRing : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.C)) {
 			TriggerRing(defaultColor);
 		}
+
+		if(ringTriggered) {
+			UpdateLineWidthAndRadius(1);
+			DrawRing();
+		}
 	}
+
+	// void HandleCatch() {
+	// 	TriggerRing();
+	// }
+
+	// public void SetColor() {
+	// 	ballColor = newColor
+	// }
 
 	public void TriggerRing(Color ballColor) {
 		line.material.color = ballColor;
@@ -55,8 +69,8 @@ public class CatchRing : MonoBehaviour {
 			t += Time.fixedDeltaTime;
 			yield return new WaitForFixedUpdate();
 		}
-		
-		line.enabled = false;
+
+		ringTriggered = true;
 	}
 
 	void UpdateLineWidthAndRadius(float percent) {
