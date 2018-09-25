@@ -12,7 +12,7 @@ public class NewHand : MonoBehaviour
     Vector2 m_GrabMoveDir;
     Vector2 m_GrabThrowVector;
     Vector2 m_CatchPosition;
-    CatchRing m_CatchRing;
+    CatchRingSpawner m_CatchRingSpawner;
     FingerRing m_FingerRing;
 
     NewBall m_Ball;
@@ -47,7 +47,7 @@ public class NewHand : MonoBehaviour
         }
 
         m_PositionHistory = new List<Vector2>();
-        m_CatchRing = GetComponentInChildren<CatchRing>();
+        m_CatchRingSpawner = GetComponentInChildren<CatchRingSpawner>();
         m_FingerRing = GetComponentInChildren<FingerRing>();
     }
 
@@ -218,7 +218,7 @@ public class NewHand : MonoBehaviour
             m_CatchPosition = m_Transform.position;
             m_BallGrabbedFirstFrame = true;
             Color ballColor = m_Ball.GetComponentInChildren<NewBallArtManager>().myColor;
-            m_CatchRing.TriggerRing(ballColor);
+            m_CatchRingSpawner.SpawnRing(ballColor);
             m_FingerRing.TriggerRing(ballColor);
             
             Vibrator.Vibrate(vibeDuration);

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class GameOverStacker : MonoBehaviour
 {
+    #region
     static GameOverStacker instance;
     public static GameOverStacker GetInstance()
     {
         return instance;
     }
+    #endregion
 
     public int numCircles = 5;
     public StackerDot dot;
@@ -20,14 +22,10 @@ public class GameOverStacker : MonoBehaviour
     public Extensions.Property normalTint;
     public Extensions.Property highScoreTint;
 
-    // public float startTint = .55f;
-    // public float endTint = .55f;
-
     public Color startColor;
 
     public List<Extensions.Property> scaleRanges;
     List<StackerDot> dots;
-    public float shrinkDuration;
 
     void Awake()
     {
@@ -52,13 +50,10 @@ public class GameOverStacker : MonoBehaviour
         if (NewScoreManager.newHighscore)
         {
             numCircles = 20;
-            // numCircles = NewScoreManager._numBalls * NewScoreManager._numBalls;
-            // Debug.Log("squared circle: " + numCircles);
         }
         else
         {
             numCircles = 5;
-            // numCircles = NewScoreManager._numBalls;
         }
     }
 
@@ -91,8 +86,8 @@ public class GameOverStacker : MonoBehaviour
         for (int i = 0; i < numCircles; i++)
         {
             Extensions.Property scaleRange = new Extensions.Property();
-            scaleRange.start = totalScaleDiff * EZEasings.SmoothStart2((float)i / (float)numCircles);
-            scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart2((float)(i + 1) / (float)numCircles);
+            scaleRange.start = totalScaleDiff * EZEasings.SmoothStart3((float)i / (float)numCircles);
+            scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
 
             scaleRanges.Add(scaleRange);
 
@@ -100,6 +95,7 @@ public class GameOverStacker : MonoBehaviour
         }
 
         Rainbower.GetInstance().SetDots(dots);
+        // ParticleRingSpawner.GetInstance().SetInfo(scaleRanges);
     }
 
     public float revealDuration;
@@ -211,25 +207,25 @@ public class GameOverStacker : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator ScaleCircleIn(StackerDot s, float d, Extensions.Property scaleRange)
-    {
-        float startScale = scaleRange.start;
-        float scaleDiff = (scaleRange.end - scaleRange.start);
-        float targetScale = startScale;
+    // IEnumerator ScaleCircleIn(StackerDot s, float d, Extensions.Property scaleRange)
+    // {
+    //     float startScale = scaleRange.start;
+    //     float scaleDiff = (scaleRange.end - scaleRange.start);
+    //     float targetScale = startScale;
 
-        float t = 0;
-        while (t < d)
-        {
-            t += Time.fixedDeltaTime;
-            float percent = t / d;
-            percent = Mathf.Clamp01(percent);
+    //     float t = 0;
+    //     while (t < d)
+    //     {
+    //         t += Time.fixedDeltaTime;
+    //         float percent = t / d;
+    //         percent = Mathf.Clamp01(percent);
 
-            targetScale = startScale + scaleDiff * EZEasings.SmoothStart3(percent);
-            s.SetTargetRadius(targetScale);
+    //         targetScale = startScale + scaleDiff * EZEasings.SmoothStart3(percent);
+    //         s.SetTargetRadius(targetScale);
 
-            yield return new WaitForFixedUpdate();
-        }
+    //         yield return new WaitForFixedUpdate();
+    //     }
 
-        yield return new WaitForEndOfFrame();
-    }
+    //     yield return new WaitForEndOfFrame();
+    // }
 }

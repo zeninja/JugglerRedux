@@ -67,7 +67,7 @@ public class GameOverManager : MonoBehaviour
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
 
         NewScoreManager._peakCount = 0;
-        NewScoreManager._numBalls  = 0;
+        NewScoreManager._ballCount  = 0;
 
         NewScoreManager.GetInstance().EnableScore(false);
         

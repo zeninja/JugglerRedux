@@ -146,7 +146,7 @@ public class NewBallManager : MonoBehaviour
 
         balls.Add(ball);
         _ballCount++;
-        NewScoreManager._numBalls = _ballCount;
+        NewScoreManager._ballCount = _ballCount;
 
         ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }

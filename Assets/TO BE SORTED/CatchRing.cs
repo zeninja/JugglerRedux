@@ -18,7 +18,7 @@ public class CatchRing : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		line = GetComponent<LineRenderer>();
 		line.useWorldSpace = false;
 		line.sortingLayerName = "Default";
@@ -57,6 +57,7 @@ public class CatchRing : MonoBehaviour {
 		}
 		
 		line.enabled = false;
+		Destroy(gameObject);
 	}
 
 	void UpdateLineWidthAndRadius(float percent) {

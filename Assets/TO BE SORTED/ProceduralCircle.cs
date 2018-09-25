@@ -75,8 +75,8 @@ public class ProceduralCircle : MonoBehaviour
         ringPositions.Add(lastPoint);
     }
 
-    public void UpdateValues(float newRadius, Vector2 anchor) {
-        radius = newRadius;
-        anchorPos = anchor;
-    }
+    // public void UpdateValues(float newRadius, Vector2 anchor) {
+    //     radius = newRadius;
+    //     anchorPos = anchor;
+    // }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Rainbower : MonoBehaviour
 {
+    #region
     void Awake()
     {
         if (instance == null)
@@ -24,40 +25,36 @@ public class Rainbower : MonoBehaviour
     {
         return instance;
     }
+    #endregion
 
     List<StackerDot> dots;
-    public Color[] colors;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            StartCoroutine(MakeWaves(numBalls));
+            StartCoroutine(MakeWaves(numWaves));
         }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            numBalls++;
         }
 
         if (Input.GetKeyDown(KeyCode.V))
         {
-            numBalls--;
         }
-        numBalls = Mathf.Clamp(numBalls, 1, 9);
-
+        PrepWave();
     }
 
-    public int numBalls;
+    Color[] colors;
+    public int numWaves;
+    public int colorsInWave;
+    public int bandsPerColor = 5;
+    public float waveDuration = .3f;
+    public float timeBetweenWaves = .15f;
 
-    public Extensions.Property tideDuration;
-
-    float GetTideDuration(float completionPercentage)
-    {
-        float calculatedDuration = tideDuration.start + (tideDuration.end - tideDuration.start) * completionPercentage;
-        return calculatedDuration;
-    }
+    public Extensions.Property waveIntervalRange;
 
     public void SetDots(List<StackerDot> a_dots)
     {
@@ -68,50 +65,46 @@ public class Rainbower : MonoBehaviour
     {
         if (NewBallManager.GetInstance() != null)
         {
-            colors = new Color[NewScoreManager._numBalls];
-
-            for (int i = 0; i < NewScoreManager._numBalls; i++)
+            colors = new Color[NewScoreManager._ballCount];
+            for (int i = 0; i < NewScoreManager._ballCount; i++)
             {
                 colors[i] = BallColorManager.GetInstance().ballColors[i];
             }
         }
         else
         {
-            colors = new Color[numBalls];
-
-            for (int i = 0; i < numBalls; i++)
+            colors = new Color[colorsInWave];
+            for (int i = 0; i < colorsInWave; i++)
             {
                 colors[i] = BallColorManager.GetInstance().ballColors[i];
             }
         }
     }
 
-    public int numWaves;
+
 
     public IEnumerator MakeWaves(int ballCount)
     {
-        int balls = ballCount;
-        float tDuration = GetTideDuration((float)balls / 9f);
+        int ballsScored = ballCount;
+        numWaves = ballsScored;
+        colorsInWave = ballsScored;
+
+        timeBetweenWaves = Extensions.GetSmoothStart3Range(waveIntervalRange, (float)ballsScored / 9f);
 
         PrepWave();
-        yield return StartCoroutine(DoTheWave(numWaves, tDuration));
+        yield return StartCoroutine(DoTheWave(ballsScored));
     }
 
-    public float timeBetweenWaves = .15f;
-
-    public IEnumerator DoTheWave(int numWaves, float duration)
+    public IEnumerator DoTheWave(int numWaves)
     {
-        // int totalWaveTunnelLength = numWaves * bandsPerColor;
-
         for (int i = 0; i < numWaves; i++)
         {
-            yield return StartCoroutine(Wave(waveDuration));
+            StartCoroutine(Wave(waveDuration, i));
             yield return StartCoroutine(Extensions.Wait(timeBetweenWaves));
         }
     }
 
-    public float waveDuration = .3f;
-    IEnumerator Wave(float duration)
+    IEnumerator Wave(float duration, int index)
     {
         float t = 0;
         float d = duration;
@@ -119,19 +112,15 @@ public class Rainbower : MonoBehaviour
         while (t < d)
         {
             float p = t / d;
-            UpdateAllBands(p);
+            UpdateAllBands(p, index);
             t += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
-        UpdateAllBands(1);
+        UpdateAllBands(1, index);
     }
 
-    public int colorsInWave;
-    public int bandsPerColor = 5;
-
-
-    void UpdateAllBands(float p)
+    void UpdateAllBands(float p, int colorIndex)
     {
         colorsInWave = Mathf.Min(colorsInWave, colors.Length);
         int tunnelLength = dots.Count + colorsInWave * bandsPerColor;
@@ -139,24 +128,42 @@ public class Rainbower : MonoBehaviour
 
         for (int i = 0; i < dots.Count; i++)
         {
-            for (int j = 0; j < colorsInWave; j++)
-            {
-                for (int k = 0; k < bandsPerColor; k++)
-                {
-                    if (index - k >= 0 && index - k < dots.Count)
-                    {
-                        dots[index - k].SetColor(colors[j]);
-                    }
+            for(int k = 0; k < bandsPerColor; k++) {
+                if(index - k >= 0 && index - k < dots.Count) {
+                    dots[index - k].SetColor(colors[colorIndex]);
+                    // ParticleRingSpawner.GetInstance().TriggerRing(index - k, colors[colorIndex]);
+                }
 
-                    // Reset rings that have been passed in the wave
-                    if (i <= index - colorsInWave)
-                    {
-                        dots[i].ReturnToDefaultColor();
-                    }
+                // Reset rings that have been passed in the wave
+                if (i <= index - bandsPerColor)
+                {
+                    dots[i].ReturnToDefaultColor();
                 }
             }
-
-
         }
+
+            // for (int j = 0; j < colorsInWave; j++)
+            // {
+
+            //     for (int k = 0; k < bandsPerColor; k++)
+            //     {
+            //         if (index - k >= 0 && index - k < dots.Count)
+            //         {
+            //             dots[index - k].SetColor(colors[j]);
+            //         }
+
+            //         // Reset rings that have been passed in the wave
+            //         if (i <= index - bandsPerColor)
+            //         {
+            //             dots[i].ReturnToDefaultColor();
+            //         }
+            //     }
+            // }
     }
+
+    // public ParticleRing p;
+
+    // void SpawnParticleRings() {
+
+    // }
 }

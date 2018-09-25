@@ -77,9 +77,9 @@ public class GameCenter : MonoBehaviour {
 			Debug.Log ("Got " + achievements.Length + " achievements");
 	}
 
-	public void SetHighScore(float newScore) {
-		Debug.Log("Got highscore: " + newScore);
-		ReportScore(newScore, leaderboardID);
+	public void SetHighScore(decimal newScore) {
+		// Debug.Log("Got highscore: " + newScore);
+		ReportScore((float)newScore, leaderboardID);
 	}
 
 	void ReportScore (float score, string id) {
@@ -87,33 +87,8 @@ public class GameCenter : MonoBehaviour {
 		#if UNITY_EDITOR
 		return;
 		#endif
- 
-		// string s1 = string.Format("{0:0.0}",score); // "123.0"
-		// string s2 = string.Format("{0:0.00}",score); // "123.50"
-		// string s3 = string.Format("{0:0.000}",score); // "123.500"
 
-		// string s = "";
-		// string end = "";
-
-		// if(s1 == score.ToString()) {
-		// 	Debug.Log("FOUND SINGLE DECIMAL");
-		// 	s = s1;
-		// 	end = "_1x";
-		// } else if(s2 == score.ToString()) {
-		// 	Debug.Log("FOUND DOUBLE DECIMAL");
-		// 	s = s2;
-		// 	end = "_2x";
-		// } else {
-		// 	Debug.Log("FOUND TRIPLE DECIMAL");
-		// 	s = s3;
-		// 	end = "_3x";
-		// }
-
-		// id = id + end;
-
-		// long.Parse(s.Replace(".", ""))
-
-		Debug.Log ("Reporting score " + score + " on leaderboard " + id);
+		// Debug.Log ("Reporting score " + score + " on leaderboard " + id);
 		
 		Social.ReportScore ((long)score, id, success => {
 			Debug.Log(success ? "Reported score successfully" : "Failed to report score");

@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1229913128864354}
+  m_RootGameObject: {fileID: 1482809711593740}
   m_IsPrefabAsset: 1
---- !u!1 &1229913128864354
+--- !u!1 &1482809711593740
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4344146905243638}
-  - component: {fileID: 114088676500312392}
-  - component: {fileID: 120599561080656850}
+  - component: {fileID: 4469294852920046}
+  - component: {fileID: 114645036349521170}
+  - component: {fileID: 120050464300492270}
   m_Layer: 0
   m_Name: CatchRing
   m_TagString: Untagged
@@ -28,25 +28,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4344146905243638
+--- !u!4 &4469294852920046
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1229913128864354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.9025173, y: -17.19312, z: -14.712734}
+  m_GameObject: {fileID: 1482809711593740}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114088676500312392
+--- !u!114 &114645036349521170
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1229913128864354}
+  m_GameObject: {fileID: 1482809711593740}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4438b6092f3d5f645b9cfb91283d30c8, type: 3}
@@ -56,17 +56,16 @@ MonoBehaviour:
     start: 0.05
     end: 0.05
   radius:
-    start: 8
-    end: 1
-  duration: 0.14
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
-  handCaughtBall: 0
---- !u!120 &120599561080656850
+    start: 0
+    end: 10
+  duration: 0.25
+  defaultColor: {r: 0.20784315, g: 0.20784315, b: 0.20784315, a: 1}
+--- !u!120 &120050464300492270
 LineRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1229913128864354}
+  m_GameObject: {fileID: 1482809711593740}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1

@@ -75,12 +75,16 @@ public class BallCountdownManager : MonoBehaviour
 		}
     }
 
+    public bool showCountdown;
+
     public void SetCountdownNumber(int countdownNumber)
     {
-        countdownToNextball = countdownNumber;
+        if(showCountdown) {
+            countdownToNextball = countdownNumber;
 
-        if(NewBallManager._ballCount < NewBallManager.endgameBallCount) {
-            StartCoroutine(SpawnCountdownBalls());
+            if(NewBallManager._ballCount < NewBallManager.endgameBallCount) {
+                StartCoroutine(SpawnCountdownBalls());
+            }
         }
     }
 
