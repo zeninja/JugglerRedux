@@ -105,6 +105,7 @@ public class NewScoreManager : MonoBehaviour
     public void ClearHighscore()
     {
         PlayerPrefs.DeleteAll();
+        highScoreString = "0.0";
         SetHighscoreText();
     }
 

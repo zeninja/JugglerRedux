@@ -86,8 +86,14 @@ public class GameOverStacker : MonoBehaviour
         for (int i = 0; i < numCircles; i++)
         {
             Extensions.Property scaleRange = new Extensions.Property();
-            scaleRange.start = totalScaleDiff * EZEasings.SmoothStart3((float)i / (float)numCircles);
-            scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
+            if(NewScoreManager.newHighscore) {
+                scaleRange.start = totalScaleDiff * EZEasings.SmoothStart3((float)i / (float)numCircles);
+                scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
+            } else {
+                scaleRange.start = totalScaleDiff * EZEasings.Linear((float)i / (float)numCircles);
+                scaleRange.end   = totalScaleDiff * EZEasings.Linear((float)(i + 1) / (float)numCircles);
+            }
+
 
             scaleRanges.Add(scaleRange);
 
