@@ -42,9 +42,9 @@ public class NewBallManager : MonoBehaviour
     public int ballSpeedIndex;  // used to choose a SET, ie: slow, normal, fast
     int scoreIndex;             // used to trigger the ball spawn, the index of the score WITHIN one set
     public int[] ballSpawnScores;
-    int[] slowBallSpawnScores = new int[] { 5, 10, 25, 50, 75, 100, 125 };
-    int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70, 99 };
-    int[] fastBallSpawnScores = new int[] { 5, 10, 20, 35, 50, 65, 80, 99 };
+    int[] slowBallSpawnScores   = new int[] { 5, 10, 25, 50, 75, 100, 125, 150 };
+    int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70,   99, 125 };
+    int[] fastBallSpawnScores   = new int[] { 5, 10, 20, 35, 50, 65,   80, 99 };
 
     public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed = BallSpawnSpeed.med;

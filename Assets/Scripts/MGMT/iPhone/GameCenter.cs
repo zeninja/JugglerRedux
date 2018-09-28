@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using System.Runtime.InteropServices;
-using UnityEngine.SocialPlatforms.GameCenter;
+// using UnityEngine.SocialPlatforms.GameCenter;
 
 public class GameCenter : MonoBehaviour {
 

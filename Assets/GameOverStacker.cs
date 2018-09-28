@@ -16,7 +16,7 @@ public class GameOverStacker : MonoBehaviour
     public StackerDot dot;
     public Extensions.Property tunnelRadius;
     Extensions.ColorProperty automatedStackColor;
-    public float totalDuration = .35f;
+    public float circleSpawnDuration = .35f;
 
     Extensions.Property tint;
     public Extensions.Property normalTint;
@@ -26,6 +26,8 @@ public class GameOverStacker : MonoBehaviour
 
     public List<Extensions.Property> scaleRanges;
     List<StackerDot> dots;
+
+    public bool spawnParticleRings;
 
     void Awake()
     {
@@ -43,6 +45,14 @@ public class GameOverStacker : MonoBehaviour
             SpawnCircles(transform.position);
             StartCoroutine(RevealCircles());
         }
+
+        // UpdateColors();
+
+        if (Input.GetKeyDown(KeyCode.R) && manualTrigger)
+        {
+            ResetDots();
+        }
+
     }
 
     public void SetGameOverDotCount()
@@ -72,6 +82,8 @@ public class GameOverStacker : MonoBehaviour
         Gizmos.DrawLine(ScreenInfo.world_BR, transform.position);
     }
 
+    public bool testing = true;
+
     public void SpawnCircles(Vector2 startPos)
     {
         dots = new List<StackerDot>();
@@ -80,18 +92,21 @@ public class GameOverStacker : MonoBehaviour
         // tunnelRadius.start = 0;
         tunnelRadius.end = FindOuterRadius(startPos);
 
-        float d = totalDuration / numCircles;
+        float d = circleSpawnDuration / numCircles;
         float totalScaleDiff = tunnelRadius.start + tunnelRadius.end - tunnelRadius.start;
 
         for (int i = 0; i < numCircles; i++)
         {
             Extensions.Property scaleRange = new Extensions.Property();
-            if(NewScoreManager.newHighscore) {
+            if (NewScoreManager.newHighscore || testing)
+            {
                 scaleRange.start = totalScaleDiff * EZEasings.SmoothStart3((float)i / (float)numCircles);
-                scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
-            } else {
+                scaleRange.end = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
+            }
+            else
+            {
                 scaleRange.start = totalScaleDiff * EZEasings.Linear((float)i / (float)numCircles);
-                scaleRange.end   = totalScaleDiff * EZEasings.Linear((float)(i + 1) / (float)numCircles);
+                scaleRange.end = totalScaleDiff * EZEasings.Linear((float)(i + 1) / (float)numCircles);
             }
 
 
@@ -101,19 +116,57 @@ public class GameOverStacker : MonoBehaviour
         }
 
         Rainbower.GetInstance().SetDots(dots);
-        // ParticleRingSpawner.GetInstance().SetInfo(scaleRanges);
+        if( spawnParticleRings ) {
+            ParticleRingSpawner.GetInstance().SetInfo(startPos, scaleRanges);
+        }
     }
 
     public float revealDuration;
+    public float weight;
 
+    void ResetDots()
+    {
+        // foreach (StackerDot d in dots)
+        // {
+        //     Destroy(d.gameObject);
+        // }
+        // dots.Clear();
+    }
+
+    void UpdateColors()
+    {
+        if (dots == null || Rainbower.rainbowing) { return; }
+        if (dots.Count > 0)
+        {
+            for (int i = 0; i < dots.Count; i++)
+            {
+                dots[i].SetColor(FindDotColor(i));
+            }
+        }
+    }
+
+    Color FindDotColor(int i)
+    {
+        if (NewScoreManager.newHighscore || testing)
+        {
+            float linearPortion = (float)i / (float)numCircles;
+            float ease1 = EZEasings.SmoothStart2(linearPortion);
+            float ease2 = EZEasings.SmoothStart3(linearPortion);
+            float mix = EZEasings.Mix(ease1, ease2, weight, linearPortion);
+            return Color.Lerp(automatedStackColor.start, automatedStackColor.end, mix);
+        }
+        else
+        {
+            float linearPortion = (float)i / (float)numCircles;
+            return Color.Lerp(automatedStackColor.start, automatedStackColor.end, linearPortion);
+        }
+    }
 
     void SpawnProceduralCircle(Vector2 startPos, float d, Extensions.Property scaleRange, int i)
     {
-        float linearPortion = (float)i / (float)numCircles;
-
         // Spawn the dot
         StackerDot s = Instantiate(dot, Vector2.zero, Quaternion.identity);
-        Color dotColor = Color.Lerp(automatedStackColor.start, automatedStackColor.end, linearPortion);
+        Color dotColor = FindDotColor(i);
 
         s.SetInfo(startPos, dotColor, i);
         s.gameObject.name = i.ToString();
@@ -134,8 +187,10 @@ public class GameOverStacker : MonoBehaviour
             int index = Mathf.CeilToInt((float)numCircles * EZEasings.SmoothStart2(p));
             index = Mathf.Min(index, numCircles - 1);
 
-            for(int i = 0; i < dots.Count; i++) {
-                if(i <= index) {
+            for (int i = 0; i < dots.Count; i++)
+            {
+                if (i <= index)
+                {
                     dots[i].gameObject.SetActive(true);
                 }
             }
@@ -156,8 +211,10 @@ public class GameOverStacker : MonoBehaviour
             int index = Mathf.CeilToInt((float)numCircles * EZEasings.SmoothStart2(p));
             index = Mathf.Clamp(index, 0, numCircles - 1);
 
-            for(int i = 0; i < dots.Count; i++) {
-                if(i >= index) {
+            for (int i = 0; i < dots.Count; i++)
+            {
+                if (i >= index)
+                {
                     dots[i].gameObject.SetActive(false);
                 }
             }
@@ -167,17 +224,22 @@ public class GameOverStacker : MonoBehaviour
         }
 
         dots[0].gameObject.SetActive(false);
-        
 
-        for(int i = 0; i < dots.Count; i++) {
+
+        for (int i = 0; i < dots.Count; i++)
+        {
             Destroy(dots[i].gameObject);
         }
     }
 
-    public void SetTint() {
-        if(!NewScoreManager.newHighscore) {
+    public void SetTint()
+    {
+        if (!NewScoreManager.newHighscore)
+        {
             tint = normalTint;
-        } else {
+        }
+        else
+        {
             tint = highScoreTint;
         }
     }

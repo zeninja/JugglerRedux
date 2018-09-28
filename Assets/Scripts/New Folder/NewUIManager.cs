@@ -107,14 +107,24 @@ public class NewUIManager : MonoBehaviour {
 		GlobalSettings.UpdateSavedValues();
     }
 
-	public void AdjustTimeScale(float adj) {
-        // float timeScale = TimeManager.GetInstance().m_SlowTimeScale;
-        // timeScale += adj;
-        // timeScale = Mathf.Min(1, timeScale);
-        // TimeManager.GetInstance().m_SlowTimeScale = timeScale;
+	public void AdjustTimeMin(float adj) {
+        float timeScale = TimeManager.GetInstance().timeRange.start;
+        timeScale += adj;
+        timeScale = Mathf.Min(1, timeScale);
+        TimeManager.GetInstance().timeRange.start = timeScale;
 
-		// SavedInfoManager.mySettings.timeScale = timeScale;
-		// SavedInfoManager.UpdateSavedValues();
+		GlobalSettings.Settings.timeMin = timeScale;
+		GlobalSettings.UpdateSavedValues();
+   }
+
+	public void AdjustTimeMax(float adj) {
+        float timeScale = TimeManager.GetInstance().timeRange.end;
+        timeScale += adj;
+        timeScale = Mathf.Min(1, timeScale);
+        TimeManager.GetInstance().timeRange.end = timeScale;
+
+		GlobalSettings.Settings.timeMax = timeScale;
+		GlobalSettings.UpdateSavedValues();
    }
 
 	// public void SwitchSlapsAllowed() {

@@ -65,11 +65,14 @@ public class GameOverManager : MonoBehaviour
         yield return new WaitForSeconds(.15f);
         yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
+        yield return StartCoroutine(Rainbower.GetInstance().LotsOfSwooshes(NewScoreManager._ballCount));
 
         NewScoreManager._peakCount = 0;
         NewScoreManager._ballCount  = 0;
 
         NewScoreManager.GetInstance().EnableScore(false);
+        
+        EventManager.TriggerEvent("KillParticles");
         
         yield return StartCoroutine(InterstitalAd());
         yield return StartCoroutine(ShowLogo());

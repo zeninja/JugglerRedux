@@ -160,7 +160,7 @@ public class NewBall : MonoBehaviour
     {
         BroadcastMessage("HandlePeak", SendMessageOptions.DontRequireReceiver);
         EventManager.TriggerEvent("BallPeaked");
-        Debug.Log("Peakin");
+        // Debug.Log("Peakin");
         m_BallThrown = false;
         NewBallManager.GetInstance().UpdateEndgame(this);
     }

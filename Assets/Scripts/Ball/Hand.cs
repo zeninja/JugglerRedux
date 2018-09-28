@@ -80,7 +80,7 @@ public class Hand : MonoBehaviour {
 
 		#if UNITY_EDITOR
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		#elif UNITY_IOS
+		#else
 		currentHandPos = (Vector2)Camera.main.ScreenToWorldPoint(myTouch.position);
 		#endif
 

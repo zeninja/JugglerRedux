@@ -21,7 +21,6 @@ public class BallSprite : MonoBehaviour {
 
 		// peakSprite.color = GetComponentInParent<NewBallArtManager>().myColor * modifier;
 		peakSprite.color = GetComponent<SpriteRenderer>().color * .5f;
-		Debug.Log("setting up ball sprite");
 
 
 		EventManager.StartListening("CleanUp", DisableSprite);

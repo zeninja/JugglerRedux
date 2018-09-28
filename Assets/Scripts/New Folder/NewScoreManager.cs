@@ -164,10 +164,10 @@ public class NewScoreManager : MonoBehaviour
             PlayerPrefs.SetFloat(highScoreKey, (float)highscore);
 
             // Debug.Log("REPORTING HIGH SCORE. VALUE IS: " + highscore);
+            #if UNITY_IOS && !UNITY_EDITOR
             GameCenter.GetInstance().SetHighScore(highscore);
-
-            yield return StartCoroutine(Rainbower.GetInstance().MakeWaves(_ballCount));
-
+            #else
+            #endif
         }
         else
         {

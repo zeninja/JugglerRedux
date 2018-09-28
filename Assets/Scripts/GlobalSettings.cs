@@ -18,6 +18,9 @@ public class GlobalSettings : MonoBehaviour
         public bool dragUpToThrow;
 
         public bool offsetXSpawnPosition;
+
+        public float timeMin;
+        public float timeMax;
     }
 
     [SerializeField]
@@ -54,6 +57,9 @@ public class GlobalSettings : MonoBehaviour
         Settings.adsOff          = NewAdManager.forceAdsOff;
         Settings.dragUpToThrow   = NewHandManager.dragUpToThrow;
 
+        Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
+        Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
+
         Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
 		
         UpdateSavedValues();
@@ -72,6 +78,8 @@ public class GlobalSettings : MonoBehaviour
         NewBallManager.GetInstance().ballSpeedIndex      = Settings.ballSpeedIndex;
         NewAdManager.forceAdsOff                         = Settings.adsOff;
         
+        TimeManager.GetInstance().timeRange.start        = Settings.timeMin;
+        TimeManager.GetInstance().timeRange.end          = Settings.timeMax;
 
         UpdateSavedValues();
     }
