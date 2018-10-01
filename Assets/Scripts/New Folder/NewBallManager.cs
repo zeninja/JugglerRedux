@@ -34,7 +34,7 @@ public class NewBallManager : MonoBehaviour
 
     NewBall firstBall;
     List<NewBall> balls = new List<NewBall>();
-    List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
+    // List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
     public float ballLaunchForce = 10;
 
     public Color[] m_BallColors;
@@ -50,6 +50,7 @@ public class NewBallManager : MonoBehaviour
     public BallSpawnSpeed ballSpawnSpeed = BallSpawnSpeed.med;
 
     public int juggleThreshold = 3;
+    // public static float unheldBallCount;
 
     public Vector2 ballSpawnPos;
 
@@ -75,51 +76,39 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    public bool JuggleThresholdReached()
-    {
-        bool useRisingBalls = false;
-
-        if(useRisingBalls) {
-            int numBallsThrowing = 0;
-
-            foreach (NewBall n in balls)
-            {
-                if (n.m_BallThrown)
-                {
-                    numBallsThrowing++;
-                    if (numBallsThrowing >= juggleThreshold)
-                    {
-                        return true;
-                    }
-                }
+    public float GetUnheldBallCount() {
+        int unheldBalls = 0;
+        for(int i = 0; i < balls.Count; i++) {
+            if(!balls[i].IsHeld()) {
+                unheldBalls++;
             }
-            return false;
-        } else {
+        }
+        return unheldBalls;
+    }
 
-            foreach(NewBall n in balls) {
-                if(n.IsFalling()) {
+    public bool InJuggleTime()
+    {
+        foreach(NewBall n in balls) {
+            if(n.IsFalling()) {
+                return true;
+            }
+        }
+
+        int numBallsThrowing = 0;
+
+        foreach (NewBall n in balls)
+        {
+            if (n.m_BallThrown)
+            {
+                numBallsThrowing++;
+                if (numBallsThrowing >= juggleThreshold)
+                {
                     return true;
                 }
             }
-
-            int numBallsThrowing = 0;
-
-            foreach (NewBall n in balls)
-            {
-                if (n.m_BallThrown)
-                {
-                    numBallsThrowing++;
-                    if (numBallsThrowing >= juggleThreshold)
-                    {
-                        return true;
-                    }
-                }
-            }
-            
-            return false;
         }
-
-
+        
+        return false;
     }
 
     int xSwitcher = 1;
@@ -148,7 +137,7 @@ public class NewBallManager : MonoBehaviour
         _ballCount++;
         NewScoreManager._ballCount = _ballCount;
 
-        ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+        // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }
 
     void SpawnBall()
@@ -168,7 +157,7 @@ public class NewBallManager : MonoBehaviour
             balls.Add(ball);
             _ballCount++;
 
-            ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+            // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
 
             if(scoreIndex < ballSpawnScores.Length) {
                 BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);

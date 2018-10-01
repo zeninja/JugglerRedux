@@ -57,7 +57,8 @@ public class Rainbower : MonoBehaviour
     public static bool rainbowing;
 
     public int manualSwooshCount = 3;
-    public int ringsPerSwoosh = 5;
+    public Extensions.Property ringsPerSwoosh;
+    int swooshRingCount;
 
     public IEnumerator LotsOfSwooshes(int numSwooshes)
     {
@@ -65,10 +66,16 @@ public class Rainbower : MonoBehaviour
             rainbowing = true;
             for (int i = 0; i < numSwooshes; i++)
             {
+                float t = (float)i / (float)numSwooshes;
+                swooshRingCount = (int)Extensions.GetSmoothStart3Range(ringsPerSwoosh, t);
+
                 StartCoroutine(MoveRings(colors[i]));
-                yield return StartCoroutine(Extensions.Wait(swooshInterval));
+                float interval = Extensions.GetSmoothStepRange(swooshInterval, (float) numSwooshes / 9f);
+                // Debug.Log((float) numSwooshes / 9f);
+                Debug.Log(interval);
+                yield return StartCoroutine(Extensions.Wait(interval));
             }
-            yield return new WaitForSeconds(.3f);
+            yield return new WaitForSeconds(.25f);
             rainbowing = false;
         } else {
             yield return null;
@@ -76,7 +83,7 @@ public class Rainbower : MonoBehaviour
     }
 
     public float swooshDuration = .5f;
-    public float swooshInterval = .5f;
+    public Extensions.Property swooshInterval;
 
     IEnumerator MoveRings(Color targetColor)
     {
@@ -88,11 +95,12 @@ public class Rainbower : MonoBehaviour
             t += Time.fixedDeltaTime;
 
             float p = t / d;
-            totalLength = dots.Count + ringsPerSwoosh;
+            totalLength = dots.Count + swooshRingCount;
             int index = Mathf.FloorToInt(EZEasings.SmoothStart3(p) * (float)totalLength);
 
             // UpdateRings(index, targetColor);
             // if(index < 5) {
+                UpdateDots(index, targetColor);
                 UpdateParticles(index, targetColor);
             // }
             yield return new WaitForFixedUpdate();
@@ -105,6 +113,23 @@ public class Rainbower : MonoBehaviour
     void UpdateParticles(int index, Color targetColor) {
         if(index < dots.Count && index != lastIndex && GameOverStacker.GetInstance().spawnParticleRings) {
             ParticleRingSpawner.GetInstance().TriggerRing(index, targetColor);
+            lastIndex = index;
+        }
+    }
+
+    void UpdateDots(int index, Color targetColor) {
+        if(index != lastIndex) {
+            for(int i = index; i > index - swooshRingCount && i >= 0; i--) {
+                if(i < dots.Count) {
+                    dots[i].SetColor(targetColor);
+                }
+            }
+
+            for(int i = index - swooshRingCount; i >= 0; i--) {
+                if(i < dots.Count) {
+                    dots[i].ReturnToDefaultColor();
+                }
+            }
             lastIndex = index;
         }
     }

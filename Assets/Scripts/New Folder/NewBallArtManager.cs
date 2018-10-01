@@ -19,8 +19,7 @@ public class NewBallArtManager : MonoBehaviour
     public SpriteRenderer m_BallBackground;
     
     [System.NonSerialized] public Color myColor;
-    [System.NonSerialized] public int spriteSortIndex;
-    [System.NonSerialized] public BallSpriteMask ballMask;
+    [System.NonSerialized] public int ballIndex;
     public BallPredictor m_BallPredictor;
 
 
@@ -37,8 +36,7 @@ public class NewBallArtManager : MonoBehaviour
         m_Ball          = GetComponentInParent<NewBall>();
         m_Rigidbody     = GetComponentInParent<Rigidbody2D>();
         m_BallSprite    = GetComponentInChildren<SpriteRenderer>();
-        ballMask        = GetComponentInChildren<BallSpriteMask>();
-        m_BallPredictor = GetComponentInChildren<BallPredictor>();
+        // m_BallPredictor = GetComponentInChildren<BallPredictor>();
 
         m_LinePointList    = new List<Vector3>();
         predictedPointList = new List<Vector3>();
@@ -51,7 +49,7 @@ public class NewBallArtManager : MonoBehaviour
         // trail.endWidth = defaultScale;
 
 
-        EventManager.StartListening("BallCaught", IncrementDepth);
+        // EventManager.StartListening("BallCaught", IncrementDepth);
         EventManager.StartListening("CleanUp", HandleDeath);
 
         CheckLaunch();
@@ -67,7 +65,7 @@ public class NewBallArtManager : MonoBehaviour
 
     public void SetInfo(int newIndex)
     {
-        spriteSortIndex = newIndex;
+        ballIndex = newIndex;
 
         SetColor();
     }
@@ -77,10 +75,17 @@ public class NewBallArtManager : MonoBehaviour
         StartCoroutine(PopIn());
     }
 
+    public int currentDepth;
+
+    public void SetDepth(int sortIndex) {
+        currentDepth = sortIndex;
+        BroadcastMessage("AdjustDepth", sortIndex);
+    }
+
     public void SetColor()
     {
-        spriteSortIndex = Mathf.Clamp(spriteSortIndex, 0, 8);
-        myColor = NewBallManager.GetInstance().m_BallColors[spriteSortIndex];
+        ballIndex = Mathf.Clamp(ballIndex, 0, 8);
+        myColor = NewBallManager.GetInstance().m_BallColors[ballIndex];
         m_BallSprite.color = myColor;
         m_BallBackground.color = myColor;
 
@@ -97,21 +102,7 @@ public class NewBallArtManager : MonoBehaviour
     }
 
     void HandleCatch() {
-        BringToFront();
-    }
-
-    public int currentDepth = 0;
-
-    public void BringToFront() {
-        // Debug.Log("BOUGHT TO FROOOONNNTTT");
-        currentDepth = 0;
-        BroadcastMessage("AdjustDepth", SendMessageOptions.DontRequireReceiver);
-    }
-
-    void IncrementDepth() {
-        // Debug.Log("Back it up");
-        currentDepth--;
-        BroadcastMessage("AdjustDepth", SendMessageOptions.DontRequireReceiver);
+        BallDepthManager.GetInstance().UpdateBallDepth(this);
     }
 
     bool ballDead = false;
@@ -131,6 +122,8 @@ public class NewBallArtManager : MonoBehaviour
     {
         Vector2 launchPos    = transform.position;
         Vector2 launchVector = Vector2.up * NewBallManager.GetInstance().ballLaunchForce;
+
+        Debug.Log(m_BallPredictor);
 
         launchPointList = m_BallPredictor.GetPositionList(launchPos, launchVector);
     }

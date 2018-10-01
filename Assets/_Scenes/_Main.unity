@@ -6226,6 +6226,7 @@ GameObject:
   - component: {fileID: 1341528099}
   - component: {fileID: 1341528102}
   - component: {fileID: 1341528101}
+  - component: {fileID: 1341528103}
   m_Layer: 0
   m_Name: MGMT
   m_TagString: Untagged
@@ -6608,7 +6609,7 @@ MonoBehaviour:
     end: 0.9
   startColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
   scaleRanges: []
-  spawnParticleRings: 1
+  spawnParticleRings: 0
   manualTrigger: 0
   testing: 0
   revealDuration: 0.25
@@ -6679,9 +6680,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colors: []
   manualSwooshCount: 1
-  ringsPerSwoosh: 8
+  ringsPerSwoosh:
+    start: 5
+    end: 10
   swooshDuration: 0.5
-  swooshInterval: 0.5
+  swooshInterval:
+    start: 0.5
+    end: 0.1
+--- !u!114 &1341528103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1341528082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e491e0ac7088cb428adad073c7006f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1401493298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10140,10 +10156,6 @@ Prefab:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1030218780260200, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154872228545126, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

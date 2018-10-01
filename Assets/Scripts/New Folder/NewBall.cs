@@ -60,13 +60,13 @@ public class NewBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(1))
         {
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
         }
-#endif
+        #endif
 
         if (rb.velocity.y < 0)
         {
