@@ -34,24 +34,23 @@ public class NewBallManager : MonoBehaviour
 
     NewBall firstBall;
     List<NewBall> balls = new List<NewBall>();
-    List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
+    // List<NewBallArtManager> ballsSortedByDepth = new List<NewBallArtManager>();
     public float ballLaunchForce = 10;
 
     public Color[] m_BallColors;
 
     public int ballSpeedIndex;  // used to choose a SET, ie: slow, normal, fast
     int scoreIndex;             // used to trigger the ball spawn, the index of the score WITHIN one set
-    int[] ballSpawnScores;
-    int[] slowBallSpawnScores = new int[] { 5, 10, 25, 50, 75, 100, 125 };
-    int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70, 99 };
-    int[] fastBallSpawnScores = new int[] { 5, 10, 20, 35, 50, 65, 80, 99 };
+    public int[] ballSpawnScores;
+    int[] slowBallSpawnScores   = new int[] { 5, 10, 25, 50, 75, 100, 125, 150 };
+    int[] normalBallSpawnScores = new int[] { 5, 15, 25, 40, 55, 70,   99, 125 };
+    int[] fastBallSpawnScores   = new int[] { 5, 10, 20, 35, 50, 65,   80, 99 };
 
     public enum BallSpawnSpeed { slow, med, fast };
     public BallSpawnSpeed ballSpawnSpeed = BallSpawnSpeed.med;
 
-    // public static bool allowSlaps;
-
     public int juggleThreshold = 3;
+    // public static float unheldBallCount;
 
     public Vector2 ballSpawnPos;
 
@@ -59,12 +58,11 @@ public class NewBallManager : MonoBehaviour
     void Start()
     {
         EventManager.StartListening("SpawnBall", SpawnBall);
-        // EventManager.StartListening("BallCaught", CheckBallLaunch);
-        // EventManager.StartListening("BallSlapped", CheckBallLaunch);
         EventManager.StartListening("BallPeaked", CheckBallLaunch);
         EventManager.StartListening("BallDied", OnBallDied);
 
-        ballSpawnScores = normalBallSpawnScores;
+        // ballSpawnScores = fastBallSpawnScores;
+        SetBallLaunchScores();
     }
 
     // Update is called once per frame
@@ -78,62 +76,53 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    public bool JuggleThresholdReached()
-    {
-        bool useRisingBalls = false;
-
-        if(useRisingBalls) {
-            int numBallsThrowing = 0;
-
-            foreach (NewBall n in balls)
-            {
-                if (n.m_BallThrown)
-                {
-                    numBallsThrowing++;
-                    if (numBallsThrowing >= juggleThreshold)
-                    {
-                        return true;
-                    }
-                }
+    public float GetUnheldBallCount() {
+        int unheldBalls = 0;
+        for(int i = 0; i < balls.Count; i++) {
+            if(!balls[i].IsHeld()) {
+                unheldBalls++;
             }
-            return false;
-        } else {
+        }
+        return unheldBalls;
+    }
 
-            foreach(NewBall n in balls) {
-                if(n.IsFalling()) {
+    public bool InJuggleTime()
+    {
+        foreach(NewBall n in balls) {
+            if(n.IsFalling()) {
+                return true;
+            }
+        }
+
+        int numBallsThrowing = 0;
+
+        foreach (NewBall n in balls)
+        {
+            if (n.m_BallThrown)
+            {
+                numBallsThrowing++;
+                if (numBallsThrowing >= juggleThreshold)
+                {
                     return true;
                 }
             }
-
-            int numBallsThrowing = 0;
-
-            foreach (NewBall n in balls)
-            {
-                if (n.m_BallThrown)
-                {
-                    numBallsThrowing++;
-                    if (numBallsThrowing >= juggleThreshold)
-                    {
-                        return true;
-                    }
-                }
-            }
-            
-            return false;
         }
-
-
+        
+        return false;
     }
 
     int xSwitcher = 1;
-
     public Vector2 spawnPos;
     public void SpawnFirstBall() {
         if(firstBall) { return; }
 
         xSwitcher *= -1;
 
-        ballSpawnPos = new Vector2(xSwitcher * spawnPos.x, spawnPos.y);
+        if (GlobalSettings.Settings.offsetXSpawnPosition) {
+            ballSpawnPos = new Vector2(xSwitcher * spawnPos.x, spawnPos.y);
+        } else {
+            ballSpawnPos = new Vector2(0, spawnPos.y);
+        }
         NewBall ball = Instantiate(m_BallPrefab);
 
         ball.transform.position = ballSpawnPos;
@@ -144,12 +133,11 @@ public class NewBallManager : MonoBehaviour
         ball.GetComponentInChildren<NewBallArtManager>().PopInAnimation();
         firstBall = ball;
 
-
         balls.Add(ball);
         _ballCount++;
-        NewScoreManager._numBalls = _ballCount;
+        NewScoreManager._ballCount = _ballCount;
 
-        ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+        // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
     }
 
     void SpawnBall()
@@ -169,9 +157,11 @@ public class NewBallManager : MonoBehaviour
             balls.Add(ball);
             _ballCount++;
 
-            ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+            // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
 
-            BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
+            if(scoreIndex < ballSpawnScores.Length) {
+                BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
+            }
         }
     }
 
@@ -207,23 +197,11 @@ public class NewBallManager : MonoBehaviour
 
     public static int endgameBallCount = 9;
 
-    public void UpdateEndgame(NewBall nb)
+    public void UpdateEndgame(NewBall b)
     {
         if (_ballCount == endgameBallCount)
         {
-
-            Debug.Log("1. ball count equal");
-            if (!AllBallsUnitedAtIndex(endgameBallCount))
-            {
-                Debug.Log("2. " + nb.ballColorIndex + " | " + endgameBallCount);
-
-                if (nb.ballColorIndex < endgameBallCount)
-                {
-                    Debug.Log("3. updating color");
-                    nb.ballColorIndex++;
-                    nb.UpdateColor();
-                }
-            }
+            b.ProcessStageTransition();
         }
     }
 
@@ -255,16 +233,17 @@ public class NewBallManager : MonoBehaviour
         _ballCount = 0;
     }
 
-    public bool AllBallsUnitedAtIndex(int index)
-    {
-        foreach (NewBall b in balls)
-        {
-            if (b.ballColorIndex != index)
-            {
+    bool keepChecking;
+
+    public bool AllBallsNormal() {
+        if(!keepChecking) { return true; }
+
+        foreach (NewBall b in balls) {
+            if(b.stage != NewBall.BallStage.normal) {
                 return false;
             }
         }
-
+        keepChecking = false;
         return true;
     }
 

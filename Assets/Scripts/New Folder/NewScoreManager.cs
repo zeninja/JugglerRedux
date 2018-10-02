@@ -3,185 +3,223 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class NewScoreManager : MonoBehaviour {
+public class NewScoreManager : MonoBehaviour
+{
 
-	#region instance
-	private static NewScoreManager instance;
-	public static NewScoreManager GetInstance() {
-		return instance;
-	}
-	#endregion
+    #region instance
+    private static NewScoreManager instance;
+    public static NewScoreManager GetInstance()
+    {
+        return instance;
+    }
 
-	void Awake() {
-		if(instance == null) {
-			instance = this;
-		} else {
-			if(this != instance) {
-				Destroy(gameObject);
-			}
-		}
-	}
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (this != instance)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+    #endregion
 
-	public static int _numBalls;
-	// public static int _catchCount;
-	public static int _peakCount;
-	public static float _progress;
-	public static float _lastPeakCount;
+    public static int _ballCount;
+    public static int _peakCount;
+    public static float _progress;
+    public static float _lastPeakCount;
 
-	public static int _maxCatchCount = 99;
+    string currentScoreString;
+    string highScoreString;
 
-	string currentScoreString;
-	string highScoreString;
+    public TextMeshPro scoreText;
+    public TextMeshPro highScoreText;
 
-	public TextMeshPro scoreText;
-	public TextMeshPro highScoreText;
+    decimal currentScore;
+    decimal highscore;
 
-	float currentScore;
-	float highscore;
-	static string highScoreKey = "highScore";
+    int m_SavedBallCount;
+    int m_SavedPeakCount;
 
-	public Gradient highscoreGradient;
-	public Color scoreColor;
+    static string ballKey = "ballKey";
+    static string peakKey = "peakKey";
+    static string highScoreKey = "highScore";
 
-	public float pauseBeforeCountdown = .25f;
-	public float inOutDuration;
+    public Gradient highscoreGradient;
+    public Color scoreColor;
 
-	// Use this for initialization
-	void Start () {
-		EventManager.StartListening("SpawnBall", OnBallSpawned);
-		EventManager.StartListening("BallCaught", OnBallCaught);
-		EventManager.StartListening("BallPeaked", OnBallPeaked);
-		EventManager.StartListening("BallSlapped", OnBallSlapped);
-		
-		InitHighscore();
-	}
+    // public float pauseBeforeCountdown = .25f;
+    public float inOutDuration;
 
-	void InitHighscore() {
-		if(PlayerPrefs.HasKey(highScoreKey)) {
-			highscore = PlayerPrefs.GetFloat(highScoreKey);
-			highScoreString = highscore.ToString();
-		} else {
-			highscore = 0.0f;
-			highScoreString = "0.0";
-		}
-		SetHighscoreText();
-	}
+    // Use this for initialization
+    void Start()
+    {
+        EventManager.StartListening("SpawnBall", OnBallSpawned);
+        EventManager.StartListening("BallPeaked", OnBallPeaked);
 
-	void SetHighscoreText() {
-		
-		highScoreText.text = highScoreString;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		currentScoreString = _numBalls.ToString() + "." + _peakCount.ToString();
-		scoreText.text = currentScoreString;
+        InitHighscore();
+    }
 
-		if(Input.GetKeyDown(KeyCode.C)) {
-			PlayerPrefs.DeleteAll();
-			SetHighscoreText();
-		}
-	}
+    int GetScore(string key)
+    {
+        if (PlayerPrefs.HasKey(key))
+        {
+            return PlayerPrefs.GetInt(key);
+        }
+        else
+        {
+            return 0;
+        }
+    }
 
-	void OnBallSpawned() {
-		_numBalls++;	
-	}
+    void InitHighscore()
+    {
+        m_SavedBallCount = GetScore(ballKey);
+        m_SavedPeakCount = GetScore(peakKey);
+        highScoreString = m_SavedBallCount.ToString() + "." + m_SavedPeakCount.ToString();
+        SetHighscoreText();
+    }
 
-	void OnBallCaught() {
-		// Debug.Log("caught");
-		// scoreText.text = currentScoreString;
-		// _catchCount++;
-		// _progress = Mathf.Min((float)_catchCount / (float)_maxCatchCount, 1.0f) ;
-	}
+    void SetHighscoreText()
+    {
+        highScoreText.text = highScoreString;
+    }
 
-	void OnBallSlapped() {
-		// Debug.Log("slapped");
-		// scoreText.text = currentScoreString;
-		// _catchCount++;
-	}
+    // Update is called once per frame
+    void Update()
+    {
+        currentScoreString = _ballCount.ToString() + "." + _peakCount.ToString();
+        scoreText.text = currentScoreString;
 
-	void OnBallPeaked() {
-		scoreText.text = currentScoreString;
-		_peakCount++;
-	}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            ClearHighscore();
+        }
+    }
 
-	public void Reset() {
-		_peakCount = 0;
-		_numBalls = 0;
+    public void ClearHighscore()
+    {
+        PlayerPrefs.DeleteAll();
+        highScoreString = "0.0";
+        SetHighscoreText();
+    }
 
-		currentScoreString = _numBalls.ToString() + "." + _peakCount.ToString();
-	}
+    void OnBallSpawned()
+    {
+        _ballCount++;
+    }
 
-	public static float GetProgressPercent() {
-		return _progress;
-	}
+    void OnBallPeaked()
+    {
+        scoreText.text = currentScoreString;
+        _peakCount++;
+    }
 
-	public IEnumerator HighscoreProcess() {
-		currentScore = float.Parse(string.Format("{0}.{1}", _numBalls.ToString(), _peakCount.ToString()));
-		highscore = PlayerPrefs.GetFloat(highScoreKey);
+    public void Reset()
+    {
+        _peakCount = 0;
+        _ballCount = 0;
 
-		_lastPeakCount = _peakCount;
+        currentScoreString = _ballCount.ToString() + "." + _peakCount.ToString();
+        newHighscore = false;
+    }
 
-		Debug.Log(currentScore + " | " +  highscore);
+    public static float GetProgressPercent()
+    {
+        return _progress;
+    }
 
-		if(currentScore > highscore) {
-			// Debug.Log("UPDATING HIGH SCORE");
+    public static bool newHighscore;
 
-			highscore = currentScore;
-			highScoreString = highscore.ToString();
-			SetHighscoreText();
+    public void CheckHighscore()
+    {
+        currentScore = decimal.Parse(string.Format("{0}.{1}", _ballCount.ToString(), _peakCount.ToString()));
+        highscore = (decimal)PlayerPrefs.GetFloat(highScoreKey);
+        newHighscore = currentScore > highscore;
 
-			PlayerPrefs.SetFloat(highScoreKey, highscore);
+        // Debug.Log(currentScore + " | " + highscore);
+    }
 
-			Debug.Log("REPORTING HIGH SCORE. VALUE IS: " +  highscore);
-			GameCenter.GetInstance().SetHighScore(highscore);
-			
-			yield return StartCoroutine(UpdateHighScore());
-		} else {
-			yield return new WaitForSeconds(.1f);
-		}
-	}
+    public IEnumerator HighscoreProcess()
+    {
+        highscore = (decimal)PlayerPrefs.GetFloat(highScoreKey);
+        _lastPeakCount = _peakCount;
 
-	public IEnumerator UpdateHighScore() {
-		yield return new WaitForSeconds(pauseBeforeCountdown);
+        if (newHighscore)
+        {
 
-		float t = 0;
-		inOutDuration = .15f;
+            highscore = currentScore;
+            highScoreString = highscore.ToString();
 
-		while(t < inOutDuration) {
-			t += Time.fixedDeltaTime;
-			float percent = t / inOutDuration;
+            SetHighscoreText();
 
-			scoreText.color = Color.Lerp(scoreColor, highscoreGradient.Evaluate(0), percent);
-			yield return new WaitForFixedUpdate();
-		}
+            PlayerPrefs.SetInt(ballKey, _ballCount);
+            PlayerPrefs.SetInt(peakKey, _peakCount);
 
-		t = 0;
-		float duration = 1f;
+            PlayerPrefs.SetFloat(highScoreKey, (float)highscore);
 
-		while(t < duration) {
-			t += Time.fixedDeltaTime;
-			float percent = t / duration;
+            // Debug.Log("REPORTING HIGH SCORE. VALUE IS: " + highscore);
+            #if UNITY_IOS && !UNITY_EDITOR
+            GameCenter.GetInstance().SetHighScore(highscore);
+            #else
+            #endif
+        }
+        else
+        {
+            yield return new WaitForSeconds(.1f);
+        }
+    }
 
-			scoreText.color = highscoreGradient.Evaluate(percent);
+    public IEnumerator RainbowText()
+    {
+        // yield return new WaitForSeconds(pauseBeforeCountdown);
 
-			yield return new WaitForFixedUpdate();
-		}
+        float t = 0;
+        inOutDuration = .15f;
 
-		t = 0;
-		
-		while(t < inOutDuration) {
-			t += Time.fixedDeltaTime;
-			float percent = t / inOutDuration;
+        while (t < inOutDuration)
+        {
+            t += Time.fixedDeltaTime;
+            float percent = t / inOutDuration;
 
-			scoreText.color = Color.Lerp(highscoreGradient.Evaluate(0), scoreColor, percent);
-			yield return new WaitForFixedUpdate();
-		}
+            scoreText.color = Color.Lerp(scoreColor, highscoreGradient.Evaluate(0), percent);
+            yield return new WaitForFixedUpdate();
+        }
 
-		scoreText.color = scoreColor;
-	}
+        t = 0;
+        float duration = 1f;
 
-	public void EnableScore(bool val) {
-		scoreText.gameObject.SetActive(val);
-	}
+        while (t < duration)
+        {
+            t += Time.fixedDeltaTime;
+            float percent = t / duration;
+
+            scoreText.color = highscoreGradient.Evaluate(percent);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        t = 0;
+
+        while (t < inOutDuration)
+        {
+            t += Time.fixedDeltaTime;
+            float percent = t / inOutDuration;
+
+            scoreText.color = Color.Lerp(highscoreGradient.Evaluate(0), scoreColor, percent);
+            yield return new WaitForFixedUpdate();
+        }
+
+        scoreText.color = scoreColor;
+    }
+
+    public void EnableScore(bool val)
+    {
+        scoreText.gameObject.SetActive(val);
+    }
 }

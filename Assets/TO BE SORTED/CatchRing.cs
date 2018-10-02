@@ -6,33 +6,27 @@ using UnityEngine;
 public class CatchRing : MonoBehaviour {
 
 	LineRenderer line;
-
 	int NUM_SEGMENTS = 1000;
-
 	public Extensions.Property lineWidth;
 	public Extensions.Property radius;
 
 	float currentRadius;
 	float currentLineWidth;
-
-	float t;
 	public float duration;
-	float percent;
 
 	public Color defaultColor;
-	[System.NonSerialized]
-	public Color ballColor;
-	public bool handCaughtBall;
+
+	public bool instant;
 
 	// Use this for initialization
-	void Start () {
-		startTime = Time.time;
-
+	void Awake () {
 		line = GetComponent<LineRenderer>();
 		line.useWorldSpace = false;
 		line.sortingLayerName = "Default";
 
-		SetColor();
+		if(instant) {
+			DrawInstantRing();
+		}
 	}
 	
 	// Update is called once per frame
@@ -40,26 +34,44 @@ public class CatchRing : MonoBehaviour {
 		if(NewGameManager.GameOver()) { return; }
 
 		HandleInput();
-
-		DrawRing();
 	}
 
-	float startTime;
-
 	void HandleInput() {
-		if(t < duration) {
-			t += Time.fixedDeltaTime;
+		if(Input.GetKeyDown(KeyCode.C)) {
+			TriggerRing(defaultColor);
 		}
+	}
 
-		percent = t / duration;
-		percent = Mathf.Clamp(percent, 0, 1);
-	}	
+	public void TriggerRing(Color ballColor) {
+		line.material.color = ballColor;
+		line.enabled = true;
+		StartCoroutine(AnimateRing(duration));
+	}
+
+	IEnumerator AnimateRing(float d) {
+		float t = 0;
+
+		while(t < d) {
+			float p = t / d;
+
+			UpdateLineWidthAndRadius(p);
+			DrawRing();
+
+			t += Time.fixedDeltaTime;
+			yield return new WaitForFixedUpdate();
+		}
+		
+		line.enabled = false;
+		Destroy(gameObject);
+	}
+
+	void UpdateLineWidthAndRadius(float percent) {
+		currentRadius    = Extensions.GetSmoothStepRange(radius, percent);
+		currentLineWidth = Extensions.GetSmoothStepRange(lineWidth, percent);
+	}
 
 	void DrawRing()
     {
-		currentRadius = Extensions.GetSmoothStepRange(radius, percent);
-		currentLineWidth = Extensions.GetSmoothStepRange(lineWidth, percent);
-
         float x;
         float y;
         float z = 10f;
@@ -81,24 +93,10 @@ public class CatchRing : MonoBehaviour {
 
         line.startWidth = currentLineWidth;
         line.endWidth   = currentLineWidth;
-        // line.enabled = true;
     }
 
-	public void SetBallColor(Color newColor) {
-		ballColor = newColor;
-		handCaughtBall = true;
-		SetColor();
-	}
-
-	public void SetColor() {
-		Color ringColor = defaultColor;
-
-		if (handCaughtBall) {
-			ringColor = ballColor;
-			line.material.color = ringColor;
-			line.enabled = true;
-		} else {
-			line.enabled = false;
-		}
+	void DrawInstantRing() {
+		UpdateLineWidthAndRadius(1);
+		DrawRing();
 	}
 }

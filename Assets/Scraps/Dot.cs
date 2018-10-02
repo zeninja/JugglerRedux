@@ -57,6 +57,14 @@ public class Dot : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
+	public Sprite ring;
+
+	public void SetSprite(bool inEndGame) {
+		if(inEndGame) {
+			GetComponent<SpriteRenderer>().sprite = ring;
+		}
+	}
+
 	void HandleDeath() {
 		Destroy(gameObject);
 	}

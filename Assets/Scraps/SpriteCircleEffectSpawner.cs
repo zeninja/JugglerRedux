@@ -38,6 +38,10 @@ public class SpriteCircleEffectSpawner : MonoBehaviour
     [Range(0, 1)]
     public float manualPercent;
 
+    void HandleCatch() {
+        // SpawnRing(transform.position);
+    }
+
     public void SpawnRing(Vector2 position)
     {
         percent = GetPercentage();

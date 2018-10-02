@@ -2,48 +2,145 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rainbower : MonoBehaviour {
+public class Rainbower : MonoBehaviour
+{
+    #region
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(Input.GetKeyDown(KeyCode.R)) {
-			StartRainbow();
-			// StartCoroutine(StartRainbow());
-		}
-	}
-	
-	List<StackerDot> dots;
+    static Rainbower instance;
+    public static Rainbower GetInstance()
+    {
+        return instance;
+    }
+    #endregion
 
-	public void SetDots(List<StackerDot> a_dots) {
-		dots = a_dots;
-	}
+    void Start()
+    {
+        SetColors();
+    }
 
-	public Color[] colors;
-	public float timeBetweenBows = .125f;
+    List<StackerDot> dots;
 
-	public void StartRainbow() {
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            StartCoroutine(LotsOfSwooshes(manualSwooshCount));
+        }
 
-		if(NewBallManager.GetInstance() != null) {
-			Debug.Log("Setting colors");
-			colors = new Color[NewBallManager._ballCount];
-			colors = NewBallManager.GetInstance().m_BallColors;
-		}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+        }
 
-		for(int i = 0; i < dots.Count; i++) {
-			StartCoroutine(dots[i].StartRainbow(colors, i * timeBetweenBows));
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+        }
+    }
 
-			// dots[i].StartRainbow(colors, i)
-			// yield return StartCoroutine(Extensions.Wait(timeBetweenBows));
-		}
 
-		// for(int i = 0; i < dots.Count; i++) {
-		// 	dots[i].EndRainbow();
-		// 	yield return StartCoroutine(Extensions.Wait(timeBetweenBows));
-		// }
-	}
+    public Color[] colors;
+
+    public static bool rainbowing;
+
+    public int manualSwooshCount = 3;
+    public Extensions.Property ringsPerSwoosh;
+    int swooshRingCount;
+
+    public IEnumerator LotsOfSwooshes(int numSwooshes)
+    {
+        if (NewScoreManager.newHighscore) {
+            rainbowing = true;
+            for (int i = 0; i < numSwooshes; i++)
+            {
+                float t = (float)i / (float)numSwooshes;
+                swooshRingCount = (int)Extensions.GetSmoothStart3Range(ringsPerSwoosh, t);
+
+                StartCoroutine(MoveRings(colors[i]));
+                float interval = Extensions.GetSmoothStepRange(swooshInterval, (float) numSwooshes / 9f);
+                // Debug.Log((float) numSwooshes / 9f);
+                // Debug.Log(interval);
+                yield return StartCoroutine(Extensions.Wait(interval));
+            }
+            yield return new WaitForSeconds(.25f);
+            rainbowing = false;
+        } else {
+            yield return null;
+        }
+    }
+
+    public float swooshDuration = .5f;
+    public Extensions.Property swooshInterval;
+
+    IEnumerator MoveRings(Color targetColor)
+    {
+        float t = 0;
+        float d = swooshDuration;
+
+        while (t < d)
+        {
+            t += Time.fixedDeltaTime;
+
+            float p = t / d;
+            totalLength = dots.Count + swooshRingCount;
+            int index = Mathf.FloorToInt(EZEasings.SmoothStart3(p) * (float)totalLength);
+
+            // UpdateRings(index, targetColor);
+            // if(index < 5) {
+                UpdateDots(index, targetColor);
+                UpdateParticles(index, targetColor);
+            // }
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    int totalLength;
+    int lastIndex;
+
+    void UpdateParticles(int index, Color targetColor) {
+        if(index < dots.Count && index != lastIndex && GameOverStacker.GetInstance().spawnParticleRings) {
+            ParticleRingSpawner.GetInstance().TriggerRing(index, targetColor);
+            lastIndex = index;
+        }
+    }
+
+    void UpdateDots(int index, Color targetColor) {
+        if(index != lastIndex) {
+            for(int i = index; i > index - swooshRingCount && i >= 0; i--) {
+                if(i < dots.Count) {
+                    dots[i].SetColor(targetColor);
+                }
+            }
+
+            for(int i = index - swooshRingCount; i >= 0; i--) {
+                if(i < dots.Count) {
+                    dots[i].ReturnToDefaultColor();
+                }
+            }
+            lastIndex = index;
+        }
+    }
+
+    void SetColors()
+    {
+        colors = BallColorManager.GetInstance().ballColors;
+    }
+
+    public void SetDots(List<StackerDot> a_dots)
+    {
+        dots = a_dots;
+    }
 }

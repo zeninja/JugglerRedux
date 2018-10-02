@@ -16,9 +16,15 @@ public class GlobalSettings : MonoBehaviour
         public bool  allowSlaps;
         public bool adsOff;
         public bool dragUpToThrow;
+
+        public bool offsetXSpawnPosition;
+
+        public float timeMin;
+        public float timeMax;
     }
 
-    public static GameSettings mySettings;
+    [SerializeField]
+    public static GameSettings Settings;
     static string jsonString;
 
     void Awake()
@@ -41,41 +47,46 @@ public class GlobalSettings : MonoBehaviour
 
     void InitValues()
     {
-        mySettings = new GameSettings();
-        mySettings.slapForce       = NewHandManager.GetInstance().touchSlapThrowForce;
-        mySettings.grabForce       = NewHandManager.GetInstance().touchGrabThrowForce;
-        mySettings.juggleThreshold = NewBallManager.GetInstance().juggleThreshold;
-        mySettings.ballScale       = NewBallManager.GetInstance().ballScale;
-        mySettings.timeScale       = TimeManager   .GetInstance().m_SlowTimeScale;
-        mySettings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
-        mySettings.adsOff          = NewAdManager.forceAdsOff;
-        mySettings.dragUpToThrow   = NewHandManager.dragUpToThrow;
+        Settings = new GameSettings();
+        Settings.slapForce       = NewHandManager.GetInstance().touchSlapThrowForce;
+        Settings.grabForce       = NewHandManager.GetInstance().touchGrabThrowForce;
+        Settings.juggleThreshold = NewBallManager.GetInstance().juggleThreshold;
+        Settings.ballScale       = NewBallManager.GetInstance().ballScale;
+        // mySettings.timeScale       = TimeManager   .GetInstance().m_SlowTimeScale;
+        Settings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
+        Settings.adsOff          = NewAdManager.forceAdsOff;
+        Settings.dragUpToThrow   = NewHandManager.dragUpToThrow;
 
-        Debug.Log("INIT VALUES. BALL SCALE: " + mySettings.ballScale);
+        Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
+        Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
+
+        // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
 		
         UpdateSavedValues();
     }
 
     void UpdateInGameValues()
     {
-        Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
-        mySettings = JsonUtility.FromJson<GameSettings>(jsonString);
+        // Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
+        Settings = JsonUtility.FromJson<GameSettings>(jsonString);
 
-		NewHandManager.GetInstance().touchSlapThrowForce = mySettings.slapForce;
-        NewHandManager.GetInstance().touchGrabThrowForce = mySettings.grabForce;
-        NewBallManager.GetInstance().juggleThreshold 	 = mySettings.juggleThreshold;
-        NewBallManager.GetInstance().ballScale 			 = mySettings.ballScale;
-        TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
-        NewBallManager.GetInstance().ballSpeedIndex      = mySettings.ballSpeedIndex;
-        NewAdManager.forceAdsOff                         = mySettings.adsOff;
+		NewHandManager.GetInstance().touchSlapThrowForce = Settings.slapForce;
+        NewHandManager.GetInstance().touchGrabThrowForce = Settings.grabForce;
+        NewBallManager.GetInstance().juggleThreshold 	 = Settings.juggleThreshold;
+        NewBallManager.GetInstance().ballScale 			 = Settings.ballScale;
+        // TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
+        NewBallManager.GetInstance().ballSpeedIndex      = Settings.ballSpeedIndex;
+        NewAdManager.forceAdsOff                         = Settings.adsOff;
         
+        TimeManager.GetInstance().timeRange.start        = Settings.timeMin;
+        TimeManager.GetInstance().timeRange.end          = Settings.timeMax;
 
         UpdateSavedValues();
     }
 
 	public static void UpdateSavedValues() {
         Debug.Log("SAVED INFO MANAGER: Updating PLAYERPREFS saved settings");
-		jsonString = JsonUtility.ToJson(mySettings);
+		jsonString = JsonUtility.ToJson(Settings);
         PlayerPrefs.SetString("JSON", jsonString);
         PlayerPrefs.SetInt("SAVED", 1);
 		PlayerPrefs.Save();

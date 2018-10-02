@@ -75,11 +75,17 @@ public class BallCountdownManager : MonoBehaviour
 		}
     }
 
+    public bool showCountdown;
 
     public void SetCountdownNumber(int countdownNumber)
     {
-        countdownToNextball = countdownNumber;
-        StartCoroutine(SpawnCountdownBalls());
+        if(showCountdown) {
+            countdownToNextball = countdownNumber;
+
+            if(NewBallManager._ballCount < NewBallManager.endgameBallCount) {
+                StartCoroutine(SpawnCountdownBalls());
+            }
+        }
     }
 
     IEnumerator SpawnCountdownBalls()
@@ -163,12 +169,14 @@ public class BallCountdownManager : MonoBehaviour
     }
 
 	void PopOutTally() {
-		nextTally.StartPopOutProcess();
-		tallys.Remove(nextTally);
+        if(nextTally != null) {
+            nextTally.StartPopOutProcess();
+            tallys.Remove(nextTally);
 
-		if(tallys.Count > 0) {
-			nextTally = tallys[tallys.Count - 1];
-		}
+            if(tallys.Count > 0) {
+                nextTally = tallys[tallys.Count - 1];
+            }
+        }
 	}
 
 	public void SetUpCountdown() {

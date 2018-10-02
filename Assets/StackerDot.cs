@@ -8,7 +8,10 @@ public class StackerDot : MonoBehaviour {
 		GetComponent<MeshRenderer>().sortingLayerName = "GameOver";
 	}
 
+	public float radius;
+
 	public void SetTargetRadius(float r) {
+		radius = r;
 		GetComponent<ProceduralCircle>().radius = r;
 	}
 
@@ -16,34 +19,41 @@ public class StackerDot : MonoBehaviour {
 		GetComponent<ProceduralCircle>().anchorPos = anchor;
 		GetComponent<ProceduralCircle>().color = dotColor;
 		GetComponent<ProceduralCircle>().depth = depth;
+
+		startColor = dotColor;
 	}
 
 	public void SetColor(Color dotColor) {
 		GetComponent<ProceduralCircle>().color = dotColor;
 	}
 
-	public IEnumerator StartRainbow(Color[] a_colors, float delay) {
-		colors = a_colors;
-		yield return new WaitForSeconds(delay);
-		StartCoroutine(Rainbow());
-	}
+	// public IEnumerator StartRainbow(Color[] a_colors, float delay) {
+	// 	colors = a_colors;
+	// 	yield return new WaitForSeconds(delay);
+	// 	StartCoroutine(Rainbow());
+	// }
 
-	public void EndRainbow() {
-		StopAllCoroutines();
-	}
+	// public void EndRainbow() {
+	// 	StopAllCoroutines();
+	// }
 
-	float d = .125f;
+	// float d = .125f;
 
-	Color[] colors;
-	int colorIndex = 0;
+	// Color[] colors;
+	// int colorIndex = 0;
+
+
+	// IEnumerator Rainbow() {
+	// 	SetColor(colors[colorIndex]);
+	// 	yield return StartCoroutine(Extensions.Wait(d));
+	// 	colorIndex = (colorIndex + 1 ) % colors.Length;
+
+	// 	StartCoroutine(Rainbow());
+	// }
 
 	Color startColor;
 
-	IEnumerator Rainbow() {
-		SetColor(colors[colorIndex]);
-		yield return StartCoroutine(Extensions.Wait(d));
-		colorIndex = (colorIndex + 1 ) % colors.Length;
-
-		StartCoroutine(Rainbow());
+	public void ReturnToDefaultColor() {
+		SetColor(startColor);
 	}
 }
