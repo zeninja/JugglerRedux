@@ -22,7 +22,7 @@ public class BallDepthManager : MonoBehaviour {
 	}
 
 	void Start() {
-		EventManager.StartListening("HandleGameOver", HandleGameOver);
+		EventManager.StartListening("CleanUp", HandleGameOver);
 	}
 	List<NewBallArtManager> artManagers = new List<NewBallArtManager>();
 

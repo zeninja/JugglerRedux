@@ -197,7 +197,7 @@ public class NewHand : MonoBehaviour
             // int[] depths     = new int[hits.Length];
 
             for(int i = 0; i < hits.Length; i++) {
-                Debug.Log(hits[i].transform.gameObject.name);
+                // Debug.Log(hits[i].transform.gameObject.name);
                 heights[i]    = hits[i].transform.position.y;
                 distances [i] = (transform.position - hits[i].transform.position).magnitude;
                 // depths[i]     = hits[i].transform.gameObject.GetComponentInChildren<NewBallArtManager>().currentDepth;
