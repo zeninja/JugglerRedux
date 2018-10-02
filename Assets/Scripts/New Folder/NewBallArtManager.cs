@@ -79,7 +79,7 @@ public class NewBallArtManager : MonoBehaviour
 
     public void SetDepth(int sortIndex) {
         currentDepth = sortIndex;
-        BroadcastMessage("AdjustDepth", sortIndex);
+        BroadcastMessage("AdjustDepth", sortIndex, SendMessageOptions.DontRequireReceiver);
     }
 
     public void SetColor()
@@ -123,7 +123,7 @@ public class NewBallArtManager : MonoBehaviour
         Vector2 launchPos    = transform.position;
         Vector2 launchVector = Vector2.up * NewBallManager.GetInstance().ballLaunchForce;
 
-        Debug.Log(m_BallPredictor);
+        // Debug.Log(m_BallPredictor);
 
         launchPointList = m_BallPredictor.GetPositionList(launchPos, launchVector);
     }

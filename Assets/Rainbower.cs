@@ -72,7 +72,7 @@ public class Rainbower : MonoBehaviour
                 StartCoroutine(MoveRings(colors[i]));
                 float interval = Extensions.GetSmoothStepRange(swooshInterval, (float) numSwooshes / 9f);
                 // Debug.Log((float) numSwooshes / 9f);
-                Debug.Log(interval);
+                // Debug.Log(interval);
                 yield return StartCoroutine(Extensions.Wait(interval));
             }
             yield return new WaitForSeconds(.25f);

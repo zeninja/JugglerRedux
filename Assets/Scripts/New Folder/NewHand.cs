@@ -184,16 +184,70 @@ public class NewHand : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        // Make sure we can't catch two balls with one finger
         if (m_Ball == null)
         {
-            if (other.CompareTag("Ball"))
-            {
-                NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
-                if (!ballToJuggle.IsLaunching()) { 
-                    SetBall(ballToJuggle);
-                }
+            // Check all possible balls
+            int layerMask = 1 << LayerMask.NameToLayer("Ball");
+            float radius = GetComponent<CircleCollider2D>().radius;
+            RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, radius, Vector2.zero, 0, layerMask);
+
+            float[] distances = new float[hits.Length];
+            float[] heights  = new float[hits.Length];
+            // int[] depths     = new int[hits.Length];
+
+            for(int i = 0; i < hits.Length; i++) {
+                Debug.Log(hits[i].transform.gameObject.name);
+                heights[i]    = hits[i].transform.position.y;
+                distances [i] = (transform.position - hits[i].transform.position).magnitude;
+                // depths[i]     = hits[i].transform.gameObject.GetComponentInChildren<NewBallArtManager>().currentDepth;
+            }
+
+            float minHeight   = Mathf.Min(heights);
+            float minDistance = Mathf.Min(distances);
+            // int   maxDepth    = Mathf.Max(depths);
+
+
+            int ballIndex   = 0;
+            int heightIndex = FindTargetValue(heights, minHeight);
+            int distIndex   = FindTargetValue(distances, minDistance);
+            // int depthIndex  = FindTargetValue(depths, maxDepth);
+
+            ballIndex = heightIndex;
+
+            NewBall targetBall = hits[ballIndex].transform.GetComponent<NewBall>();
+            SetBall(targetBall);
+
+            // Old Approach
+            // Make sure we're catching a ball
+            // if (other.CompareTag("Ball"))
+            // {
+            //     NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
+            //     if (!ballToJuggle.IsLaunching()) { 
+            //         SetBall(ballToJuggle);
+            //     }
+            // }
+        }
+    }
+
+
+
+    int FindTargetValue(float[] array, float target) {
+        for(int i = 0; i < array.Length; i++) {
+            if(array[i] == target) {
+                return i;
             }
         }
+        return 0;
+    }
+
+     int FindTargetValue(int[] array, int target) {
+        for(int i = 0; i < array.Length; i++) {
+            if(array[i] == target) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     void SetBall(NewBall caughtBall)
@@ -226,6 +280,7 @@ public class NewHand : MonoBehaviour
             m_FingerRing.TriggerRing(ballColor);
             
             Vibrator.Vibrate(vibeDuration);
+            // CatchAndDragView.GetInstance().SetCatchPosition(transform.position);
         }
     }
 
@@ -234,6 +289,7 @@ public class NewHand : MonoBehaviour
 
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
+        // CatchAndDragView.GetInstance().SetThrowPosition(transform.position);
         HandleDeath();
     }
 

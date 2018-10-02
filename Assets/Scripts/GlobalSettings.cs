@@ -60,14 +60,14 @@ public class GlobalSettings : MonoBehaviour
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
 
-        Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
+        // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
 		
         UpdateSavedValues();
     }
 
     void UpdateInGameValues()
     {
-        Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
+        // Debug.Log("SAVED INFO MANAGER: Updating DEVICE's saved settings.");
         Settings = JsonUtility.FromJson<GameSettings>(jsonString);
 
 		NewHandManager.GetInstance().touchSlapThrowForce = Settings.slapForce;

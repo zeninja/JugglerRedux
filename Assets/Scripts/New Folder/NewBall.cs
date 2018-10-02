@@ -52,9 +52,10 @@ public class NewBall : MonoBehaviour
         transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
         ballColorIndex = NewBallManager._ballCount - 1;
 
-        // if(firstBall) {
-        //     predictiveLine.EnableLine(true);
-        // }
+        if(firstBall) {
+            gameObject.layer = LayerMask.NameToLayer("Ball");
+            // predictiveLine.EnableLine(true);
+        }
     }
 
     // Update is called once per frame
@@ -100,7 +101,12 @@ public class NewBall : MonoBehaviour
         m_State = newState;
 
         // Nothing has changed. break out early.
-        if (oldState == m_State) { return; }
+        if (oldState != m_State) { 
+            if(newState == BallState.falling) {
+                // Peaked for the first time
+                gameObject.layer = LayerMask.NameToLayer("Ball");
+            }
+         }
     }
 
     public void UpdateThrowInfo(Vector2 throwVector)

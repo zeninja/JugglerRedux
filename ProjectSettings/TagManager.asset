@@ -74,3 +74,6 @@ TagManager:
   - name: Topmost
     uniqueID: 1058539291
     locked: 0
+  - name: Debug
+    uniqueID: 1457345015
+    locked: 0

@@ -16,12 +16,17 @@ public class CatchRing : MonoBehaviour {
 
 	public Color defaultColor;
 
+	public bool instant;
 
 	// Use this for initialization
 	void Awake () {
 		line = GetComponent<LineRenderer>();
 		line.useWorldSpace = false;
 		line.sortingLayerName = "Default";
+
+		if(instant) {
+			DrawInstantRing();
+		}
 	}
 	
 	// Update is called once per frame
@@ -89,4 +94,9 @@ public class CatchRing : MonoBehaviour {
         line.startWidth = currentLineWidth;
         line.endWidth   = currentLineWidth;
     }
+
+	void DrawInstantRing() {
+		UpdateLineWidthAndRadius(1);
+		DrawRing();
+	}
 }

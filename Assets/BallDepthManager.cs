@@ -21,6 +21,9 @@ public class BallDepthManager : MonoBehaviour {
 		}
 	}
 
+	void Start() {
+		EventManager.StartListening("HandleGameOver", HandleGameOver);
+	}
 	List<NewBallArtManager> artManagers = new List<NewBallArtManager>();
 
     public void UpdateBallDepth(NewBallArtManager caughtBall) {
@@ -31,5 +34,9 @@ public class BallDepthManager : MonoBehaviour {
 			artManagers[i].SetDepth(i);
 		}
     }
+
+	void HandleGameOver() {
+		artManagers.Clear();
+	}
 	
 }
