@@ -280,7 +280,7 @@ public class NewHand : MonoBehaviour
             m_FingerRing.TriggerRing(ballColor);
             
             Vibrator.Vibrate(vibeDuration);
-            // CatchAndDragView.GetInstance().SetCatchPosition(transform.position);
+            CatchAndDragView.GetInstance().SetCatchPosition(transform.position);
         }
     }
 
@@ -289,7 +289,7 @@ public class NewHand : MonoBehaviour
 
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
-        // CatchAndDragView.GetInstance().SetThrowPosition(transform.position);
+        CatchAndDragView.GetInstance().SetThrowPosition(transform.position);
         HandleDeath();
     }
 
