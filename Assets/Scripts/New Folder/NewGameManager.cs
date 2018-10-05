@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver };
+public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver, settings };
 
 public class NewGameManager : MonoBehaviour {
 

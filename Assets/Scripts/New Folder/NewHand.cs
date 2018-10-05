@@ -262,6 +262,7 @@ public class NewHand : MonoBehaviour
         m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
 
         if (m_GrabThrowVector == Vector2.zero) {
+            // Debug.Break();
             m_GrabThrowVector = new Vector2(0, -.001f);
         }
 
@@ -279,17 +280,18 @@ public class NewHand : MonoBehaviour
             // m_CatchRingSpawner.SpawnRing(ballColor);
             m_FingerRing.TriggerRing(ballColor);
             
-            Vibrator.Vibrate(vibeDuration);
-            CatchAndDragView.GetInstance().SetCatchPosition(transform.position);
+            // Vibrator.Vibrate(vibeDuration);
+            // CatchAndDragView.GetInstance().SetCatchPosition(transform.position);
         }
     }
 
     void ThrowBall()
     {
+        
 
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
-        CatchAndDragView.GetInstance().SetThrowPosition(transform.position);
+        // CatchAndDragView.GetInstance().SetThrowPosition(transform.position);
         HandleDeath();
     }
 

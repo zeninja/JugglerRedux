@@ -40,20 +40,20 @@ public class NewUIManager : MonoBehaviour {
 
 		ui_juggleTime.text		= TimeManager.GetInstance().m_CurrentTimeScale.ToString("F2");
 
-		bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
+		// bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
 
-		if (showDebug) {
-			if(canShowMenu) {
-				canShowMenu = false;
-				showDebugMenu = !showDebugMenu;
-			}
-		} else {
-			canShowMenu = true;
-		}
+		// if (showDebug) {
+		// 	if(canShowMenu) {
+		// 		canShowMenu = false;
+		// 		showDebugMenu = !showDebugMenu;
+		// 	}
+		// } else {
+		// 	canShowMenu = true;
+		// }
 		
-		debugMenu.SetActive(showDebugMenu);
+		// debugMenu.SetActive(showDebugMenu);
 
-		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
+		// menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
 	}
 
 	public void ToggleAds() {
