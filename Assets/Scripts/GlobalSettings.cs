@@ -11,9 +11,7 @@ public class GlobalSettings : MonoBehaviour
         public float grabForce;
         public int   juggleThreshold;
         public float ballScale;
-        public float timeScale;
         public int   ballSpeedIndex;
-        public bool  allowSlaps;
         public bool adsOff;
         public bool dragUpToThrow;
 
@@ -21,6 +19,11 @@ public class GlobalSettings : MonoBehaviour
 
         public float timeMin;
         public float timeMax;
+
+        public bool disableAds;
+
+        public bool music;
+        public bool sfx;
     }
 
     [SerializeField]
@@ -59,6 +62,12 @@ public class GlobalSettings : MonoBehaviour
 
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
+
+        Settings.disableAds      = false;
+
+        Settings.music           = AudioManager.m_mute;
+        Settings.sfx             = AudioManager.sfx_mute; 
+        
 
         // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
 		

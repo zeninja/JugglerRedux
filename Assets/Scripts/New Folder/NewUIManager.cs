@@ -176,4 +176,8 @@ public class NewUIManager : MonoBehaviour {
 		GlobalSettings.Settings.dragUpToThrow = throwDirection;
 		GlobalSettings.UpdateSavedValues();
 	}
+
+	public static void ShowSettings(bool isOn) {
+		
+	}
 }

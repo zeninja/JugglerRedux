@@ -10,7 +10,7 @@ public class MuteSpriteManager : MonoBehaviour {
 
 	void Update() {
 		if(NewGameManager.gameState == GameState.preGame) {
-			GetComponent<Image>().sprite = AudioManager.muted ? muted : unmuted;
+			GetComponent<Image>().sprite = AudioManager.m_mute ? muted : unmuted;
 		}
 	}
 }

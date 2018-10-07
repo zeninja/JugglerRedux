@@ -20,9 +20,13 @@ public class Purchaser : MonoBehaviour, IStoreListener
     // when defining the Product Identifiers on the store. Except, for illustration purposes, the 
     // kProductIDSubscription - it has custom Apple and Google identifiers. We declare their store-
     // specific mapping to Unity Purchasing's AddProduct, below.
-    public static string kProductIDConsumable =    "consumable";   
-	public static string kProductIDNonConsumable = "tipJar";
-    public static string kProductIDSubscription =  "subscription"; 
+
+    // public static string kProductIDConsumable =    "consumable";   
+	// public static string kProductIDNonConsumable = "tipJar";
+    // public static string kProductIDSubscription =  "subscription";
+
+    public static string removeAds_Consumable = "noAds";
+    public static string tipJar_NonConsumable = "tipJar";
      
     // Apple App Store-specific product identifier for the subscription product.
     private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
@@ -55,12 +59,12 @@ public class Purchaser : MonoBehaviour, IStoreListener
 		#region Consumable
         // Add a product to sell / restore by way of its identifier, associating the general identifier
         // with its store-specific identifiers.
-        builder.AddProduct(kProductIDConsumable, ProductType.Consumable);
+        builder.AddProduct(removeAds_Consumable, ProductType.Consumable);
 		#endregion
 
 		#region Non-Consumable
         // Continue adding the non-consumable product.
-        builder.AddProduct(kProductIDNonConsumable, ProductType.NonConsumable);
+        builder.AddProduct(tipJar_NonConsumable, ProductType.NonConsumable);
 		#endregion
 
 		#region Subscription
@@ -82,13 +86,15 @@ public class Purchaser : MonoBehaviour, IStoreListener
         // Only say we are initialized if both the Purchasing references are set.
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }
+
+    public void MakePurchase() {}
     
     
     public void BuyConsumable()
     {
         // Buy the consumable product using its general identifier. Expect a response either 
         // through ProcessPurchase or OnPurchaseFailed asynchronously.
-        BuyProductID(kProductIDConsumable);
+        BuyProductID(removeAds_Consumable);
     }
     
     
@@ -96,7 +102,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
     {
         // Buy the non-consumable product using its general identifier. Expect a response either 
         // through ProcessPurchase or OnPurchaseFailed asynchronously.
-        BuyProductID(kProductIDNonConsumable);
+        BuyProductID(tipJar_NonConsumable);
     }
     
     
@@ -106,7 +112,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
         // through ProcessPurchase or OnPurchaseFailed asynchronously.
         // Notice how we use the general product identifier in spite of this ID being mapped to
         // custom store-specific identifiers above.
-        BuyProductID(kProductIDSubscription);
+        // BuyProductID(kProductIDSubscription);
     }
     
     
@@ -207,26 +213,29 @@ public class Purchaser : MonoBehaviour, IStoreListener
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
     {
         // A consumable product has been purchased by this user.
-        if (String.Equals(args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal))
+        if (String.Equals(args.purchasedProduct.definition.id, removeAds_Consumable, StringComparison.Ordinal))
         {
-            Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
-        }
-        // Or ... a non-consumable product has been purchased by this user.
-        else if (String.Equals(args.purchasedProduct.definition.id, kProductIDNonConsumable, StringComparison.Ordinal))
-        {
-            Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
-
+            Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
             HandlePurchaseMade();
         }
-        // Or ... a subscription product has been purchased by this user.
-        else if (String.Equals(args.purchasedProduct.definition.id, kProductIDSubscription, StringComparison.Ordinal))
+        // Or ... a non-consumable product has been purchased by this user.
+        else if (String.Equals(args.purchasedProduct.definition.id, tipJar_NonConsumable, StringComparison.Ordinal))
         {
-            Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));// TODO: The subscription item has been successfully purchased, grant this to the player.
+            Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+            HandleTip();
         }
+        // Subscriptions
+        // // Or ... a subscription product has been purchased by this user.
+        // else if (String.Equals(args.purchasedProduct.definition.id, kProductIDSubscription, StringComparison.Ordinal))
+        // {
+        //     Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+        // }
         // Or ... an unknown product has been purchased by this user. Fill in additional products here....
         else 
         {
-            Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));}
+            Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
+            HandlePurchaseMade();
+        }
 
         // Return a flag indicating whether this product has completely been received, or if the application needs 
         // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
@@ -244,5 +253,10 @@ public class Purchaser : MonoBehaviour, IStoreListener
 
 	void HandlePurchaseMade() {
 		// AdManager.HandlePurchaseMade();
+        NewAdManager.GetInstance().HandlePurchaseMade();
 	}
+
+    void HandleTip() {
+        
+    }
 }

@@ -21,7 +21,7 @@ public class VolumeSpriteManager : MonoBehaviour {
 	public void UpdateImage() {
 		Sprite targetSprite;
 
-		targetSprite = AudioManager.muted ? muted : notMuted;
+		targetSprite = AudioManager.m_mute ? muted : notMuted;
 		mySprite.sprite = targetSprite;
 	}
 }

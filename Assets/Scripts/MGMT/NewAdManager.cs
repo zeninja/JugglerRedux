@@ -14,6 +14,7 @@ public class NewAdManager : MonoBehaviour
     bool isShowingAd = false;
 
     public static bool forceAdsOff = true;
+    public static bool disableAds = false;
 
     #region instance
     static NewAdManager instance;
@@ -103,5 +104,11 @@ public class NewAdManager : MonoBehaviour
     public bool ShowingAd()
     {
         return isShowingAd;
+    }
+
+    public void HandlePurchaseMade() {
+        // Purchase was successful
+        disableAds = true;
+        GlobalSettings.Settings.disableAds = true;
     }
 }

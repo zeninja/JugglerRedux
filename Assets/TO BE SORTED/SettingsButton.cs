@@ -112,7 +112,7 @@ public class SettingsButton : MonoBehaviour
     public bool currentValue;
 
     public void InvertValue() {
-
+        // EventManager.TriggerEvent("Select");
         InvertState();
         StartCoroutine(AnimateButton(targetSetting));
     }

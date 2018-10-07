@@ -11,10 +11,18 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip throwSound;
 	public AudioClip gameOver;
 
-	AudioSource source;
+	public AudioClip peakSound;
+	public AudioClip selectSound;
+	public AudioClip undoSound;
 
-	public static bool muted;
-	string muteKey = "mute";
+
+	public AudioSource sfxSource;
+	public AudioSource musicSource;
+
+	public static bool m_mute;
+	string m_muteKey = "m_mute";
+	public static bool sfx_mute;
+	string sfx_muteKey = "sfx_mute";
 
 	void Awake() {
 		if(instance == null) {
@@ -33,37 +41,69 @@ public class AudioManager : MonoBehaviour {
 
 		EventManager.StartListening("BallCaught", PlayCatch);
 		EventManager.StartListening("BallThrown", PlayThrow);
-		EventManager.StartListening("BallDied", PlayGameOver);
+		EventManager.StartListening("BallDied",   PlayGameOver);
+		EventManager.StartListening("BallPeaked", PlayPeak);
+		EventManager.StartListening("Select",     PlaySelect);
+		EventManager.StartListening("Undo",       PlayUndo);
 	}
 
 	public static void PlayCatch() {
-		instance.source.PlayOneShot (instance.catchSound);
+		instance.sfxSource.PlayOneShot (instance.catchSound);
 	}
 
 	public static void PlayThrow() {
-		instance.source.PlayOneShot (instance.throwSound);
+		instance.sfxSource.PlayOneShot (instance.throwSound);
+	}
+
+	public static void PlayPeak() {
+		instance.sfxSource.PlayOneShot (instance.peakSound);
+	}
+
+	public static void PlaySelect() {
+		instance.sfxSource.PlayOneShot (instance.selectSound);
+	}
+
+	public static void PlayUndo() {
+		instance.sfxSource.PlayOneShot (instance.undoSound);
 	}
 
 	public static void PlayGameOver() {
-		instance.source.PlayOneShot (instance.gameOver);
+		instance.sfxSource.PlayOneShot (instance.gameOver);
 	}
 
 	void InitMute() {
-		if (!PlayerPrefs.HasKey(muteKey)) {
-			PlayerPrefs.SetInt(muteKey, 0);
+		if (!PlayerPrefs.HasKey(m_muteKey)) {
+			PlayerPrefs.SetInt(m_muteKey, 0);
 		} else {
-			muted = PlayerPrefs.GetInt(muteKey) == 1;
+			m_mute = PlayerPrefs.GetInt(m_muteKey) == 1;
 		}
 
-		source = GetComponent<AudioSource>();
-		source.mute = muted;
+		// musicSource = GetComponent<AudioSource>();
+		musicSource.mute = m_mute;
+
+		if (!PlayerPrefs.HasKey(sfx_muteKey)) {
+			PlayerPrefs.SetInt(sfx_muteKey, 0);
+		} else {
+			sfx_mute = PlayerPrefs.GetInt(sfx_muteKey) == 1;
+		}
+
+		// sfxSource = GetComponent<AudioSource>();
+		sfxSource.mute = sfx_mute;
 	}
 
 	public void ToggleMute() {
-		muted = !muted;
-		source.mute = muted;
+		m_mute = !m_mute;
+		musicSource.mute = m_mute;
 
-		int muteVal = muted ? 1 : 0;
-		PlayerPrefs.SetInt(muteKey, muteVal);
+		int muteVal = m_mute ? 1 : 0;
+		PlayerPrefs.SetInt(m_muteKey, muteVal);
+	}
+
+	public void ToggleSFX() {
+		sfx_mute = !sfx_mute;
+		sfxSource.mute = sfx_mute;
+
+		int muteVal = sfx_mute ? 1 : 0;
+		PlayerPrefs.SetInt(sfx_muteKey, muteVal);
 	}
 }

@@ -17,7 +17,7 @@ public class UISlider : MonoBehaviour
 
     public float sliderWidth;
 
-    public Vector2 leftPt, rightPt;
+    public Vector3 leftPt, rightPt;
     public Vector2 inset;
 
     // Use this for initialization
@@ -28,33 +28,36 @@ public class UISlider : MonoBehaviour
         lines.Add(mask.GetComponent<LineRenderer>());
         lines.Add(fore.GetComponent<LineRenderer>());
 
-        slider.onValueChanged.AddListener(delegate {UpdateSlider(); });
+        slider.onValueChanged.AddListener(delegate {UpdateValues(); });
     }
 
     [Range(0, 1)]
     public float percent;
+    public float value;
 
     void Update() {
-        UpdateSlider();
+        UpdateValues();
+        UpdateGraphics();
         SetLines();
     }
 
     float spread;
-
-    void UpdateSlider() {
+    
+    void UpdateValues() {
         percent = slider.value;
-        // Debug.Log(percent + "; " + slider.value);
-        spread = range.end - range.start;
+        spread  = range.end - range.start;
+        value   = range.start + spread * percent;
+    }
 
-        
-        Vector2 knobPos = new Vector2();
-        knobPos.x = sliderWidth * percent - sliderWidth / 2;
+    void UpdateGraphics() {
+        Vector2 knobPos = leftPt + (rightPt - leftPt) * percent;
+        // knobPos = (Vector3)knobPos + new Vector3(0, 0, knobDepth);
 
         float scale = range.start + spread * percent;
         Vector2 knobScale = Vector2.one * scale;
 
-        knob.transform.localPosition = knobPos;
-        knob.transform.localScale    = knobScale;
+        knob.transform.position   = knobPos;
+        knob.transform.localScale = knobScale;
     }
 
     public void SetLines() {
@@ -66,9 +69,8 @@ public class UISlider : MonoBehaviour
             linePositions.Add(rightPt);
 
             if (l == fore.GetComponent<LineRenderer>()) {
-                linePositions[0] = leftPt  + inset;
-                linePositions[1] = rightPt + inset;
-                
+                linePositions[0] = leftPt  + (Vector3)inset;
+                linePositions[1] = rightPt + (Vector3)inset;
             }
 
             l.SetPositions(linePositions.ToArray());

@@ -34,8 +34,15 @@ public class NewGameManager : MonoBehaviour {
 		EventManager.StartListening("BallDied", HandleGameOver);
 	}
 
+	bool useStartState;
+	public GameState startState;
+
 	void Start() {
-		SetState(gameState);
+		if(useStartState) {
+			SetState(startState);
+		} else {
+			SetState(gameState);
+		}
 	}
 
 	void Update() {
@@ -52,12 +59,8 @@ public class NewGameManager : MonoBehaviour {
 		// trigger one-time effects
 
 		switch(gameState) {
-			// case GameState.monolith:
-			// 	MonolithManager.GetInstance().Initialize();
-			// 	break;
 			case GameState.ballSpawn:
 				NewBallManager.GetInstance().SpawnFirstBall();
-				// BallCountdownManager.GetInstance().SetUpCountdown();
 				break;
 
 			case GameState.preGame:
@@ -73,6 +76,8 @@ public class NewGameManager : MonoBehaviour {
 
 			case GameState.gameOver:
 				GameOverManager.GetInstance().StartGameOver();
+				break;
+			case GameState.settings:
 				break;
 		}
 	}
