@@ -3,7 +3,7 @@
         Tags { "RenderType"="Opaque" "Queue"="Background-1"}
         Pass {
             Stencil {
-                Ref 2
+                Ref 1
                 Comp always
                 Pass replace
             }

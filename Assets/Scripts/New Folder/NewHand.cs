@@ -69,7 +69,7 @@ public class NewHand : MonoBehaviour
 
     void HandleInput()
     {
-        // if(NewGameManager.GetInstance().gameState == GameState.gameOver) { return; }
+        // if(NewGameManager.gameState != GameState.preGame) { return; }
 
         if (useMouse)
         {
@@ -287,8 +287,6 @@ public class NewHand : MonoBehaviour
 
     void ThrowBall()
     {
-        
-
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
         // CatchAndDragView.GetInstance().SetThrowPosition(transform.position);

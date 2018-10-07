@@ -127,7 +127,7 @@ public class SettingsButton : MonoBehaviour
         }
     }
 
-    void Bounce() {
+    public void Bounce() {
         SetSettings(ButtonState.off);
         StartCoroutine(AnimateButton(targetSetting));
     }

@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2906aa2a2cc59e74883e539c67e6850b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  label: MUSIC
+  label: Music
   text: {fileID: 114217067623251542}
   innerBlock: {fileID: 114749444899966084}
   outerEdge: {fileID: 114642248131971376}
@@ -239,8 +239,8 @@ MonoBehaviour:
     outerBlock: {r: 0.922, g: 0.953, b: 0.559, a: 1}
   off:
     position: {x: 0, y: 0}
-    text: {r: 0.9058824, g: 0.6784314, b: 0.83921576, a: 1}
-    innerBlock: {r: 0.93725497, g: 0.31764707, b: 0.61960787, a: 1}
+    text: {r: 1, g: 1, b: 1, a: 1}
+    innerBlock: {r: 0.9058824, g: 0.6784314, b: 0.83921576, a: 1}
     outerBlock: {r: 0.6784314, g: 0.1254902, b: 0.40000004, a: 1}
   click:
     position: {x: 105, y: -105}
@@ -297,7 +297,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114107313415285244}
-        m_MethodName: HandleClick
+        m_MethodName: InvertValue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -328,7 +328,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: MUSIC
+  m_text: CONTACT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b6c82a5b23aba943bc2fa789fd166de, type: 2}
   m_sharedMaterial: {fileID: 21712552533848958, guid: 5b6c82a5b23aba943bc2fa789fd166de,
@@ -397,7 +397,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 114217067623251542}
-    characterCount: 5
+    characterCount: 7
     spriteCount: 0
     spaceCount: 0
     wordCount: 1

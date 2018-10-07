@@ -156,11 +156,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineWidth:
-    start: 0.05
-    end: 0.05
+    start: 0.075
+    end: 0.075
   radius:
     start: 0
-    end: 0.65
+    end: 1
   duration: 0.001
   defaultColor: {r: 0.9058824, g: 0.2901961, b: 0.2901961, a: 1}
 --- !u!120 &120306457376358118

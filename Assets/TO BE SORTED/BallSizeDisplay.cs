@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BallSizeDisplay : MonoBehaviour {
 
+	Extensions.Property sizeRange;
+
 	// Use this for initialization
 	void Start () {
 		

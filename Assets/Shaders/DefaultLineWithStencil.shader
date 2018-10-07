@@ -17,9 +17,9 @@ Category {
         Pass {
 
             Stencil {
-                Ref 0  //Customize this value
-                Comp Equal //Customize the compare function
-                Pass Keep
+                Ref 2  //Customize this value
+                Comp Always //Customize the compare function
+                Pass Replace
             }
 
             CGPROGRAM

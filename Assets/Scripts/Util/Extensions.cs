@@ -94,6 +94,11 @@ public class Extensions : MonoBehaviour {
     {
         return p.start + (p.end - p.start) * EZEasings.SmoothStop5(t);
     }
+
+	public static float GetLinearRange(Property p, float t)
+    {
+        return p.start + (p.end - p.start) * EZEasings.Linear(t);
+    }
 	
 
 	public static IEnumerator Wait(float d) {
