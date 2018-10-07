@@ -18,6 +18,7 @@ public class UISlider : MonoBehaviour
     public float sliderWidth;
 
     public Vector2 leftPt, rightPt;
+    public Vector2 inset;
 
     // Use this for initialization
     void Start()
@@ -35,13 +36,14 @@ public class UISlider : MonoBehaviour
 
     void Update() {
         UpdateSlider();
+        SetLines();
     }
 
     float spread;
 
     void UpdateSlider() {
         percent = slider.value;
-        Debug.Log(percent + "; " + slider.value);
+        // Debug.Log(percent + "; " + slider.value);
         spread = range.end - range.start;
 
         
@@ -59,9 +61,15 @@ public class UISlider : MonoBehaviour
         foreach(LineRenderer l in lines) {
             
             List<Vector3> linePositions = new List<Vector3>();
-            
+
             linePositions.Add(leftPt);
-            linePositions.Add(leftPt);
+            linePositions.Add(rightPt);
+
+            if (l == fore.GetComponent<LineRenderer>()) {
+                linePositions[0] = leftPt  + inset;
+                linePositions[1] = rightPt + inset;
+                
+            }
 
             l.SetPositions(linePositions.ToArray());
         }
