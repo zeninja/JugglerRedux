@@ -15,7 +15,7 @@ public class UISlider : MonoBehaviour
 
     List<LineRenderer> lines = new List<LineRenderer>();
 
-    public float sliderWidth;
+    // public float sliderWidth;
 
     public Vector3 leftPt, rightPt;
     public Vector2 inset;
@@ -65,20 +65,17 @@ public class UISlider : MonoBehaviour
             
             List<Vector3> linePositions = new List<Vector3>();
 
-            linePositions.Add(leftPt);
-            linePositions.Add(rightPt);
+
+
+            linePositions.Add(leftPt  + offset.position);
+            linePositions.Add(rightPt + offset.position);
 
             if (l == fore.GetComponent<LineRenderer>()) {
-                linePositions[0] = leftPt  + (Vector3)inset;
-                linePositions[1] = rightPt + (Vector3)inset;
+                linePositions[0] += (Vector3)inset;
+                linePositions[1] += (Vector3)inset;
             }
 
             l.SetPositions(linePositions.ToArray());
         }
-
-        // back.GetComponent<LineRenderer>().SetWidth(range.start * 1.15f, range.end * 1.15f);
-        // mask.GetComponent<LineRenderer>().SetWidth(range.start, range.end);
-        // fore.GetComponent<LineRenderer>().SetWidth(range.start, range.end);
-
     }
 }

@@ -78,7 +78,6 @@ public class AudioManager : MonoBehaviour {
 			m_mute = PlayerPrefs.GetInt(m_muteKey) == 1;
 		}
 
-		// musicSource = GetComponent<AudioSource>();
 		musicSource.mute = m_mute;
 
 		if (!PlayerPrefs.HasKey(sfx_muteKey)) {
@@ -87,7 +86,6 @@ public class AudioManager : MonoBehaviour {
 			sfx_mute = PlayerPrefs.GetInt(sfx_muteKey) == 1;
 		}
 
-		// sfxSource = GetComponent<AudioSource>();
 		sfxSource.mute = sfx_mute;
 	}
 

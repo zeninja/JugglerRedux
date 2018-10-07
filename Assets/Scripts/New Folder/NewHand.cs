@@ -215,17 +215,9 @@ public class NewHand : MonoBehaviour
 
             ballIndex = heightIndex;
 
-            NewBall targetBall = hits[ballIndex].transform.GetComponent<NewBall>();
-            SetBall(targetBall);
-
-            // Old Approach
-            // Make sure we're catching a ball
-            // if (other.CompareTag("Ball"))
-            // {
-            //     NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
-            //     if (!ballToJuggle.IsLaunching()) { 
-            //         SetBall(ballToJuggle);
-            //     }
+            // if (ballIndex < hits.Length) {
+                NewBall targetBall = hits[ballIndex].transform.GetComponent<NewBall>();
+                SetBall(targetBall);
             // }
         }
     }
