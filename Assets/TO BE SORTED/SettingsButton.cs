@@ -14,7 +14,6 @@ public class SettingsButton : MonoBehaviour
 
     public enum ButtonState { prep, on, off, click, uninteractable };
     public ButtonState state;
-    public ButtonState startState;
     [System.Serializable]
     public class ButtonSetting
     {
@@ -22,32 +21,52 @@ public class SettingsButton : MonoBehaviour
         public Color text, innerBlock, outerBlock;
     }
     public Transform button;
-    public ButtonSetting targetSetting;
+    ButtonSetting targetSetting;
 
     public ButtonSetting prep, on, off, click, uninteractable;
 
     void Start()
     {
-        text.text = label;
-
-		// TEMP!!!! ....? is it tho
-		targetSetting = prep;
-		button.transform.localPosition = targetSetting.position;
-		UpdateSettings();
-        InitButton();
-   }
+    }
 
     public bool interactable;
 
-   void InitButton() {
-       if (!interactable) {
-           SetSettings(ButtonState.uninteractable);
-       } else {
-           SetSettings(ButtonState.prep);
-       }
+   public void InitBounce() {
+        if (!interactable) {
+            SetSettings(ButtonState.uninteractable);
+        } else {
+            SetSettings(ButtonState.prep);
+        }
 
-       SetSettings(startState);
-       StartCoroutine(AnimateButton(targetSetting));
+        text.text = label;
+        targetSetting = off;
+   		button.transform.localPosition = targetSetting.position;
+
+        UpdateSettings();
+
+        StartCoroutine(AnimateButton(targetSetting));
+   }
+
+   public void SetButtonState(bool isOn) {
+
+        currentValue = isOn;
+        if(currentValue) {
+            SetSettings(ButtonState.on);
+        } else {
+            SetSettings(ButtonState.off);
+        }
+
+        if (!interactable) {
+           SetSettings(ButtonState.uninteractable);
+        }
+
+        text.text = label;
+   		button.transform.localPosition = targetSetting.position;
+
+        UpdateSettings();
+
+        StartCoroutine(AnimateButton(targetSetting));
+        StartCoroutine(PlayButtonSound());
    }
 
     void Update()
@@ -108,6 +127,10 @@ public class SettingsButton : MonoBehaviour
 		outerEdge.color  = targetSetting.outerBlock;
 	}
 
+    public IEnumerator PlayButtonSound() {
+        yield return 0;
+        
+    }
 
     public bool currentValue;
 

@@ -49,13 +49,18 @@ public class NewBall : MonoBehaviour
 
     void Start()
     {
-        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
         ballColorIndex = NewBallManager._ballCount - 1;
 
         if(firstBall) {
             gameObject.layer = LayerMask.NameToLayer("Ball");
             // predictiveLine.EnableLine(true);
         }
+
+        SetScale();
+    }
+
+    public void SetScale() {
+        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
     }
 
     // Update is called once per frame

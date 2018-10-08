@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class SettingsScreen : MonoBehaviour {
 
-	// bool music, sfx, invertThrows;
-	public SettingsButton music, sfx, invertThrows;
+	public SettingsButton music, sfx, invertThrows, contact, money, exit, settings;
+
+	// List<SettingsButton> buttons;
 
 	public UISlider ballSizeSlider;
 
@@ -22,22 +23,59 @@ public class SettingsScreen : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(ballSizeSlider != null) {
-			NewBallManager.GetInstance().ballScale = ballSizeSlider.value;
-		}
+		UpdateBallScale();
 	}
 
 	void InitSettings() {
-		
+		music		.SetButtonState(!AudioManager.m_mute);
+		sfx			.SetButtonState(!AudioManager.sfx_mute);
+		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
 
-		// music.startState = AudioManager.m_mute;
+		contact.InitBounce();
+		money.InitBounce();
+		exit.InitBounce();
+		settings.InitBounce();
+
+		float p = Extensions.mapRange(.5f, 1.5f, 0f, 1f, GlobalSettings.Settings.ballScale);
+		ballSizeSlider.SetScale(p);
+	}
+
+	void UpdateBallScale() {
+		if (NewBallManager.GetInstance().ballScale != ballSizeSlider.value) {
+			NewBallManager.GetInstance().UpdateBallScale(ballSizeSlider.value);
+			NewUIManager.UpdateBallScale();
+		}
 	}
 
 	public void ShowSettings() {
-
+		GetComponent<Animation>().Play("SettingsIn");
+		NewGameManager.GetInstance().EnterSettings();
 	}
 
 	public void HideSettings() {
+
+		GetComponent<Animation>().Play("SettingsOut");
+		StartCoroutine(ResetMenuAfterAnimation());
+	}
+
+	IEnumerator ResetMenuAfterAnimation() {
+		float d = GetComponent<Animation>().GetClip("SettingsOut").length;
+		yield return StartCoroutine(Extensions.Wait(d));
+		NewGameManager.GetInstance().ExitSettings();
+	}
+
+	public float duration;
+
+	IEnumerator AnimateSettings(Vector2 from, Vector2 to) {
+		float t = 0;
+		float d = duration;
+
+		while (t < d) {
+			t += Time.fixedDeltaTime;
+			float p = t / d;
+
+			yield return new WaitForFixedUpdate();
+		}
 
 	}
 
@@ -45,3 +83,4 @@ public class SettingsScreen : MonoBehaviour {
 		GetComponent<Purchaser>().MakePurchase();
 	}
 }
+

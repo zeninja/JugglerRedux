@@ -14,17 +14,19 @@ public class NewUIManager : MonoBehaviour {
 	public Text ui_SlapForce;
 	public Text ui_GrabForce;
 	public Text ui_JuggleThreshold;
-	public Text ui_TimeSlowFactor;
+	// public Text ui_TimeSlowFactor;
 	public Text ui_BallScale;
 	public Text ui_BallSpawnRate;
 	public Text ui_playcount;
 	public Toggle ui_ShowAds;
 
 
-	public GameObject debugMenu;
 
-	bool showDebugMenu = false;
-	bool canShowMenu = true;
+
+	// public GameObject debugMenu;
+
+	// bool showDebugMenu = false;
+	// bool canShowMenu = true;
 
 	public GameObject menuButtons;
 
@@ -53,7 +55,7 @@ public class NewUIManager : MonoBehaviour {
 		
 		// debugMenu.SetActive(showDebugMenu);
 
-		// menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
+		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
 	}
 
 	public void ToggleAds() {
@@ -167,17 +169,24 @@ public class NewUIManager : MonoBehaviour {
 
 	public ThrowDirectionSprite throwDirectionSprite;
 
-	public void SwitchDragDirection() {
-		bool throwDirection = !NewHandManager.dragUpToThrow;
-		NewHandManager.dragUpToThrow = throwDirection;
+	public void InvertThrowDirection() {
+		NewHandManager.dragUpToThrow = !NewHandManager.dragUpToThrow;
 
-		throwDirectionSprite.UpdateThrowSprite();
-
-		GlobalSettings.Settings.dragUpToThrow = throwDirection;
+		GlobalSettings.Settings.invertThrows = NewHandManager.dragUpToThrow;
 		GlobalSettings.UpdateSavedValues();
 	}
 
-	public static void ShowSettings(bool isOn) {
-		
+	public static void UpdateBallScale() {
+		GlobalSettings.Settings.ballScale = NewBallManager.GetInstance().ballScale;
+		GlobalSettings.UpdateSavedValues();
+		// Debug.Log(GlobalSettings.Settings.ballScale);
+	}
+
+	public void OpenContactInfo() {
+		#if UNITY_EDITOR
+		Application.OpenURL("https://www.twitter.com/adnanwho");
+		#else
+		Application.OpenURL("twitter:///user?screen_name=adnanwho");
+		#endif
 	}
 }

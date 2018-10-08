@@ -25,8 +25,8 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	// public static string kProductIDNonConsumable = "tipJar";
     // public static string kProductIDSubscription =  "subscription";
 
-    public static string removeAds_Consumable = "noAds";
-    public static string tipJar_NonConsumable = "tipJar";
+    public static string removeAds_Consumable = "removeAds_Consumable";
+    public static string tipJar_NonConsumable = "tipJar_NonConsumable";
      
     // Apple App Store-specific product identifier for the subscription product.
     private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
@@ -87,15 +87,23 @@ public class Purchaser : MonoBehaviour, IStoreListener
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }
 
-    public void MakePurchase() {}
-    
-    
-    public void BuyConsumable()
-    {
+    public void MakePurchase() {
         // Buy the consumable product using its general identifier. Expect a response either 
         // through ProcessPurchase or OnPurchaseFailed asynchronously.
         BuyProductID(removeAds_Consumable);
     }
+
+    public void GetTipped() {
+        BuyProductID(tipJar_NonConsumable);
+    }
+    
+    
+    // public void BuyConsumable()
+    // {
+    //     // Buy the consumable product using its general identifier. Expect a response either 
+    //     // through ProcessPurchase or OnPurchaseFailed asynchronously.
+    //     BuyProductID(removeAds_Consumable);
+    // }
     
     
     public void BuyNonConsumable()
@@ -252,8 +260,8 @@ public class Purchaser : MonoBehaviour, IStoreListener
     }
 
 	void HandlePurchaseMade() {
-		// AdManager.HandlePurchaseMade();
-        NewAdManager.GetInstance().HandlePurchaseMade();
+		
+        NewGameManager.GetInstance().HandlePurchaseMade();
 	}
 
     void HandleTip() {

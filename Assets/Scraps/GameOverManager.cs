@@ -61,6 +61,8 @@ public class GameOverManager : MonoBehaviour
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
 
+
+        yield return new WaitForSeconds(.165f);
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
         yield return new WaitForSeconds(.15f);
         yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
@@ -86,24 +88,23 @@ public class GameOverManager : MonoBehaviour
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
-
     }  
 
     public float explodeDuration = 1.47f;
 
-    IEnumerator Explode()
-    {
-        float t = 0;
-        float targetScale = 40;
+    // IEnumerator Explode()
+    // {
+    //     float t = 0;
+    //     float targetScale = 40;
 
-        while (t < explodeDuration)
-        {
-            t += Time.fixedDeltaTime;
-            target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStop3(t / explodeDuration);
-            yield return new WaitForFixedUpdate();
-        }
+    //     while (t < explodeDuration)
+    //     {
+    //         t += Time.fixedDeltaTime;
+    //         target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStop3(t / explodeDuration);
+    //         yield return new WaitForFixedUpdate();
+    //     }
 
-    }
+    // }
     public float implodeDuration = 1.0f;
 
     IEnumerator Implode()

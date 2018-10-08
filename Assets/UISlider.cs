@@ -20,6 +20,8 @@ public class UISlider : MonoBehaviour
     public Vector3 leftPt, rightPt;
     public Vector2 inset;
 
+    
+
     // Use this for initialization
     void Start()
     {
@@ -28,7 +30,7 @@ public class UISlider : MonoBehaviour
         lines.Add(mask.GetComponent<LineRenderer>());
         lines.Add(fore.GetComponent<LineRenderer>());
 
-        slider.onValueChanged.AddListener(delegate {UpdateValues(); });
+        slider.onValueChanged.AddListener(delegate { UpdateValues(); });
     }
 
     [Range(0, 1)]
@@ -43,20 +45,27 @@ public class UISlider : MonoBehaviour
 
     float spread;
     
+    // void SetSliderValue(float p) {
+    //     slider.value = p;
+    // }
+
     void UpdateValues() {
         percent = slider.value;
         spread  = range.end - range.start;
         value   = range.start + spread * percent;
     }
 
+    public float knobDepth;
+
     void UpdateGraphics() {
         Vector2 knobPos = leftPt + (rightPt - leftPt) * percent;
-        // knobPos = (Vector3)knobPos + new Vector3(0, 0, knobDepth);
+        // Debug.Log((Vector3)knobPos);
+        knobPos = new Vector3(knobPos.x, knobPos.y, knobDepth);
 
         float scale = range.start + spread * percent;
         Vector2 knobScale = Vector2.one * scale;
 
-        knob.transform.position   = knobPos;
+        knob.transform.position   = (Vector3)knobPos + offset.position;
         knob.transform.localScale = knobScale;
     }
 
@@ -64,8 +73,6 @@ public class UISlider : MonoBehaviour
         foreach(LineRenderer l in lines) {
             
             List<Vector3> linePositions = new List<Vector3>();
-
-
 
             linePositions.Add(leftPt  + offset.position);
             linePositions.Add(rightPt + offset.position);
@@ -77,5 +84,9 @@ public class UISlider : MonoBehaviour
 
             l.SetPositions(linePositions.ToArray());
         }
+    }
+
+    public void SetScale(float value) {
+        slider.value = value;
     }
 }

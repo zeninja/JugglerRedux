@@ -215,10 +215,10 @@ public class NewHand : MonoBehaviour
 
             ballIndex = heightIndex;
 
-            // if (ballIndex < hits.Length) {
+            if (ballIndex < hits.Length) {
                 NewBall targetBall = hits[ballIndex].transform.GetComponent<NewBall>();
                 SetBall(targetBall);
-            // }
+            }
         }
     }
 
@@ -263,7 +263,7 @@ public class NewHand : MonoBehaviour
 
     void GrabBall()
     {
-        if(!m_BallGrabbedFirstFrame) {
+        if(!m_BallGrabbedFirstFrame && NewGameManager.CanGrabBalls()) {
             // Debug.Log("Ball grabbed");
             m_Ball.GetCaught();
             m_CatchPosition = m_Transform.position;

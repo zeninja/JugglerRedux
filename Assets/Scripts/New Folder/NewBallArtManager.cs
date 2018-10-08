@@ -26,7 +26,6 @@ public class NewBallArtManager : MonoBehaviour
     // int indexAlongLine = 0;
     // float throwMagnitudePortion = -1;
 
-    float defaultScale;
     bool initialized;
 
     // Use this for initialization
@@ -40,8 +39,6 @@ public class NewBallArtManager : MonoBehaviour
 
         m_LinePointList    = new List<Vector3>();
         predictedPointList = new List<Vector3>();
-
-        defaultScale = transform.root.localScale.x;
 
         // trail.sortingLayerName = "Default";
         // trail.useWorldSpace = true;

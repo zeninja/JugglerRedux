@@ -165,6 +165,13 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
+    public void UpdateBallScale(float s) {
+        ballScale = s;
+        foreach(NewBall b in balls) {
+            b.SetScale();
+        }
+    } 
+
     public void SetBallLaunchScores()
     {
         switch (ballSpawnSpeed)

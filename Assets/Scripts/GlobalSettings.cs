@@ -13,7 +13,6 @@ public class GlobalSettings : MonoBehaviour
         public float ballScale;
         public int   ballSpeedIndex;
         public bool adsOff;
-        public bool dragUpToThrow;
 
         public bool offsetXSpawnPosition;
 
@@ -22,8 +21,9 @@ public class GlobalSettings : MonoBehaviour
 
         public bool disableAds;
 
-        public bool music;
-        public bool sfx;
+        public bool musicOn;
+        public bool sfxOn;
+        public bool invertThrows;
     }
 
     [SerializeField]
@@ -32,7 +32,7 @@ public class GlobalSettings : MonoBehaviour
 
     void Awake()
     {
-        #if !UNITY_EDITOR
+        // #if !UNITY_EDITOR
         if (PlayerPrefs.HasKey("SAVED"))
         {
             jsonString = PlayerPrefs.GetString("JSON");
@@ -42,9 +42,9 @@ public class GlobalSettings : MonoBehaviour
         {
             InitValues();
         }
-        #else 
-        InitValues();
-        #endif
+        // #else 
+        // InitValues();
+        // #endif
         // InitValues();
     }
 
@@ -58,15 +58,15 @@ public class GlobalSettings : MonoBehaviour
         // mySettings.timeScale       = TimeManager   .GetInstance().m_SlowTimeScale;
         Settings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
         Settings.adsOff          = NewAdManager.forceAdsOff;
-        Settings.dragUpToThrow   = NewHandManager.dragUpToThrow;
+        Settings.invertThrows    =!NewHandManager.dragUpToThrow;
 
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
 
         Settings.disableAds      = false;
 
-        Settings.music           = AudioManager.m_mute;
-        Settings.sfx             = AudioManager.sfx_mute; 
+        Settings.musicOn         = !AudioManager.m_mute;
+        Settings.sfxOn           = !AudioManager.sfx_mute; 
         
 
         // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
@@ -86,15 +86,23 @@ public class GlobalSettings : MonoBehaviour
         // TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = Settings.ballSpeedIndex;
         NewAdManager.forceAdsOff                         = Settings.adsOff;
-        
+        NewHandManager.dragUpToThrow                     = !Settings.invertThrows;
+
+        AudioManager.m_mute                              = !Settings.musicOn;
+        AudioManager.sfx_mute                            = !Settings.sfxOn;
+
+
+
         TimeManager.GetInstance().timeRange.start        = Settings.timeMin;
         TimeManager.GetInstance().timeRange.end          = Settings.timeMax;
 
         UpdateSavedValues();
+
+        // Debug.Log(NewBallManager.GetInstance().ballScale + "; " + Settings.ballScale);
     }
 
 	public static void UpdateSavedValues() {
-        Debug.Log("SAVED INFO MANAGER: Updating PLAYERPREFS saved settings");
+        // Debug.Log("SAVED INFO MANAGER: Updating PLAYERPREFS saved settings");
 		jsonString = JsonUtility.ToJson(Settings);
         PlayerPrefs.SetString("JSON", jsonString);
         PlayerPrefs.SetInt("SAVED", 1);

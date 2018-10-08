@@ -34,7 +34,7 @@ public class NewGameManager : MonoBehaviour {
 		EventManager.StartListening("BallDied", HandleGameOver);
 	}
 
-	bool useStartState;
+	public bool useStartState;
 	public GameState startState;
 
 	void Start() {
@@ -72,6 +72,7 @@ public class NewGameManager : MonoBehaviour {
 			case GameState.gameOn:
 				// pregameTrail.EnableTrail(false);
 				// BallCountdownManager.GetInstance().SetUpCountdown();
+				
 				break;
 
 			case GameState.gameOver:
@@ -85,6 +86,14 @@ public class NewGameManager : MonoBehaviour {
 	public void StartGame() {
 		SetState(GameState.gameOn);
 		BallCountdownManager.GetInstance().SetUpCountdown();
+	}
+
+	public void EnterSettings() {
+		SetState(GameState.settings);
+	}
+
+	public void ExitSettings() {
+		SetState(GameState.preGame);
 	}
 
 	void HandleGameOver() {
@@ -111,5 +120,17 @@ public class NewGameManager : MonoBehaviour {
 
 	bool CanSpawnBall() {
 		return gameState == GameState.preGame;
+	}
+
+	public static bool CanGrabBalls() {
+		return gameState != GameState.settings && gameState != GameState.gameOver;
+	}
+
+	public void HandlePurchaseMade() {
+        NewAdManager.GetInstance().HandlePurchaseMade();
+	}
+
+	public void HandleTip() {
+
 	}
 }

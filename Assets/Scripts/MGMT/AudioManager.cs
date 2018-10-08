@@ -19,9 +19,9 @@ public class AudioManager : MonoBehaviour {
 	public AudioSource sfxSource;
 	public AudioSource musicSource;
 
-	public static bool m_mute;
+	public static bool m_mute = false;
 	string m_muteKey = "m_mute";
-	public static bool sfx_mute;
+	public static bool sfx_mute = false;
 	string sfx_muteKey = "sfx_mute";
 
 	void Awake() {
@@ -72,36 +72,36 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	void InitMute() {
-		if (!PlayerPrefs.HasKey(m_muteKey)) {
-			PlayerPrefs.SetInt(m_muteKey, 0);
-		} else {
-			m_mute = PlayerPrefs.GetInt(m_muteKey) == 1;
-		}
+		// if (!PlayerPrefs.HasKey(m_muteKey)) {
+		// 	PlayerPrefs.SetInt(m_muteKey, 0);
+		// } else {
+		// 	m_mute = PlayerPrefs.GetInt(m_muteKey) == 1;
+		// }
 
-		musicSource.mute = m_mute;
+		// musicSource.mute = m_mute;
 
-		if (!PlayerPrefs.HasKey(sfx_muteKey)) {
-			PlayerPrefs.SetInt(sfx_muteKey, 0);
-		} else {
-			sfx_mute = PlayerPrefs.GetInt(sfx_muteKey) == 1;
-		}
+		// if (!PlayerPrefs.HasKey(sfx_muteKey)) {
+		// 	PlayerPrefs.SetInt(sfx_muteKey, 0);
+		// } else {
+		// 	sfx_mute = PlayerPrefs.GetInt(sfx_muteKey) == 1;
+		// }
 
-		sfxSource.mute = sfx_mute;
+		// sfxSource.mute = sfx_mute;
 	}
 
 	public void ToggleMute() {
 		m_mute = !m_mute;
 		musicSource.mute = m_mute;
 
-		int muteVal = m_mute ? 1 : 0;
-		PlayerPrefs.SetInt(m_muteKey, muteVal);
+		GlobalSettings.Settings.musicOn = !m_mute;
+		GlobalSettings.UpdateSavedValues();
 	}
 
 	public void ToggleSFX() {
 		sfx_mute = !sfx_mute;
 		sfxSource.mute = sfx_mute;
 
-		int muteVal = sfx_mute ? 1 : 0;
-		PlayerPrefs.SetInt(sfx_muteKey, muteVal);
+		GlobalSettings.Settings.sfxOn = !sfx_mute;
+		GlobalSettings.UpdateSavedValues();
 	}
 }
