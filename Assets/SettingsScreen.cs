@@ -48,12 +48,23 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	public void ShowSettings() {
+		StartCoroutine(SettingsIn());
+	}
+
+	IEnumerator SettingsIn() {
+		float d = settings.moveToClickDuration * 2f;
+		yield return StartCoroutine(Extensions.Wait(d));
 		GetComponent<Animation>().Play("SettingsIn");
 		NewGameManager.GetInstance().EnterSettings();
 	}
 
 	public void HideSettings() {
+		StartCoroutine(SettingsOut());
+	}
 
+	IEnumerator SettingsOut() {
+		float d = settings.moveToClickDuration * 2f;
+		yield return StartCoroutine(Extensions.Wait(d));
 		GetComponent<Animation>().Play("SettingsOut");
 		StartCoroutine(ResetMenuAfterAnimation());
 	}
@@ -62,21 +73,6 @@ public class SettingsScreen : MonoBehaviour {
 		float d = GetComponent<Animation>().GetClip("SettingsOut").length;
 		yield return StartCoroutine(Extensions.Wait(d));
 		NewGameManager.GetInstance().ExitSettings();
-	}
-
-	public float duration;
-
-	IEnumerator AnimateSettings(Vector2 from, Vector2 to) {
-		float t = 0;
-		float d = duration;
-
-		while (t < d) {
-			t += Time.fixedDeltaTime;
-			float p = t / d;
-
-			yield return new WaitForFixedUpdate();
-		}
-
 	}
 
 	public void PurchaseGame() {
