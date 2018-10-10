@@ -85,7 +85,7 @@ public class NewGameManager : MonoBehaviour {
 
 	public void StartGame() {
 		SetState(GameState.gameOn);
-		BallCountdownManager.GetInstance().SetUpCountdown();
+		// BallCountdownManager.GetInstance().SetUpCountdown();
 	}
 
 	public void EnterSettings() {

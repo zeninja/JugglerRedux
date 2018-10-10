@@ -160,7 +160,7 @@ public class NewBallManager : MonoBehaviour
             // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
 
             if(scoreIndex < ballSpawnScores.Length) {
-                BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
+                // BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
             }
         }
     }
