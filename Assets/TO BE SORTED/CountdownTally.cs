@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CountdownTally : MonoBehaviour {
 
@@ -52,6 +53,6 @@ public class CountdownTally : MonoBehaviour {
 	}
 
 	public void SetColor(int colorIndex) {
-		GetComponent<SpriteRenderer>().color = NewBallManager.GetInstance().m_BallColors[colorIndex];
+		GetComponent<Image>().color = NewBallManager.GetInstance().m_BallColors[colorIndex];
 	}
 }

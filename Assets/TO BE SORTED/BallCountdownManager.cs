@@ -18,8 +18,6 @@ public class BallCountdownManager : MonoBehaviour
     public int countdownToNextball = 5;
     public int framesBetweenBalls = 3;
 
-    public Vector2 anchor = Vector2.zero;
-
     List<CountdownTally> tallys;
 
     [System.NonSerialized]
@@ -61,10 +59,10 @@ public class BallCountdownManager : MonoBehaviour
             // SetCountdownNumber(countdownToNextball);
         }
 
-        if (ballsInstantiated)
-        {
-            UpdateBallPositions();
-        }
+        // if (ballsInstantiated)
+        // {
+        //     UpdateBallPositions();
+        // }
 
 		if(Input.GetKeyDown(KeyCode.Return)) {
 			PopOutTally();
@@ -98,22 +96,22 @@ public class BallCountdownManager : MonoBehaviour
             c.transform.parent = transform;
 
 
-            float x = xSpacing * (i % ballsPerLine);
-            float y = ySpacing * Mathf.FloorToInt(i / ballsPerLine);
+            // float x = xSpacing * (i % ballsPerLine);
+            // float y = ySpacing * Mathf.FloorToInt(i / ballsPerLine);
 
-            Vector2 convertedAnchor = transform.InverseTransformPoint(anchor);
+            // Vector2 convertedAnchor = transform.InverseTransformPoint(anchor);
 
-            float xOffset = convertedAnchor.x;
-            float yOffset = convertedAnchor.y;
+            // float xOffset = convertedAnchor.x;
+            // float yOffset = convertedAnchor.y;
 
-            float xHalf = ((ballsPerLine - 1) * xSpacing) / 2;
-            // float yHalf = (((countdownToNextball - 1) / ballsPerLine ) * ySpacing)/2;
+            // float xHalf = ((ballsPerLine - 1) * xSpacing) / 2;
+            // // float yHalf = (((countdownToNextball - 1) / ballsPerLine ) * ySpacing)/2;
 
-            x += xOffset - xHalf;
-            // y += yOffset - yHalf;
-            y += yOffset;
+            // x += xOffset - xHalf;
+            // // y += yOffset - yHalf;
+            // y += yOffset;
 
-            c.transform.position = transform.TransformPoint(new Vector2(x, y));
+            // c.transform.position = transform.TransformPoint(new Vector2(x, y));
             c.SetColor(NewBallManager._ballCount);
 
             tallys.Add(c);
@@ -132,41 +130,41 @@ public class BallCountdownManager : MonoBehaviour
     }
 
     // util for now
-    void UpdateBallPositions()
-    {
-        // X VALUES		
-        // 0 1 2 3 4
-        // 0 1 2 3 4
-        // 0 1 2 3 4
+    // void UpdateBallPositions()
+    // {
+    //     // X VALUES		
+    //     // 0 1 2 3 4
+    //     // 0 1 2 3 4
+    //     // 0 1 2 3 4
 
-        // Y VALUES
-        // 0 0 0 0 0
-        // 1 1 1 1 1
-        // 2 2 2 2 2
+    //     // Y VALUES
+    //     // 0 0 0 0 0
+    //     // 1 1 1 1 1
+    //     // 2 2 2 2 2
 
-        for (int i = 0; i < tallys.Count; i++)
-        {
-            CountdownTally c = tallys[i];
-            c.transform.parent = transform;
+    //     for (int i = 0; i < tallys.Count; i++)
+    //     {
+    //         CountdownTally c = tallys[i];
+    //         c.transform.parent = transform;
 
-            float x = xSpacing * (i % ballsPerLine);
-            float y = ySpacing * Mathf.FloorToInt(i / ballsPerLine);
+    //         float x = xSpacing * (i % ballsPerLine);
+    //         float y = ySpacing * Mathf.FloorToInt(i / ballsPerLine);
 
-            Vector2 convertedAnchor = transform.InverseTransformPoint(anchor);
+    //         Vector2 convertedAnchor = transform.InverseTransformPoint(anchor);
 
-            float xOffset = convertedAnchor.x;
-            float yOffset = convertedAnchor.y;
+    //         float xOffset = convertedAnchor.x;
+    //         float yOffset = convertedAnchor.y;
 
-            float xHalf = ((ballsPerLine - 1) * xSpacing) / 2;
-            // float yHalf = (((countdownToNextball - 1) / ballsPerLine ) * ySpacing)/2;
+    //         float xHalf = ((ballsPerLine - 1) * xSpacing) / 2;
+    //         // float yHalf = (((countdownToNextball - 1) / ballsPerLine ) * ySpacing)/2;
 
-            x += xOffset - xHalf;
-            // y += yOffset - yHalf;
-            y += yOffset;
+    //         x += xOffset - xHalf;
+    //         // y += yOffset - yHalf;
+    //         y += yOffset;
 
-            c.transform.position = transform.TransformPoint(new Vector2(x, y));
-        }
-    }
+    //         c.transform.position = transform.TransformPoint(new Vector2(x, y));
+    //     }
+    // }
 
 	void PopOutTally() {
         if(nextTally != null) {
