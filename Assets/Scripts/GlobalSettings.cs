@@ -58,7 +58,7 @@ public class GlobalSettings : MonoBehaviour
         // mySettings.timeScale       = TimeManager   .GetInstance().m_SlowTimeScale;
         Settings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
         Settings.adsOff          = NewAdManager.forceAdsOff;
-        Settings.invertThrows    =!NewHandManager.dragUpToThrow;
+        Settings.invertThrows    =!NewHandManager.invertThrows;
 
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
@@ -86,7 +86,7 @@ public class GlobalSettings : MonoBehaviour
         // TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = Settings.ballSpeedIndex;
         NewAdManager.forceAdsOff                         = Settings.adsOff;
-        NewHandManager.dragUpToThrow                     = !Settings.invertThrows;
+        NewHandManager.invertThrows                      = Settings.invertThrows;
 
         AudioManager.m_mute                              = !Settings.musicOn;
         AudioManager.sfx_mute                            = !Settings.sfxOn;

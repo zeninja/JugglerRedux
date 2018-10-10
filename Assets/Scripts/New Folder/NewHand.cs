@@ -249,7 +249,7 @@ public class NewHand : MonoBehaviour
 
     void FindGrabThrowVector()
     {
-        int throwDirectionModifier = NewHandManager.dragUpToThrow ? 1 : -1;
+        int throwDirectionModifier = NewHandManager.invertThrows ? -1 : 1;
         m_GrabMoveDir = ((Vector2)m_Transform.position - m_CatchPosition) * throwDirectionModifier;
         m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
 

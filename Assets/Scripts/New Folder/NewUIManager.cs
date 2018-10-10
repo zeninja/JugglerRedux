@@ -167,12 +167,12 @@ public class NewUIManager : MonoBehaviour {
 		GlobalSettings.UpdateSavedValues();
 	}
 
-	public ThrowDirectionSprite throwDirectionSprite;
+	// public ThrowDirectionSprite throwDirectionSprite;
 
 	public void InvertThrowDirection() {
-		NewHandManager.dragUpToThrow = !NewHandManager.dragUpToThrow;
-
-		GlobalSettings.Settings.invertThrows = NewHandManager.dragUpToThrow;
+		NewHandManager.invertThrows = !NewHandManager.invertThrows;
+		GlobalSettings.Settings.invertThrows = NewHandManager.invertThrows;
+		Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
 		GlobalSettings.UpdateSavedValues();
 	}
 
@@ -184,8 +184,8 @@ public class NewUIManager : MonoBehaviour {
 
 	public void OpenContactInfo() {
 		#if UNITY_EDITOR
-		Application.OpenURL("https://www.twitter.com/adnanwho");
 		#else
+		Application.OpenURL("https://www.twitter.com/adnanwho");
 		Application.OpenURL("twitter:///user?screen_name=adnanwho");
 		#endif
 	}

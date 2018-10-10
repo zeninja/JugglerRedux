@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThrowDirectionSprite : MonoBehaviour {
 
 	public void UpdateThrowSprite() {
-		int i = NewHandManager.dragUpToThrow ? 1 : 0;
+		int i = NewHandManager.invertThrows ? 1 : 0;
 		Vector3 targetRotation = new Vector3(0, 0, 180 * i);
 
 		// StartCoroutine("RotateSprite", targetRotation);
