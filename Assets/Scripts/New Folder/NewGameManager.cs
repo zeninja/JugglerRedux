@@ -85,7 +85,7 @@ public class NewGameManager : MonoBehaviour {
 
 	public void StartGame() {
 		SetState(GameState.gameOn);
-		BallCountdownManager.GetInstance().SetUpCountdown();
+		// BallCountdownManager.GetInstance().SetUpCountdown();
 	}
 
 	public void EnterSettings() {
@@ -128,6 +128,7 @@ public class NewGameManager : MonoBehaviour {
 
 	public void HandlePurchaseMade() {
         NewAdManager.GetInstance().HandlePurchaseMade();
+        SettingsScreen.GetInstance().HandlePurchaseMade();
 	}
 
 	public void HandleTip() {

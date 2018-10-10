@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class SettingsScreen : MonoBehaviour {
 
-	public SettingsButton music, sfx, invertThrows, contact, money, exit, settings;
+	#region instance
+    private static SettingsScreen instance;
+    public static SettingsScreen GetInstance()
+    {
+        return instance;
+    }
+    #endregion
 
-	// List<SettingsButton> buttons;
+	public SettingsButton music, sfx, invertThrows, contact, removeAds, tipJar, exit, settings;
 
 	public UISlider ballSizeSlider;
 
 	void Awake() {
+		if(instance == null) {
+			instance = this;
+		} else {
+			if(instance != this) {
+				Destroy(gameObject);
+			}
+		}
 	}
 
 	// Use this for initialization
@@ -32,7 +45,7 @@ public class SettingsScreen : MonoBehaviour {
 		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
 
 		contact.InitBounce();
-		money.InitBounce();
+		removeAds.InitBounce();
 		exit.InitBounce();
 		settings.InitBounce();
 
@@ -77,6 +90,11 @@ public class SettingsScreen : MonoBehaviour {
 
 	public void PurchaseGame() {
 		GetComponent<Purchaser>().MakePurchase();
+	}
+
+	public void HandlePurchaseMade() {
+		removeAds.gameObject.SetActive(false);
+		tipJar.gameObject.SetActive(true);
 	}
 }
 
