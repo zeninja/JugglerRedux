@@ -172,7 +172,7 @@ public class NewUIManager : MonoBehaviour {
 	public void InvertThrowDirection() {
 		NewHandManager.invertThrows = !NewHandManager.invertThrows;
 		GlobalSettings.Settings.invertThrows = NewHandManager.invertThrows;
-		Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
+		// Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
 		GlobalSettings.UpdateSavedValues();
 	}
 

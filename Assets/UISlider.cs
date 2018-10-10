@@ -55,12 +55,10 @@ public class UISlider : MonoBehaviour
         value   = range.start + spread * percent;
     }
 
-    public float knobDepth;
-
     void UpdateGraphics() {
         Vector2 knobPos = leftPt + (rightPt - leftPt) * percent;
         // Debug.Log((Vector3)knobPos);
-        knobPos = new Vector3(knobPos.x, knobPos.y, knobDepth);
+        knobPos = new Vector3(knobPos.x, knobPos.y, 0);
 
         float scale = range.start + spread * percent;
         Vector2 knobScale = Vector2.one * scale;
