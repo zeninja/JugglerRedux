@@ -54,7 +54,7 @@ public class NewAdManager : MonoBehaviour
     public void ShowVideoAd()
     {
 		#if UNITY_ADS
-        if (forceAdsOff) { return; }
+        if (forceAdsOff || disableAds) { return; }
 
 		if(NewScoreManager._lastPeakCount >= 5) {
 			playcount++;
@@ -91,7 +91,7 @@ public class NewAdManager : MonoBehaviour
             case ShowResult.Skipped:
                 Debug.Log("The ad was skipped before reaching the end.");
                 isShowingAd = false;
-                playcount = 1;
+                playcount = 0;
                 break;
             case ShowResult.Failed:
                 Debug.LogError("The ad failed to be shown.");
