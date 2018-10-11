@@ -29,6 +29,10 @@ public class SettingsButton : MonoBehaviour
     {
     }
 
+    void OnEnable() {
+        InitBounce();
+    }
+
     public bool interactable;
 
    public void InitBounce() {
@@ -47,7 +51,7 @@ public class SettingsButton : MonoBehaviour
         StartCoroutine(AnimateButton(targetSetting));
    }
 
-   public void SetButtonState(bool isOn) {
+   public void SetButtonState(bool isOn, bool interactable = true) {
 
         currentValue = isOn;
         if(currentValue) {

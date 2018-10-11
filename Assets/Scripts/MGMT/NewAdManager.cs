@@ -14,7 +14,7 @@ public class NewAdManager : MonoBehaviour
     bool isShowingAd = false;
 
     public static bool forceAdsOff = false;
-    public static bool disableAds = false;
+    public static bool adsDisabled = false;
 
     #region instance
     static NewAdManager instance;
@@ -54,7 +54,7 @@ public class NewAdManager : MonoBehaviour
     public void ShowVideoAd()
     {
 		#if UNITY_ADS
-        if (forceAdsOff || disableAds) { return; }
+        if (forceAdsOff || adsDisabled) { return; }
 
 		if(NewScoreManager._lastPeakCount >= 5) {
 			playcount++;
@@ -108,7 +108,8 @@ public class NewAdManager : MonoBehaviour
 
     public void HandlePurchaseMade() {
         // Purchase was successful
-        disableAds = true;
-        GlobalSettings.Settings.disableAds = true;
+        adsDisabled = true;
+        GlobalSettings.Settings.adsDisabled = true;
+        GlobalSettings.UpdateSavedValues();
     }
 }

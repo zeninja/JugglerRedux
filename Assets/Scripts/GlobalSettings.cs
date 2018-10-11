@@ -19,7 +19,7 @@ public class GlobalSettings : MonoBehaviour
         public float timeMin;
         public float timeMax;
 
-        public bool disableAds;
+        public bool adsDisabled;
 
         public bool musicOn;
         public bool sfxOn;
@@ -63,7 +63,7 @@ public class GlobalSettings : MonoBehaviour
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
 
-        Settings.disableAds      = false;
+        Settings.adsDisabled      = NewAdManager.adsDisabled;
 
         Settings.musicOn         = !AudioManager.m_mute;
         Settings.sfxOn           = !AudioManager.sfx_mute; 
@@ -91,7 +91,7 @@ public class GlobalSettings : MonoBehaviour
         AudioManager.m_mute                              = !Settings.musicOn;
         AudioManager.sfx_mute                            = !Settings.sfxOn;
 
-
+        NewAdManager.adsDisabled                          = Settings.adsDisabled;
 
         TimeManager.GetInstance().timeRange.start        = Settings.timeMin;
         TimeManager.GetInstance().timeRange.end          = Settings.timeMax;
