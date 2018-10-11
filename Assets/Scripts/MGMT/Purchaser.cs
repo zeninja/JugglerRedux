@@ -242,7 +242,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
         else 
         {
             Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
-            HandlePurchaseMade();
+            // HandlePurchaseMade();
         }
 
         // Return a flag indicating whether this product has completely been received, or if the application needs 
@@ -257,12 +257,17 @@ public class Purchaser : MonoBehaviour, IStoreListener
         // A product purchase attempt did not succeed. Check failureReason for more detail. Consider sharing 
         // this reason with the user to guide their troubleshooting actions.
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+        HandlePurchaseFailed();
     }
 
 	void HandlePurchaseMade() {
 		
         NewGameManager.GetInstance().HandlePurchaseMade();
 	}
+
+    void HandlePurchaseFailed() {
+        
+    }
 
     void HandleTip() {
         
