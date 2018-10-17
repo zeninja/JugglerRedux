@@ -10,13 +10,11 @@ public class GrabSquishLine : MonoBehaviour
 
     float defaultScale;
 
-
     // Use this for initialization
     void Start()
     {
         ball = GetComponentInParent<NewBall>();
         squishLine.material.color = GetComponent<NewBallArtManager>().myColor;
-        defaultScale = NewBallManager.GetInstance().ballScale;
     }
 
     // Update is called once per frame
@@ -24,7 +22,10 @@ public class GrabSquishLine : MonoBehaviour
     {
         // Reset();
         squishLine.enabled = ShowLine();
-        
+        if (defaultScale != NewBallManager.GetInstance().ballScale) {
+            defaultScale  = NewBallManager.GetInstance().ballScale;
+
+        }
         SquishLine(ball.currentThrowVector, defaultScale, GetThrowMagnitudePortion());
     }
 

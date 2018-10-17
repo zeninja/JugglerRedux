@@ -14,6 +14,9 @@ public class LaunchTrail : MonoBehaviour {
 
 		trail.material.color = GetComponentInParent<NewBallArtManager>().myColor;
 		// trail.endColor   = GetComponentInParent<NewBallArtManager>().myColor;
+		trail.startWidth = NewBallManager.GetInstance().ballScale;
+		trail.endWidth   = NewBallManager.GetInstance().ballScale;
+
 	}
 	
 	// Update is called once per frame

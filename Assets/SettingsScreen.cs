@@ -37,10 +37,13 @@ public class SettingsScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateBallScale();
+
+		removeAds.gameObject.SetActive(!NewAdManager.adsDisabled);
+		tipJar.gameObject.SetActive(NewAdManager.adsDisabled);
 	}
 
 	void InitSettings() {
-		music		.SetButtonState(!AudioManager.m_mute);
+		music		.SetButtonState(!AudioManager.m_mute, false);
 		sfx			.SetButtonState(!AudioManager.sfx_mute);
 		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
 
@@ -90,11 +93,6 @@ public class SettingsScreen : MonoBehaviour {
 
 	public void PurchaseGame() {
 		GetComponent<Purchaser>().MakePurchase();
-	}
-
-	public void HandlePurchaseMade() {
-		removeAds.gameObject.SetActive(false);
-		tipJar.gameObject.SetActive(true);
 	}
 }
 

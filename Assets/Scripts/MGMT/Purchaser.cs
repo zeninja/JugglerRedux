@@ -26,7 +26,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
     // public static string kProductIDSubscription =  "subscription";
 
     public static string removeAds_Consumable = "removeAds_Consumable";
-    public static string tipJar_NonConsumable = "tipJar_NonConsumable";
+    public static string tipJar_Consumable = "tipJar_Consumable";
      
     // Apple App Store-specific product identifier for the subscription product.
     private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
@@ -60,11 +60,13 @@ public class Purchaser : MonoBehaviour, IStoreListener
         // Add a product to sell / restore by way of its identifier, associating the general identifier
         // with its store-specific identifiers.
         builder.AddProduct(removeAds_Consumable, ProductType.Consumable);
+        builder.AddProduct(tipJar_Consumable, ProductType.Consumable);
+
 		#endregion
 
 		#region Non-Consumable
         // Continue adding the non-consumable product.
-        builder.AddProduct(tipJar_NonConsumable, ProductType.NonConsumable);
+        // builder.AddProduct(tipJar_NonConsumable, ProductType.NonConsumable);
 		#endregion
 
 		#region Subscription
@@ -94,7 +96,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
     }
 
     public void GetTipped() {
-        BuyProductID(tipJar_NonConsumable);
+        BuyProductID(tipJar_Consumable);
     }
     
     
@@ -106,12 +108,12 @@ public class Purchaser : MonoBehaviour, IStoreListener
     // }
     
     
-    public void BuyNonConsumable()
-    {
-        // Buy the non-consumable product using its general identifier. Expect a response either 
-        // through ProcessPurchase or OnPurchaseFailed asynchronously.
-        BuyProductID(tipJar_NonConsumable);
-    }
+    // public void BuyNonConsumable()
+    // {
+    //     // Buy the non-consumable product using its general identifier. Expect a response either 
+    //     // through ProcessPurchase or OnPurchaseFailed asynchronously.
+    //     BuyProductID(tipJar_Consumable);
+    // }
     
     
     public void BuySubscription()
@@ -227,7 +229,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
             HandlePurchaseMade();
         }
         // Or ... a non-consumable product has been purchased by this user.
-        else if (String.Equals(args.purchasedProduct.definition.id, tipJar_NonConsumable, StringComparison.Ordinal))
+        else if (String.Equals(args.purchasedProduct.definition.id, tipJar_Consumable, StringComparison.Ordinal))
         {
             Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
             HandleTip();
@@ -242,7 +244,7 @@ public class Purchaser : MonoBehaviour, IStoreListener
         else 
         {
             Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
-            HandlePurchaseMade();
+            // HandlePurchaseMade();
         }
 
         // Return a flag indicating whether this product has completely been received, or if the application needs 
@@ -257,12 +259,17 @@ public class Purchaser : MonoBehaviour, IStoreListener
         // A product purchase attempt did not succeed. Check failureReason for more detail. Consider sharing 
         // this reason with the user to guide their troubleshooting actions.
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+        HandlePurchaseFailed();
     }
 
 	void HandlePurchaseMade() {
 		
         NewGameManager.GetInstance().HandlePurchaseMade();
 	}
+
+    void HandlePurchaseFailed() {
+        
+    }
 
     void HandleTip() {
         
