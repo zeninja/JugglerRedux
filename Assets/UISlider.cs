@@ -20,7 +20,8 @@ public class UISlider : MonoBehaviour
     public Vector3 leftPt, rightPt;
     public Vector2 inset;
 
-    
+    public float widthModifier = 1f;
+    float originalWidth;
 
     // Use this for initialization
     void Start()
@@ -31,6 +32,8 @@ public class UISlider : MonoBehaviour
         lines.Add(fore.GetComponent<LineRenderer>());
 
         slider.onValueChanged.AddListener(delegate { UpdateValues(); });
+
+        originalWidth = rightPt.x;
     }
 
     [Range(0, 1)]
@@ -53,7 +56,12 @@ public class UISlider : MonoBehaviour
         percent = slider.value;
         spread  = range.end - range.start;
         value   = range.start + spread * percent;
+
+        leftPt.x  = -originalWidth * widthModifier;
+        rightPt.x =  originalWidth * widthModifier;
     }
+
+    float screenX;
 
     void UpdateGraphics() {
         Vector2 knobPos = leftPt + (rightPt - leftPt) * percent;
