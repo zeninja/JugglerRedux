@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour {
 
-	public enum Sound { select, undo };
+	public enum ButtonSound { select, undo, bounce };
 
 	public static AudioManager instance;
 
@@ -16,10 +16,12 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip peakSound;
 	public AudioClip selectSound;
 	public AudioClip undoSound;
+	public AudioClip bounceSound;
 
 
 	public AudioSource sfxSource;
-	public AudioSource musicSource;
+	public AudioSource mainThemeSource;
+	public AudioSource settingsThemeSource;
 
 	public static bool m_mute = false;
 	string m_muteKey = "m_mute";
@@ -34,13 +36,10 @@ public class AudioManager : MonoBehaviour {
 				Destroy(gameObject);
 			}
 		}
-
-		InitMute();
 	}
 
 	// Use this for initialization
 	void Start () {
-
 		EventManager.StartListening("BallCaught", PlayCatch);
 		EventManager.StartListening("BallThrown", PlayThrow);
 		EventManager.StartListening("BallDied",   PlayGameOver);
@@ -69,31 +68,61 @@ public class AudioManager : MonoBehaviour {
 		instance.sfxSource.PlayOneShot (instance.undoSound);
 	}
 
+	public static void PlayBounce() {
+		instance.sfxSource.PlayOneShot(instance.bounceSound);
+	}
+
 	public static void PlayGameOver() {
 		instance.sfxSource.PlayOneShot (instance.gameOver);
 	}
 
-	void InitMute() {
-		// if (!PlayerPrefs.HasKey(m_muteKey)) {
-		// 	PlayerPrefs.SetInt(m_muteKey, 0);
-		// } else {
-		// 	m_mute = PlayerPrefs.GetInt(m_muteKey) == 1;
-		// }
+	public static void PlaySettingsTheme() {
+		instance.SettingsThemeIn();
+	}
 
-		// musicSource.mute = m_mute;
+	public static void StopSettingsTheme() {
+		instance.SettingsThemeOut();
+	}
 
-		// if (!PlayerPrefs.HasKey(sfx_muteKey)) {
-		// 	PlayerPrefs.SetInt(sfx_muteKey, 0);
-		// } else {
-		// 	sfx_mute = PlayerPrefs.GetInt(sfx_muteKey) == 1;
-		// }
+	void SettingsThemeIn() {
+		StartCoroutine(FadeSourceOut(mainThemeSource));
+		StartCoroutine(FadeSourceIn(settingsThemeSource));
+		settingsThemeSource.Play();
+	}
 
-		// sfxSource.mute = sfx_mute;
+	void SettingsThemeOut() {
+		StartCoroutine(FadeSourceIn(mainThemeSource));
+		StartCoroutine(FadeSourceOut(settingsThemeSource));
+	}
+
+	IEnumerator FadeSourceIn(AudioSource source) {
+		float t = 0;
+		float d = .5f;
+
+		while (t < d) {
+			float p = t / d;
+			t += Time.fixedDeltaTime;
+			source.volume = EZEasings.SmoothStop3(p);
+			yield return new WaitForFixedUpdate();
+		}
+	}
+
+	IEnumerator FadeSourceOut(AudioSource source) {
+		float t = 0;
+		float d = .5f;
+
+		while (t < d) {
+			float p = t / d;
+			t += Time.fixedDeltaTime;
+			source.volume = 1 - EZEasings.SmoothStop3(p);
+			yield return new WaitForFixedUpdate();
+		}
+		source.Stop();
 	}
 
 	public void ToggleMute() {
 		m_mute = !m_mute;
-		musicSource.mute = m_mute;
+		mainThemeSource.mute = m_mute;
 
 		GlobalSettings.Settings.musicOn = !m_mute;
 		GlobalSettings.UpdateSavedValues();

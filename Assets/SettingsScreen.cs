@@ -28,8 +28,8 @@ public class SettingsScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		EventManager.StartListening("ShowSettings", ShowSettings);
-		EventManager.StartListening("HideSettings", HideSettings);
+		// EventManager.StartListening("ShowSettings", ShowSettings);
+		// EventManager.StartListening("HideSettings", HideSettings);
 
 		InitSettings();
 	}
@@ -64,6 +64,7 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	public void ShowSettings() {
+		AudioManager.PlaySettingsTheme();
 		StartCoroutine(SettingsIn());
 	}
 
@@ -75,6 +76,7 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	public void HideSettings() {
+		AudioManager.StopSettingsTheme();
 		StartCoroutine(SettingsOut());
 	}
 
@@ -88,6 +90,8 @@ public class SettingsScreen : MonoBehaviour {
 	IEnumerator ResetMenuAfterAnimation() {
 		float d = GetComponent<Animation>().GetClip("SettingsOut").length;
 		yield return StartCoroutine(Extensions.Wait(d));
+		settings.InvertValue();
+
 		NewGameManager.GetInstance().ExitSettings();
 	}
 

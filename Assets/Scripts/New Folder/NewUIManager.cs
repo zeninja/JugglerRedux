@@ -55,7 +55,7 @@ public class NewUIManager : MonoBehaviour {
 		
 		// debugMenu.SetActive(showDebugMenu);
 
-		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
+		// menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
 	}
 
 	public void ToggleAds() {

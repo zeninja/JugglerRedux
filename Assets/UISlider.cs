@@ -40,7 +40,7 @@ public class UISlider : MonoBehaviour
     public float percent;
     public float value;
 
-    void Update() {
+    void LateUpdate() {
         UpdateValues();
         UpdateGraphics();
         SetLines();

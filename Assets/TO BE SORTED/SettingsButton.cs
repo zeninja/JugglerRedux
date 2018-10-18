@@ -8,6 +8,7 @@ public class SettingsButton : MonoBehaviour
 {
 
     public string label;
+    public Image image;
     public TextMeshPro text;
     public Image innerBlock;
     public Image outerEdge;
@@ -27,7 +28,6 @@ public class SettingsButton : MonoBehaviour
 
     void Start()
     {
-        ready = true;
     }
 
     void OnEnable() {
@@ -56,10 +56,8 @@ public class SettingsButton : MonoBehaviour
 
         currentValue = isOn;
         if(currentValue) {
-            PlayButtonSound(ButtonState.off);
             SetSettings(ButtonState.on);
         } else {
-            PlayButtonSound(ButtonState.off)
             SetSettings(ButtonState.off);
         }
 
@@ -124,6 +122,8 @@ public class SettingsButton : MonoBehaviour
 		text.color       = targetSetting.text;
 		innerBlock.color = targetSetting.innerBlock;
 		outerEdge.color  = targetSetting.outerBlock;
+
+        if(image != null) { image.color = targetSetting.text; }
 	}
 
 	void UpdateSettings(ButtonSetting newSetting) {
@@ -131,6 +131,8 @@ public class SettingsButton : MonoBehaviour
 		text.color       = targetSetting.text;
 		innerBlock.color = targetSetting.innerBlock;
 		outerEdge.color  = targetSetting.outerBlock;
+
+        if(image != null) { image.color = targetSetting.text; }
 	}
 
     // Play Button Sound based on single sound
@@ -149,13 +151,16 @@ public class SettingsButton : MonoBehaviour
     //     }
     // }
 
-    void PlayButtonSound(ButtonState state) {
-        switch(state) {
-            case ButtonState.on:
+    void PlayButtonSound(AudioManager.ButtonSound sound) {
+        switch(sound) {
+            case AudioManager.ButtonSound.select:
                 AudioManager.PlaySelect();
                 break;
-            case ButtonState.off:
+            case AudioManager.ButtonSound.undo:
                 AudioManager.PlayUndo();
+                break;
+            case AudioManager.ButtonSound.bounce:
+                AudioManager.PlayBounce();
                 break;
         }
     }
@@ -163,8 +168,6 @@ public class SettingsButton : MonoBehaviour
     public bool currentValue;
 
     public void InvertValue() {
-
-        // EventManager.TriggerEvent("Select");
         InvertState();
         StartCoroutine(AnimateButton(targetSetting));
     }
@@ -174,14 +177,17 @@ public class SettingsButton : MonoBehaviour
 
         if(currentValue) {
             SetSettings(ButtonState.on);
+            PlayButtonSound(AudioManager.ButtonSound.select);
         } else {
             SetSettings(ButtonState.off);
+            PlayButtonSound(AudioManager.ButtonSound.undo);
         }
     }
 
     public void Bounce() {
         SetSettings(ButtonState.off);
         StartCoroutine(AnimateButton(targetSetting));
+        PlayButtonSound(AudioManager.ButtonSound.bounce);
     }
 
 	public void SetSettings(ButtonState newState) {
