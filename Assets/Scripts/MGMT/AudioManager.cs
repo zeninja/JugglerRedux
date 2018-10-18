@@ -123,6 +123,7 @@ public class AudioManager : MonoBehaviour {
 	public void ToggleMute() {
 		m_mute = !m_mute;
 		mainThemeSource.mute = m_mute;
+		settingsThemeSource.mute = m_mute;
 
 		GlobalSettings.Settings.musicOn = !m_mute;
 		GlobalSettings.UpdateSavedValues();
