@@ -27,6 +27,7 @@ public class SettingsButton : MonoBehaviour
 
     void Start()
     {
+        ready = true;
     }
 
     void OnEnable() {
@@ -55,8 +56,10 @@ public class SettingsButton : MonoBehaviour
 
         currentValue = isOn;
         if(currentValue) {
+            PlayButtonSound(ButtonState.off);
             SetSettings(ButtonState.on);
         } else {
+            PlayButtonSound(ButtonState.off)
             SetSettings(ButtonState.off);
         }
 
@@ -70,7 +73,6 @@ public class SettingsButton : MonoBehaviour
         UpdateSettings();
 
         StartCoroutine(AnimateButton(targetSetting));
-        StartCoroutine(PlayButtonSound());
    }
 
     void Update()
@@ -131,14 +133,37 @@ public class SettingsButton : MonoBehaviour
 		outerEdge.color  = targetSetting.outerBlock;
 	}
 
-    public IEnumerator PlayButtonSound() {
-        yield return 0;
-        
+    // Play Button Sound based on single sound
+    // public AudioManager.Sound buttonSound;
+    // bool ready = false;
+
+    // void PlayButtonSound() {
+    //     if(!ready) { return; }
+    //     switch (buttonSound) {
+    //         case AudioManager.Sound.select:
+    //             EventManager.TriggerEvent("Select", true);
+    //             break;
+    //         case AudioManager.Sound.undo:
+    //             EventManager.TriggerEvent("Undo", true);
+    //             break;
+    //     }
+    // }
+
+    void PlayButtonSound(ButtonState state) {
+        switch(state) {
+            case ButtonState.on:
+                AudioManager.PlaySelect();
+                break;
+            case ButtonState.off:
+                AudioManager.PlayUndo();
+                break;
+        }
     }
 
     public bool currentValue;
 
     public void InvertValue() {
+
         // EventManager.TriggerEvent("Select");
         InvertState();
         StartCoroutine(AnimateButton(targetSetting));
@@ -177,6 +202,7 @@ public class SettingsButton : MonoBehaviour
                 break;
             case ButtonState.uninteractable:
                 targetSetting = uninteractable;
+                interactable = false;
                 break;
         }
 	}

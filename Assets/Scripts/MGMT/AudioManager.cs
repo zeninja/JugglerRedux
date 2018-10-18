@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour {
 
+	public enum Sound { select, undo };
+
 	public static AudioManager instance;
 
 	public AudioClip catchSound;
