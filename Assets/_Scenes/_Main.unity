@@ -2510,7 +2510,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 96, y: 111.435005, z: 102.37368}
+  m_LocalScale: {x: 96, y: 111.435, z: 102.37368}
   m_Children:
   - {fileID: 1387716917}
   m_Father: {fileID: 278487253}
@@ -2558,10 +2558,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 96, y: 111.435005, z: 102.37368}
-  inverseDirection: {x: 96, y: 111.435005, z: 102.37367}
-  transformPoint: {x: 96, y: 111.43501, z: 102.37368}
-  transformDirection: {x: 96, y: 111.435005, z: 102.37367}
+  inversePoint: {x: 96, y: 111.435, z: 102.37368}
+  inverseDirection: {x: 96, y: 111.435, z: 102.37367}
+  transformPoint: {x: 96, y: 111.43499, z: 102.37368}
+  transformDirection: {x: 96, y: 111.435, z: 102.37367}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2830,7 +2830,7 @@ MonoBehaviour:
   peakSound: {fileID: 8300000, guid: 4ac84683bedc2ef4da07bc22c98d4c12, type: 3}
   selectSound: {fileID: 8300000, guid: 35731823d2082554183cd60d199de2bc, type: 3}
   undoSound: {fileID: 8300000, guid: d16ba486978b11f4fade5beca75f636b, type: 3}
-  bounceSound: {fileID: 0}
+  bounceSound: {fileID: 8300000, guid: 86ceed3170733d741be9a46c80a40317, type: 3}
   sfxSource: {fileID: 1357335897}
   mainThemeSource: {fileID: 1065282070}
   settingsThemeSource: {fileID: 574924361}
@@ -16466,7 +16466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -72.400024, y: 72.399994}
+  m_AnchoredPosition: {x: -72.3999, y: 72.40039}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!4 &1666866965
@@ -17433,7 +17433,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 33002cc94f79e044eafe22f246d854f0, type: 2}
+  - {fileID: 2100000, guid: 62ceb6817b1ad5d4c96f44e5b0ca294e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

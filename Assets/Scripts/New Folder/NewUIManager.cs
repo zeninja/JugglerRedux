@@ -21,8 +21,6 @@ public class NewUIManager : MonoBehaviour {
 	public Toggle ui_ShowAds;
 
 
-
-
 	// public GameObject debugMenu;
 
 	// bool showDebugMenu = false;
@@ -55,7 +53,7 @@ public class NewUIManager : MonoBehaviour {
 		
 		// debugMenu.SetActive(showDebugMenu);
 
-		// menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
+		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame || NewGameManager.gameState == GameState.settings);
 	}
 
 	public void ToggleAds() {

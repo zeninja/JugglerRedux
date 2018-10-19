@@ -102,6 +102,14 @@ public class SettingsButton : MonoBehaviour
         yield return StartCoroutine(MoveButtonToPosition(setting.position, moveToSettingDuration));
     }
 
+    public void MakeUninteractable(bool val) {
+        if(val) {
+            StartCoroutine(AnimateButton(uninteractable));
+        } else {
+            StartCoroutine(AnimateButton(off));
+        }
+    }
+
     IEnumerator MoveButtonToPosition(Vector2 target, float d = .25f)
     {
         float t = 0;

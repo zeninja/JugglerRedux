@@ -43,7 +43,7 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	void InitSettings() {
-		music		.SetButtonState(!AudioManager.m_mute, false);
+		music		.SetButtonState(!AudioManager.m_mute);
 		sfx			.SetButtonState(!AudioManager.sfx_mute);
 		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
 

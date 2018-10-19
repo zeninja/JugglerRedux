@@ -53,6 +53,8 @@ public class NewGameManager : MonoBehaviour {
 		debugState = gameState;
 	}
 
+	// public SettingsButton settings;
+
 	public void SetState(GameState newState) {
 		gameState = newState;
 
@@ -64,15 +66,15 @@ public class NewGameManager : MonoBehaviour {
 				break;
 
 			case GameState.preGame:
-				// NewBallManager.GetInstance().SpawnFirstBall();
 				// pregameTrail.SetPosition();
 				// pregameTrail.EnableTrail(true);
+				// settings.MakeUninteractable(false);
 				break;
 
 			case GameState.gameOn:
 				// pregameTrail.EnableTrail(false);
 				// BallCountdownManager.GetInstance().SetUpCountdown();
-				
+				// settings.MakeUninteractable(true);
 				break;
 
 			case GameState.gameOver:
