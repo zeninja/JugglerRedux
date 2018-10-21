@@ -30,6 +30,7 @@ public class NewBallManager : MonoBehaviour
 
     public NewBall m_BallPrefab;
     public static int _ballCount;
+    public static bool useRails = false;
     public float ballScale = .4f;
 
     NewBall firstBall;
@@ -113,8 +114,12 @@ public class NewBallManager : MonoBehaviour
 
     int xSwitcher = 1;
     public Vector2 spawnPos;
-    public void SpawnFirstBall() {
-        if(firstBall) { return; }
+    public IEnumerator SpawnFirstBall() {
+        if(firstBall != null) {
+            Debug.Log("First ball already spawned. Stopping Ball Spawn.");
+            StopCoroutine(SpawnFirstBall());
+        }
+        Debug.Log("Spawning First Ball.");
 
         xSwitcher *= -1;
 
@@ -130,14 +135,16 @@ public class NewBallManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().velocity  = Vector2.zero;
         ball.GetComponent<Rigidbody2D>().gravityScale = 0;
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
-        ball.GetComponentInChildren<NewBallArtManager>().PopInAnimation();
+        
         firstBall = ball;
 
         balls.Add(ball);
         _ballCount++;
         NewScoreManager._ballCount = _ballCount;
 
-        // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+
+        // Play the ball pop-in animation and set the game to ready
+        yield return StartCoroutine(ball.GetComponentInChildren<BallLine>().PopIn());
     }
 
     void SpawnBall()
@@ -230,13 +237,19 @@ public class NewBallManager : MonoBehaviour
     {
         for (int i = 0; i < balls.Count; i++)
         {
-            if (!balls[i].dead)
-            {
+            // if (!balls[i].dead)
+            // {
                 balls[i].GetComponent<NewBall>().DestroyMe();
-            }
+            // }
         }
 
         balls.Clear();
+        _ballCount = 0;
+    }
+
+    public void HideFirstBall() {
+        // Called when the settings screen appears
+        StartCoroutine(firstBall.gameObject.GetComponentInChildren<BallLine>().HideBall());
         _ballCount = 0;
     }
 

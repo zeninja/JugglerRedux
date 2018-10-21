@@ -24,6 +24,7 @@ public class GlobalSettings : MonoBehaviour
         public bool musicOn;
         public bool sfxOn;
         public bool invertThrows;
+        public bool useRails;
     }
 
     [SerializeField]
@@ -59,6 +60,7 @@ public class GlobalSettings : MonoBehaviour
         Settings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
         Settings.adsOff          = NewAdManager.forceAdsOff;
         Settings.invertThrows    = NewHandManager.invertThrows;
+        Settings.useRails        = NewBallManager.useRails;        
 
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
@@ -67,7 +69,7 @@ public class GlobalSettings : MonoBehaviour
 
         Settings.musicOn         = !AudioManager.m_mute;
         Settings.sfxOn           = !AudioManager.sfx_mute; 
-        
+
 
         // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
 		
@@ -87,6 +89,7 @@ public class GlobalSettings : MonoBehaviour
         NewBallManager.GetInstance().ballSpeedIndex      = Settings.ballSpeedIndex;
         NewAdManager.forceAdsOff                         = Settings.adsOff;
         NewHandManager.invertThrows                      = Settings.invertThrows;
+        NewBallManager.useRails                          = Settings.useRails;
 
         AudioManager.m_mute                              = !Settings.musicOn;
         AudioManager.sfx_mute                            = !Settings.sfxOn;

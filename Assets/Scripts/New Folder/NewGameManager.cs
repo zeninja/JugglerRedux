@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver, settings };
+public enum GameState { /*monolith,*/ /*ballSpawn, preGame,*/ STARTSCREEN, PREGAME, GAMEON, GAMEOVER, SETTINGS };
 
 public class NewGameManager : MonoBehaviour {
 
-	public static GameState gameState = GameState.ballSpawn;
+	public static GameState gameState = GameState.STARTSCREEN;
 	public GameState debugState;
 
 	#region instance
@@ -50,82 +50,100 @@ public class NewGameManager : MonoBehaviour {
 			EventManager.TriggerEvent("SpawnBall");
 		}
 
+		ExitLoopedScreens();
+
 		debugState = gameState;
 	}
 
-	// public SettingsButton settings;
-
-	public void SetState(GameState newState) {
+	void SetState(GameState newState) {
 		gameState = newState;
 
-		// trigger one-time effects
-
 		switch(gameState) {
-			case GameState.ballSpawn:
-				NewBallManager.GetInstance().SpawnFirstBall();
+			case GameState.STARTSCREEN:
+				LogoAnimator.GetInstance().PlayLogoIn();
+				receiveInput = true;
 				break;
 
-			case GameState.preGame:
-				// pregameTrail.SetPosition();
-				// pregameTrail.EnableTrail(true);
-				// settings.MakeUninteractable(false);
+			case GameState.PREGAME:
+				StartCoroutine(PregameProcess());
 				break;
 
-			case GameState.gameOn:
-				// pregameTrail.EnableTrail(false);
-				// BallCountdownManager.GetInstance().SetUpCountdown();
-				// settings.MakeUninteractable(true);
-				break;
+			case GameState.GAMEON:
 
-			case GameState.gameOver:
-				GameOverManager.GetInstance().StartGameOver();
+				break; 
+
+			case GameState.GAMEOVER:
+				GameOverManager.GetInstance().SwitchState(0);
 				break;
-			case GameState.settings:
+			case GameState.SETTINGS:
+				NewBallManager.GetInstance().HideFirstBall();
 				break;
 		}
 	}
 
+	bool receiveInput = true;
+
+	void ExitLoopedScreens() {
+		if(receiveInput) {
+			if(Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
+				if(gameState == GameState.STARTSCREEN) {
+					SetState(GameState.PREGAME);
+					receiveInput = false;
+				}
+
+				if(gameState == GameState.GAMEOVER) {
+					GameOverManager.GetInstance().SwitchState(1);
+					receiveInput = false;
+				}
+			}
+		}
+	}
+
+	IEnumerator PregameProcess() {
+		yield return StartCoroutine(LogoAnimator.GetInstance().HideLogo());
+        NewScoreManager.GetInstance().EnableScore(true);
+		yield return StartCoroutine(NewBallManager.GetInstance().SpawnFirstBall());
+	}
+
 	public void StartGame() {
-		SetState(GameState.gameOn);
-		// BallCountdownManager.GetInstance().SetUpCountdown();
+		// Triggered by a finger "catching" the first ball
+		SetState(GameState.GAMEON);
 	}
 
 	public void EnterSettings() {
-		SetState(GameState.settings);
+		SetState(GameState.SETTINGS);
 	}
 
 	public void ExitSettings() {
-		SetState(GameState.preGame);
+		SetState(GameState.PREGAME);
 	}
 
 	void HandleGameOver() {
-		SetState(GameState.gameOver);
+		SetState(GameState.GAMEOVER);
 	}
 
-	public static bool PreGame() {
-		return NewGameManager.gameState == GameState.preGame;
+	public void GameOverInComplete() {
+		receiveInput = true;
+	}
+
+	public static bool InPreGame() {
+		return NewGameManager.gameState == GameState.PREGAME;
+	}
+
+	public static bool InSettings() {
+		return NewGameManager.gameState == GameState.SETTINGS;
 	}
 
 	public static bool GameOver() {
-		return NewGameManager.gameState == GameState.gameOver;
+		return NewGameManager.gameState == GameState.GAMEOVER;
 	}
 
 	public void ResetGame() {
-		NewScoreManager.GetInstance().Reset();
-		// BallCountdownManager.GetInstance().Reset();
-		SetState(GameState.ballSpawn);
-	}
-
-	public void PrepGame() {
-		SetState(GameState.preGame);
-	}
-
-	bool CanSpawnBall() {
-		return gameState == GameState.preGame;
+		SetState(GameState.STARTSCREEN);
 	}
 
 	public static bool CanGrabBalls() {
-		return gameState != GameState.settings && gameState != GameState.gameOver;
+		return gameState != GameState.SETTINGS && gameState != GameState.GAMEOVER;
 	}
 
 	public void HandlePurchaseMade() {
@@ -134,5 +152,10 @@ public class NewGameManager : MonoBehaviour {
 
 	public void HandleTip() {
 
+	}
+
+	// Debug
+	bool CanSpawnBall() {
+		return gameState == GameState.PREGAME;
 	}
 }

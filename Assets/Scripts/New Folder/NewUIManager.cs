@@ -53,7 +53,7 @@ public class NewUIManager : MonoBehaviour {
 		
 		// debugMenu.SetActive(showDebugMenu);
 
-		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame || NewGameManager.gameState == GameState.settings);
+		menuButtons.SetActive(NewGameManager.InPreGame() || NewGameManager.InSettings());
 	}
 
 	public void ToggleAds() {
@@ -170,6 +170,13 @@ public class NewUIManager : MonoBehaviour {
 	public void InvertThrowDirection() {
 		NewHandManager.invertThrows = !NewHandManager.invertThrows;
 		GlobalSettings.Settings.invertThrows = NewHandManager.invertThrows;
+		// Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
+		GlobalSettings.UpdateSavedValues();
+	}
+
+	public void InvertUseRails() {
+		NewBallManager.useRails = !NewBallManager.useRails;
+		GlobalSettings.Settings.useRails = NewBallManager.useRails;
 		// Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
 		GlobalSettings.UpdateSavedValues();
 	}

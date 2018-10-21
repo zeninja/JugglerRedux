@@ -3,20 +3,58 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LogoAnimator : MonoBehaviour {
- 
-	public Transform easy, juggling, mask, container;
-	
-	// Update is called once per frame
-	void Update () {
-		if(Input.GetKeyDown(KeyCode.L)) {
-			ShowLogo();
+
+	#region instance
+	private static LogoAnimator instance;
+	public static LogoAnimator GetInstance() {
+		return instance;
+	}
+	#endregion
+
+	public StackerDot initialBg;
+
+	void Awake() {
+		if(instance == null) {
+			instance = this;
+		} else {
+			if(this != instance) {
+				Destroy(gameObject);
+			}
 		}
 	}
 
-	public void ShowLogo() {
-		GetComponent<Animation>().Play("LogoMask");
+	void Start() {
+		anim = GetComponent<Animation>();
 	}
 
+	public Transform easy, juggling, mask, container;
+	
+	Animation anim;
+	public AnimationClip logoIn;
+	public AnimationClip logoOut;
+
+	// Update is called once per frame
+	void Update () {
+		// if(Input.GetKeyDown(KeyCode.L)) {
+		// 	ShowLogo();
+		// }
+	}
+
+	public void PlayLogoIn() {
+		StartCoroutine(ShowLogo());
+	}
+
+	public IEnumerator ShowLogo() {
+		GetComponent<Animation>().Play("LogoIn");
+		yield return new WaitForSeconds(logoIn.length);
+	}
+
+	public IEnumerator HideLogo() {
+		GetComponent<Animation>().Play("LogoOut");
+		yield return new WaitForSeconds(logoOut.length);
+	}
+
+	// Late Update so that the slider updates its position properly since it is not a UI element
 	void LateUpdate() {
 
 		// Rather than using 3 separate variables in the animation curve, using one variable ensures consistency across axes
@@ -33,54 +71,4 @@ public class LogoAnimator : MonoBehaviour {
 		float containerX = container.transform.localScale.x;
 		container.transform.localScale = new Vector3(containerX, containerX, 0);
 	}
-
-	// public float animationDuration;
-	// public Extensions.Property yHeight;
-	// public float targetScale;
-	// public float logoHangDuration;
-
-	// IEnumerator AnimateLogo() {
-	// 	yield return StartCoroutine(LogoIn());
-	// 	yield return StartCoroutine(Extensions.Wait(logoHangDuration));
-	// 	yield return StartCoroutine(LogoOut());
-	// }
-
-	// IEnumerator LogoIn() {
-	// 	float t = 0;
-	// 	float d = animationDuration;
-
-	// 	while (t < d) {
-	// 		float p = t / d;
-
-	// 		// Debug.Log(EZEasings.Arch2(p));
-
-
-	// 		easy.localScale 	= Vector2.one * targetScale * EZEasings.SmoothStart4(p);
-	// 		juggling.localScale = Vector2.one * targetScale * EZEasings.SmoothStart4(p);
-
-	// 		t += Time.fixedDeltaTime;
-	// 		yield return new WaitForFixedUpdate();
-	// 	}
-
-	// }
-
-	// IEnumerator LogoOut() {
-	// 	float t = 0;
-	// 	float d = animationDuration;
-
-	// 	while (t < d) {
-	// 		float p = t / d;
-
-	// 		easy.transform.localPosition = 
-
-	// 		easy.localScale 	= Vector2.one * targetScale * EZEasings.SmoothStart4(1) -
-	// 						  	  Vector2.one * targetScale * EZEasings.SmoothStart4(p);
-	// 		juggling.localScale = Vector2.one * targetScale * EZEasings.SmoothStart4(1) -
-	// 						  	  Vector2.one * targetScale * EZEasings.SmoothStart4(p);
-
-	// 		t += Time.fixedDeltaTime;
-	// 		yield return new WaitForFixedUpdate();
-	// 	}
-
-	// }
 }

@@ -60,7 +60,7 @@ public class NewBall : MonoBehaviour
     }
 
     public void SetScale() {
-        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
+        BroadcastMessage("UpdateScale", NewBallManager.GetInstance().ballScale);
     }
 
     // Update is called once per frame
@@ -155,6 +155,8 @@ public class NewBall : MonoBehaviour
 
         currentThrowVector = Vector2.zero;
 
+        GetComponentInChildren<BallPathOutline>().DrawBallPath(transform.position, throwVector);
+
         if (throwVector.y > 0)
         {
             canPeak = true;
@@ -198,16 +200,15 @@ public class NewBall : MonoBehaviour
     void KillThisBall()
     {
         FreezeBall();
-        ballArtManager.HandleDeath();
         GameOverManager.GetInstance().SetTargetBall(this);
         EventManager.TriggerEvent("BallDied");
-        // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
 
     public void FreezeBall()
     {
         rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
+        BroadcastMessage("HandleBallDeath");
     }
 
     public void DestroyMe()

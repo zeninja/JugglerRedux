@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class BallPredictor : MonoBehaviour
 {
-    List<Vector3> linePositionList = new List<Vector3>();
-    Vector2 peakPos;
-
 
     public List<Vector3> GetPositionList(Vector2 anchorPos, Vector3 currentVelocity) {
+        List<Vector3> linePositionList = new List<Vector3>();
         Vector3 currentLinePoint = Vector2.zero;
 
         const float dragPerFrame = -0.1f;
@@ -33,8 +31,6 @@ public class BallPredictor : MonoBehaviour
                 break;
             }
         }
-
-        peakPos = linePositionList[linePositionList.Count - 1];
 
         return linePositionList;
     }

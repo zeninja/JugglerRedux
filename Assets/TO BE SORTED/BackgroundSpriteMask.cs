@@ -8,11 +8,12 @@ public class BackgroundSpriteMask : MonoBehaviour
     NewBall m_Ball;
 	NewBallArtManager art;
 
-    public float defaultScale = 1.45f;
+    public float maskScale = 1.45f;
 
 	void Start() {
 		m_Ball = GetComponentInParent<NewBall>();
 		art    = GetComponentInParent<NewBallArtManager>();
+        UpdateWidth(maskScale * NewBallManager.GetInstance().ballScale);
 	}
 
     // Update is called once per frame
@@ -30,7 +31,7 @@ public class BackgroundSpriteMask : MonoBehaviour
 				// UpdateWidth(art.currentWidth);
 			    break;
             case NewBall.BallState.falling:
-                UpdateWidth(defaultScale);
+                UpdateWidth(maskScale * NewBallManager.GetInstance().ballScale);
 			    break;
             case NewBall.BallState.caught:
 

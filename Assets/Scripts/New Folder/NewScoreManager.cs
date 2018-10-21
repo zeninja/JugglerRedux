@@ -175,48 +175,48 @@ public class NewScoreManager : MonoBehaviour
         }
     }
 
-    public IEnumerator RainbowText()
-    {
-        // yield return new WaitForSeconds(pauseBeforeCountdown);
+    // public IEnumerator RainbowText()
+    // {
+    //     // yield return new WaitForSeconds(pauseBeforeCountdown);
 
-        float t = 0;
-        inOutDuration = .15f;
+    //     float t = 0;
+    //     inOutDuration = .15f;
 
-        while (t < inOutDuration)
-        {
-            t += Time.fixedDeltaTime;
-            float percent = t / inOutDuration;
+    //     while (t < inOutDuration)
+    //     {
+    //         t += Time.fixedDeltaTime;
+    //         float percent = t / inOutDuration;
 
-            scoreText.color = Color.Lerp(scoreColor, highscoreGradient.Evaluate(0), percent);
-            yield return new WaitForFixedUpdate();
-        }
+    //         scoreText.color = Color.Lerp(scoreColor, highscoreGradient.Evaluate(0), percent);
+    //         yield return new WaitForFixedUpdate();
+    //     }
 
-        t = 0;
-        float duration = 1f;
+    //     t = 0;
+    //     float duration = 1f;
 
-        while (t < duration)
-        {
-            t += Time.fixedDeltaTime;
-            float percent = t / duration;
+    //     while (t < duration)
+    //     {
+    //         t += Time.fixedDeltaTime;
+    //         float percent = t / duration;
 
-            scoreText.color = highscoreGradient.Evaluate(percent);
+    //         scoreText.color = highscoreGradient.Evaluate(percent);
 
-            yield return new WaitForFixedUpdate();
-        }
+    //         yield return new WaitForFixedUpdate();
+    //     }
 
-        t = 0;
+    //     t = 0;
 
-        while (t < inOutDuration)
-        {
-            t += Time.fixedDeltaTime;
-            float percent = t / inOutDuration;
+    //     while (t < inOutDuration)
+    //     {
+    //         t += Time.fixedDeltaTime;
+    //         float percent = t / inOutDuration;
 
-            scoreText.color = Color.Lerp(highscoreGradient.Evaluate(0), scoreColor, percent);
-            yield return new WaitForFixedUpdate();
-        }
+    //         scoreText.color = Color.Lerp(highscoreGradient.Evaluate(0), scoreColor, percent);
+    //         yield return new WaitForFixedUpdate();
+    //     }
 
-        scoreText.color = scoreColor;
-    }
+    //     scoreText.color = scoreColor;
+    // }
 
     public void EnableScore(bool val)
     {

@@ -71,6 +71,9 @@ TagManager:
   - name: GameOver
     uniqueID: 3464574511
     locked: 0
+  - name: StartScreen
+    uniqueID: 2764249165
+    locked: 0
   - name: Topmost
     uniqueID: 1058539291
     locked: 0

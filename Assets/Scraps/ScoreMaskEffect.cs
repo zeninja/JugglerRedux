@@ -41,9 +41,7 @@ public class ScoreMaskEffect : MonoBehaviour {
 		transform.localScale = Vector3.zero;
 	}
 
-	public IEnumerator PopInScoreMask(SpriteRenderer deadBall) {
-		deadBall.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-
+	public IEnumerator PopInScoreMask() {
 		float t = 0;
 
 		while(t < waitPreMask) {
@@ -59,6 +57,25 @@ public class ScoreMaskEffect : MonoBehaviour {
 			yield return new WaitForFixedUpdate();
 		}
 	}
+
+	// public IEnumerator PopInScoreMask(SpriteRenderer deadBall) {
+	// 	deadBall.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+
+	// 	float t = 0;
+
+	// 	while(t < waitPreMask) {
+	// 		t += Time.fixedDeltaTime;
+	// 		yield return new WaitForFixedUpdate();
+	// 	}
+
+	// 	t = 0;
+
+	// 	while(t < maskInDuration) {
+	// 		t += Time.fixedDeltaTime;
+	// 		mask.transform.localScale = Vector3.one * baseScale * maskInAnimation.Evaluate(t / maskInDuration);
+	// 		yield return new WaitForFixedUpdate();
+	// 	}
+	// }
 
 	public IEnumerator PlayMaskOut() {
 		float t = 0;
