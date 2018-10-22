@@ -12,7 +12,7 @@ public class SettingsScreen : MonoBehaviour {
     }
     #endregion
 
-	public SettingsButton music, sfx, invertThrows, contact, removeAds, tipJar, exit, settings;
+	public SettingsButton music, sfx, invertThrows, rails, contact, removeAds, tipJar, exit, settings;
 
 	public UISlider ballSizeSlider;
 
@@ -46,6 +46,7 @@ public class SettingsScreen : MonoBehaviour {
 		music		.SetButtonState(!AudioManager.m_mute);
 		sfx			.SetButtonState(!AudioManager.sfx_mute);
 		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
+		rails		.SetButtonState(NewBallManager.useRails);
 
 		contact.InitBounce();
 		removeAds.InitBounce();

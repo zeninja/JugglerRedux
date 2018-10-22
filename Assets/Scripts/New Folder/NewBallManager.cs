@@ -251,6 +251,7 @@ public class NewBallManager : MonoBehaviour
         // Called when the settings screen appears
         StartCoroutine(firstBall.gameObject.GetComponentInChildren<BallLine>().HideBall());
         _ballCount = 0;
+        balls.Clear();
     }
 
     bool keepChecking;
