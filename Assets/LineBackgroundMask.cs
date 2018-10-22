@@ -24,14 +24,16 @@ public class LineBackgroundMask : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if(bam.VelocityPositive()) {
-			Debug.Log("Velocity Positive");
-			SetMaskPositions(ballLine.GetTrailPositions());
-			maskLine.enabled = true;
-		} else {
-			Debug.Log("Not so much");
-			maskLine.enabled = false;
-		}
+		// if(bam.VelocityPositive()) {
+		// 	Debug.Log("Velocity Positive");
+
+		// } else {
+		// 	Debug.Log("Not so much");
+		// 	maskLine.enabled = false;
+		// }
+
+		SetMaskPositions(ballLine.GetTrailPositions());
+		maskLine.enabled = true;
 	}
 	
 
