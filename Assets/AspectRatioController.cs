@@ -11,6 +11,11 @@ public class AspectRatioController : MonoBehaviour {
 	public float landscapeAspectRatio;
 	public float portraitAspectRatio;
 
+
+	// THIS IS TEMPORARY AND NOT VERY GOOD
+	// SHOULD CONVERT THIS TO A UI IMAGE SO IT SCALES PROPERLY
+	public GameObject plate;
+
 	// Use this for initialization
 	void Start () {
 		scaler = GetComponent<CanvasScaler>();
@@ -27,15 +32,26 @@ public class AspectRatioController : MonoBehaviour {
 	// [Range(0, 1)]
 	// public float float21, float17, float15, float13;
 
+	[Range(0, 1)]
+	public float matchPCT = 0;
+	public float widthModifier;
+
+	public float tallX;
+	public float wideX;
+
 	void UpdateAspectRatios() {
 		if(portraitAspectRatio > 2) {
 			// 19.5:9 (iPhone X and other very tall screens)
-			scaler.matchWidthOrHeight = .5f;
-			slider.widthModifier = .85f;
+			scaler.matchWidthOrHeight = matchPCT;
+			slider.widthModifier = widthModifier;
+
+			plate.transform.localPosition = new Vector2(tallX, plate.transform.localPosition.y);
 		} else {
 			// Everything else
 			scaler.matchWidthOrHeight = 1;
 			slider.widthModifier = 1;
+
+			plate.transform.localPosition = new Vector2(wideX, plate.transform.localPosition.y);
 		}
 
 		// if(portraitAspectRatio >= 1.7f) {
