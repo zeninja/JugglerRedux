@@ -1093,6 +1093,12 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &65906749 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114107313415285244, guid: 308e8a412ae117b46a7e98db8c1494c2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1772155711}
+  m_Script: {fileID: 11500000, guid: 2906aa2a2cc59e74883e539c67e6850b, type: 3}
 --- !u!1 &84061766
 GameObject:
   m_ObjectHideFlags: 0
@@ -2477,7 +2483,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 96, y: 111.07931, z: 102.37368}
+  m_LocalScale: {x: 95.99999, y: 111.07929, z: 102.37365}
   m_Children:
   - {fileID: 1387716917}
   - {fileID: 490546895}
@@ -2487,7 +2493,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 125}
-  m_SizeDelta: {x: 442.4581, y: 960}
+  m_SizeDelta: {x: 540, y: 959.99994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &253191151
 MonoBehaviour:
@@ -2526,10 +2532,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 96, y: 111.07931, z: 102.37368}
-  inverseDirection: {x: 96, y: 111.07931, z: 102.37367}
-  transformPoint: {x: 96, y: 111.0793, z: 102.37368}
-  transformDirection: {x: 96, y: 111.07931, z: 102.37367}
+  inversePoint: {x: 95.99999, y: 111.07929, z: 102.37365}
+  inverseDirection: {x: 95.99999, y: 111.07929, z: 102.37366}
+  transformPoint: {x: 96, y: 111.07928, z: 102.37365}
+  transformDirection: {x: 95.99999, y: 111.07929, z: 102.37366}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3028,7 +3034,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4177337824272148, guid: 38df3499bd585994699f0bd6de2a22c3, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114005451998828966, guid: 38df3499bd585994699f0bd6de2a22c3,
         type: 2}
@@ -3643,7 +3649,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4303663176066094, guid: 443a430c40ea4b74bb766713c0d4d750, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1906583068255544, guid: 443a430c40ea4b74bb766713c0d4d750, type: 2}
       propertyPath: m_IsActive
@@ -4316,7 +4322,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4492101542252266, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1486805989234084, guid: 896a1471b660ea04cbefb799d5a61336, type: 2}
       propertyPath: m_IsActive
@@ -6306,6 +6312,7 @@ MonoBehaviour:
   music: {fileID: 260278952}
   sfx: {fileID: 1787835111}
   invertThrows: {fileID: 1584116279}
+  rails: {fileID: 65906749}
   contact: {fileID: 1394733365}
   removeAds: {fileID: 13720744}
   tipJar: {fileID: 615038932}
@@ -6593,7 +6600,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4177337824272148, guid: 38df3499bd585994699f0bd6de2a22c3, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114005451998828966, guid: 38df3499bd585994699f0bd6de2a22c3,
         type: 2}
@@ -9376,7 +9383,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4795986861110330, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1030218780260200, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
       propertyPath: m_IsActive
@@ -11316,6 +11323,7 @@ MonoBehaviour:
   music: {fileID: 1073444476}
   sfx: {fileID: 927395987}
   invertThrows: {fileID: 1740313797}
+  rails: {fileID: 0}
   contact: {fileID: 1169628093}
   removeAds: {fileID: 0}
   tipJar: {fileID: 0}
@@ -13547,7 +13555,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4343443855145566, guid: 955ba0fddcb679f49bd6f14d3dba0cf0, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1946648080873476, guid: 955ba0fddcb679f49bd6f14d3dba0cf0, type: 2}
       propertyPath: m_IsActive
@@ -18279,7 +18287,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 442.4581, y: 960}
+  m_SizeDelta: {x: 540, y: 959.99994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871578756
 MonoBehaviour:

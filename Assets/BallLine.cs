@@ -133,6 +133,10 @@ public class BallLine : MonoBehaviour
         line.endWidth = val;
     }
 
+    void AdjustDepth(int index) {
+        line.sortingOrder = index;
+    }
+
     public Vector3[] GetTrailPositions() {
         return trail;
     }

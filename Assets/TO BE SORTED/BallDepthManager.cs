@@ -31,7 +31,7 @@ public class BallDepthManager : MonoBehaviour {
 		artManagers.Insert(0, caughtBall);
 
 		for(int i = 0; i < artManagers.Count; i++) {
-			artManagers[i].SetDepth(i);
+			artManagers[i].SetDepth(-i);
 		}
     }
 
