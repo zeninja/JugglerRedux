@@ -82,17 +82,18 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	IEnumerator SettingsOut() {
+		// Wait for the button to play
 		float d = settings.moveToClickDuration * 2f;
 		yield return StartCoroutine(Extensions.Wait(d));
+		
+		// Play settings out
 		GetComponent<Animation>().Play("SettingsOut");
-		StartCoroutine(ResetMenuAfterAnimation());
-	}
-
-	IEnumerator ResetMenuAfterAnimation() {
-		float d = GetComponent<Animation>().GetClip("SettingsOut").length;
-		yield return StartCoroutine(Extensions.Wait(d));
+	
+		// Wait for settings animation
+		float d2 = GetComponent<Animation>().GetClip("SettingsOut").length;
+		yield return StartCoroutine(Extensions.Wait(d2));
+		
 		settings.InvertValue();
-
 		NewGameManager.GetInstance().ExitSettings();
 	}
 

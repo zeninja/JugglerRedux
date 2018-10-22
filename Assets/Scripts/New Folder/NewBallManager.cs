@@ -116,10 +116,10 @@ public class NewBallManager : MonoBehaviour
     public Vector2 spawnPos;
     public IEnumerator SpawnFirstBall() {
         if(firstBall != null) {
-            Debug.Log("First ball already spawned. Stopping Ball Spawn.");
+            // Debug.Log("First ball already spawned. Stopping Ball Spawn.");
             StopCoroutine(SpawnFirstBall());
         }
-        Debug.Log("Spawning First Ball.");
+        // Debug.Log("Spawning First Ball.");
 
         xSwitcher *= -1;
 

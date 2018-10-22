@@ -16,6 +16,8 @@ public class NewGameManager : MonoBehaviour {
 	}
 	#endregion
 
+	GameState lastState;
+
 	// PregameTrailSpawner pregameTrail;
 
 	void Awake() {
@@ -56,6 +58,7 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	void SetState(GameState newState) {
+		lastState = gameState;
 		gameState = newState;
 
 		switch(gameState) {
@@ -100,7 +103,9 @@ public class NewGameManager : MonoBehaviour {
 	}
 
 	IEnumerator PregameProcess() {
-		yield return StartCoroutine(LogoAnimator.GetInstance().HideLogo());
+		if(lastState == GameState.STARTSCREEN) {
+			yield return StartCoroutine(LogoAnimator.GetInstance().HideLogo());
+		}
         NewScoreManager.GetInstance().EnableScore(true);
 		yield return StartCoroutine(NewBallManager.GetInstance().SpawnFirstBall());
 	}

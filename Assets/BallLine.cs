@@ -123,7 +123,7 @@ public class BallLine : MonoBehaviour
             UpdateScale(lineWidth);
             yield return new WaitForFixedUpdate();
         }
-        Debug.Log("Hid ball");
+        // Debug.Log("Hid ball");
         GetComponentInParent<NewBall>().DestroyMe();
     }
 
