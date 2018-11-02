@@ -122,7 +122,7 @@ public class NewBall : MonoBehaviour
 
     public void GetCaught()
     {
-        if (IsLaunching() || NewGameManager.GameOver()) { return; }
+        if (IsLaunching() || NewGameManager.GameOver() || m_IsHeld) { return; }
         if (firstBall)
         {
             NewGameManager.GetInstance().StartGame();

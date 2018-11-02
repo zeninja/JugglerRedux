@@ -147,28 +147,27 @@ public class NewBallManager : MonoBehaviour
         yield return StartCoroutine(ball.GetComponentInChildren<BallLine>().PopIn());
     }
 
+    public bool randomizeBallSpawns = true;
+
     void SpawnBall()
     {
         if(_ballCount < endgameBallCount) { 
-
+            Vector2 ballSpawnPos;
             // Debug.Log("1. Spawning ball.");
-            Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            if (randomizeBallSpawns) {
+                ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            } else {
+                ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            }
             NewBall ball = Instantiate(m_BallPrefab);
 
             ball.transform.position = ballSpawnPos;
             ball.SetBallState(NewBall.BallState.launching);
             ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
             ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
-            // ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
 
             balls.Add(ball);
             _ballCount++;
-
-            // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
-
-            if(scoreIndex < ballSpawnScores.Length) {
-                // BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
-            }
         }
     }
 

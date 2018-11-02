@@ -6,7 +6,7 @@ using UnityEngine.Advertisements;
 public class NewAdManager : MonoBehaviour
 {
 
-    public static int adThreshold = 3;
+    public static int adThreshold = 5;
     public static int playcount = 0;
 
     bool isShowingAd = false;
@@ -51,7 +51,6 @@ public class NewAdManager : MonoBehaviour
 
     public void ShowVideoAd()
     {
-		#if UNITY_ADS
         if (forceAdsOff || adsDisabled) { return; }
 
 		if(NewScoreManager._lastPeakCount >= 5) {
@@ -73,10 +72,7 @@ public class NewAdManager : MonoBehaviour
 				Advertisement.Show("video", options);
 			}
 		}
-		#endif
     }
-
-#if UNITY_ADS
     private void HandleShowResult(ShowResult result)
     {
         switch (result)
@@ -97,7 +93,6 @@ public class NewAdManager : MonoBehaviour
                 break;
         }
     }
-#endif
 
     public bool ShowingAd()
     {

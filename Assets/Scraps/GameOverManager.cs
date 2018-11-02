@@ -72,13 +72,13 @@ public class GameOverManager : MonoBehaviour
         // yield return new WaitForSeconds(.15f);
         yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
 
-        // Make this infinite
-        yield return StartCoroutine(Rainbower.GetInstance().LotsOfSwooshes(NewScoreManager._ballCount));
-
+        StartCoroutine(Rainbower.GetInstance().LotsOfSwooshes(NewScoreManager._ballCount));
         NewGameManager.GetInstance().GameOverInComplete();
     }
 
     public IEnumerator GameOverOut() {
+        Rainbower.GetInstance().ExitLoop();
+
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
 
         NewScoreManager.GetInstance().Reset();

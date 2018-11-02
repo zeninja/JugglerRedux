@@ -190,16 +190,24 @@ public class NewHand : MonoBehaviour
             // Check all possible balls
             int layerMask = 1 << LayerMask.NameToLayer("Ball");
             float radius = GetComponent<CircleCollider2D>().radius;
-            RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, radius, Vector2.zero, 0, layerMask);
+            RaycastHit2D[] rawHits = Physics2D.CircleCastAll(transform.position, radius, Vector2.zero, 0, layerMask);
+            List<RaycastHit2D> cleanedUp = new List<RaycastHit2D>();
+            
+            for(int i = 0; i < rawHits.Length; i++) {
+                if(!rawHits[i].transform.gameObject.GetComponent<NewBall>().IsLaunching()) {
+                    cleanedUp.Add(rawHits[i]);
+                }
+            }
+            RaycastHit2D[] cleanedUpHits = cleanedUp.ToArray();
 
-            float[] distances = new float[hits.Length];
-            float[] heights  = new float[hits.Length];
+            float[] distances = new float[cleanedUpHits.Length];
+            float[] heights  = new float[cleanedUpHits.Length];
             // int[] depths     = new int[hits.Length];
 
-            for(int i = 0; i < hits.Length; i++) {
+            for(int i = 0; i < cleanedUpHits.Length; i++) {
                 // Debug.Log(hits[i].transform.gameObject.name);
-                heights[i]    = hits[i].transform.position.y;
-                distances [i] = (transform.position - hits[i].transform.position).magnitude;
+                heights[i]    = cleanedUpHits[i].transform.position.y;
+                distances [i] = (transform.position - cleanedUpHits[i].transform.position).magnitude;
                 // depths[i]     = hits[i].transform.gameObject.GetComponentInChildren<NewBallArtManager>().currentDepth;
             }
 
@@ -215,8 +223,8 @@ public class NewHand : MonoBehaviour
 
             ballIndex = heightIndex;
 
-            if (ballIndex < hits.Length) {
-                NewBall targetBall = hits[ballIndex].transform.GetComponent<NewBall>();
+            if (ballIndex < cleanedUpHits.Length) {
+                NewBall targetBall = cleanedUpHits[ballIndex].transform.GetComponent<NewBall>();
                 SetBall(targetBall);
             }
         }

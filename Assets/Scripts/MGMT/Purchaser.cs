@@ -25,14 +25,14 @@ public class Purchaser : MonoBehaviour, IStoreListener
 	// public static string kProductIDNonConsumable = "tipJar";
     // public static string kProductIDSubscription =  "subscription";
 
-    public static string removeAds_Consumable = "removeAds_Consumable";
+    public static string removeAds_Consumable = "removeAds";
     public static string tipJar_Consumable = "tipJar_Consumable";
      
     // Apple App Store-specific product identifier for the subscription product.
-    private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
+    // private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
     
     // Google Play Store-specific product identifier subscription product.
-    private static string kProductNameGooglePlaySubscription =  "com.unity3d.subscription.original"; 
+    // private static string kProductNameGooglePlaySubscription =  "com.unity3d.subscription.original"; 
     
     void Start()
     {

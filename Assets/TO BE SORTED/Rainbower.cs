@@ -41,14 +41,6 @@ public class Rainbower : MonoBehaviour
         {
             StartCoroutine(LotsOfSwooshes(manualSwooshCount));
         }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-        }
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-        }
     }
 
 
@@ -59,6 +51,9 @@ public class Rainbower : MonoBehaviour
     public int manualSwooshCount = 3;
     public Extensions.Property ringsPerSwoosh;
     int swooshRingCount;
+
+    public Extensions.Property waveInterval;
+    public bool loopRainbow = true;
 
     public IEnumerator LotsOfSwooshes(int numSwooshes)
     {
@@ -75,11 +70,19 @@ public class Rainbower : MonoBehaviour
                 // Debug.Log(interval);
                 yield return StartCoroutine(Extensions.Wait(interval));
             }
-            yield return new WaitForSeconds(.25f);
             rainbowing = false;
+
+            if(loopRainbow) {
+                yield return new WaitForSeconds(Extensions.GetSmoothStepRange(swooshInterval, (float) numSwooshes / 9f));
+                StartCoroutine(LotsOfSwooshes(numSwooshes));
+            }
         } else {
             yield return null;
         }
+    }
+
+    public void ExitLoop() {
+        loopRainbow = false;
     }
 
     public float swooshDuration = .5f;
