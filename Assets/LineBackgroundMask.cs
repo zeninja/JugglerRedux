@@ -7,7 +7,7 @@ public class LineBackgroundMask : MonoBehaviour
 
     public float maskScale = 1.25f;
 
-    BallLine ballLine;
+    RisingTrail ballLine;
     LineRenderer maskLine;
 
     NewBallArtManager bam;
@@ -15,7 +15,7 @@ public class LineBackgroundMask : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        ballLine = GetComponentInParent<BallLine>();
+        ballLine = GetComponentInParent<RisingTrail>();
         maskLine = GetComponent<LineRenderer>();
         bam = GetComponentInParent<NewBallArtManager>();
     }

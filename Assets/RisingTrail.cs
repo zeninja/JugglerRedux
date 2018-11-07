@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallLine : MonoBehaviour
+public class RisingTrail : MonoBehaviour
 {
     NewBall ball;
     NewBallArtManager ballArtManager;

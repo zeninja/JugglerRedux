@@ -2498,7 +2498,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 125}
-  m_SizeDelta: {x: 443.0769, y: 960}
+  m_SizeDelta: {x: 540.1121, y: 959.99994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &253191151
 MonoBehaviour:
@@ -9419,6 +9419,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1325833836404672, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
   m_IsPrefabAsset: 0
@@ -14031,6 +14035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 410f67c92c2a31140b9766c5ae15a483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rumbleKey: rumble
 --- !u!114 &1341528099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14130,6 +14135,10 @@ MonoBehaviour:
   ringsPerSwoosh:
     start: 5
     end: 10
+  waveInterval:
+    start: 0
+    end: 0
+  loopRainbow: 1
   swooshDuration: 0.5
   swooshInterval:
     start: 0.5
@@ -18333,7 +18342,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 443.0769, y: 960}
+  m_SizeDelta: {x: 540.1121, y: 959.99994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871578756
 MonoBehaviour:

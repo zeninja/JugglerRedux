@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundSpriteMask : MonoBehaviour
+public class BallSpriteMask : MonoBehaviour
 {
 
     NewBall m_Ball;

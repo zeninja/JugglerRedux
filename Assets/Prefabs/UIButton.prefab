@@ -216,17 +216,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: Music
+  image: {fileID: 0}
   text: {fileID: 114217067623251542}
   innerBlock: {fileID: 114749444899966084}
   outerEdge: {fileID: 114642248131971376}
   state: 1
-  startState: 2
   button: {fileID: 4695995839612986}
-  targetSetting:
-    position: {x: 0, y: 0}
-    text: {r: 0, g: 0, b: 0, a: 0}
-    innerBlock: {r: 0, g: 0, b: 0, a: 0}
-    outerBlock: {r: 0, g: 0, b: 0, a: 0}
   prep:
     position: {x: 105, y: -105}
     text: {r: 0.6784314, g: 0.1254902, b: 0.40000004, a: 1}
