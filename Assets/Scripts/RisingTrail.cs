@@ -89,10 +89,6 @@ public class RisingTrail : MonoBehaviour
 
     public IEnumerator PopIn()
     {
-        // targetScale = NewBallManager.GetInstance().ballScale;
-
-        // Debug.Log("Popping In");
-
         float t = 0;
         float d = popInDuration;
 

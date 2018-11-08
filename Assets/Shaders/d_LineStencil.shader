@@ -1,10 +1,14 @@
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "Custom/DefaultlineStencil" {
+Shader "Custom/d_LineStencil" {
 Properties {
     _TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
     _MainTex ("Particle Texture", 2D) = "white" {}
-    _InvFade ("Soft Particles Factor", Range(0.01,3.0)) = 1.0
+    // _InvFade ("Soft Particles Factor", Range(0.01,3.0)) = 1.0
+    _StencilRef ("Stencil Ref", float) = 0
+    [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comp", int) = 0
+    [Enum(UnityEngine.Rendering.StencilOp)]       _StencilOp   ("Stencil Op",   int) = 0
+
 }
 
 Category {
@@ -16,11 +20,11 @@ Category {
     SubShader {
         Pass {
 
-            Stencil {
-                Ref 2  //Customize this value
-                Comp Always //Customize the compare function
-                Pass Replace
-            }
+			Stencil {
+				Ref  [_StencilRef]
+				Comp [_StencilComp]
+				Pass [_StencilOp]
+			}
 
             CGPROGRAM
             #pragma vertex vert

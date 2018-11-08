@@ -6,7 +6,7 @@ public class BallPathOutline : MonoBehaviour {
 
 	LineRenderer[] lines;
 	int sortIndex;
-	public int layers = 2;
+	int layers = 2;
 
 	void Start() {
 		EventManager.StartListening("BallCaught", AdjustDepth);
@@ -33,8 +33,6 @@ public class BallPathOutline : MonoBehaviour {
 		lines[0].endWidth   = width * .8f;
 		lines[1].startWidth = width;
 		lines[1].endWidth   = width;
-
-
 
 		for(int i = 0; i < lines.Length; i++) {
 
