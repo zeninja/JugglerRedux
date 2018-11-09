@@ -2488,7 +2488,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 96.00001, y: 111.079315, z: 102.37368}
+  m_LocalScale: {x: 96.000015, y: 111.079315, z: 102.37368}
   m_Children:
   - {fileID: 1387716917}
   - {fileID: 490546895}
@@ -2537,10 +2537,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 96.00001, y: 111.079315, z: 102.37368}
-  inverseDirection: {x: 96.000015, y: 111.079315, z: 102.37368}
-  transformPoint: {x: 96.00002, y: 111.07931, z: 102.37368}
-  transformDirection: {x: 96.000015, y: 111.079315, z: 102.37368}
+  inversePoint: {x: 96.000015, y: 111.079315, z: 102.37368}
+  inverseDirection: {x: 96.00001, y: 111.079315, z: 102.37368}
+  transformPoint: {x: 96.000015, y: 111.07931, z: 102.37368}
+  transformDirection: {x: 96.00001, y: 111.079315, z: 102.37368}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6832,8 +6832,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 0.0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5b6c82a5b23aba943bc2fa789fd166de, type: 2}
-  m_sharedMaterial: {fileID: 21712552533848958, guid: 5b6c82a5b23aba943bc2fa789fd166de,
+  m_fontAsset: {fileID: 11400000, guid: 17a7de1366acbdc4c8e213e0669d5f1f, type: 2}
+  m_sharedMaterial: {fileID: 21277040506294304, guid: 17a7de1366acbdc4c8e213e0669d5f1f,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 1960868358}
@@ -6947,7 +6947,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 21712552533848958, guid: 5b6c82a5b23aba943bc2fa789fd166de, type: 2}
+  - {fileID: 21277040506294304, guid: 17a7de1366acbdc4c8e213e0669d5f1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
