@@ -94,7 +94,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1425518850480476
 GameObject:
   m_ObjectHideFlags: 1
@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 4391135794566216}
   - component: {fileID: 114387496251657118}
   - component: {fileID: 114427352223237942}
+  - component: {fileID: 114458485088123804}
   m_Layer: 0
   m_Name: BallPathOutline
   m_TagString: Untagged
@@ -665,7 +666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736979ce4e5a3c14899e773a8568b9f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layers: 2
 --- !u!114 &114427352223237942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -677,6 +677,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6876ac35e4136d744a5961cc22895cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114458485088123804
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1561125686442848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba3b03ac3e68c4649b4ec5f7af11a9ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineMat: {fileID: 2100000, guid: 69708f68b69c7914bbf6c90af39b2319, type: 2}
+  maskMat: {fileID: 2100000, guid: a83008fde86169e4ea02ec9cf7bf1064, type: 2}
 --- !u!114 &114619329209000382
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -793,7 +806,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 67416ab2328073948a5c8c1bc8ffb616, type: 2}
+  - {fileID: 2100000, guid: a83008fde86169e4ea02ec9cf7bf1064, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -811,7 +824,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 856773013
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 3, z: 0}
@@ -1087,7 +1100,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 3e1fea685c8e13f42b93dd9aa44973b3, type: 2}
+  - {fileID: 2100000, guid: 69708f68b69c7914bbf6c90af39b2319, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1105,7 +1118,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 856773013
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 3, z: 0}

@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class LineMaskManager : MonoBehaviour {
 
-	public int index = 0;
-	int layersPerLine = 2;
+	// int layersPerLine = 2;
 
-	GameObject line;
-	GameObject mask;
+	LineRenderer line, mask;
+
+	int layersPerLine = 2;
+	int renderQueue;
+
+	public Material lineMat, maskMat;
 
 	// Use this for initialization
-	void Start () {
-		line = transform.GetChild(0).gameObject;
-		mask = transform.GetChild(1).gameObject;
+	void Awake () {
+		mask = transform.Find("Mask").GetComponent<LineRenderer>();
+		line = transform.Find("Line").GetComponent<LineRenderer>();
+
+		mask.material = maskMat;
+		line.material = lineMat;
+
+		renderQueue = lineMat.renderQueue;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		mask.GetComponent<LineRenderer>().material.renderQueue = 3000 + index * layersPerLine;
-		line.GetComponent<LineRenderer>().material.renderQueue = 3000 + index * layersPerLine + 1;
+
+	public void UpdateMaskIndex(int index) {
+		mask.material.renderQueue = renderQueue + index * layersPerLine;
+		line.material.renderQueue = renderQueue + index * layersPerLine + 1;
 	}
 }

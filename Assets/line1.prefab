@@ -111,7 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba3b03ac3e68c4649b4ec5f7af11a9ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
+  renderQueue: 2000
+  lineMat: {fileID: 2100000, guid: 69708f68b69c7914bbf6c90af39b2319, type: 2}
+  maskMat: {fileID: 2100000, guid: a83008fde86169e4ea02ec9cf7bf1064, type: 2}
 --- !u!120 &120435726428973564
 LineRenderer:
   m_ObjectHideFlags: 1

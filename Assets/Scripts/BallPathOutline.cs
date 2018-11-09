@@ -4,65 +4,82 @@ using UnityEngine;
 
 public class BallPathOutline : MonoBehaviour {
 
-	LineRenderer[] lines;
+	// LineRenderer[] lines;
+	LineRenderer line, mask;
 	int sortIndex;
 	int layers = 2;
 
 	void Start() {
-		EventManager.StartListening("BallCaught", AdjustDepth);
+		EventManager.StartListening("BallCaught", IncrementDepth);
+		mask = transform.GetChild(0).GetComponent<LineRenderer>();
+		line = transform.GetChild(1).GetComponent<LineRenderer>();
 
-		lines = GetComponentsInChildren<LineRenderer>();
+		// lines = GetComponentsInChildren<LineRenderer>();
 
-		for(int i = 0; i < lines.Length; i++) {
-			lines[i].enabled = false;
-		}
+		// for(int i = 0; i < lines.Length; i++) {
+		// 	lines[i].enabled = false;
+		// }
+
+		line.enabled = false;
+		mask.enabled = false;
 
 		if(!NewBallManager.useRails) {
-			lines[0].gameObject.SetActive(false);
-			lines[1].gameObject.SetActive(false);
+			line.gameObject.SetActive(false);
+			line.gameObject.SetActive(false);
 		}
 	}
 
 	public void DrawBallPath(Vector2 startPos, Vector2 throwVector) {
-		lines[1].material.color = GetComponentInParent<NewBallArtManager>().myColor;
+		// Set outline color
+		line.material.color = GetComponentInParent<NewBallArtManager>().myColor;
+		// lines[1].material.color = GetComponentInParent<NewBallArtManager>().myColor;
+		
+		// Find ball path
 		Vector3[] ballPath = GetComponent<BallPredictor>().GetPositionList(startPos, throwVector).ToArray();
 
-		// Find line width
+		// Set line width
 		float width = NewBallManager.GetInstance().ballScale;
-		lines[0].startWidth = width * .8f;
-		lines[0].endWidth   = width * .8f;
-		lines[1].startWidth = width;
-		lines[1].endWidth   = width;
+		mask.startWidth = width * .8f;
+		mask.endWidth   = width * .8f;
+		line.startWidth = width;
+		line.endWidth   = width;
 
-		for(int i = 0; i < lines.Length; i++) {
+		UpdateAndEnableLine(mask, ballPath);
+		UpdateAndEnableLine(line, ballPath);
 
-			lines[i].positionCount = ballPath.Length;
-			lines[i].SetPositions(ballPath);
-			lines[i].enabled = true;
-		}
+		ResetDepth();
 
-		lines[0].sortingOrder = 0;
-		lines[1].sortingOrder = 1;
+		// lines[0].sortingOrder = 0;
+		// lines[1].sortingOrder = 1;
 	}
 
-	void AdjustDepth() {
+	void UpdateAndEnableLine(LineRenderer line, Vector3[] path) {
+		line.positionCount = path.Length;
+		line.SetPositions(path);
+		line.enabled = true;
+	}
+
+	void IncrementDepth() {
 		sortIndex++;
-		lines[0].sortingOrder = sortIndex * layers;
-		lines[1].sortingOrder = sortIndex * layers + 1;
+		GetComponent<LineMaskManager>().UpdateMaskIndex(sortIndex);
+	}
+
+	void ResetDepth() {
+		sortIndex = 0;
+		GetComponent<LineMaskManager>().UpdateMaskIndex(sortIndex);
 	}
 
 	// Called via BroadcastMessage
 	void HandlePeak() {
-		for(int i = 0; i < lines.Length; i++) {
-			lines[i].enabled = false;
-			// Debug.Log("Disabling lines via peak");
-		}
+		DisableLines();
 	}
 
 	void HandleBallDeath() {
-		for(int i = 0; i < lines.Length; i++) {
-			lines[i].enabled = false;
-			// Debug.Log("Disabling lines via death");
-		}
+		DisableLines();
+	}
+
+	void DisableLines() {
+		line.enabled = false;
+		mask.enabled = false;
 	}
 }
