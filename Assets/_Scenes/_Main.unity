@@ -2563,7 +2563,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 95.99999, y: 111.07929, z: 102.37366}
+  m_LocalScale: {x: 95.99999, y: 111.07929, z: 102.37365}
   m_Children:
   - {fileID: 1387716917}
   - {fileID: 490546895}
@@ -2612,10 +2612,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 95.99999, y: 111.07929, z: 102.37366}
-  inverseDirection: {x: 95.99999, y: 111.07929, z: 102.37365}
-  transformPoint: {x: 96, y: 111.07928, z: 102.37364}
-  transformDirection: {x: 95.99999, y: 111.07929, z: 102.37365}
+  inversePoint: {x: 95.99999, y: 111.07929, z: 102.37365}
+  inverseDirection: {x: 95.99999, y: 111.07929, z: 102.37366}
+  transformPoint: {x: 96, y: 111.07928, z: 102.37365}
+  transformDirection: {x: 95.99999, y: 111.07929, z: 102.37366}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10047,21 +10047,7 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1808693778772082, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
-      propertyPath: m_Name
-      value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 114941789228125132, guid: 9da8f1b0080f84262a21a09d2f1f9f39,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1325833836404672, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
-      propertyPath: m_Name
-      value: BallMask
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114686869594164432, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &978270573
@@ -14927,8 +14913,8 @@ MonoBehaviour:
     start: 5
     end: 10
   waveInterval:
-    start: 0
-    end: 0
+    start: 1.04
+    end: 4.07
   loopRainbow: 1
   swooshDuration: 0.5
   swooshInterval:

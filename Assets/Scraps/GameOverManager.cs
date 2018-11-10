@@ -64,7 +64,7 @@ public class GameOverManager : MonoBehaviour
 
         yield return StartCoroutine(GameOverStacker.GetInstance().HandleGameOver(deadBallPos, deadBall.ballArtManager.myColor));
         
-        NewBallManager.GetInstance().KillAllBalls();
+        yield return StartCoroutine(NewBallManager.GetInstance().KillAllBalls());
         EventManager.TriggerEvent("CleanUp");
         // FontManager.GetInstance().SetColor(false);
 

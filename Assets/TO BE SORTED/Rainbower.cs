@@ -73,7 +73,7 @@ public class Rainbower : MonoBehaviour
             rainbowing = false;
 
             if(loopRainbow) {
-                yield return new WaitForSeconds(Extensions.GetSmoothStepRange(swooshInterval, (float) numSwooshes / 9f));
+                yield return new WaitForSeconds(Extensions.GetSmoothStepRange(waveInterval, (float) numSwooshes / 9f));
                 StartCoroutine(LotsOfSwooshes(numSwooshes));
             }
         } else {
@@ -84,6 +84,7 @@ public class Rainbower : MonoBehaviour
     public void ExitLoop() {
         loopRainbow = false;
         this.StopAllCoroutines();
+        loopRainbow = true;
     }
 
     public float swooshDuration = .5f;

@@ -8,10 +8,11 @@ public class PeakMask : MonoBehaviour {
 	public float peakDuration;
 	public float peakScale = .8f;
 
-
 	void Start() {
-		line = GetComponent<LineRenderer>();
 		EventManager.StartListening("HandlePeak", DoPeak);
+		line = GetComponent<LineRenderer>();
+		line.startWidth = 0;
+		line.endWidth   = 0;
 	}
 
 	void DoPeak() {

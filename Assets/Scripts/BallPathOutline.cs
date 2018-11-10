@@ -4,35 +4,26 @@ using UnityEngine;
 
 public class BallPathOutline : MonoBehaviour {
 
-	// LineRenderer[] lines;
 	LineRenderer line, mask;
 	int sortIndex;
-	// int layers = 2;
 
 	void Start() {
 		EventManager.StartListening("BallCaught", IncrementDepth);
 		mask = transform.GetChild(0).GetComponent<LineRenderer>();
 		line = transform.GetChild(1).GetComponent<LineRenderer>();
 
-		// lines = GetComponentsInChildren<LineRenderer>();
-
-		// for(int i = 0; i < lines.Length; i++) {
-		// 	lines[i].enabled = false;
-		// }
-
 		line.enabled = false;
 		mask.enabled = false;
 
 		if(!NewBallManager.useRails) {
 			line.gameObject.SetActive(false);
-			line.gameObject.SetActive(false);
+			mask.gameObject.SetActive(false);
 		}
 	}
 
 	public void DrawBallPath(Vector2 startPos, Vector2 throwVector) {
 		// Set outline color
 		line.material.color = GetComponentInParent<NewBallArtManager>().myColor;
-		// lines[1].material.color = GetComponentInParent<NewBallArtManager>().myColor;
 		
 		// Find ball path
 		Vector3[] ballPath = GetComponent<BallPredictor>().GetPositionList(startPos, throwVector).ToArray();
@@ -48,13 +39,13 @@ public class BallPathOutline : MonoBehaviour {
 		UpdateAndEnableLine(line, ballPath, 1);
 
 		ResetDepth();
-
-		// lines[0].sortingOrder = 0;
-		// lines[1].sortingOrder = 1;
 	}
 
-	// public int maskZ;
-	// public int lineZ;
+	// void Update() {
+	// 	if(NewBallManager.useRails) {
+
+	// 	}
+	// }
 
 	void UpdateAndEnableLine(LineRenderer line, Vector3[] path, float zDepth) {
 		for(int i = 0; i < path.Length; i++) {

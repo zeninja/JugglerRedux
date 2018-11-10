@@ -232,14 +232,16 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    public void KillAllBalls()
+    public IEnumerator KillAllBalls()
     {
-        for (int i = 0; i < balls.Count; i++)
+        for (int i = balls.Count - 1; i >= 0; i--)
         {
             if (!balls[i].dead)
             {
-                balls[i].GetComponent<NewBall>().DestroyMe();
+                StartCoroutine(balls[i].GetComponentInChildren<BallArt>().HideBall());
+                // balls[i].GetComponent<NewBall>().DestroyMe();
             }
+            yield return new WaitForSeconds(.05f);
         }
 
         balls.Clear();
