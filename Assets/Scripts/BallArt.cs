@@ -8,12 +8,12 @@ public class BallArt : MonoBehaviour
     NewBallArtManager ballArtManager;
 
     LineRenderer line;
-    // public LineRenderer mask;
+    BallBGMask mask;
 
     List<Vector3> trailPositions;
 
     float ballScale;
-    
+
     // Use this for initialization
     void Awake()
     {
@@ -21,7 +21,8 @@ public class BallArt : MonoBehaviour
         line = GetComponent<LineRenderer>();
 
         ballArtManager = GetComponentInParent<NewBallArtManager>();
-        ball = GetComponentInParent<NewBall>();
+        ball           = GetComponentInParent<NewBall>();
+        mask           = GetComponentInChildren<BallBGMask>();
     }
 
     void Start()
@@ -113,6 +114,7 @@ public class BallArt : MonoBehaviour
             float lineWidth = ballScale - ballScale * EZEasings.SmoothStop3(t / d);
 
             UpdateScale(lineWidth);
+            mask.UpdateScale(lineWidth);
             yield return new WaitForFixedUpdate();
         }
         // Debug.Log("Hid ball");

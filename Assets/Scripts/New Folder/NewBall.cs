@@ -136,8 +136,6 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
 
-        GetComponentInChildren<BallPathOutline>().HandleCatch();
-
         BroadcastMessage("HandleCatch", SendMessageOptions.DontRequireReceiver);
         SetBallState(BallState.caught);
     }
@@ -188,7 +186,7 @@ public class NewBall : MonoBehaviour
         {
             if (!NewGameManager.GameOver() && !dead)
             {
-                KillThisBall();
+                TriggerGameOver();
                 dead = true;
             }
         }
@@ -199,7 +197,7 @@ public class NewBall : MonoBehaviour
         return framesSinceCatch < 1;
     }
 
-    void KillThisBall()
+    void TriggerGameOver()
     {
         FreezeBall();
         GameOverManager.GetInstance().SetTargetBall(this);

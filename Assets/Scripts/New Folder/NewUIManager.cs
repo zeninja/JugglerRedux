@@ -7,18 +7,18 @@ using TMPro;
 public class NewUIManager : MonoBehaviour {
 
 	// In-Game
-	public TextMeshPro ui_juggleTime;
+	// public TextMeshPro ui_juggleTime;
 
 
 	// Debug
-	public Text ui_SlapForce;
-	public Text ui_GrabForce;
-	public Text ui_JuggleThreshold;
-	// public Text ui_TimeSlowFactor;
-	public Text ui_BallScale;
-	public Text ui_BallSpawnRate;
-	public Text ui_playcount;
-	public Toggle ui_ShowAds;
+	// public Text ui_SlapForce;
+	// public Text ui_GrabForce;
+	// public Text ui_JuggleThreshold;
+	// // public Text ui_TimeSlowFactor;
+	// public Text ui_BallScale;
+	// public Text ui_BallSpawnRate;
+	// public Text ui_playcount;
+	// public Toggle ui_ShowAds;
 
 
 	// public GameObject debugMenu;
@@ -30,15 +30,15 @@ public class NewUIManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		ui_SlapForce.text       = NewHandManager .GetInstance(). touchSlapThrowForce.ToString("F2");
-		ui_GrabForce.text       = NewHandManager .GetInstance(). touchGrabThrowForce.ToString("F2");
-		ui_JuggleThreshold.text = NewBallManager .GetInstance(). juggleThreshold    .ToString("");
-		ui_BallScale.text       = NewBallManager .GetInstance(). ballScale          .ToString("F2");
-		// ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
-		ui_playcount.text       = NewAdManager.playcount.ToString();
-		ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
+		// ui_SlapForce.text       = NewHandManager .GetInstance(). touchSlapThrowForce.ToString("F2");
+		// ui_GrabForce.text       = NewHandManager .GetInstance(). touchGrabThrowForce.ToString("F2");
+		// ui_JuggleThreshold.text = NewBallManager .GetInstance(). juggleThreshold    .ToString("");
+		// ui_BallScale.text       = NewBallManager .GetInstance(). ballScale          .ToString("F2");
+		// // ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
+		// ui_playcount.text       = NewAdManager.playcount.ToString();
+		// ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
 
-		ui_juggleTime.text		= TimeManager.GetInstance().m_CurrentTimeScale.ToString("F2");
+		// ui_juggleTime.text		= TimeManager.GetInstance().m_CurrentTimeScale.ToString("F2");
 
 		// bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
 
@@ -159,7 +159,7 @@ public class NewUIManager : MonoBehaviour {
                 ballSpeedText = "Ball Spawn Speed:\nFast";
                 break;
         }
-        ui_BallSpawnRate.text = ballSpeedText;
+        // ui_BallSpawnRate.text = ballSpeedText;
 
 		GlobalSettings.Settings.ballSpeedIndex = ballSpeedIndex;
 		GlobalSettings.UpdateSavedValues();

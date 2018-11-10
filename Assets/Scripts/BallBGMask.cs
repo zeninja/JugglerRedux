@@ -32,6 +32,11 @@ public class BallBGMask : MonoBehaviour
         SetMaskPositions(ballLine.GetTrailPositions());
     }
 
+    public void UpdateScale(float s) {
+        maskLine.startWidth = s * maskScalar;
+        maskLine.endWidth   = s * maskScalar;
+    }
+
     public void SetMaskPositions(Vector3[] positions)
     {
         if (positions != null)
@@ -39,5 +44,13 @@ public class BallBGMask : MonoBehaviour
             maskLine.positionCount = positions.Length;
             maskLine.SetPositions(positions);
         }
+    }
+
+    void HandleCatch() {
+        maskLine.enabled = false;
+	}
+
+    void HandleThrow() {
+        maskLine.enabled = true;
     }
 }

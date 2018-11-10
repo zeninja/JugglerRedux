@@ -76,11 +76,10 @@ public class BallPathOutline : MonoBehaviour {
 		GetComponent<LineMaskManager>().UpdateMaskIndex(sortIndex);
 	}
 
-	public void HandleCatch() {
+	// Called via BroadcastMessage
+	void HandleCatch() {
 		DisableLines();
 	}
-
-	// Called via BroadcastMessage
 
 	void HandlePeak() {
 		DisableLines();

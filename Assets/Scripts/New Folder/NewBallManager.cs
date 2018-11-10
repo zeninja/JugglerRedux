@@ -236,10 +236,10 @@ public class NewBallManager : MonoBehaviour
     {
         for (int i = 0; i < balls.Count; i++)
         {
-            // if (!balls[i].dead)
-            // {
+            if (!balls[i].dead)
+            {
                 balls[i].GetComponent<NewBall>().DestroyMe();
-            // }
+            }
         }
 
         balls.Clear();

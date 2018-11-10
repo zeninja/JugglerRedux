@@ -77,6 +77,7 @@ public class GameOverManager : MonoBehaviour
     }
 
     public IEnumerator GameOverOut() {
+        yield return StartCoroutine(deadBall.GetComponentInChildren<BallArt>().HideBall());
         Rainbower.GetInstance().ExitLoop();
 
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
