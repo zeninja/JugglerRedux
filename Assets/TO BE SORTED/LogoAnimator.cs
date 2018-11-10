@@ -11,8 +11,6 @@ public class LogoAnimator : MonoBehaviour {
 	}
 	#endregion
 
-	public StackerDot initialBg;
-
 	void Awake() {
 		if(instance == null) {
 			instance = this;
@@ -27,7 +25,7 @@ public class LogoAnimator : MonoBehaviour {
 		anim = GetComponent<Animation>();
 	}
 
-	public Transform easy, juggling, mask, container;
+	// public Transform easy, juggling, mask; //, container;
 	
 	Animation anim;
 	public AnimationClip logoIn;
@@ -45,12 +43,12 @@ public class LogoAnimator : MonoBehaviour {
 	}
 
 	public IEnumerator ShowLogo() {
-		GetComponent<Animation>().Play("LogoIn");
+		GetComponent<Animation>().Play(logoIn.name);
 		yield return new WaitForSeconds(logoIn.length);
 	}
 
 	public IEnumerator HideLogo() {
-		GetComponent<Animation>().Play("LogoOut");
+		GetComponent<Animation>().Play(logoOut.name);
 		yield return new WaitForSeconds(logoOut.length);
 	}
 
@@ -59,16 +57,16 @@ public class LogoAnimator : MonoBehaviour {
 
 		// Rather than using 3 separate variables in the animation curve, using one variable ensures consistency across axes
 		// I'm sure there's a better way to do this but 
-		float easyX = easy.transform.localScale.x;
-		easy.transform.localScale = new Vector3(easyX, easyX, 0);
+		// float easyX = easy.transform.localScale.x;
+		// easy.transform.localScale = new Vector3(easyX, easyX, 0);
 
-		float jugglingX = juggling.transform.localScale.x;
-		juggling.transform.localScale = new Vector3(jugglingX, jugglingX, 0);
+		// float jugglingX = juggling.transform.localScale.x;
+		// juggling.transform.localScale = new Vector3(jugglingX, jugglingX, 0);
 		
-		float maskX = mask.transform.localScale.x;
-		mask.transform.localScale = new Vector3(maskX, maskX, 0);
+		// float maskX = mask.transform.localScale.x;
+		// mask.transform.localScale = new Vector3(maskX, maskX, 0);
 
-		float containerX = container.transform.localScale.x;
-		container.transform.localScale = new Vector3(containerX, containerX, 0);
+		// float containerX = container.transform.localScale.x;
+		// container.transform.localScale = new Vector3(containerX, containerX, 0);
 	}
 }

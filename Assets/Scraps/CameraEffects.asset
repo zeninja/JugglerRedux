@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Settings:
       method: 0
       fxaaSettings:
-        preset: 0
+        preset: 4
       taaSettings:
         jitterSpread: 0.75
         sharpen: 0.3
@@ -79,8 +79,8 @@ MonoBehaviour:
   motionBlur:
     m_Enabled: 0
     m_Settings:
-      shutterAngle: 270
-      sampleCount: 10
+      shutterAngle: 98
+      sampleCount: 4
       frameBlending: 0
   eyeAdaptation:
     m_Enabled: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
       tonemapping:
         tonemapper: 2
         neutralBlackIn: 0.02
-        neutralWhiteIn: 10
+        neutralWhiteIn: 20
         neutralBlackOut: 0
         neutralWhiteOut: 10
         neutralWhiteLevel: 5.3
@@ -313,8 +313,8 @@ MonoBehaviour:
     m_Enabled: 0
     m_Settings:
       colored: 0
-      intensity: 0.99
-      size: 3
+      intensity: 1
+      size: 1.14
       luminanceContribution: 0
   vignette:
     m_Enabled: 0

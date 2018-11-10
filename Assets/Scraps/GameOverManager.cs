@@ -66,7 +66,7 @@ public class GameOverManager : MonoBehaviour
         
         NewBallManager.GetInstance().KillAllBalls();
         EventManager.TriggerEvent("CleanUp");
-        // FontManager.GetInstance().SetFont(false);
+        // FontManager.GetInstance().SetColor(false);
 
         yield return new WaitForSeconds(.165f);
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask());
@@ -85,7 +85,7 @@ public class GameOverManager : MonoBehaviour
 
         NewScoreManager.GetInstance().Reset();
         NewScoreManager.GetInstance().EnableScore(false);
-        // FontManager.GetInstance().SetFont(true);
+        // FontManager.GetInstance().SetColor(true);
 
         yield return StartCoroutine(InterstitalAd());
         // yield return StartCoroutine(ShowLogo());

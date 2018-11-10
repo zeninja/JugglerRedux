@@ -145,6 +145,8 @@ public class NewScoreManager : MonoBehaviour
         // Debug.Log(currentScore + " | " + highscore);
     }
 
+    public GameObject highscoreText;
+
     public IEnumerator HighscoreProcess()
     {
         highscore = (decimal)PlayerPrefs.GetFloat(highScoreKey);
