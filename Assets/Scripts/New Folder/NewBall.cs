@@ -136,6 +136,8 @@ public class NewBall : MonoBehaviour
         rb.velocity = Vector2.zero;
         EventManager.TriggerEvent("BallCaught");
 
+        GetComponentInChildren<BallPathOutline>().HandleCatch();
+
         BroadcastMessage("HandleCatch", SendMessageOptions.DontRequireReceiver);
         SetBallState(BallState.caught);
     }

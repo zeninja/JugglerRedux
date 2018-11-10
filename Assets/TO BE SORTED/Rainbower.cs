@@ -83,6 +83,7 @@ public class Rainbower : MonoBehaviour
 
     public void ExitLoop() {
         loopRainbow = false;
+        this.StopAllCoroutines();
     }
 
     public float swooshDuration = .5f;

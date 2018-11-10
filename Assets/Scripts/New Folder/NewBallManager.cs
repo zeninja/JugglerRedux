@@ -144,7 +144,7 @@ public class NewBallManager : MonoBehaviour
 
 
         // Play the ball pop-in animation and set the game to ready
-        yield return StartCoroutine(ball.GetComponentInChildren<RisingTrail>().PopIn());
+        yield return StartCoroutine(ball.GetComponentInChildren<BallArt>().PopIn());
     }
 
     public bool randomizeBallSpawns = true;
@@ -248,7 +248,7 @@ public class NewBallManager : MonoBehaviour
 
     public void HideFirstBall() {
         // Called when the settings screen appears
-        StartCoroutine(firstBall.gameObject.GetComponentInChildren<RisingTrail>().HideBall());
+        StartCoroutine(firstBall.gameObject.GetComponentInChildren<BallArt>().HideBall());
         _ballCount = 0;
         balls.Clear();
     }

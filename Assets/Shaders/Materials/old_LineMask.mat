@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: LineMask
+  m_Name: old_LineMask
   m_Shader: {fileID: 4800000, guid: a92196ed3b569c24dbe32b162703e1a4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

@@ -1,26 +1,89 @@
+// Shader "Custom/d_LineMask(SIMPLE)" {
+//     Properties {
+//         _StencilRef ("Stencil Ref", float) = 0
+//         [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comp", int) = 0
+//         [Enum(UnityEngine.Rendering.StencilOp)]       _StencilOp   ("Stencil Op",   int) = 0
+//     }
+
+//     SubShader {
+//         Tags { "RenderType"="Opaque" "Queue"="Background-1"}
+//         Pass {
+// 			Stencil {
+// 				Ref  [_StencilRef]
+// 				Comp [_StencilComp]
+// 				Pass [_StencilOp]
+//                 Fail Zero
+// 			}
+
+//             Zwrite Off
+//             Blend SrcAlpha OneMinusSrcAlpha
+
+        
+//             CGPROGRAM
+//             #pragma vertex vert
+//             #pragma fragment frag
+//             struct appdata {
+//                 float4 vertex : POSITION;
+//             };
+//             struct v2f {
+//                 float4 pos : SV_POSITION;
+//             };
+//             v2f vert(appdata v) {
+//                 v2f o;
+//                 o.pos = UnityObjectToClipPos(v.vertex);
+//                 return o;
+//             }
+//             half4 frag(v2f i) : SV_Target {
+//                 return half4(0,0,0,0);
+//             }
+//             ENDCG
+//         }
+//     } 
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "Custom/DefaultlineStencil" {
+Shader "Custom/d_LineMask" {
 Properties {
     _TintColor ("Tint Color", Color) = (0.5,0.5,0.5,0.5)
     _MainTex ("Particle Texture", 2D) = "white" {}
     _InvFade ("Soft Particles Factor", Range(0.01,3.0)) = 1.0
+    _StencilRef ("Stencil Ref", float) = 0
+    [Enum(UnityEngine.Rendering.CompareFunction)] _StencilComp ("Stencil Comp", int) = 0
+    [Enum(UnityEngine.Rendering.StencilOp)]       _StencilOp   ("Stencil Op",   int) = 0
 }
 
 Category {
     Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" }
     Blend SrcAlpha OneMinusSrcAlpha
     ColorMask RGB
-    Cull Off Lighting Off ZWrite Off
+    Cull Off Lighting Off 
+    //ZWrite Off
 
     SubShader {
         Pass {
 
-            Stencil {
-                Ref 2  //Customize this value
-                Comp Always //Customize the compare function
-                Pass Replace
-            }
+			Stencil {
+				Ref  [_StencilRef]
+				Comp [_StencilComp]
+				Pass [_StencilOp]
+                Fail Zero
+			}
 
             CGPROGRAM
             #pragma vertex vert

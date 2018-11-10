@@ -2,34 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RisingTrail : MonoBehaviour
+public class BallArt : MonoBehaviour
 {
     NewBall ball;
     NewBallArtManager ballArtManager;
-    LineBackgroundMask mask;
 
     LineRenderer line;
+    // public LineRenderer mask;
 
     List<Vector3> trailPositions;
 
-    float targetScale;
-
+    float ballScale;
+    
     // Use this for initialization
     void Awake()
     {
         trailPositions = new List<Vector3>();
         line = GetComponent<LineRenderer>();
-        mask = GetComponentInChildren<LineBackgroundMask>();
+
+        ballArtManager = GetComponentInParent<NewBallArtManager>();
+        ball = GetComponentInParent<NewBall>();
     }
 
     void Start()
     {
-		targetScale = NewBallManager.GetInstance().ballScale;
-        line.startWidth = targetScale;
-        line.endWidth = targetScale;
+		ballScale = NewBallManager.GetInstance().ballScale;
 
-        ballArtManager = GetComponentInParent<NewBallArtManager>();
-        ball = GetComponentInParent<NewBall>();
+        line.startWidth = ballScale;
+        line.endWidth   = ballScale;
     }
 
     // Update is called once per frame
@@ -57,13 +57,10 @@ public class RisingTrail : MonoBehaviour
                 line.positionCount = 2;
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, transform.position);
+
                 line.enabled = true;
             }
         }
-    }
-
-    void LateUpdate() {
-        // mask.SetMaskPositions(trail);
     }
 
     public int trailLength;
@@ -71,7 +68,6 @@ public class RisingTrail : MonoBehaviour
 
     void DrawTrail()
     {
-
         trail = new Vector3[trailLength];
         for (int i = 0; i < trailLength; i++)
         {
@@ -89,17 +85,13 @@ public class RisingTrail : MonoBehaviour
 
     public IEnumerator PopIn()
     {
-        // targetScale = NewBallManager.GetInstance().ballScale;
-
-        // Debug.Log("Popping In");
-
         float t = 0;
         float d = popInDuration;
 
         while (t < d)
         {
             t += Time.fixedDeltaTime;
-            float lineWidth = targetScale * popInAnimation.Evaluate(t / d);
+            float lineWidth = ballScale * popInAnimation.Evaluate(t / d);
 
             UpdateScale(lineWidth);
 
@@ -118,7 +110,7 @@ public class RisingTrail : MonoBehaviour
         while (t < d)
         {
             t += Time.fixedDeltaTime;
-            float lineWidth = targetScale - targetScale * EZEasings.SmoothStop3(t / d);
+            float lineWidth = ballScale - ballScale * EZEasings.SmoothStop3(t / d);
 
             UpdateScale(lineWidth);
             yield return new WaitForFixedUpdate();
@@ -138,6 +130,8 @@ public class RisingTrail : MonoBehaviour
     }
 
     public Vector3[] GetTrailPositions() {
-        return trail;
+        Vector3[] currentLine = new Vector3[line.positionCount];
+        line.GetPositions(currentLine);
+        return currentLine;
     }
 }
