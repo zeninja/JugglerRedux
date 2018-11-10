@@ -27,7 +27,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1019158448932514
 GameObject:
   m_ObjectHideFlags: 1
@@ -94,7 +94,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1425518850480476
 GameObject:
   m_ObjectHideFlags: 1
@@ -396,7 +396,7 @@ Transform:
   m_GameObject: {fileID: 1011577099377512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4744050376268750}
   m_RootOrder: 4
@@ -707,7 +707,7 @@ MonoBehaviour:
   drag: -0.1
   currentThrowVector: {x: 0, y: 0}
   m_BallThrown: 0
-  ballColorIndex: 0
+  ballColorIndex: -1
   firstBall: 0
 --- !u!114 &114669545929934490
 MonoBehaviour:
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4475e5df1f855c54aabbaf059c70f768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maskScale: 1.25
+  maskScalar: 1.25
 --- !u!120 &120005186565138830
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -878,7 +878,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 90
     numCapVertices: 90
-    alignment: 1
+    alignment: 0
     textureMode: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -1172,7 +1172,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 90
     numCapVertices: 90
-    alignment: 1
+    alignment: 0
     textureMode: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -1192,7 +1192,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: dddc3c6e33f314a47bf1049031d48e5c, type: 2}
+  - {fileID: 2100000, guid: a83008fde86169e4ea02ec9cf7bf1064, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

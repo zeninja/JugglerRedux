@@ -24,9 +24,7 @@ public class BallSprite : MonoBehaviour
         // peakSprite.color = GetComponentInParent<NewBallArtManager>().myColor * modifier;
         peakSprite.color = GetComponent<SpriteRenderer>().color * .5f;
 
-
         EventManager.StartListening("CleanUp", DisableSprite);
-
     }
 
     // Update is called once per frame

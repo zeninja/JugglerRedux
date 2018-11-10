@@ -7,7 +7,7 @@ public class BallPathOutline : MonoBehaviour {
 	// LineRenderer[] lines;
 	LineRenderer line, mask;
 	int sortIndex;
-	int layers = 2;
+	// int layers = 2;
 
 	void Start() {
 		EventManager.StartListening("BallCaught", IncrementDepth);
@@ -36,7 +36,7 @@ public class BallPathOutline : MonoBehaviour {
 		
 		// Find ball path
 		Vector3[] ballPath = GetComponent<BallPredictor>().GetPositionList(startPos, throwVector).ToArray();
-
+		
 		// Set line width
 		float width = NewBallManager.GetInstance().ballScale;
 		mask.startWidth = width * .8f;
@@ -44,8 +44,8 @@ public class BallPathOutline : MonoBehaviour {
 		line.startWidth = width;
 		line.endWidth   = width;
 
-		UpdateAndEnableLine(mask, ballPath);
-		UpdateAndEnableLine(line, ballPath);
+		UpdateAndEnableLine(mask, ballPath, 0);
+		UpdateAndEnableLine(line, ballPath, 1);
 
 		ResetDepth();
 
@@ -53,7 +53,14 @@ public class BallPathOutline : MonoBehaviour {
 		// lines[1].sortingOrder = 1;
 	}
 
-	void UpdateAndEnableLine(LineRenderer line, Vector3[] path) {
+	// public int maskZ;
+	// public int lineZ;
+
+	void UpdateAndEnableLine(LineRenderer line, Vector3[] path, float zDepth) {
+		for(int i = 0; i < path.Length; i++) {
+			path[i] = new Vector3(path[i].x, path[i].y, zDepth);
+		}
+
 		line.positionCount = path.Length;
 		line.SetPositions(path);
 		line.enabled = true;
@@ -69,7 +76,12 @@ public class BallPathOutline : MonoBehaviour {
 		GetComponent<LineMaskManager>().UpdateMaskIndex(sortIndex);
 	}
 
+	public void HandleCatch() {
+		DisableLines();
+	}
+
 	// Called via BroadcastMessage
+
 	void HandlePeak() {
 		DisableLines();
 	}
