@@ -2488,7 +2488,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 96, y: 111.07931, z: 102.37367}
+  m_LocalScale: {x: 96.000015, y: 111.07932, z: 102.37368}
   m_Children:
   - {fileID: 1387716917}
   - {fileID: 490546895}
@@ -2498,7 +2498,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 125}
-  m_SizeDelta: {x: 443.0769, y: 960}
+  m_SizeDelta: {x: 539.9002, y: 960}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &253191151
 MonoBehaviour:
@@ -2537,10 +2537,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 96, y: 111.07931, z: 102.37367}
-  inverseDirection: {x: 96, y: 111.07931, z: 102.37368}
-  transformPoint: {x: 96, y: 111.0793, z: 102.37369}
-  transformDirection: {x: 96, y: 111.07931, z: 102.37368}
+  inversePoint: {x: 96.000015, y: 111.07932, z: 102.37368}
+  inverseDirection: {x: 96.00001, y: 111.07932, z: 102.37368}
+  transformPoint: {x: 96.000015, y: 111.07933, z: 102.37368}
+  transformDirection: {x: 96.00001, y: 111.07932, z: 102.37368}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17856,7 +17856,7 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 62ceb6817b1ad5d4c96f44e5b0ca294e, type: 2}
+  - {fileID: 2100000, guid: 5d81caf4d9977a9499f628241c096b53, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18796,7 +18796,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 443.0769, y: 960}
+  m_SizeDelta: {x: 539.9002, y: 960}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871578756
 MonoBehaviour:
