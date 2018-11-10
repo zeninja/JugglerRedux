@@ -13,15 +13,12 @@ public class BallArt : MonoBehaviour
     List<Vector3> trailPositions;
 
     float ballScale;
-
-    public float maskScalar = 1.25f;
-
+    
     // Use this for initialization
     void Awake()
     {
         trailPositions = new List<Vector3>();
         line = GetComponent<LineRenderer>();
-        // mask = GetComponentInChildren<LineRenderer>();
 
         ballArtManager = GetComponentInParent<NewBallArtManager>();
         ball = GetComponentInParent<NewBall>();
@@ -33,12 +30,6 @@ public class BallArt : MonoBehaviour
 
         line.startWidth = ballScale;
         line.endWidth   = ballScale;
-
-        // mask.startWidth = ballScale * maskScalar;
-        // mask.endWidth   = ballScale * maskScalar;
-
-        // ballArtManager = GetComponentInParent<NewBallArtManager>();
-        // ball = GetComponentInParent<NewBall>();
     }
 
     // Update is called once per frame
@@ -68,10 +59,6 @@ public class BallArt : MonoBehaviour
                 line.SetPosition(1, transform.position);
 
                 line.enabled = true;
-
-                 // trailPositions.Add(transform.position);
-                // trailPositions.Add(transform.position);
-                // DrawTrail();
             }
         }
     }

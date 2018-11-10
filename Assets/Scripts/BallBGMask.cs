@@ -30,20 +30,12 @@ public class BallBGMask : MonoBehaviour
     void Update()
     {
         SetMaskPositions(ballLine.GetTrailPositions());
-
-        // if(bam.VelocityPositive()) {
-        // } else {
-        //     // SetMaskPositions()
-        // }
-        // // maskLine.enabled = bam.VelocityPositive();
     }
-
 
     public void SetMaskPositions(Vector3[] positions)
     {
         if (positions != null)
         {
-            // Debug.Log("Setting positions");
             maskLine.positionCount = positions.Length;
             maskLine.SetPositions(positions);
         }
