@@ -230,7 +230,7 @@ public class NewBall : MonoBehaviour
                 break;
         
             case BallStage.hard:
-                ballArtManager.UpdateToHard();
+                // ballArtManager.UpdateToHard();
                 break;
         }
 
@@ -246,20 +246,21 @@ public class NewBall : MonoBehaviour
                 {
                     ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
                     ballColorIndex++;
-                } else {
-                    SetBallStage(BallStage.normal);
-                }
+                } 
+                //else {
+                //     SetBallStage(BallStage.normal);
+                // }
 
                 break;
 
             case BallStage.normal:
-                if(NewBallManager.GetInstance().AllBallsNormal()) {
-                    SetBallStage(BallStage.hard);
-                }
+                // if(NewBallManager.GetInstance().AllBallsNormal()) {
+                //     SetBallStage(BallStage.hard);
+                // }
                 break;
         
             case BallStage.hard:
-                ballArtManager.UpdateToHard();
+                // ballArtManager.UpdateToHard();
                 break;
         }
 
