@@ -12,7 +12,7 @@ public class SettingsScreen : MonoBehaviour {
     }
     #endregion
 
-	public SettingsButton music, sfx, invertThrows, rails, contact, removeAds, tipJar, exit, settings;
+	public SettingsButton music, sfx, invertThrows, rails, contact, removeAds, restorePurchase, tipJar, exit, settings;
 
 	public UISlider ballSizeSlider;
 
@@ -39,14 +39,14 @@ public class SettingsScreen : MonoBehaviour {
 		UpdateBallScale();
 
 		removeAds.gameObject.SetActive(!NewAdManager.adsDisabled);
-		tipJar.gameObject.SetActive(NewAdManager.adsDisabled);
+		tipJar   .gameObject.SetActive( NewAdManager.adsDisabled);
 	}
 
 	void InitSettings() {
-		music		.SetButtonState(!AudioManager.m_mute);
-		sfx			.SetButtonState(!AudioManager.sfx_mute);
+		music		.SetButtonState(!GlobalSettings.Settings.muteMusic);
+		sfx			.SetButtonState(!GlobalSettings.Settings.muteSfx);
 		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
-		rails		.SetButtonState(NewBallManager.useRails);
+		rails		.SetButtonState(GlobalSettings.Settings.useRails);
 
 		contact.InitBounce();
 		removeAds.InitBounce();
