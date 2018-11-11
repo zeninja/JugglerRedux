@@ -21,8 +21,8 @@ public class GlobalSettings : MonoBehaviour
 
         public bool adsDisabled;
 
-        public bool musicOn;
-        public bool sfxOn;
+        public bool muteMusic;
+        public bool muteSfx;
         public bool invertThrows;
         public bool useRails;
     }
@@ -65,13 +65,13 @@ public class GlobalSettings : MonoBehaviour
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
 
-        Settings.adsDisabled      = NewAdManager.adsDisabled;
+        Settings.adsDisabled     = NewAdManager.adsDisabled;
 
-        Settings.musicOn         = !AudioManager.m_mute;
-        Settings.sfxOn           = !AudioManager.sfx_mute; 
+        Settings.muteMusic       = AudioManager.m_mute;
+        Settings.muteSfx         = AudioManager.sfx_mute; 
 
 
-        // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
+        Debug.Log("INIT VALUES. musicOn: " + Settings.muteMusic);
 		
         UpdateSavedValues();
     }
@@ -91,17 +91,17 @@ public class GlobalSettings : MonoBehaviour
         NewHandManager.invertThrows                      = Settings.invertThrows;
         NewBallManager.useRails                          = Settings.useRails;
 
-        AudioManager.m_mute                              = !Settings.musicOn;
-        AudioManager.sfx_mute                            = !Settings.sfxOn;
+        AudioManager.m_mute                              = Settings.muteMusic;
+        AudioManager.sfx_mute                            = Settings.muteSfx;
 
-        NewAdManager.adsDisabled                          = Settings.adsDisabled;
+        NewAdManager.adsDisabled                         = Settings.adsDisabled;
 
         TimeManager.GetInstance().timeRange.start        = Settings.timeMin;
         TimeManager.GetInstance().timeRange.end          = Settings.timeMax;
 
         UpdateSavedValues();
 
-        // Debug.Log(NewBallManager.GetInstance().ballScale + "; " + Settings.ballScale);
+        Debug.Log("UPDATING IN GAME VALUE: audio manager mute: " + AudioManager.m_mute + "; settings: " + Settings.muteMusic);
     }
 
 	public static void UpdateSavedValues() {
@@ -110,5 +110,7 @@ public class GlobalSettings : MonoBehaviour
         PlayerPrefs.SetString("JSON", jsonString);
         PlayerPrefs.SetInt("SAVED", 1);
 		PlayerPrefs.Save();
+
+        Debug.Log("UPDATING SAVED VALUE: audio manager mute: " + AudioManager.m_mute + "; settings: " + Settings.muteMusic);
 	}
 }

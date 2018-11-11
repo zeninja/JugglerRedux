@@ -23,10 +23,8 @@ public class AudioManager : MonoBehaviour {
 	public AudioSource mainThemeSource;
 	public AudioSource settingsThemeSource;
 
-	public static bool m_mute = false;
-	string m_muteKey = "m_mute";
+	public static bool m_mute   = false;
 	public static bool sfx_mute = false;
-	string sfx_muteKey = "sfx_mute";
 
 	void Awake() {
 		if(instance == null) {
@@ -46,6 +44,8 @@ public class AudioManager : MonoBehaviour {
 		EventManager.StartListening("BallPeaked", PlayPeak);
 		EventManager.StartListening("Select",     PlaySelect);
 		EventManager.StartListening("Undo",       PlayUndo);
+
+		SetMutes();
 	}
 
 	public static void PlayCatch() {
@@ -120,20 +120,25 @@ public class AudioManager : MonoBehaviour {
 		source.Stop();
 	}
 
+	void SetMutes() {
+		mainThemeSource.mute 	 = GlobalSettings.Settings.muteMusic;
+		settingsThemeSource.mute = GlobalSettings.Settings.muteMusic;
+		sfxSource.mute 	 		 = GlobalSettings.Settings.muteSfx;
+	}
+
 	public void ToggleMute() {
 		m_mute = !m_mute;
-		mainThemeSource.mute = m_mute;
-		settingsThemeSource.mute = m_mute;
+		SetMutes();
 
-		GlobalSettings.Settings.musicOn = !m_mute;
+		GlobalSettings.Settings.muteMusic = m_mute;
 		GlobalSettings.UpdateSavedValues();
 	}
 
 	public void ToggleSFX() {
 		sfx_mute = !sfx_mute;
-		sfxSource.mute = sfx_mute;
+		SetMutes();
 
-		GlobalSettings.Settings.sfxOn = !sfx_mute;
+		GlobalSettings.Settings.muteSfx = sfx_mute;
 		GlobalSettings.UpdateSavedValues();
 	}
 }
