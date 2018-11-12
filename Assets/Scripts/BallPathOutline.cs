@@ -7,6 +7,7 @@ public class BallPathOutline : MonoBehaviour {
 	LineRenderer line, mask;
 	int sortIndex;
 
+
 	void Start() {
 		EventManager.StartListening("BallCaught", IncrementDepth);
 		mask = transform.GetChild(0).GetComponent<LineRenderer>();
