@@ -2840,7 +2840,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 96.00001, y: 110.787415, z: 102.37368}
+  m_LocalScale: {x: 96.000015, y: 110.920586, z: 102.37368}
   m_Children:
   - {fileID: 1387716917}
   - {fileID: 490546895}
@@ -2889,10 +2889,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 96.00001, y: 110.787415, z: 102.37368}
-  inverseDirection: {x: 96.000015, y: 111.91946, z: 102.37368}
-  transformPoint: {x: 96.00002, y: 113.23921, z: 102.37368}
-  transformDirection: {x: 96.000015, y: 111.91946, z: 102.37368}
+  inversePoint: {x: 96.000015, y: 110.920586, z: 102.37368}
+  inverseDirection: {x: 96.00001, y: 110.920586, z: 102.37368}
+  transformPoint: {x: 96.000015, y: 110.92058, z: 102.37368}
+  transformDirection: {x: 96.00001, y: 110.920586, z: 102.37368}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10323,6 +10323,16 @@ Prefab:
     - target: {fileID: 1030218780260200, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114858749551558546, guid: 9da8f1b0080f84262a21a09d2f1f9f39,
+        type: 2}
+      propertyPath: peakDuration
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114858749551558546, guid: 9da8f1b0080f84262a21a09d2f1f9f39,
+        type: 2}
+      propertyPath: peakScale
+      value: 0.925
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da8f1b0080f84262a21a09d2f1f9f39, type: 2}
