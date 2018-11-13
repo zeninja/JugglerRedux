@@ -49,13 +49,18 @@ public class NewBall : MonoBehaviour
 
     void Start()
     {
-        transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
         ballColorIndex = NewBallManager._ballCount - 1;
 
         if(firstBall) {
             gameObject.layer = LayerMask.NameToLayer("Ball");
             // predictiveLine.EnableLine(true);
         }
+
+        SetScale();
+    }
+
+    public void SetScale() {
+        BroadcastMessage("UpdateScale", NewBallManager.GetInstance().ballScale);
     }
 
     // Update is called once per frame
@@ -117,7 +122,7 @@ public class NewBall : MonoBehaviour
 
     public void GetCaught()
     {
-        if (IsLaunching() || NewGameManager.GameOver()) { return; }
+        if (IsLaunching() || NewGameManager.GameOver() || m_IsHeld) { return; }
         if (firstBall)
         {
             NewGameManager.GetInstance().StartGame();
@@ -150,6 +155,8 @@ public class NewBall : MonoBehaviour
 
         currentThrowVector = Vector2.zero;
 
+        GetComponentInChildren<BallPathOutline>().DrawBallPath(transform.position, throwVector);
+
         if (throwVector.y > 0)
         {
             canPeak = true;
@@ -179,7 +186,7 @@ public class NewBall : MonoBehaviour
         {
             if (!NewGameManager.GameOver() && !dead)
             {
-                KillThisBall();
+                TriggerGameOver();
                 dead = true;
             }
         }
@@ -190,19 +197,18 @@ public class NewBall : MonoBehaviour
         return framesSinceCatch < 1;
     }
 
-    void KillThisBall()
+    void TriggerGameOver()
     {
         FreezeBall();
-        ballArtManager.HandleDeath();
         GameOverManager.GetInstance().SetTargetBall(this);
         EventManager.TriggerEvent("BallDied");
-        // GameOverManager.GetInstance().StartGameOver(ballArtManager.ball);
     }
 
     public void FreezeBall()
     {
         rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
+        BroadcastMessage("HandleBallDeath");
     }
 
     public void DestroyMe()
@@ -224,7 +230,7 @@ public class NewBall : MonoBehaviour
                 break;
         
             case BallStage.hard:
-                ballArtManager.UpdateToHard();
+                // ballArtManager.UpdateToHard();
                 break;
         }
 
@@ -240,20 +246,21 @@ public class NewBall : MonoBehaviour
                 {
                     ballArtManager.SetColor(NewBallManager.GetInstance().m_BallColors[ballColorIndex]);
                     ballColorIndex++;
-                } else {
-                    SetBallStage(BallStage.normal);
-                }
+                } 
+                //else {
+                //     SetBallStage(BallStage.normal);
+                // }
 
                 break;
 
             case BallStage.normal:
-                if(NewBallManager.GetInstance().AllBallsNormal()) {
-                    SetBallStage(BallStage.hard);
-                }
+                // if(NewBallManager.GetInstance().AllBallsNormal()) {
+                //     SetBallStage(BallStage.hard);
+                // }
                 break;
         
             case BallStage.hard:
-                ballArtManager.UpdateToHard();
+                // ballArtManager.UpdateToHard();
                 break;
         }
 

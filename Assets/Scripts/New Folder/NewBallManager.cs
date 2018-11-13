@@ -30,6 +30,7 @@ public class NewBallManager : MonoBehaviour
 
     public NewBall m_BallPrefab;
     public static int _ballCount;
+    public static bool useRails = false;
     public float ballScale = .4f;
 
     NewBall firstBall;
@@ -113,8 +114,12 @@ public class NewBallManager : MonoBehaviour
 
     int xSwitcher = 1;
     public Vector2 spawnPos;
-    public void SpawnFirstBall() {
-        if(firstBall) { return; }
+    public IEnumerator SpawnFirstBall() {
+        if(firstBall != null) {
+            // Debug.Log("First ball already spawned. Stopping Ball Spawn.");
+            StopCoroutine(SpawnFirstBall());
+        }
+        // Debug.Log("Spawning First Ball.");
 
         xSwitcher *= -1;
 
@@ -130,40 +135,48 @@ public class NewBallManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().velocity  = Vector2.zero;
         ball.GetComponent<Rigidbody2D>().gravityScale = 0;
         ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
-        ball.GetComponentInChildren<NewBallArtManager>().PopInAnimation();
+        
         firstBall = ball;
 
         balls.Add(ball);
         _ballCount++;
         NewScoreManager._ballCount = _ballCount;
 
-        // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
+
+        // Play the ball pop-in animation and set the game to ready
+        yield return StartCoroutine(ball.GetComponentInChildren<BallArt>().PopIn());
     }
+
+    public bool randomizeBallSpawns = true;
 
     void SpawnBall()
     {
         if(_ballCount < endgameBallCount) { 
-
+            Vector2 ballSpawnPos;
             // Debug.Log("1. Spawning ball.");
-            Vector2 ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            if (randomizeBallSpawns) {
+                ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            } else {
+                ballSpawnPos = new Vector2(Random.Range(-2.25f, 2.25f), -6);
+            }
             NewBall ball = Instantiate(m_BallPrefab);
 
             ball.transform.position = ballSpawnPos;
             ball.SetBallState(NewBall.BallState.launching);
             ball.GetComponent<Rigidbody2D>().velocity = Vector2.up * ballLaunchForce;
             ball.GetComponentInChildren<NewBallArtManager>().SetInfo(_ballCount);
-            // ball.GetComponentInChildren<NewBallArtManager>().HandleLaunch();
 
             balls.Add(ball);
             _ballCount++;
-
-            // ballsSortedByDepth.Add(ball.GetComponent<NewBallArtManager>());
-
-            if(scoreIndex < ballSpawnScores.Length) {
-                BallCountdownManager.GetInstance().SetCountdownNumber(ballSpawnScores[scoreIndex] - NewScoreManager._peakCount);
-            }
         }
     }
+
+    public void UpdateBallScale(float s) {
+        ballScale = s;
+        foreach(NewBall b in balls) {
+            b.SetScale();
+        }
+    } 
 
     public void SetBallLaunchScores()
     {
@@ -219,18 +232,27 @@ public class NewBallManager : MonoBehaviour
         }
     }
 
-    public void KillAllBalls()
+    public IEnumerator KillAllBalls()
     {
-        for (int i = 0; i < balls.Count; i++)
+        for (int i = balls.Count - 1; i >= 0; i--)
         {
             if (!balls[i].dead)
             {
-                balls[i].GetComponent<NewBall>().DestroyMe();
+                StartCoroutine(balls[i].GetComponentInChildren<BallArt>().HideBall());
+                // balls[i].GetComponent<NewBall>().DestroyMe();
             }
+            yield return new WaitForSeconds(.05f);
         }
 
         balls.Clear();
         _ballCount = 0;
+    }
+
+    public void HideFirstBall() {
+        // Called when the settings screen appears
+        StartCoroutine(firstBall.gameObject.GetComponentInChildren<BallArt>().HideBall());
+        _ballCount = 0;
+        balls.Clear();
     }
 
     bool keepChecking;

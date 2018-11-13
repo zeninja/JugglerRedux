@@ -11,16 +11,20 @@ public class GlobalSettings : MonoBehaviour
         public float grabForce;
         public int   juggleThreshold;
         public float ballScale;
-        public float timeScale;
         public int   ballSpeedIndex;
-        public bool  allowSlaps;
         public bool adsOff;
-        public bool dragUpToThrow;
 
         public bool offsetXSpawnPosition;
 
         public float timeMin;
         public float timeMax;
+
+        public bool adsDisabled;
+
+        public bool muteMusic;
+        public bool muteSfx;
+        public bool invertThrows;
+        public bool useRails;
     }
 
     [SerializeField]
@@ -29,7 +33,7 @@ public class GlobalSettings : MonoBehaviour
 
     void Awake()
     {
-        #if !UNITY_EDITOR
+        // #if !UNITY_EDITOR
         if (PlayerPrefs.HasKey("SAVED"))
         {
             jsonString = PlayerPrefs.GetString("JSON");
@@ -39,9 +43,9 @@ public class GlobalSettings : MonoBehaviour
         {
             InitValues();
         }
-        #else 
-        InitValues();
-        #endif
+        // #else 
+        // InitValues();
+        // #endif
         // InitValues();
     }
 
@@ -55,12 +59,19 @@ public class GlobalSettings : MonoBehaviour
         // mySettings.timeScale       = TimeManager   .GetInstance().m_SlowTimeScale;
         Settings.ballSpeedIndex  = NewBallManager.GetInstance().ballSpeedIndex;
         Settings.adsOff          = NewAdManager.forceAdsOff;
-        Settings.dragUpToThrow   = NewHandManager.dragUpToThrow;
+        Settings.invertThrows    = NewHandManager.invertThrows;
+        Settings.useRails        = NewBallManager.useRails;        
 
         Settings.timeMin         = TimeManager.GetInstance().timeRange.start;
         Settings.timeMax         = TimeManager.GetInstance().timeRange.end;
 
-        // Debug.Log("INIT VALUES. BALL SCALE: " + Settings.ballScale);
+        Settings.adsDisabled     = NewAdManager.adsDisabled;
+
+        Settings.muteMusic       = AudioManager.m_mute;
+        Settings.muteSfx         = AudioManager.sfx_mute; 
+
+
+        Debug.Log("INIT VALUES. musicOn: " + Settings.muteMusic);
 		
         UpdateSavedValues();
     }
@@ -77,18 +88,29 @@ public class GlobalSettings : MonoBehaviour
         // TimeManager.GetInstance().m_SlowTimeScale 		 = mySettings.timeScale;
         NewBallManager.GetInstance().ballSpeedIndex      = Settings.ballSpeedIndex;
         NewAdManager.forceAdsOff                         = Settings.adsOff;
-        
+        NewHandManager.invertThrows                      = Settings.invertThrows;
+        NewBallManager.useRails                          = Settings.useRails;
+
+        AudioManager.m_mute                              = Settings.muteMusic;
+        AudioManager.sfx_mute                            = Settings.muteSfx;
+
+        NewAdManager.adsDisabled                         = Settings.adsDisabled;
+
         TimeManager.GetInstance().timeRange.start        = Settings.timeMin;
         TimeManager.GetInstance().timeRange.end          = Settings.timeMax;
 
         UpdateSavedValues();
+
+        Debug.Log("UPDATING IN GAME VALUE: audio manager mute: " + AudioManager.m_mute + "; settings: " + Settings.muteMusic);
     }
 
 	public static void UpdateSavedValues() {
-        Debug.Log("SAVED INFO MANAGER: Updating PLAYERPREFS saved settings");
+        // Debug.Log("SAVED INFO MANAGER: Updating PLAYERPREFS saved settings");
 		jsonString = JsonUtility.ToJson(Settings);
         PlayerPrefs.SetString("JSON", jsonString);
         PlayerPrefs.SetInt("SAVED", 1);
 		PlayerPrefs.Save();
+
+        Debug.Log("UPDATING SAVED VALUE: audio manager mute: " + AudioManager.m_mute + "; settings: " + Settings.muteMusic);
 	}
 }

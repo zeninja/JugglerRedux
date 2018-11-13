@@ -31,7 +31,7 @@ public class DotTrail : MonoBehaviour {
 	void DrawDot() {
 		GameObject d = Instantiate(dot) as GameObject;
 		d.transform.position = transform.position;
-		d.transform.localScale = transform.parent.localScale;
+		d.transform.localScale = Vector2.one * NewBallManager.GetInstance().ballScale;
 		d.GetComponent<SpriteRenderer>().color = GetComponent<NewBallArtManager>().myColor;
 		d.GetComponent<Dot>().fadeDuration = fadeDuration;
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { /*monolith,*/ ballSpawn, preGame, gameOn, gameOver };
+public enum GameState { /*monolith,*/ /*ballSpawn, preGame,*/ STARTSCREEN, PREGAME, GAMEON, GAMEOVER, SETTINGS };
 
 public class NewGameManager : MonoBehaviour {
 
-	public static GameState gameState = GameState.ballSpawn;
+	public static GameState gameState = GameState.STARTSCREEN;
 	public GameState debugState;
 
 	#region instance
@@ -15,6 +15,8 @@ public class NewGameManager : MonoBehaviour {
 		return instance;
 	}
 	#endregion
+
+	GameState lastState;
 
 	// PregameTrailSpawner pregameTrail;
 
@@ -34,77 +36,131 @@ public class NewGameManager : MonoBehaviour {
 		EventManager.StartListening("BallDied", HandleGameOver);
 	}
 
+	public bool useStartState;
+	public GameState startState;
+
 	void Start() {
-		SetState(gameState);
+		if(useStartState) {
+			SetState(startState);
+		} else {
+			SetState(gameState);
+		}
 	}
 
 	void Update() {
-		if( Input.touchCount == 2 && NewBallManager._ballCount == 0 && CanSpawnBall()) {
-			EventManager.TriggerEvent("SpawnBall");
-		}
+		// if( Input.touchCount == 2 && NewBallManager._ballCount == 0 && CanSpawnBall()) {
+		// 	EventManager.TriggerEvent("SpawnBall");
+		// }
+
+		ExitLoopedScreens();
 
 		debugState = gameState;
 	}
 
-	public void SetState(GameState newState) {
+	void SetState(GameState newState) {
+		lastState = gameState;
 		gameState = newState;
 
-		// trigger one-time effects
-
 		switch(gameState) {
-			// case GameState.monolith:
-			// 	MonolithManager.GetInstance().Initialize();
-			// 	break;
-			case GameState.ballSpawn:
-				NewBallManager.GetInstance().SpawnFirstBall();
-				// BallCountdownManager.GetInstance().SetUpCountdown();
+			case GameState.STARTSCREEN:
+				LogoAnimator.GetInstance().PlayLogoIn();
+				receiveInput = true;
 				break;
 
-			case GameState.preGame:
-				// NewBallManager.GetInstance().SpawnFirstBall();
-				// pregameTrail.SetPosition();
-				// pregameTrail.EnableTrail(true);
+			case GameState.PREGAME:
+				StartCoroutine(PregameProcess());
 				break;
 
-			case GameState.gameOn:
-				// pregameTrail.EnableTrail(false);
-				// BallCountdownManager.GetInstance().SetUpCountdown();
-				break;
+			case GameState.GAMEON:
 
-			case GameState.gameOver:
-				GameOverManager.GetInstance().StartGameOver();
+				break; 
+
+			case GameState.GAMEOVER:
+				GameOverManager.GetInstance().SwitchState(0);
+				break;
+			case GameState.SETTINGS:
+				NewBallManager.GetInstance().HideFirstBall();
 				break;
 		}
 	}
 
+	bool receiveInput = true;
+
+	void ExitLoopedScreens() {
+		if(receiveInput) {
+			if(Input.touchCount > 0 || Input.GetMouseButtonDown(0)) {
+				if(gameState == GameState.STARTSCREEN) {
+					SetState(GameState.PREGAME);
+					receiveInput = false;
+				}
+
+				if(gameState == GameState.GAMEOVER) {
+					GameOverManager.GetInstance().SwitchState(1);
+					receiveInput = false;
+				}
+			}
+		}
+	}
+
+	IEnumerator PregameProcess() {
+		if(lastState == GameState.STARTSCREEN) {
+			yield return StartCoroutine(LogoAnimator.GetInstance().HideLogo());
+		}
+        NewScoreManager.GetInstance().EnableScore(true);
+		yield return StartCoroutine(NewBallManager.GetInstance().SpawnFirstBall());
+	}
+
 	public void StartGame() {
-		SetState(GameState.gameOn);
-		BallCountdownManager.GetInstance().SetUpCountdown();
+		// Triggered by a finger "catching" the first ball
+		SetState(GameState.GAMEON);
+	}
+
+	public void EnterSettings() {
+		SetState(GameState.SETTINGS);
+	}
+
+	public void ExitSettings() {
+		SetState(GameState.PREGAME);
 	}
 
 	void HandleGameOver() {
-		SetState(GameState.gameOver);
+		SetState(GameState.GAMEOVER);
 	}
 
-	public static bool PreGame() {
-		return NewGameManager.gameState == GameState.preGame;
+	public void GameOverInComplete() {
+		receiveInput = true;
+	}
+
+	public static bool InPreGame() {
+		return NewGameManager.gameState == GameState.PREGAME;
+	}
+
+	public static bool InSettings() {
+		return NewGameManager.gameState == GameState.SETTINGS;
 	}
 
 	public static bool GameOver() {
-		return NewGameManager.gameState == GameState.gameOver;
+		return NewGameManager.gameState == GameState.GAMEOVER;
 	}
 
 	public void ResetGame() {
-		NewScoreManager.GetInstance().Reset();
-		// BallCountdownManager.GetInstance().Reset();
-		SetState(GameState.ballSpawn);
+		SetState(GameState.STARTSCREEN);
 	}
 
-	public void PrepGame() {
-		SetState(GameState.preGame);
+	public static bool CanGrabBalls() {
+		return gameState != GameState.SETTINGS && gameState != GameState.GAMEOVER;
 	}
 
+	public void HandlePurchaseMade() {
+        NewAdManager.GetInstance().HandlePurchaseMade();
+	}
+
+	public void HandleTip() {
+
+	}
+
+	// Debug
 	bool CanSpawnBall() {
-		return gameState == GameState.preGame;
+		return gameState == GameState.PREGAME;
 	}
 }

@@ -36,74 +36,84 @@ public class GameOverManager : MonoBehaviour
 
     public void SetTargetBall(NewBall ball) {
         deadBall = ball;
-        target = deadBall.ballArtManager.m_BallSprite;
-        target.enabled = true;
-        target.sortingOrder = 100;
+        // target = deadBall.ballArtManager.m_BallSprite;
+        // target.enabled = true;
+        // target.sortingOrder = 100;
 
         deadBallPos = ball.transform.position;
     }
-    
+
+    public void SwitchState(int index) {
+        switch(index) {
+            case 0:
+                StartCoroutine(GameOverIn());
+                break;
+            case 1:
+                StartCoroutine(GameOverOut());
+                break;
+        }
+    }
+
     NewBall deadBall;
     Vector2 deadBallPos;
 
-    public void StartGameOver()
-    {
-        StartCoroutine(GameOver());
-    }
-
-    IEnumerator GameOver()
+    IEnumerator GameOverIn()
     {
         NewBallManager.GetInstance().FreezeBalls();
         NewScoreManager.GetInstance().CheckHighscore();
 
         yield return StartCoroutine(GameOverStacker.GetInstance().HandleGameOver(deadBallPos, deadBall.ballArtManager.myColor));
         
-        NewBallManager.GetInstance().KillAllBalls();
+        yield return StartCoroutine(NewBallManager.GetInstance().KillAllBalls());
         EventManager.TriggerEvent("CleanUp");
+        // FontManager.GetInstance().SetColor(false);
 
-        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask(target));
-        yield return new WaitForSeconds(.15f);
+        yield return new WaitForSeconds(.165f);
+        yield return StartCoroutine(ScoreMaskEffect.GetInstance().PopInScoreMask());
+        // yield return new WaitForSeconds(.15f);
         yield return StartCoroutine(NewScoreManager.GetInstance().HighscoreProcess());
+
+        StartCoroutine(Rainbower.GetInstance().LotsOfSwooshes(NewScoreManager._ballCount));
+        NewGameManager.GetInstance().GameOverInComplete();
+    }
+
+    public IEnumerator GameOverOut() {
+        yield return StartCoroutine(deadBall.GetComponentInChildren<BallArt>().HideBall());
+        Rainbower.GetInstance().ExitLoop();
+
         yield return StartCoroutine(ScoreMaskEffect.GetInstance().PlayMaskOut());
-        yield return StartCoroutine(Rainbower.GetInstance().LotsOfSwooshes(NewScoreManager._ballCount));
 
-        NewScoreManager._peakCount = 0;
-        NewScoreManager._ballCount  = 0;
-
+        NewScoreManager.GetInstance().Reset();
         NewScoreManager.GetInstance().EnableScore(false);
-        
-        EventManager.TriggerEvent("KillParticles");
-        
-        yield return StartCoroutine(InterstitalAd());
-        yield return StartCoroutine(ShowLogo());
+        // FontManager.GetInstance().SetColor(true);
 
-        NewScoreManager.GetInstance().EnableScore(true);
+        yield return StartCoroutine(InterstitalAd());
+        // yield return StartCoroutine(ShowLogo());
         
         yield return new WaitForSeconds(.15f);
         yield return StartCoroutine(GameOverStacker.GetInstance().HideCircles());
         
-        Destroy(target.transform.root.gameObject);
+        // Destroy(target.transform.root.gameObject);
 
         ScoreMaskEffect.GetInstance().Reset();
         NewGameManager.GetInstance().ResetGame();
-
-    }  
+    }
 
     public float explodeDuration = 1.47f;
 
-    IEnumerator Explode()
-    {
-        float t = 0;
-        float targetScale = 40;
+    // IEnumerator Explode()
+    // {
+    //     float t = 0;
+    //     float targetScale = 40;
 
-        while (t < explodeDuration)
-        {
-            t += Time.fixedDeltaTime;
-            target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStop3(t / explodeDuration);
-            yield return new WaitForFixedUpdate();
-        }
+    //     while (t < explodeDuration)
+    //     {
+    //         t += Time.fixedDeltaTime;
+    //         target.transform.localScale = Vector3.one + Vector3.one * targetScale * EZEasings.SmoothStop3(t / explodeDuration);
+    //         yield return new WaitForFixedUpdate();
+    //     }
 
-    }
+    // }
     public float implodeDuration = 1.0f;
 
     IEnumerator Implode()
@@ -125,15 +135,6 @@ public class GameOverManager : MonoBehaviour
     IEnumerator InterstitalAd() {
         NewAdManager.GetInstance().ShowVideoAd();
         while(NewAdManager.GetInstance().ShowingAd()) {
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    public LogoAnimator logoAnimator;
-
-    IEnumerator ShowLogo() {
-        logoAnimator.ShowLogo();
-        while(logoAnimator.GetComponent<Animation>().isPlaying) {
             yield return new WaitForEndOfFrame();
         }
     }

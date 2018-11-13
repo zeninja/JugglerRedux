@@ -57,7 +57,7 @@ public class TimeManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    public Extensions.Property slowTimeScaleRange;
+    // public Extensions.Property slowTimeScaleRange;
 
     void SlowTimeBasedOnThrows()
     {
@@ -67,7 +67,7 @@ public class TimeManager : MonoBehaviour
         {
             float timeSlowPercent = (float)NewBallManager.GetInstance().GetUnheldBallCount() / 9f;
 
-            juggleTime = Extensions.GetSmoothStepRange(slowTimeScaleRange, timeSlowPercent);
+            juggleTime = Extensions.GetSmoothStepRange(timeRange, timeSlowPercent);
             m_TargetTimeScale = juggleTime;
             timeSlowing = true;
         }

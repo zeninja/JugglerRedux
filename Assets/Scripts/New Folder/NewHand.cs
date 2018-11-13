@@ -69,7 +69,7 @@ public class NewHand : MonoBehaviour
 
     void HandleInput()
     {
-        // if(NewGameManager.GetInstance().gameState == GameState.gameOver) { return; }
+        // if(NewGameManager.gameState != GameState.preGame) { return; }
 
         if (useMouse)
         {
@@ -190,16 +190,24 @@ public class NewHand : MonoBehaviour
             // Check all possible balls
             int layerMask = 1 << LayerMask.NameToLayer("Ball");
             float radius = GetComponent<CircleCollider2D>().radius;
-            RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, radius, Vector2.zero, 0, layerMask);
+            RaycastHit2D[] rawHits = Physics2D.CircleCastAll(transform.position, radius, Vector2.zero, 0, layerMask);
+            List<RaycastHit2D> cleanedUp = new List<RaycastHit2D>();
+            
+            for(int i = 0; i < rawHits.Length; i++) {
+                if(!rawHits[i].transform.gameObject.GetComponent<NewBall>().IsLaunching()) {
+                    cleanedUp.Add(rawHits[i]);
+                }
+            }
+            RaycastHit2D[] cleanedUpHits = cleanedUp.ToArray();
 
-            float[] distances = new float[hits.Length];
-            float[] heights  = new float[hits.Length];
+            float[] distances = new float[cleanedUpHits.Length];
+            float[] heights  = new float[cleanedUpHits.Length];
             // int[] depths     = new int[hits.Length];
 
-            for(int i = 0; i < hits.Length; i++) {
+            for(int i = 0; i < cleanedUpHits.Length; i++) {
                 // Debug.Log(hits[i].transform.gameObject.name);
-                heights[i]    = hits[i].transform.position.y;
-                distances [i] = (transform.position - hits[i].transform.position).magnitude;
+                heights[i]    = cleanedUpHits[i].transform.position.y;
+                distances [i] = (transform.position - cleanedUpHits[i].transform.position).magnitude;
                 // depths[i]     = hits[i].transform.gameObject.GetComponentInChildren<NewBallArtManager>().currentDepth;
             }
 
@@ -215,18 +223,10 @@ public class NewHand : MonoBehaviour
 
             ballIndex = heightIndex;
 
-            NewBall targetBall = hits[ballIndex].transform.GetComponent<NewBall>();
-            SetBall(targetBall);
-
-            // Old Approach
-            // Make sure we're catching a ball
-            // if (other.CompareTag("Ball"))
-            // {
-            //     NewBall ballToJuggle = other.gameObject.GetComponent<NewBall>();
-            //     if (!ballToJuggle.IsLaunching()) { 
-            //         SetBall(ballToJuggle);
-            //     }
-            // }
+            if (ballIndex < cleanedUpHits.Length) {
+                NewBall targetBall = cleanedUpHits[ballIndex].transform.GetComponent<NewBall>();
+                SetBall(targetBall);
+            }
         }
     }
 
@@ -257,11 +257,12 @@ public class NewHand : MonoBehaviour
 
     void FindGrabThrowVector()
     {
-        int throwDirectionModifier = NewHandManager.dragUpToThrow ? 1 : -1;
+        int throwDirectionModifier = NewHandManager.invertThrows ? -1 : 1;
         m_GrabMoveDir = ((Vector2)m_Transform.position - m_CatchPosition) * throwDirectionModifier;
         m_GrabThrowVector = m_GrabMoveDir * grabThrowForce;
 
         if (m_GrabThrowVector == Vector2.zero) {
+            // Debug.Break();
             m_GrabThrowVector = new Vector2(0, -.001f);
         }
 
@@ -270,7 +271,7 @@ public class NewHand : MonoBehaviour
 
     void GrabBall()
     {
-        if(!m_BallGrabbedFirstFrame) {
+        if(!m_BallGrabbedFirstFrame && NewGameManager.CanGrabBalls()) {
             // Debug.Log("Ball grabbed");
             m_Ball.GetCaught();
             m_CatchPosition = m_Transform.position;
@@ -279,14 +280,13 @@ public class NewHand : MonoBehaviour
             // m_CatchRingSpawner.SpawnRing(ballColor);
             m_FingerRing.TriggerRing(ballColor);
             
-            Vibrator.Vibrate(vibeDuration);
+            // Vibrator.Vibrate(vibeDuration);
             // CatchAndDragView.GetInstance().SetCatchPosition(transform.position);
         }
     }
 
     void ThrowBall()
     {
-
         m_Ball.GetThrown(m_GrabThrowVector);
         m_Ball = null;
         // CatchAndDragView.GetInstance().SetThrowPosition(transform.position);

@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour {
 
 	public static UIManager instance;
 	public Image ballTimer;
-	public Toggle mute;
+	// public Toggle mute;
 	public Toggle settings;
 	public GameObject buttons;
 
@@ -32,9 +32,9 @@ public class UIManager : MonoBehaviour {
 
 	}
 
-	public void UpdateMute() {
-		mute.isOn = AudioManager.muted;
-	}
+	// public void UpdateMute() {
+	// 	mute.isOn = AudioManager.m_mute;
+	// }
 
 	public void ToggleSettings() {
 		settingsPanel.SetActive (settings.isOn);

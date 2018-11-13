@@ -7,53 +7,53 @@ using TMPro;
 public class NewUIManager : MonoBehaviour {
 
 	// In-Game
-	public TextMeshPro ui_juggleTime;
+	// public TextMeshPro ui_juggleTime;
 
 
 	// Debug
-	public Text ui_SlapForce;
-	public Text ui_GrabForce;
-	public Text ui_JuggleThreshold;
-	public Text ui_TimeSlowFactor;
-	public Text ui_BallScale;
-	public Text ui_BallSpawnRate;
-	public Text ui_playcount;
-	public Toggle ui_ShowAds;
+	// public Text ui_SlapForce;
+	// public Text ui_GrabForce;
+	// public Text ui_JuggleThreshold;
+	// // public Text ui_TimeSlowFactor;
+	// public Text ui_BallScale;
+	// public Text ui_BallSpawnRate;
+	// public Text ui_playcount;
+	// public Toggle ui_ShowAds;
 
 
-	public GameObject debugMenu;
+	// public GameObject debugMenu;
 
-	bool showDebugMenu = false;
-	bool canShowMenu = true;
+	// bool showDebugMenu = false;
+	// bool canShowMenu = true;
 
 	public GameObject menuButtons;
 
 	// Update is called once per frame
 	void Update () {
-		ui_SlapForce.text       = NewHandManager .GetInstance(). touchSlapThrowForce.ToString("F2");
-		ui_GrabForce.text       = NewHandManager .GetInstance(). touchGrabThrowForce.ToString("F2");
-		ui_JuggleThreshold.text = NewBallManager .GetInstance(). juggleThreshold    .ToString("");
-		ui_BallScale.text       = NewBallManager .GetInstance(). ballScale          .ToString("F2");
-		// ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
-		ui_playcount.text       = NewAdManager.playcount.ToString();
-		ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
+		// ui_SlapForce.text       = NewHandManager .GetInstance(). touchSlapThrowForce.ToString("F2");
+		// ui_GrabForce.text       = NewHandManager .GetInstance(). touchGrabThrowForce.ToString("F2");
+		// ui_JuggleThreshold.text = NewBallManager .GetInstance(). juggleThreshold    .ToString("");
+		// ui_BallScale.text       = NewBallManager .GetInstance(). ballScale          .ToString("F2");
+		// // ui_TimeSlowFactor.text  = TimeManager    .GetInstance(). m_SlowTimeScale    .ToString("F2");
+		// ui_playcount.text       = NewAdManager.playcount.ToString();
+		// ui_ShowAds.isOn			= ! NewAdManager.forceAdsOff;
 
-		ui_juggleTime.text		= TimeManager.GetInstance().m_CurrentTimeScale.ToString("F2");
+		// ui_juggleTime.text		= TimeManager.GetInstance().m_CurrentTimeScale.ToString("F2");
 
-		bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
+		// bool showDebug = Input.touchCount == 3 || Input.GetKey(KeyCode.D);
 
-		if (showDebug) {
-			if(canShowMenu) {
-				canShowMenu = false;
-				showDebugMenu = !showDebugMenu;
-			}
-		} else {
-			canShowMenu = true;
-		}
+		// if (showDebug) {
+		// 	if(canShowMenu) {
+		// 		canShowMenu = false;
+		// 		showDebugMenu = !showDebugMenu;
+		// 	}
+		// } else {
+		// 	canShowMenu = true;
+		// }
 		
-		debugMenu.SetActive(showDebugMenu);
+		// debugMenu.SetActive(showDebugMenu);
 
-		menuButtons.SetActive(NewGameManager.gameState == GameState.preGame);
+		menuButtons.SetActive(NewGameManager.InPreGame() || NewGameManager.InSettings());
 	}
 
 	public void ToggleAds() {
@@ -159,21 +159,39 @@ public class NewUIManager : MonoBehaviour {
                 ballSpeedText = "Ball Spawn Speed:\nFast";
                 break;
         }
-        ui_BallSpawnRate.text = ballSpeedText;
+        // ui_BallSpawnRate.text = ballSpeedText;
 
 		GlobalSettings.Settings.ballSpeedIndex = ballSpeedIndex;
 		GlobalSettings.UpdateSavedValues();
 	}
 
-	public ThrowDirectionSprite throwDirectionSprite;
+	// public ThrowDirectionSprite throwDirectionSprite;
 
-	public void SwitchDragDirection() {
-		bool throwDirection = !NewHandManager.dragUpToThrow;
-		NewHandManager.dragUpToThrow = throwDirection;
-
-		throwDirectionSprite.UpdateThrowSprite();
-
-		GlobalSettings.Settings.dragUpToThrow = throwDirection;
+	public void InvertThrowDirection() {
+		NewHandManager.invertThrows = !NewHandManager.invertThrows;
+		GlobalSettings.Settings.invertThrows = NewHandManager.invertThrows;
+		// Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
 		GlobalSettings.UpdateSavedValues();
+	}
+
+	public void InvertUseRails() {
+		NewBallManager.useRails = !NewBallManager.useRails;
+		GlobalSettings.Settings.useRails = NewBallManager.useRails;
+		// Debug.Log("settings set to: " + GlobalSettings.Settings.invertThrows);
+		GlobalSettings.UpdateSavedValues();
+	}
+
+	public static void UpdateBallScale() {
+		GlobalSettings.Settings.ballScale = NewBallManager.GetInstance().ballScale;
+		GlobalSettings.UpdateSavedValues();
+		// Debug.Log(GlobalSettings.Settings.ballScale);
+	}
+
+	public void OpenContactInfo() {
+		#if UNITY_EDITOR
+		#else
+		Application.OpenURL("https://www.twitter.com/adnanwho");
+		Application.OpenURL("twitter:///user?screen_name=adnanwho");
+		#endif
 	}
 }

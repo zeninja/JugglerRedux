@@ -1,19 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_ADS
 using UnityEngine.Advertisements;
-#endif
 
 public class NewAdManager : MonoBehaviour
 {
 
-    public static int adThreshold = 3;
+    public static int adThreshold = 5;
     public static int playcount = 0;
 
     bool isShowingAd = false;
 
-    public static bool forceAdsOff = true;
+    public static bool forceAdsOff = false;
+    public static bool adsDisabled = false;
 
     #region instance
     static NewAdManager instance;
@@ -52,8 +51,7 @@ public class NewAdManager : MonoBehaviour
 
     public void ShowVideoAd()
     {
-		#if UNITY_ADS
-        if (forceAdsOff) { return; }
+        if (forceAdsOff || adsDisabled) { return; }
 
 		if(NewScoreManager._lastPeakCount >= 5) {
 			playcount++;
@@ -74,10 +72,7 @@ public class NewAdManager : MonoBehaviour
 				Advertisement.Show("video", options);
 			}
 		}
-		#endif
     }
-
-#if UNITY_ADS
     private void HandleShowResult(ShowResult result)
     {
         switch (result)
@@ -90,7 +85,7 @@ public class NewAdManager : MonoBehaviour
             case ShowResult.Skipped:
                 Debug.Log("The ad was skipped before reaching the end.");
                 isShowingAd = false;
-                playcount = 1;
+                playcount = 0;
                 break;
             case ShowResult.Failed:
                 Debug.LogError("The ad failed to be shown.");
@@ -98,10 +93,16 @@ public class NewAdManager : MonoBehaviour
                 break;
         }
     }
-#endif
 
     public bool ShowingAd()
     {
         return isShowingAd;
+    }
+
+    public void HandlePurchaseMade() {
+        // Purchase was successful
+        adsDisabled = true;
+        GlobalSettings.Settings.adsDisabled = true;
+        GlobalSettings.UpdateSavedValues();
     }
 }
