@@ -100,8 +100,8 @@ public class NewBallArtManager : MonoBehaviour
     Color normalStageColor;
 
     public void UpdateToNormal() {
-        int lastIndex = NewBallManager.GetInstance().m_BallColors.Length - 1;
-        normalStageColor = NewBallManager.GetInstance().m_BallColors[lastIndex];
+        // int lastIndex = NewBallManager.GetInstance().m_BallColors.Length - 1;
+        // normalStageColor = NewBallManager.GetInstance().m_BallColors[lastIndex];
         GetComponent<DotTrail>().TriggerEndgame();
         SetColor(normalStageColor);
     }
