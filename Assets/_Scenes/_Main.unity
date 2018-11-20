@@ -869,7 +869,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Balls     Peaks
+  m_text: Balls        Peaks
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b6c82a5b23aba943bc2fa789fd166de, type: 2}
   m_sharedMaterial: {fileID: 21712552533848958, guid: 5b6c82a5b23aba943bc2fa789fd166de,
@@ -938,9 +938,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 51226750}
-    characterCount: 15
+    characterCount: 18
     spriteCount: 0
-    spaceCount: 5
+    spaceCount: 8
     wordCount: 2
     linkCount: 0
     lineCount: 1
@@ -2840,7 +2840,7 @@ RectTransform:
   m_GameObject: {fileID: 253191149}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 15.503738}
-  m_LocalScale: {x: 96, y: 110.92058, z: 102.37368}
+  m_LocalScale: {x: 96, y: 110.92058, z: 102.37367}
   m_Children:
   - {fileID: 1387716917}
   - {fileID: 490546895}
@@ -2889,10 +2889,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10a8d6e08a3414196eec1115150557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inversePoint: {x: 96, y: 110.92058, z: 102.37368}
-  inverseDirection: {x: 96, y: 110.92058, z: 102.37367}
-  transformPoint: {x: 96, y: 110.92058, z: 102.37368}
-  transformDirection: {x: 96, y: 110.92058, z: 102.37367}
+  inversePoint: {x: 96, y: 110.92058, z: 102.37367}
+  inverseDirection: {x: 96, y: 110.92058, z: 102.37368}
+  transformPoint: {x: 96, y: 110.92058, z: 102.37369}
+  transformDirection: {x: 96, y: 110.92058, z: 102.37368}
 --- !u!114 &253191153
 MonoBehaviour:
   m_ObjectHideFlags: 0
