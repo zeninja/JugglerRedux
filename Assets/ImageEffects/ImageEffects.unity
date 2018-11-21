@@ -277,4 +277,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b91c62a155739245a1c5bbd334c3dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EffectMaterial: {fileID: 2100000, guid: e21b691db51cc9241a9d3d45a0b59a28, type: 2}
+  EffectMaterial: {fileID: 2100000, guid: 7624d611bd330e44b80ef65275598a16, type: 2}
