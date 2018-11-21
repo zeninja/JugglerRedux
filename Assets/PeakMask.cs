@@ -38,7 +38,7 @@ public class PeakMask : MonoBehaviour {
 
 	void HandlePeak() {
 		// Debug.Log("Handling peak");
-		StartCoroutine(Peak());
+		// StartCoroutine(Peak());
 	}
 
 	public IEnumerator Peak() {
