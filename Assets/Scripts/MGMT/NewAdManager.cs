@@ -6,7 +6,7 @@ using UnityEngine.Advertisements;
 public class NewAdManager : MonoBehaviour
 {
 
-    public static int adThreshold = 5;
+    public static int adThreshold = 3;
     public static int playcount = 0;
 
     bool isShowingAd = false;
@@ -49,6 +49,8 @@ public class NewAdManager : MonoBehaviour
         isShowingAd = false;
     }
 
+    // bool hasHitAdThreshold;
+
     public void ShowVideoAd()
     {
         if (forceAdsOff || adsDisabled) { return; }
@@ -70,6 +72,7 @@ public class NewAdManager : MonoBehaviour
 				isShowingAd = true;
 				var options = new ShowOptions { resultCallback = HandleShowResult };
 				Advertisement.Show("video", options);
+                // hasHitAdThreshold = true;
 			}
 		}
     }
@@ -79,19 +82,24 @@ public class NewAdManager : MonoBehaviour
         {
             case ShowResult.Finished:
                 Debug.Log("The ad was successfully shown.");
-                isShowingAd = false;
                 playcount = 0;
+                StartCoroutine(ShowInterstitial());
                 break;
             case ShowResult.Skipped:
                 Debug.Log("The ad was skipped before reaching the end.");
-                isShowingAd = false;
-                playcount = 0;
+                playcount = 1;
+                StartCoroutine(ShowInterstitial());
                 break;
             case ShowResult.Failed:
                 Debug.LogError("The ad failed to be shown.");
                 isShowingAd = false;
                 break;
         }
+    }
+
+    IEnumerator ShowInterstitial() {
+        yield return StartCoroutine(Interstitial.GetInstance().ShowInterstitial());
+        isShowingAd = false;
     }
 
     public bool ShowingAd()

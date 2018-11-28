@@ -26,12 +26,17 @@ public class SettingsButton : MonoBehaviour
 
     public ButtonSetting prep, on, off, click, uninteractable;
 
+    public bool bounceOnInit = true;
+
     void Start()
     {
     }
 
     void OnEnable() {
-        InitBounce();
+        if(bounceOnInit) {
+            InitBounce();
+
+        }
     }
 
     public bool interactable;
