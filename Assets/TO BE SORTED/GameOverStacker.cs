@@ -48,10 +48,10 @@ public class GameOverStacker : MonoBehaviour
 
         // UpdateColors();
 
-        if (Input.GetKeyDown(KeyCode.R) && manualTrigger)
-        {
-            ResetDots();
-        }
+        // if (Input.GetKeyDown(KeyCode.R) && manualTrigger)
+        // {
+        //     ResetDots();
+        // }
 
     }
 
@@ -100,13 +100,13 @@ public class GameOverStacker : MonoBehaviour
             Extensions.Property scaleRange = new Extensions.Property();
             if (NewScoreManager.newHighscore || testing)
             {
-                scaleRange.start = totalScaleDiff * EZEasings.SmoothStart3((float)i / (float)numCircles);
-                scaleRange.end = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
+                scaleRange.start = totalScaleDiff * EZEasings.SmoothStart3((float) i      / (float)numCircles);
+                scaleRange.end   = totalScaleDiff * EZEasings.SmoothStart3((float)(i + 1) / (float)numCircles);
             }
             else
             {
-                scaleRange.start = totalScaleDiff * EZEasings.Linear((float)i / (float)numCircles);
-                scaleRange.end = totalScaleDiff * EZEasings.Linear((float)(i + 1) / (float)numCircles);
+                scaleRange.start = totalScaleDiff * EZEasings.Linear((float) i      / (float)numCircles);
+                scaleRange.end   = totalScaleDiff * EZEasings.Linear((float)(i + 1) / (float)numCircles);
             }
 
 
@@ -200,30 +200,18 @@ public class GameOverStacker : MonoBehaviour
         }
     }
 
+    public float hideDuration = .35f;
+
     public IEnumerator HideCircles()
     {
         float t = revealDuration;
         float d = revealDuration;
 
-        while (t >= 0)
-        {
-            float p = t / d;
-            int index = Mathf.CeilToInt((float)numCircles * EZEasings.SmoothStart2(p));
-            index = Mathf.Clamp(index, 0, numCircles - 1);
-
-            for (int i = 0; i < dots.Count; i++)
-            {
-                if (i >= index)
-                {
-                    dots[i].gameObject.SetActive(false);
-                }
-            }
-
-            t -= Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
+        for(int i = dots.Count - 1; i > 0; i--) {
+            yield return StartCoroutine(dots[i].HideDot(hideDuration / dots.Count, dots[i - 1].radius));
         }
 
-        dots[0].gameObject.SetActive(false);
+        yield return StartCoroutine(dots[0].HideDot(hideDuration / dots.Count, 0));
 
 
         for (int i = 0; i < dots.Count; i++)
@@ -275,25 +263,4 @@ public class GameOverStacker : MonoBehaviour
         yield return null;
     }
 
-    // IEnumerator ScaleCircleIn(StackerDot s, float d, Extensions.Property scaleRange)
-    // {
-    //     float startScale = scaleRange.start;
-    //     float scaleDiff = (scaleRange.end - scaleRange.start);
-    //     float targetScale = startScale;
-
-    //     float t = 0;
-    //     while (t < d)
-    //     {
-    //         t += Time.fixedDeltaTime;
-    //         float percent = t / d;
-    //         percent = Mathf.Clamp01(percent);
-
-    //         targetScale = startScale + scaleDiff * EZEasings.SmoothStart3(percent);
-    //         s.SetTargetRadius(targetScale);
-
-    //         yield return new WaitForFixedUpdate();
-    //     }
-
-    //     yield return new WaitForEndOfFrame();
-    // }
 }

@@ -43,8 +43,8 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	void InitSettings() {
-		music		.SetButtonState(!GlobalSettings.Settings.muteMusic);
-		sfx			.SetButtonState(!GlobalSettings.Settings.muteSfx);
+		music		.SetButtonState(GlobalSettings.Settings.muteMusic);
+		sfx			.SetButtonState(GlobalSettings.Settings.muteSfx);
 		invertThrows.SetButtonState(GlobalSettings.Settings.invertThrows);
 		rails		.SetButtonState(GlobalSettings.Settings.useRails);
 
@@ -65,7 +65,7 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	public void ShowSettings() {
-		AudioManager.PlaySettingsTheme();
+		EventManager.TriggerEvent("SettingsIn");
 		StartCoroutine(SettingsIn());
 	}
 
@@ -77,7 +77,7 @@ public class SettingsScreen : MonoBehaviour {
 	}
 
 	public void HideSettings() {
-		AudioManager.StopSettingsTheme();
+		EventManager.TriggerEvent("SettingsOut");
 		StartCoroutine(SettingsOut());
 	}
 

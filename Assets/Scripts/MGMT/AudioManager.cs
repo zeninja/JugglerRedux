@@ -19,9 +19,13 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip bounceSound;
 
 
+	public AudioClip toggleIn;
+	public AudioClip toggleOut;
+
 	public AudioSource sfxSource;
 	public AudioSource mainThemeSource;
 	public AudioSource settingsThemeSource;
+	public AudioSource interstitialThemeSource;
 
 	public static bool m_mute   = false;
 	public static bool sfx_mute = false;
@@ -44,6 +48,9 @@ public class AudioManager : MonoBehaviour {
 		EventManager.StartListening("BallPeaked", PlayPeak);
 		EventManager.StartListening("Select",     PlaySelect);
 		EventManager.StartListening("Undo",       PlayUndo);
+		EventManager.StartListening("SettingsIn", PlaySettingsTheme);
+		EventManager.StartListening("SettingsOut",StopSettingsTheme);
+		// EventManager.StartListening("GameReset",  PlayTheme);
 
 		SetMutes();
 	}
@@ -76,21 +83,21 @@ public class AudioManager : MonoBehaviour {
 		instance.sfxSource.PlayOneShot (instance.gameOver);
 	}
 
-	public static void PlaySettingsTheme() {
-		instance.SettingsThemeIn();
-	}
+	// public static void PlaySettingsTheme() {
+	// 	instance.SettingsThemeIn();
+	// }
 
-	public static void StopSettingsTheme() {
-		instance.SettingsThemeOut();
-	}
+	// public static void StopSettingsTheme() {
+	// 	instance.SettingsThemeOut();
+	// }
 
-	void SettingsThemeIn() {
+	void PlaySettingsTheme() {
 		StartCoroutine(FadeSourceOut(mainThemeSource));
 		StartCoroutine(FadeSourceIn(settingsThemeSource));
 		settingsThemeSource.Play();
 	}
 
-	void SettingsThemeOut() {
+	void StopSettingsTheme() {
 		StartCoroutine(FadeSourceIn(mainThemeSource));
 		StartCoroutine(FadeSourceOut(settingsThemeSource));
 	}
@@ -120,10 +127,15 @@ public class AudioManager : MonoBehaviour {
 		source.Stop();
 	}
 
+	void PlayInterstitialTheme() {
+		FadeSourceIn(interstitialThemeSource);
+	}
+
 	void SetMutes() {
-		mainThemeSource.mute 	 = GlobalSettings.Settings.muteMusic;
-		settingsThemeSource.mute = GlobalSettings.Settings.muteMusic;
-		sfxSource.mute 	 		 = GlobalSettings.Settings.muteSfx;
+		mainThemeSource.mute 	 	 = GlobalSettings.Settings.muteMusic;
+		settingsThemeSource.mute 	 = GlobalSettings.Settings.muteMusic;
+		interstitialThemeSource.mute = GlobalSettings.Settings.muteMusic;
+		sfxSource.mute 	 		 	 = GlobalSettings.Settings.muteSfx;
 	}
 
 	public void ToggleMute() {

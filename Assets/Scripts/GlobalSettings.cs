@@ -12,14 +12,14 @@ public class GlobalSettings : MonoBehaviour
         public int   juggleThreshold;
         public float ballScale;
         public int   ballSpeedIndex;
-        public bool adsOff;
+        public bool  adsOff;
 
-        public bool offsetXSpawnPosition;
+        public bool   offsetXSpawnPosition;
 
         public float timeMin;
         public float timeMax;
 
-        public bool adsDisabled;
+        public bool  adsDisabled;
 
         public bool muteMusic;
         public bool muteSfx;

@@ -29,21 +29,12 @@ public class Interstitial : MonoBehaviour {
 		}
 	}
 
-	public float hangDuration = 3f;
-
-	public AnimationClip inAnim, outAnim;
+	public AnimationClip removeAdsInterstitial;
 
 	public IEnumerator ShowInterstitial() {
-		GetComponent<Animation>().Play(inAnim.name);
-		yield return StartCoroutine(Extensions.Wait(inAnim.length));
-
+		GetComponent<Animation>().Play(removeAdsInterstitial.name);
 		button.SetActive(true);
-
-		yield return StartCoroutine(Extensions.Wait(hangDuration));
-
+		yield return StartCoroutine(Extensions.Wait(removeAdsInterstitial.length));
 		button.SetActive(false);
-
-		GetComponent<Animation>().Play(outAnim.name);
-		yield return StartCoroutine(Extensions.Wait(outAnim.length));
 	}
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +22,10 @@ public class ProceduralCircle : MonoBehaviour
         ringPositions.Clear();
     }
 
+    void Start() {
+
+    }
+
     void Update()
     {
         FindRingPositions();
@@ -41,7 +45,13 @@ public class ProceduralCircle : MonoBehaviour
         if(!ready) { return; }
         GetComponent<MeshRenderer>().material.color = color;
         GetComponent<MonolithMesh>().UpdateValues(anchorPos, ringPositions);
+
+        GetComponent<MeshRenderer>().sortingLayerName = "UI";
         GetComponent<MeshRenderer>().sortingOrder = -depth;
+    }
+
+    void ScaleToSize() {
+        
     }
 
     void FindRingPositions()
@@ -74,9 +84,4 @@ public class ProceduralCircle : MonoBehaviour
         Vector3 lastPoint = (Vector3)anchorPos + new Vector3(x, y, z);
         ringPositions.Add(lastPoint);
     }
-
-    // public void UpdateValues(float newRadius, Vector2 anchor) {
-    //     radius = newRadius;
-    //     anchorPos = anchor;
-    // }
 }

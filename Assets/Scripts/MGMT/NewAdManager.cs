@@ -83,11 +83,13 @@ public class NewAdManager : MonoBehaviour
             case ShowResult.Finished:
                 Debug.Log("The ad was successfully shown.");
                 playcount = 0;
+                adThreshold = 4;
                 StartCoroutine(ShowInterstitial());
                 break;
             case ShowResult.Skipped:
                 Debug.Log("The ad was skipped before reaching the end.");
-                playcount = 1;
+                adThreshold = 3;
+                playcount = 0;
                 StartCoroutine(ShowInterstitial());
                 break;
             case ShowResult.Failed:

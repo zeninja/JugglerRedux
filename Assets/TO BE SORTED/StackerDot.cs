@@ -4,52 +4,46 @@ using UnityEngine;
 
 public class StackerDot : MonoBehaviour {
 
+	// ProceduralCircle pc;
+
+	LineRenderer circle;
+
 	void Start() {
-		GetComponent<MeshRenderer>().sortingLayerName = "GameOver";
+		// GetComponent<MeshRenderer>().sortingLayerName = "GameOver";
+		circle = GetComponent<LineRenderer>();
 	}
 
 	public float radius;
 
 	public void SetTargetRadius(float r) {
-		radius = r;
-		GetComponent<ProceduralCircle>().radius = r;
+		circle.startWidth = r;
+		circle.endWidth = r;
 	}
 
 	public void SetInfo(Vector2 anchor, Color dotColor, int depth) {
-		GetComponent<ProceduralCircle>().anchorPos = anchor;
-		GetComponent<ProceduralCircle>().color = dotColor;
-		GetComponent<ProceduralCircle>().depth = depth;
-
-		startColor = dotColor;
+		transform.position = anchor;
+		
+		circle.material.color = dotColor;
+		circle.sortingOrder = depth;
 	}
 
 	public void SetColor(Color dotColor) {
-		GetComponent<ProceduralCircle>().color = dotColor;
+		circle.material.color = dotColor;
 	}
 
-	// public IEnumerator StartRainbow(Color[] a_colors, float delay) {
-	// 	colors = a_colors;
-	// 	yield return new WaitForSeconds(delay);
-	// 	StartCoroutine(Rainbow());
-	// }
+	public IEnumerator HideDot(float d, float endRadius) {
+		float t = 0;
+		
+		while(t < d) {
+			t += Time.fixedDeltaTime;
+			float p = t / d;
 
-	// public void EndRainbow() {
-	// 	StopAllCoroutines();
-	// }
+			SetTargetRadius(radius - (radius - endRadius) * p);
 
-	// float d = .125f;
-
-	// Color[] colors;
-	// int colorIndex = 0;
-
-
-	// IEnumerator Rainbow() {
-	// 	SetColor(colors[colorIndex]);
-	// 	yield return StartCoroutine(Extensions.Wait(d));
-	// 	colorIndex = (colorIndex + 1 ) % colors.Length;
-
-	// 	StartCoroutine(Rainbow());
-	// }
+			yield return new WaitForFixedUpdate();
+		}
+		gameObject.SetActive(false);
+	}
 
 	Color startColor;
 
